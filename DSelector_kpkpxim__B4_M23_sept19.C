@@ -30,8 +30,6 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	// EXAMPLE: Create deque for histogramming particle masses:
 	// // For histogramming the phi mass in phi -> K+ K-
 	// // Be sure to change this and dAnalyzeCutActions to match reaction
-	std::deque<Particle_t> MyPhi;
-	MyPhi.push_back(KPlus); MyPhi.push_back(KMinus);
 
 	//ANALYSIS ACTIONS: //Executed in order if added to dAnalysisActions
 	//false/true below: use measured/kinfit data
@@ -60,18 +58,18 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 
 	// ANALYZE CUT ACTIONS
 	// // Change MyPhi to match reaction
-	dAnalyzeCutActions = new DHistogramAction_AnalyzeCutActions( dAnalysisActions, dComboWrapper, false, 0, MyPhi, 1000, 0.9, 2.4, "CutActionEffect" );
+
 
 	//INITIALIZE ACTIONS
 	//If you create any actions that you want to run manually (i.e. don't add to dAnalysisActions), be sure to initialize them here as well
 	Initialize_Actions();
-	dAnalyzeCutActions->Initialize(); // manual action, must call Initialize()
 
 	/******************************** EXAMPLE USER INITIALIZATION: STAND-ALONE HISTOGRAMS *******************************/
 
 	//EXAMPLE MANUAL HISTOGRAMS:
 	dHist_MissingMassSquared = new TH1I("MissingMassSquared", ";Missing Mass Squared (GeV/c^{2})^{2}", 600, -0.06, 0.06);
 	dHist_BeamEnergy = new TH1I("BeamEnergy", ";Beam Energy (GeV)", 600, 0.0, 12.0);
+	dHist_XiPath = new TH1I("XiPathLength", ";XiPathLength", 600, 0.0, 12.0);
 
 	/************************** EXAMPLE USER INITIALIZATION: CUSTOM OUTPUT BRANCHES - MAIN TREE *************************/
 
@@ -146,7 +144,6 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 	//ANALYSIS ACTIONS: Reset uniqueness tracking for each action
 	//For any actions that you are executing manually, be sure to call Reset_NewEvent() on them here
 	Reset_Actions_NewEvent();
-	dAnalyzeCutActions->Reset_NewEvent(); // manual action, must call Reset_NewEvent()
 
 	//PREVENT-DOUBLE COUNTING WHEN HISTOGRAMMING
 		//Sometimes, some content is the exact same between one combo and the next
@@ -165,7 +162,7 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 	set<map<Particle_t, set<Int_t> > > locUsedSoFar_MissingMass;
 
 	//INSERT USER ANALYSIS UNIQUENESS TRACKING HERE
-
+	set<map<Particle_t,set<Int_t>>>locUsedSoFar_PostCuts;
 	/**************************************** EXAMPLE: FILL CUSTOM OUTPUT BRANCHES **************************************/
 
 	/*
@@ -240,11 +237,17 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		// Combine 4-vectors
 		TLorentzVector locMissingP4_Measured = locBeamP4_Measured + dTargetP4;
 		locMissingP4_Measured -= locKPlus1P4_Measured + locKPlus2P4_Measured + locPiMinus1P4_Measured + locPiMinus2P4_Measured + locProtonP4_Measured;
+		TLorentzVector locDecayingLambdaX4 = dDecayingLambdaWrapper->Get_X4();
+
+		TLorentzVector locDecayingXiX4 = dTreeInterface->Get_TObject<TLorentzVector>("DecayingXiMinus__X4",loc_i);
+		TLorentzVector locFromSpacetimeVertexXi = locDecayingXiX4;//Xi vertex
+		TLorentzVector locStepSpacetimeVertexXi =dComboBeamWrapper->Get_X4();//Get production vertex
+		TLorentzVector locDeltaSpacetimeXi = locStepSpacetimeVertexXi - locFromSpacetimeVertexXi;//vertex difference
+		double locPathLengthXi = locDeltaSpacetimeXi.Vect().Mag();//pathlength is just the magnitude
 
 		/******************************************** EXECUTE ANALYSIS ACTIONS *******************************************/
 
 		// Loop through the analysis actions, executing them in order for the active particle combo
-		dAnalyzeCutActions->Perform_Action(); // Must be executed before Execute_Actions()
 		if(!Execute_Actions()) //if the active combo fails a cut, IsComboCutFlag automatically set
 			continue;
 
@@ -293,6 +296,18 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 			dHist_MissingMassSquared->Fill(locMissingMassSquared);
 			locUsedSoFar_MissingMass.insert(locUsedThisCombo_MissingMass);
 		}
+
+
+		map<Particle_t, set<Int_t> > locUsedThisCombo_PostCuts;
+		locUsedThisCombo_PostCuts[PiMinus].insert(locPiMinus1TrackID);
+		locUsedThisCombo_PostCuts[PiMinus].insert(locPiMinus2TrackID);
+		locUsedThisCombo_PostCuts[Proton].insert(locProtonTrackID);
+		if(locUsedSoFar_PostCuts.find(locUsedThisCombo_PostCuts) == locUsedSoFar_PostCuts.end()){
+			dHist_XiPath->Fill(locPathLengthXi);
+			locUsedSoFar_PostCuts.insert(locUsedThisCombo_PostCuts);
+		}
+
+
 
 		//E.g. Cut
 		//if((locMissingMassSquared < -0.04) || (locMissingMassSquared > 0.04))

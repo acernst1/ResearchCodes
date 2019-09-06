@@ -56,6 +56,7 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		// EXAMPLES:
 		TH1I* dHist_MissingMassSquared;
 		TH1I* dHist_BeamEnergy;
+		TH1I* dHist_XiPath;
 
 	ClassDef(DSelector_kpkpxim__B4_M23_sept19, 0);
 };
