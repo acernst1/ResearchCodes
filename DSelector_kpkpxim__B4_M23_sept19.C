@@ -57,8 +57,6 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dAnalysisActions.push_back(new DHistogramAction_ParticleComboKinematics(dComboWrapper, false));
 	dAnalysisActions.push_back(new DHistogramAction_ParticleComboKinematics(dComboWrapper, true, "KinFit"));
 
-	//KINEMATICS
-	dAnalysisActions.push_back(new DHistogramAction_ParticleComboKinematics(dComboWrapper, false));
 
 	// ANALYZE CUT ACTIONS
 	// // Change MyPhi to match reaction
@@ -73,9 +71,9 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	//EXAMPLE MANUAL HISTOGRAMS:
 	dHist_MissingMassSquared = new TH1I("MissingMassSquared", ";Missing Mass Squared (GeV/c^{2})^{2}", 600, -0.06, 0.06);
 	dHist_BeamEnergy = new TH1I("BeamEnergy", ";Beam Energy (GeV)", 600, 0.0, 12.0);
-	dHist_XiPath = new TH1I("XiPathLength", ";XiPathLength", 600, 0.0, 12.0);
-	dHist_XiPathh_preCL = new TH1I("XiPathLengthh_preCL", ";XiPathLength_preCL", 600, 0.0, 12.0);
-	dHist_XiPathh_postCL = new TH1I("XiPathLengthh_postCL", ";XiPathLength_postCL", 600, 0.0, 12.0);
+	dHist_XiPath = new TH1I("XiPathLength", ";#Xi^{-} Path Length (cm)", 600, 0.0, 12.0);
+	dHist_XiPath_preCL = new TH1I("XiPathLength_preCL", ";#Xi^{-} Path Length (cm)", 600, 0.0, 12.0);
+	dHist_XiPath_postCL = new TH1I("XiPathLength_postCL", ";#Xi^{-} Path Length (cm)", 600, 0.0, 12.0);
 
 	dHist_BeamBunch = new TH1I("BeamBunch", ";Beam Bunch", 400, -20.0, 20.0);
 	dHist_ChiSq = new TH1I("ChiSq", "ChiSq", 200, 0.0, 100.0);
@@ -484,7 +482,7 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		{
 			dHist_ChiSq->Fill(locChiSqNdf);
 			dHist_ChiSqXi->Fill(locChiSqNdf, locXiP4_Measured.M());
-			dHist_XiPath_PreCL->Fill(locPathLengthXi);
+			dHist_XiPath_preCL->Fill(locPathLengthXi);
 			//cerr << locNDF << endl;
 			locUsedSoFar_ChiSq.insert(locUsedThisCombo_ChiSq);
 		}		
