@@ -76,7 +76,7 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_XiPath_postCL = new TH1I("XiPathLength_postCL", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
 	dHist_ProdVert = new TH1I("ProdVert", ";Production Vertex Z (cm)", 600, -50.0, 200.0);
 	dHist_XiVert = new TH1I("XiVert", ";#Xi^{-} Vertex Z (cm)", 600, -50.0, 200.0);
-	dHist_LambVert = new TH1I("La,bVert", ";#Lambda Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_LambVert = new TH1I("LambVert", ";#Lambda Vertex Z (cm)", 600, -50.0, 200.0);
 	dHist_LambPath = new TH1I("LambPathLength", ";#Lambda Path Length (cm)", 600, 0.0, 15.0);
 	
 
