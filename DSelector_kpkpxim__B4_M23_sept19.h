@@ -59,6 +59,10 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		TH1I* dHist_XiPath;
 		TH1I* dHist_XiPath_preCL;
 		TH1I* dHist_XiPath_postCL;
+		TH1I* dHist_ProdVert;
+		TH1I* dHist_XiVert;
+		TH1I* dHist_LambVert;
+		TH1I* dHist_LambPath;
 
 		TH1I* dHist_BeamBunch;
 		TH1I* dHist_ChiSq;

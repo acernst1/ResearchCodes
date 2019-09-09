@@ -71,9 +71,14 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	//EXAMPLE MANUAL HISTOGRAMS:
 	dHist_MissingMassSquared = new TH1I("MissingMassSquared", ";Missing Mass Squared (GeV/c^{2})^{2}", 600, -0.06, 0.06);
 	dHist_BeamEnergy = new TH1I("BeamEnergy", ";Beam Energy (GeV)", 600, 0.0, 12.0);
-	dHist_XiPath = new TH1I("XiPathLength", ";#Xi^{-} Path Length (cm)", 600, 0.0, 12.0);
-	dHist_XiPath_preCL = new TH1I("XiPathLength_preCL", ";#Xi^{-} Path Length (cm)", 600, 0.0, 12.0);
-	dHist_XiPath_postCL = new TH1I("XiPathLength_postCL", ";#Xi^{-} Path Length (cm)", 600, 0.0, 12.0);
+	dHist_XiPath = new TH1I("XiPathLength", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
+	dHist_XiPath_preCL = new TH1I("XiPathLength_preCL", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
+	dHist_XiPath_postCL = new TH1I("XiPathLength_postCL", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
+	dHist_ProdVert = new TH1I("ProdVert", ";Production Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_XiVert = new TH1I("XiVert", ";#Xi^{-} Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_LambVert = new TH1I("La,bVert", ";#Lambda Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_LambPath = new TH1I("LambPathLength", ";#Lambda Path Length (cm)", 600, 0.0, 15.0);
+	
 
 	dHist_BeamBunch = new TH1I("BeamBunch", ";Beam Bunch", 400, -20.0, 20.0);
 	dHist_ChiSq = new TH1I("ChiSq", "ChiSq", 200, 0.0, 100.0);
@@ -350,10 +355,12 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		TLorentzVector locDecayingLambdaX4 = dDecayingLambdaWrapper->Get_X4();
 
 		TLorentzVector locDecayingXiX4 = dTreeInterface->Get_TObject<TLorentzVector>("DecayingXiMinus__X4",loc_i);
-		TLorentzVector locFromSpacetimeVertexXi = locDecayingXiX4;//Xi vertex
-		TLorentzVector locStepSpacetimeVertexXi =dComboBeamWrapper->Get_X4();//Get production vertex
-		TLorentzVector locDeltaSpacetimeXi = locStepSpacetimeVertexXi - locFromSpacetimeVertexXi;//vertex difference
+		TLorentzVector locDecayingLambX4 = dTreeInterface->Get_TObject<TLorentzVector>("DecayingLambda__X4",loc_i);
+		TLorentzVector locProdSpacetimeVertex =dComboBeamWrapper->Get_X4();//Get production vertex
+		TLorentzVector locDeltaSpacetimeXi = locProdSpacetimeVertex - locDecayingXiX4;//vertex difference
+		TLorentzVector locDeltaSpacetimeLamb = locDecayingXiX4 - locDecayingLambX4;//vertex difference
 		double locPathLengthXi = locDeltaSpacetimeXi.Vect().Mag();//pathlength is just the magnitude
+		double locPathLengthLamb = locDeltaSpacetimeLamb.Vect().Mag();//pathlength is just the magnitude
 
 		TLorentzVector locXiP4_Measured =  locPiMinus1P4_Measured + locPiMinus2P4_Measured + locProtonP4_Measured;
 		TLorentzVector locXiP4_KinFit =  locPiMinus1P4 + locPiMinus2P4 + locProtonP4;
@@ -467,6 +474,10 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		locUsedThisCombo_Pathlength[Proton].insert(locProtonTrackID);
 		if(locUsedSoFar_Pathlength.find(locUsedThisCombo_Pathlength) == locUsedSoFar_Pathlength.end()){
 			dHist_XiPath->Fill(locPathLengthXi);
+			dHist_LambPath->Fill(locPathLengthLamb);
+			dHist_ProdVert->Fill(locProdSpacetimeVertex.Z());
+			dHist_XiVert->Fill(locDecayingXiX4.Z());
+			dHist_LambVert->Fill(locDecayingLambX4.Z());
 			locUsedSoFar_Pathlength.insert(locUsedThisCombo_Pathlength);
 		}
 
