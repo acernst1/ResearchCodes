@@ -27,45 +27,14 @@ void DSelector_kpkpxim__M23_sept19::Init(TTree *locTree)
 
 	/*********************************** EXAMPLE USER INITIALIZATION: ANALYSIS ACTIONS **********************************/
 
-	// EXAMPLE: Create deque for histogramming particle masses:
-	// // For histogramming the phi mass in phi -> K+ K-
-	// // Be sure to change this and dAnalyzeCutActions to match reaction
-	std::deque<Particle_t> MyPhi;
-	MyPhi.push_back(KPlus); MyPhi.push_back(KMinus);
 
-	//ANALYSIS ACTIONS: //Executed in order if added to dAnalysisActions
-	//false/true below: use measured/kinfit data
 
-	//PID
-	dAnalysisActions.push_back(new DHistogramAction_ParticleID(dComboWrapper, false));
-	//below: value: +/- N ns, Unknown: All PIDs, SYS_NULL: all timing systems
-	//dAnalysisActions.push_back(new DCutAction_PIDDeltaT(dComboWrapper, false, 0.5, KPlus, SYS_BCAL));
 
-	//MASSES
-	//dAnalysisActions.push_back(new DHistogramAction_InvariantMass(dComboWrapper, false, Lambda, 1000, 1.0, 1.2, "Lambda"));
-	//dAnalysisActions.push_back(new DHistogramAction_MissingMassSquared(dComboWrapper, false, 1000, -0.1, 0.1));
 
-	//KINFIT RESULTS
-	dAnalysisActions.push_back(new DHistogramAction_KinFitResults(dComboWrapper));
-
-	//CUT MISSING MASS
-	//dAnalysisActions.push_back(new DCutAction_MissingMassSquared(dComboWrapper, false, -0.03, 0.02));
-
-	//BEAM ENERGY
-	dAnalysisActions.push_back(new DHistogramAction_BeamEnergy(dComboWrapper, false));
-	//dAnalysisActions.push_back(new DCutAction_BeamEnergy(dComboWrapper, false, 8.4, 9.05));
-
-	//KINEMATICS
-	dAnalysisActions.push_back(new DHistogramAction_ParticleComboKinematics(dComboWrapper, false));
-
-	// ANALYZE CUT ACTIONS
-	// // Change MyPhi to match reaction
-	dAnalyzeCutActions = new DHistogramAction_AnalyzeCutActions( dAnalysisActions, dComboWrapper, false, 0, MyPhi, 1000, 0.9, 2.4, "CutActionEffect" );
 
 	//INITIALIZE ACTIONS
 	//If you create any actions that you want to run manually (i.e. don't add to dAnalysisActions), be sure to initialize them here as well
 	Initialize_Actions();
-	dAnalyzeCutActions->Initialize(); // manual action, must call Initialize()
 
 	/******************************** EXAMPLE USER INITIALIZATION: STAND-ALONE HISTOGRAMS *******************************/
 
@@ -146,7 +115,6 @@ Bool_t DSelector_kpkpxim__M23_sept19::Process(Long64_t locEntry)
 	//ANALYSIS ACTIONS: Reset uniqueness tracking for each action
 	//For any actions that you are executing manually, be sure to call Reset_NewEvent() on them here
 	Reset_Actions_NewEvent();
-	dAnalyzeCutActions->Reset_NewEvent(); // manual action, must call Reset_NewEvent()
 
 	//PREVENT-DOUBLE COUNTING WHEN HISTOGRAMMING
 		//Sometimes, some content is the exact same between one combo and the next
@@ -244,7 +212,6 @@ Bool_t DSelector_kpkpxim__M23_sept19::Process(Long64_t locEntry)
 		/******************************************** EXECUTE ANALYSIS ACTIONS *******************************************/
 
 		// Loop through the analysis actions, executing them in order for the active particle combo
-		dAnalyzeCutActions->Perform_Action(); // Must be executed before Execute_Actions()
 		if(!Execute_Actions()) //if the active combo fails a cut, IsComboCutFlag automatically set
 			continue;
 
