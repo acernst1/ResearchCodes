@@ -164,7 +164,14 @@ void DSelector_kpkpxim__M23_sept19::Init(TTree *locTree)
 	dHist_Xi_Egamma = new TH2I("Xi_Egamma", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma}", 80, 1.1, 1.5,180, 3.0, 12.0);
 	dHist_Xi_Egamma_acc = new TH2I("Xi_Egamma_acc", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV)", 80, 1.1, 1.5,180, 3.0, 12.0);
 
-
+	dHist_Xi_Egamma_all=new TH1I("Xi_Egamma_all",";E_{#gamma}(GeV)", 180,3.0,12.0);
+	dHist_Xi_t_all=new TH1I("Xi_t_all",";-t  (GeV/c)^{2}", 100,0.0,7.5);
+	dHist_Xi_pP_all=new TH1I("Xi_pP_all",";p P  (GeV/c)", 80,0.0,10.0);
+	dHist_Xi_pTheta_all=new TH1I("Xi_pTheta_all",";p #Theta  (deg.)", 80,0.0,60);
+	dHist_Xi_Egamma_withST=new TH1I("Xi_Egamma_withST",";E_{#gamma}(GeV)", 180,3.0,12.0);
+	dHist_Xi_t_withST=new TH1I("Xi_t_withST",";-t  (GeV/c)^{2}", 100,0.0,7.5);
+	dHist_Xi_pP_withST=new TH1I("Xi_pP_withST",";p P  (GeV/c)", 80,0.0,10.0);
+	dHist_Xi_pTheta_withST=new TH1I("Xi_pTheta_withST",";p #Theta  (deg.)", 80,0.0,60);
 
 	/************************** EXAMPLE USER INITIALIZATION: CUSTOM OUTPUT BRANCHES - MAIN TREE *************************/
 
@@ -266,6 +273,7 @@ Bool_t DSelector_kpkpxim__M23_sept19::Process(Long64_t locEntry)
 	set<map<Particle_t,set<Int_t>>>locUsedSoFar_PostCuts4;
 	set<map<Particle_t,set<Int_t>>>locUsedSoFar_PostCuts5;
 	set<map<Particle_t,set<Int_t>>>locUsedSoFar_Eventlist;
+	set<map<Particle_t,set<Int_t>>>locUsedSoFar_ST;
 
 	/**************************************** EXAMPLE: FILL CUSTOM OUTPUT BRANCHES **************************************/
 
@@ -751,6 +759,47 @@ Bool_t DSelector_kpkpxim__M23_sept19::Process(Long64_t locEntry)
 			}
 			locUsedSoFar_Asymmetry.insert(locUsedThisCombo_Asymmetry);
 		}
+
+
+		map<Particle_t, set<Int_t> > locUsedThisCombo_ST;
+		locUsedThisCombo_ST[KPlus].insert(locKPlus1TrackID);
+		locUsedThisCombo_ST[KPlus].insert(locKPlus2TrackID);
+		locUsedThisCombo_ST[PiMinus].insert(locPiMinus1TrackID);
+		locUsedThisCombo_ST[PiMinus].insert(locPiMinus2TrackID);
+		locUsedThisCombo_ST[Unknown].insert(locBeamID);
+		locUsedThisCombo_ST[Proton].insert(locProtonTrackID);
+		bool has_ST_hit = false;
+		if(locUsedSoFar_ST.find(locUsedThisCombo_ST) == locUsedSoFar_ST.end()){
+			//Loop over charged track hypotheses
+			for(UInt_t loc_i = 0; loc_i < Get_NumChargedHypos(); ++loc_i){
+		 		//Set branch array indices corresponding to this particle
+				dChargedHypoWrapper->Set_ArrayIndex(loc_i);
+				double dEdx_ST = dChargedHypoWrapper->Get_dEdx_ST();
+				if (dEdx_ST != 0) { 
+					has_ST_hit = true; 
+					break;
+				}
+			}
+			if(fabs(locDeltaT) < 6.004) {	
+				if(locXiP4_KinFit.M() >= 1.31 && locXiP4_KinFit.M() < 1.34){
+					dHist_Xi_Egamma_all->Fill(locBeamP4.E());
+					dHist_Xi_t_all->Fill(-1.*t);
+					dHist_Xi_pP_all->Fill(locProtonP4.P());
+					dHist_Xi_pTheta_all->Fill(locProtonP4.Theta()*180./TMath::Pi());
+					if (!has_ST_hit){ 
+						dComboWrapper->Set_IsComboCut(true); 
+						continue;	
+					}
+					dHist_Xi_Egamma_withST->Fill(locBeamP4.E());
+					dHist_Xi_t_withST->Fill(-1.*t);
+					dHist_Xi_pP_withST->Fill(locProtonP4.P());
+					dHist_Xi_pTheta_withST->Fill(locProtonP4.Theta()*180./TMath::Pi());									
+				}
+			}
+			locUsedSoFar_ST.insert(locUsedThisCombo_ST);
+		}
+
+		
 
 
 
