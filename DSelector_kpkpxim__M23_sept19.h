@@ -64,14 +64,14 @@ class DSelector_kpkpxim__M23_sept19 : public DSelector
 		TH1I* dHist_LambVert;
 		TH1I* dHist_LambPath;
 
-		TH1I* dHist_Xi_Egamma_all;
-		TH1I* dHist_Xi_t_all;
-		TH1I* dHist_Xi_pP_all;
-		TH1I* dHist_Xi_pTheta_all;
-		TH1I* dHist_Xi_Egamma_withST;
-		TH1I* dHist_Xi_t_withST;
-		TH1I* dHist_Xi_pP_withST;
-		TH1I* dHist_Xi_pTheta_withST;
+		TH1F* dHist_Xi_Egamma_all;
+		TH1F* dHist_Xi_t_all;
+		TH1F* dHist_Xi_pP_all;
+		TH1F* dHist_Xi_pTheta_all;
+		TH1F* dHist_Xi_Egamma_withST;
+		TH1F* dHist_Xi_t_withST;
+		TH1F* dHist_Xi_pP_withST;
+		TH1F* dHist_Xi_pTheta_withST;
 
 		TH1I* dHist_BeamBunch;
 		TH1I* dHist_ChiSq;

@@ -164,14 +164,14 @@ void DSelector_kpkpxim__M23_sept19::Init(TTree *locTree)
 	dHist_Xi_Egamma = new TH2I("Xi_Egamma", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma}", 80, 1.1, 1.5,180, 3.0, 12.0);
 	dHist_Xi_Egamma_acc = new TH2I("Xi_Egamma_acc", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV)", 80, 1.1, 1.5,180, 3.0, 12.0);
 
-	dHist_Xi_Egamma_all=new TH1I("Xi_Egamma_all",";E_{#gamma}(GeV)", 180,3.0,12.0);
-	dHist_Xi_t_all=new TH1I("Xi_t_all",";-t  (GeV/c)^{2}", 100,0.0,7.5);
-	dHist_Xi_pP_all=new TH1I("Xi_pP_all",";p P  (GeV/c)", 80,0.0,10.0);
-	dHist_Xi_pTheta_all=new TH1I("Xi_pTheta_all",";p #Theta  (deg.)", 80,0.0,60);
-	dHist_Xi_Egamma_withST=new TH1I("Xi_Egamma_withST",";E_{#gamma}(GeV)", 180,3.0,12.0);
-	dHist_Xi_t_withST=new TH1I("Xi_t_withST",";-t  (GeV/c)^{2}", 100,0.0,7.5);
-	dHist_Xi_pP_withST=new TH1I("Xi_pP_withST",";p P  (GeV/c)", 80,0.0,10.0);
-	dHist_Xi_pTheta_withST=new TH1I("Xi_pTheta_withST",";p #Theta  (deg.)", 80,0.0,60);
+	dHist_Xi_Egamma_all=new TH1F("Xi_Egamma_all",";E_{#gamma} (GeV)", 180,3.0,12.0);
+	dHist_Xi_t_all=new TH1F("Xi_t_all",";-t  (GeV/c)^{2}", 100,0.0,7.5);
+	dHist_Xi_pP_all=new TH1F("Xi_pP_all",";proton P  (GeV/c)", 80,0.0,10.0);
+	dHist_Xi_pTheta_all=new TH1F("Xi_pTheta_all",";proton #Theta  (deg.)", 80,0.0,60);
+	dHist_Xi_Egamma_withST=new TH1F("Xi_Egamma_withST",";E_{#gamma}(GeV)", 180,3.0,12.0);
+	dHist_Xi_t_withST=new TH1F("Xi_t_withST",";-t  (GeV/c)^{2}", 100,0.0,7.5);
+	dHist_Xi_pP_withST=new TH1F("Xi_pP_withST",";proton P  (GeV/c)", 80,0.0,10.0);
+	dHist_Xi_pTheta_withST=new TH1F("Xi_pTheta_withST",";proton #Theta  (deg.)", 80,0.0,60);
 
 	/************************** EXAMPLE USER INITIALIZATION: CUSTOM OUTPUT BRANCHES - MAIN TREE *************************/
 
