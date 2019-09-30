@@ -70,7 +70,9 @@ void DSelector_kpkpxim__M23_sept19::Init(TTree *locTree)
 
 	dHist_BeamBunch = new TH1I("BeamBunch", ";Beam Bunch", 400, -20.0, 20.0);
 	dHist_ChiSq = new TH1I("ChiSq", "ChiSq", 200, 0.0, 100.0);
-	dHist_ChiSqXi = new TH2I("ChiSqXi", "ChiSq",100,0.0,100.0,80,1.1,1.5);
+	dHist_ChiSqXi_Measured = new TH2I("ChiSqXi_Measured", "ChiSq",100,0.0,100.0,80,1.1,1.5);
+	dHist_ChiSqXi_KinFit = new TH2I("ChiSqXi_KinFit", "ChiSq",100,0.0,100.0,80,1.1,1.5);
+
 	dHist_K_pTheta_Measured = new TH2I("K_pTheta_Measured", "K^{+} pvsTheta Measured",28,0.0,140,40,0.0,10.0);
 	dHist_p_pTheta_Measured = new TH2I("p_pTheta_Measured", "p pvsTheta Measured",28,0.0,140,40,0.0,10.0);
 	dHist_K_pTheta_KinFit = new TH2I("K_pTheta_KinFit", "K^{+} pvsTheta KinFit",28,0.0,140,40,0.0,10.0);
@@ -488,7 +490,8 @@ Bool_t DSelector_kpkpxim__M23_sept19::Process(Long64_t locEntry)
 		if(locUsedSoFar_ChiSq.find(locUsedThisCombo_ChiSq) == locUsedSoFar_ChiSq.end())
 		{
 			dHist_ChiSq->Fill(locChiSqNdf);
-			dHist_ChiSqXi->Fill(locChiSqNdf, locXiP4_Measured.M());
+			dHist_ChiSqXi_Measured->Fill(locChiSqNdf, locXiP4_Measured.M());
+			dHist_ChiSqXi_KinFit->Fill(locChiSqNdf, locXiP4_KinFit.M());
 			dHist_XiPath_preCL->Fill(locPathLengthXi);
 			//cerr << locNDF << endl;
 			locUsedSoFar_ChiSq.insert(locUsedThisCombo_ChiSq);
