@@ -74,7 +74,6 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		TH1I* dHist_XiMass_KinFit_Selected;
 		TH1I* dHist_MMKK_Measured;
 		TH1I* dHist_MMKK_KinFit;	
-		ofstream *myfile;
 		TH2I* dHist_K_pTheta_Measured;
 		TH2I* dHist_p_pTheta_Measured;
 		TH2I* dHist_K_pTheta_KinFit;

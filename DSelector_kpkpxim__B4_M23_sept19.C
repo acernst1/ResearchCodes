@@ -177,7 +177,7 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_Xi_Egamma_acc = new TH2I("Xi_Egamma_acc", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV)", 80, 1.1, 1.5,180, 3.0, 12.0);
 
 	myfile = new ofstream("XiEventNumbers_XiMassKinFit_2018-08_batch01.txt");
-	*myfile << << "RunNumber " << "EventNumber " << "XiMass_Measured " << "XiMass_KinFit " << "DeltaT " << "BeamE " << endl;
+	*myfile << "RunNumber " << "EventNumber " << "XiMass_Measured " << "XiMass_KinFit " << "DeltaT " << "BeamE " << endl;
 
 	/************************** EXAMPLE USER INITIALIZATION: CUSTOM OUTPUT BRANCHES - MAIN TREE *************************/
 
