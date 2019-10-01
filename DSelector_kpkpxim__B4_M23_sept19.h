@@ -2,6 +2,7 @@
 #define DSelector_kpkpxim__B4_M23_sept19_h
 
 #include <iostream>
+#include <fstream>
 
 #include "DSelector/DSelector.h"
 #include "DSelector/DHistogramActions.h"
@@ -54,6 +55,7 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 
 		// DEFINE YOUR HISTOGRAMS HERE
 		// EXAMPLES:
+		ofstream *myfile;
 		TH1I* dHist_MissingMassSquared;
 		TH1I* dHist_BeamEnergy;
 		TH1I* dHist_XiPath;
