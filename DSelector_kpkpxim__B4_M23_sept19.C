@@ -177,6 +177,10 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	
 	dHist_KplowXim = new TH1I("KplowXim",";K_{plow}#Xi^{-} mass (GeV)", 80,1.6,2.0);
 	dHist_KplowXim_acc = new TH1I("KplowXim_acc",";K_{plow}#Xi^{-} mass (GeV)", 80,1.6,2.0);
+	dHist_Kplow_pvstheta = new TH2I("Kplow_pvstheta", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_Kphigh_pvstheta = new TH2I("Kphigh_pvstheta", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_Kplow_pvstheta_acc = new TH2I("Kplow_pvstheta_acc", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_Kphigh_pvstheta_acc = new TH2I("Kphigh_pvstheta_acc", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 
 	myfile = new ofstream("XiEventNumbers_XiMassKinFit_2018-08_batch01.txt");
 	*myfile << "RunNumber " << "EventNumber " << "XiMass_Measured " << "XiMass_KinFit " << "DeltaT " << "BeamE " << " ChiSqNDf" <<  endl;
