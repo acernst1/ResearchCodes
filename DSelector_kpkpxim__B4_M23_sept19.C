@@ -735,11 +735,13 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		}
 
 		//Asymmetry
-		TLorentzVector locKPlusP4;		
-		if(locKPlus1P4.Theta() < 13*TMath::Pi()/180.) { locKPlusP4 = locKPlus1P4; }
-		else { locKPlusP4 = locKPlus2P4; }
-		double t= (locBeamP4 - locKPlusP4).M2();
-		double phi = locKPlusP4.Phi()*180/TMath::Pi();
+		TLorentzVector locKPlusP4_lowp;
+		TLorentzVector locKPlusP4_highp;		
+		if(locKPlus1P4.Theta() < 13*TMath::Pi()/180.) { locKPlusP4_highp = locKPlus1P4; locKPlusP4_lowp = locKPlus2P4;}
+		else { locKPlusP4_highp = locKPlus2P4; locKPlusP4_lowp = locKPlus1P4; }
+		TLorentzVector locIntermediate_KinFit = locKPlusP4_lowp + locXiP4_KinFit;
+		double t= (locBeamP4 - locKPlusP4_highp).M2();
+		double phi = locKPlusP4_highp.Phi()*180/TMath::Pi();
 		if(phi < -180.) phi = phi + 360.;
 		if (phi > 180.) phi = phi - 360.;
 		map<Particle_t, set<Int_t>> locUsedThisCombo_Asymmetry;
@@ -747,26 +749,28 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		locUsedThisCombo_Asymmetry[KPlus].insert(locKPlus1TrackID);
 		locUsedThisCombo_Asymmetry[KPlus].insert(locKPlus2TrackID);
 		if(locUsedSoFar_Asymmetry.find(locUsedThisCombo_Asymmetry) == locUsedSoFar_Asymmetry.end()){
-			if(fabs(locDeltaT) < 6.004) {	
-				if (locBeamP4.E() >= 8.2 && locBeamP4.E() <= 8.8){ 
-					if (locXiP4_Measured.M() >= 1.31 && locXiP4_Measured.M() <= 1.34){ 
-						dHist_BeamBunch->Fill(locDeltaT);
+				if (locXiP4_Measured.M() >= 1.31 && locXiP4_Measured.M() <= 1.34){ 
+					if(fabs(locDeltaT) < 6.004) {	
 						if(fabs(locDeltaT) < 2.004) {
-							dHist_XiMass_KinFit_Selected->Fill(locXiP4_KinFit.M());	
-							dHist_phi_t->Fill(-1.*t, phi); 
-						}
+							dHist_KplowXim->Fill(locIntermediate_KinFit.M());
+							if (locBeamP4.E() >= 8.2 && locBeamP4.E() <= 8.8){ 
+								dHist_BeamBunch->Fill(locDeltaT);
+								dHist_XiMass_KinFit_Selected->Fill(locXiP4_KinFit.M());	
+								dHist_phi_t->Fill(-1.*t, phi); 
+							}
 						else {
-							dHist_XiMass_KinFit_Selected_acc->Fill(locXiP4_KinFit.M());	
-							dHist_acc_phi_t_1->Fill(-1.*t, phi);
-						} 
+							dHist_KplowXim_acc->Fill(locIntermediate_KinFit.M());
+							if (locBeamP4.E() >= 8.2 && locBeamP4.E() <= 8.8){ 
+								dHist_XiMass_KinFit_Selected_acc->Fill(locXiP4_KinFit.M());	
+								dHist_acc_phi_t_1->Fill(-1.*t, phi); 
+							} 
+						}
+						}
 					}
 				}
-			}
-			else {
-				dHist_acc_phi_t_4->Fill(-1.*t, phi);
-			}
 			locUsedSoFar_Asymmetry.insert(locUsedThisCombo_Asymmetry);
 		}
+
 		//E.g. Cut
 		//if((locMissingMassSquared < -0.04) || (locMissingMassSquared > 0.04))
 		//{
