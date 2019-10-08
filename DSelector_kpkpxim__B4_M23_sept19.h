@@ -158,12 +158,12 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		TH2I* dHist_Xi_Egamma;
 		TH2I* dHist_Xi_Egamma_acc;
 		
-		TH1I* dHist_KplowXim;
-		TH1I* dHist_KplowXim_acc;
-		TH2I* dHist_Kplow_pvstheta;
-		TH2I* dHist_Kphigh_pvstheta;
-		TH2I* dHist_Kplow_pvstheta_acc;
-		TH2I* dHist_Kphigh_pvstheta_acc;
+		TH1I* dHist_KlowpXim;
+		TH1I* dHist_KlowpXim_acc;
+		TH2I* dHist_Klowp_pvstheta;
+		TH2I* dHist_Khighp_pvstheta;
+		TH2I* dHist_Klowp_pvstheta_acc;
+		TH2I* dHist_Khighp_pvstheta_acc;
 		
 
 	ClassDef(DSelector_kpkpxim__B4_M23_sept19, 0);

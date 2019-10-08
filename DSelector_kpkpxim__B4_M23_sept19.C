@@ -175,12 +175,12 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_Xi_Egamma = new TH2I("Xi_Egamma", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma}", 80, 1.1, 1.5,180, 3.0, 12.0);
 	dHist_Xi_Egamma_acc = new TH2I("Xi_Egamma_acc", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV)", 80, 1.1, 1.5,180, 3.0, 12.0);
 	
-	dHist_KplowXim = new TH1I("KplowXim",";K_{plow}#Xi^{-} mass (GeV)", 80,1.6,2.0);
-	dHist_KplowXim_acc = new TH1I("KplowXim_acc",";K_{plow}#Xi^{-} mass (GeV)", 80,1.6,2.0);
-	dHist_Kplow_pvstheta = new TH2I("Kplow_pvstheta", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
-	dHist_Kphigh_pvstheta = new TH2I("Kphigh_pvstheta", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
-	dHist_Kplow_pvstheta_acc = new TH2I("Kplow_pvstheta_acc", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
-	dHist_Kphigh_pvstheta_acc = new TH2I("Kphigh_pvstheta_acc", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_KlowpXim = new TH1I("KlowpXim",";K_{plow}#Xi^{-} mass (GeV)", 80,1.6,2.0);
+	dHist_KlowpXim_acc = new TH1I("KlowpXim_acc",";K_{plow}#Xi^{-} mass (GeV)", 80,1.6,2.0);
+	dHist_Klowp_pvstheta = new TH2I("Klowp_pvstheta", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_Khighp_pvstheta = new TH2I("Khighp_pvstheta", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_Klowp_pvstheta_acc = new TH2I("Klowp_pvstheta_acc", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_Khighp_pvstheta_acc = new TH2I("Khighp_pvstheta_acc", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 
 	myfile = new ofstream("XiEventNumbers_XiMassKinFit_2018-08_batch01.txt");
 	*myfile << "RunNumber " << "EventNumber " << "XiMass_Measured " << "XiMass_KinFit " << "DeltaT " << "BeamE " << " ChiSqNDf" <<  endl;
@@ -756,14 +756,18 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 				if (locXiP4_Measured.M() >= 1.31 && locXiP4_Measured.M() <= 1.34){ 
 					if(fabs(locDeltaT) < 6.004) {	
 						if(fabs(locDeltaT) < 2.004) {
-							dHist_KplowXim->Fill(locIntermediate_KinFit.M());
+							dHist_KlowpXim->Fill(locIntermediate_KinFit.M());
+							dHist_Klowp_pvstheta->Fill(locKPlusP4_lowp.Theta()*180./TMath::Pi(),locKPlusP4_lowp.P());
+							dHist_Khighp_pvstheta->Fill(locKPlusP4_highp.Theta()*180./TMath::Pi(),locKPlusP4_highp.P());
 							if (locBeamP4.E() >= 8.2 && locBeamP4.E() <= 8.8){ 
 								dHist_BeamBunch->Fill(locDeltaT);
 								dHist_XiMass_KinFit_Selected->Fill(locXiP4_KinFit.M());	
 								dHist_phi_t->Fill(-1.*t, phi); 
 							}
 						else {
-							dHist_KplowXim_acc->Fill(locIntermediate_KinFit.M());
+							dHist_KlowpXim_acc->Fill(locIntermediate_KinFit.M());
+							dHist_Klowp_pvstheta_acc->Fill(locKPlusP4_lowp.Theta()*180./TMath::Pi(),locKPlusP4_lowp.P());
+							dHist_Khighp_pvstheta_acc->Fill(locKPlusP4_highp.Theta()*180./TMath::Pi(),locKPlusP4_highp.P());
 							if (locBeamP4.E() >= 8.2 && locBeamP4.E() <= 8.8){ 
 								dHist_XiMass_KinFit_Selected_acc->Fill(locXiP4_KinFit.M());	
 								dHist_acc_phi_t_1->Fill(-1.*t, phi); 
