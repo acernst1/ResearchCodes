@@ -738,7 +738,7 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 			locUsedSoFar_PostCuts5.insert(locUsedThisCombo_PostCuts5);
 		}
 
-		//Asymmetry
+		//Asymmetry and Intermediate hyperon
 		TLorentzVector locKPlusP4_lowp;
 		TLorentzVector locKPlusP4_highp;		
 		if(locKPlus1P4.Theta() < 13*TMath::Pi()/180.) { locKPlusP4_highp = locKPlus1P4; locKPlusP4_lowp = locKPlus2P4;}
