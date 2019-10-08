@@ -157,7 +157,9 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		TH2I* dHist_Xi_cosGJ_acc;
 		TH2I* dHist_Xi_Egamma;
 		TH2I* dHist_Xi_Egamma_acc;
-
+		
+		TH1I* dHist_KplowXim;
+		TH1I* dHist_KplowXim_acc;
 
 	ClassDef(DSelector_kpkpxim__B4_M23_sept19, 0);
 };
