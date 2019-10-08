@@ -168,6 +168,13 @@ class DSelector_kpkpxim__M23_sept19 : public DSelector
 		TH2I* dHist_Xi_Egamma;
 		TH2I* dHist_Xi_Egamma_acc;
 
+		TH1I* dHist_KlowpXim;
+		TH1I* dHist_KlowpXim_acc;
+		TH2I* dHist_Klowp_pvstheta;
+		TH2I* dHist_Khighp_pvstheta;
+		TH2I* dHist_Klowp_pvstheta_acc;
+		TH2I* dHist_Khighp_pvstheta_acc;
+
 
 	ClassDef(DSelector_kpkpxim__M23_sept19, 0);
 };

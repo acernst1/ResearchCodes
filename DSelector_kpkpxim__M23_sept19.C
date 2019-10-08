@@ -175,6 +175,14 @@ void DSelector_kpkpxim__M23_sept19::Init(TTree *locTree)
 	dHist_Xi_pP_withST=new TH1F("Xi_pP_withST",";proton P  (GeV/c)", 80,0.0,10.0);
 	dHist_Xi_pTheta_withST=new TH1F("Xi_pTheta_withST",";proton #Theta  (deg.)", 80,0.0,60);
 
+	dHist_KlowpXim = new TH1I("KlowpXim",";K_{plow}#Xi^{-} mass (GeV)", 80,1.6,2.0);
+	dHist_KlowpXim_acc = new TH1I("KlowpXim_acc",";K_{plow}#Xi^{-} mass (GeV)", 80,1.6,2.0);
+	dHist_Klowp_pvstheta = new TH2I("Klowp_pvstheta", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_Khighp_pvstheta = new TH2I("Khighp_pvstheta", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_Klowp_pvstheta_acc = new TH2I("Klowp_pvstheta_acc", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_Khighp_pvstheta_acc = new TH2I("Khighp_pvstheta_acc", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+
+
 	/************************** EXAMPLE USER INITIALIZATION: CUSTOM OUTPUT BRANCHES - MAIN TREE *************************/
 
 	//EXAMPLE MAIN TREE CUSTOM BRANCHES (OUTPUT ROOT FILE NAME MUST FIRST BE GIVEN!!!! (ABOVE: TOP)):
@@ -729,12 +737,14 @@ Bool_t DSelector_kpkpxim__M23_sept19::Process(Long64_t locEntry)
 			locUsedSoFar_PostCuts5.insert(locUsedThisCombo_PostCuts5);
 		}
 
-		//Asymmetry
-		TLorentzVector locKPlusP4;		
-		if(locKPlus1P4.Theta() < 13*TMath::Pi()/180.) { locKPlusP4 = locKPlus1P4; }
-		else { locKPlusP4 = locKPlus2P4; }
-		double t= (locBeamP4 - locKPlusP4).M2();
-		double phi = locKPlusP4.Phi()*180/TMath::Pi();
+		//Asymmetry and Intermediate hyperon
+		TLorentzVector locKPlusP4_lowp;
+		TLorentzVector locKPlusP4_highp;		
+		if(locKPlus1P4.Theta() < 13*TMath::Pi()/180.) { locKPlusP4_highp = locKPlus1P4; locKPlusP4_lowp = locKPlus2P4;}
+		else { locKPlusP4_highp = locKPlus2P4; locKPlusP4_lowp = locKPlus1P4; }
+		TLorentzVector locIntermediate_KinFit = locKPlusP4_lowp + locXiP4_KinFit;
+		double t= (locBeamP4 - locKPlusP4_highp).M2();
+		double phi = locKPlusP4_highp.Phi()*180/TMath::Pi();
 		if(phi < -180.) phi = phi + 360.;
 		if (phi > 180.) phi = phi - 360.;
 		map<Particle_t, set<Int_t>> locUsedThisCombo_Asymmetry;
@@ -742,24 +752,29 @@ Bool_t DSelector_kpkpxim__M23_sept19::Process(Long64_t locEntry)
 		locUsedThisCombo_Asymmetry[KPlus].insert(locKPlus1TrackID);
 		locUsedThisCombo_Asymmetry[KPlus].insert(locKPlus2TrackID);
 		if(locUsedSoFar_Asymmetry.find(locUsedThisCombo_Asymmetry) == locUsedSoFar_Asymmetry.end()){
-			if(fabs(locDeltaT) < 6.004) {	
-				if (locBeamP4.E() >= 8.2 && locBeamP4.E() <= 8.8){ 
-					if (locXiP4_Measured.M() >= 1.31 && locXiP4_Measured.M() <= 1.34){ 
-						dHist_BeamBunch->Fill(locDeltaT);
+				if (locXiP4_Measured.M() >= 1.31 && locXiP4_Measured.M() <= 1.34){ 
+					if(fabs(locDeltaT) < 6.004) {	
 						if(fabs(locDeltaT) < 2.004) {
-							dHist_XiMass_KinFit_Selected->Fill(locXiP4_KinFit.M());	
-							dHist_phi_t->Fill(-1.*t, phi); 
-						}
+							dHist_KlowpXim->Fill(locIntermediate_KinFit.M());
+							dHist_Klowp_pvstheta->Fill(locKPlusP4_lowp.Theta()*180./TMath::Pi(),locKPlusP4_lowp.P());
+							dHist_Khighp_pvstheta->Fill(locKPlusP4_highp.Theta()*180./TMath::Pi(),locKPlusP4_highp.P());
+							if (locBeamP4.E() >= 8.2 && locBeamP4.E() <= 8.8){ 
+								dHist_BeamBunch->Fill(locDeltaT);
+								dHist_XiMass_KinFit_Selected->Fill(locXiP4_KinFit.M());	
+								dHist_phi_t->Fill(-1.*t, phi); 
+							}
 						else {
-							dHist_XiMass_KinFit_Selected_acc->Fill(locXiP4_KinFit.M());	
-							dHist_acc_phi_t_1->Fill(-1.*t, phi);
-						} 
+							dHist_KlowpXim_acc->Fill(locIntermediate_KinFit.M());
+							dHist_Klowp_pvstheta_acc->Fill(locKPlusP4_lowp.Theta()*180./TMath::Pi(),locKPlusP4_lowp.P());
+							dHist_Khighp_pvstheta_acc->Fill(locKPlusP4_highp.Theta()*180./TMath::Pi(),locKPlusP4_highp.P());
+							if (locBeamP4.E() >= 8.2 && locBeamP4.E() <= 8.8){ 
+								dHist_XiMass_KinFit_Selected_acc->Fill(locXiP4_KinFit.M());	
+								dHist_acc_phi_t_1->Fill(-1.*t, phi); 
+							} 
+						}
+						}
 					}
 				}
-			}
-			else {
-				dHist_acc_phi_t_4->Fill(-1.*t, phi);
-			}
 			locUsedSoFar_Asymmetry.insert(locUsedThisCombo_Asymmetry);
 		}
 
