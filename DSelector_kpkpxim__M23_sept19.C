@@ -175,8 +175,8 @@ void DSelector_kpkpxim__M23_sept19::Init(TTree *locTree)
 	dHist_Xi_pP_withST=new TH1F("Xi_pP_withST",";proton P  (GeV/c)", 80,0.0,10.0);
 	dHist_Xi_pTheta_withST=new TH1F("Xi_pTheta_withST",";proton #Theta  (deg.)", 80,0.0,60);
 
-	dHist_KlowpXim = new TH1I("KlowpXim",";K_{plow}#Xi^{-} mass (GeV)", 160,1.7,2.5);
-	dHist_KlowpXim_acc = new TH1I("KlowpXim_acc",";K_{plow}#Xi^{-} mass (GeV)", 160,1.7,2.5);
+	dHist_KlowpXim = new TH1I("KlowpXim",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
+	dHist_KlowpXim_acc = new TH1I("KlowpXim_acc",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
 	dHist_Klowp_pvstheta = new TH2I("Klowp_pvstheta", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 	dHist_Khighp_pvstheta = new TH2I("Khighp_pvstheta", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 	dHist_Klowp_pvstheta_acc = new TH2I("Klowp_pvstheta_acc", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
