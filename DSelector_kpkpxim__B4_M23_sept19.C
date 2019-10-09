@@ -175,8 +175,8 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_Xi_Egamma = new TH2I("Xi_Egamma", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma}", 80, 1.1, 1.5,180, 3.0, 12.0);
 	dHist_Xi_Egamma_acc = new TH2I("Xi_Egamma_acc", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV)", 80, 1.1, 1.5,180, 3.0, 12.0);
 	
-	dHist_KlowpXim = new TH1I("KlowpXim",";K_{plow}#Xi^{-} mass (GeV)", 80,1.6,2.0);
-	dHist_KlowpXim_acc = new TH1I("KlowpXim_acc",";K_{plow}#Xi^{-} mass (GeV)", 80,1.6,2.0);
+	dHist_KlowpXim = new TH1I("KlowpXim",";K_{plow}#Xi^{-} mass (GeV)", 160,1.7,2.5);
+	dHist_KlowpXim_acc = new TH1I("KlowpXim_acc",";K_{plow}#Xi^{-} mass (GeV)", 160,1.7,2.5);
 	dHist_Klowp_pvstheta = new TH2I("Klowp_pvstheta", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 	dHist_Khighp_pvstheta = new TH2I("Khighp_pvstheta", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 	dHist_Klowp_pvstheta_acc = new TH2I("Klowp_pvstheta_acc", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
