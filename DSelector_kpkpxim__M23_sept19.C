@@ -78,7 +78,7 @@ void DSelector_kpkpxim__M23_sept19::Init(TTree *locTree)
 	dHist_K_pTheta_KinFit = new TH2I("K_pTheta_KinFit", "K^{+} pvsTheta KinFit",28,0.0,140,40,0.0,10.0);
 	dHist_K_ptTheta_Measured = new TH2I("K_ptTheta_Measured", "K^{+} ptvsTheta Measured",28,0.0,140,40,0.0,2.0);
 	dHist_K_ptTheta_KinFit = new TH2I("K_ptTheta_KinFit", "K^{+} ptvsTheta KinFit",28,0.0,140,40,0.0,2.0);
-	dHist_XiMass_Measured=new TH1I("XiMass","#Xi- Invariant Mass (GeV/c^{2})", 80,1.1,1.5);
+	dHist_XiMass_Measured=new TH1I("XiMass","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
 	dHist_XiMass_KinFit=new TH1I("XiMass_KinFit","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_XiMass_KinFit_Selected=new TH1I("XiMass_KinFit_Selected","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 80,1.1,1.5);
 	dHist_MMKK_Measured=new TH1I("MMKK_Measured","MM(K^{+}K^{+}) (GeV/c^{2})", 80,1.1,1.5);
@@ -125,7 +125,7 @@ void DSelector_kpkpxim__M23_sept19::Init(TTree *locTree)
 	dHist_K_pTheta_KinFit_acc = new TH2I("K_pTheta_KinFit_acc", "K^{+} pvsTheta KinFit",28,0.0,140,40,0.0,10.0);
 	dHist_K_ptTheta_Measured_acc = new TH2I("K_ptTheta_Measured_acc", "K^{+} ptvsTheta Measured",28,0.0,140,40,0.0,2.0);
 	dHist_K_ptTheta_KinFit_acc = new TH2I("K_ptTheta_KinFit_acc", "K^{+} ptvsTheta KinFit",28,0.0,140,40,0.0,2.0);
-	dHist_XiMass_Measured_acc=new TH1I("XiMass_acc","#Xi- Invariant Mass (GeV/c^{2})", 80,1.1,1.5);
+	dHist_XiMass_Measured_acc=new TH1I("XiMass_acc","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
 	dHist_XiMass_KinFit_acc=new TH1I("XiMass_KinFit_acc","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_XiMass_KinFit_Selected_acc=new TH1I("XiMass_KinFit_Selected_acc","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 80,1.1,1.5);
 	dHist_MMKK_Measured_acc=new TH1I("MMKK_Measured_acc","MM(K^{+}K^{+}) (GeV/c^{2})", 80,1.1,1.5);
