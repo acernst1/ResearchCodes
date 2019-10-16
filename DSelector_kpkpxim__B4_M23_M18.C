@@ -415,6 +415,30 @@ Bool_t DSelector_kpkpxim__B4_M23_M18::Process(Long64_t locEntry)
 
 		/************************************ EXAMPLE: HISTOGRAM MISSING MASS SQUARED ************************************/
 
+		//Definitions for filling histograms
+		//ChiSq
+		Float_t locChiSq = dComboWrapper->Get_ChiSq_KinFit("");
+		Float_t locNDF = dComboWrapper->Get_NDF_KinFit("");
+		Float_t locChiSqNdf = locChiSq/locNDF;
+		//DeltaT
+		TLorentzVector locX4 = dComboBeamWrapper->Get_X4();
+		double locRFTime = dComboWrapper->Get_RFTime_Measured();
+		double dTargetCenterZ = dComboWrapper->Get_TargetCenter().Z();
+		double locPropagatedRFTime = locRFTime + (locX4.Z() - dTargetCenterZ)/29.9792458;
+		double locDeltaT = locX4.T() - locPropagatedRFTime;
+
+		//Kaon Definitions and -t Mandelstam variable
+		TLorentzVector locKPlusP4_lowp;
+		TLorentzVector locKPlusP4_highp;		
+		if(locKPlus1P4.Theta() < 13*TMath::Pi()/180.) { locKPlusP4_highp = locKPlus1P4; locKPlusP4_lowp = locKPlus2P4;}
+		else { locKPlusP4_highp = locKPlus2P4; locKPlusP4_lowp = locKPlus1P4; }
+		TLorentzVector locIntermediate_KinFit = locKPlusP4_lowp + locXiP4_KinFit;
+		double t= (locBeamP4 - locKPlusP4_highp).M2();
+		double phi = locKPlusP4_highp.Phi()*180/TMath::Pi();
+		if(phi < -180.) phi = phi + 360.;
+		if (phi > 180.) phi = phi - 360.;
+
+
 		//Missing Mass Squared
 		double locMissingMassSquared = locMissingP4_Measured.M2();
 
@@ -453,9 +477,6 @@ Bool_t DSelector_kpkpxim__B4_M23_M18::Process(Long64_t locEntry)
 		}
 
 		//E.g.  ChiSq 
-		Float_t locChiSq = dComboWrapper->Get_ChiSq_KinFit("");
-		Float_t locNDF = dComboWrapper->Get_NDF_KinFit("");
-		Float_t locChiSqNdf = locChiSq/locNDF;
 		map<Particle_t, set<Int_t> > locUsedThisCombo_ChiSq;
 		locUsedThisCombo_ChiSq[PiMinus].insert(locPiMinus1TrackID);
 		locUsedThisCombo_ChiSq[PiMinus].insert(locPiMinus2TrackID);
@@ -481,11 +502,6 @@ Bool_t DSelector_kpkpxim__B4_M23_M18::Process(Long64_t locEntry)
 		locUsedThisCombo_PostCuts[PiMinus].insert(locPiMinus1TrackID);
 		locUsedThisCombo_PostCuts[PiMinus].insert(locPiMinus2TrackID);
 		locUsedThisCombo_PostCuts[Proton].insert(locProtonTrackID);
-		TLorentzVector locX4 = dComboBeamWrapper->Get_X4();
-		double locRFTime = dComboWrapper->Get_RFTime_Measured();
-		double dTargetCenterZ = dComboWrapper->Get_TargetCenter().Z();
-		double locPropagatedRFTime = locRFTime + (locX4.Z() - dTargetCenterZ)/29.9792458;
-		double locDeltaT = locX4.T() - locPropagatedRFTime;
 		if(locUsedSoFar_PostCuts.find(locUsedThisCombo_PostCuts) == locUsedSoFar_PostCuts.end()){
 			dHist_XiPath_postCL->Fill(locPathLengthXi);
 			if(fabs(locDeltaT) < 6.004) {	
@@ -495,12 +511,14 @@ Bool_t DSelector_kpkpxim__B4_M23_M18::Process(Long64_t locEntry)
 					dHist_XiMass_KinFit->Fill(locXiP4_KinFit.M());
 					dHist_Xi_cosGJ->Fill(locXiP4_KinFit.M(),cosTheta_GJ);
 					dHist_Xi_Egamma->Fill(locXiP4_KinFit.M(),locBeamP4.E());
+					dHist_Xi_t->Fill(locXiP4_KinFit.M(),-1.*t);
 				}
 				else { 
 					dHist_XiMass_Measured_acc->Fill(locXiP4_Measured.M());
 					dHist_XiMass_KinFit_acc->Fill(locXiP4_KinFit.M());
 					dHist_Xi_cosGJ_acc->Fill(locXiP4_KinFit.M(),cosTheta_GJ);
 					dHist_Xi_Egamma_acc->Fill(locXiP4_KinFit.M(),locBeamP4.E());
+					dHist_Xi_t_acc->Fill(locXiP4_KinFit.M(),-1.*t);
 				}
 				if(locXiP4_KinFit.M() >1.31 && locXiP4_KinFit.M() < 1.33){ 
 					if(fabs(locDeltaT) < 2.004) { 
@@ -656,15 +674,6 @@ Bool_t DSelector_kpkpxim__B4_M23_M18::Process(Long64_t locEntry)
 		}
 
 		//Asymmetry and Intermediate hyperon
-		TLorentzVector locKPlusP4_lowp;
-		TLorentzVector locKPlusP4_highp;		
-		if(locKPlus1P4.Theta() < 13*TMath::Pi()/180.) { locKPlusP4_highp = locKPlus1P4; locKPlusP4_lowp = locKPlus2P4;}
-		else { locKPlusP4_highp = locKPlus2P4; locKPlusP4_lowp = locKPlus1P4; }
-		TLorentzVector locIntermediate_KinFit = locKPlusP4_lowp + locXiP4_KinFit;
-		double t= (locBeamP4 - locKPlusP4_highp).M2();
-		double phi = locKPlusP4_highp.Phi()*180/TMath::Pi();
-		if(phi < -180.) phi = phi + 360.;
-		if (phi > 180.) phi = phi - 360.;
 		map<Particle_t, set<Int_t>> locUsedThisCombo_Asymmetry;
 		locUsedThisCombo_Asymmetry[Unknown].insert(locBeamID);
 		locUsedThisCombo_Asymmetry[KPlus].insert(locKPlus1TrackID);
