@@ -59,7 +59,7 @@ void DSelector_kpkpxim__B4_M23_M18::Init(TTree *locTree)
 
 	/******************************** EXAMPLE USER INITIALIZATION: STAND-ALONE HISTOGRAMS *******************************/
 
-	//EXAMPLE MANUAL HISTOGRAMS:
+	//General Histograms
 	dHist_MissingMassSquared = new TH1I("MissingMassSquared", ";Missing Mass Squared (GeV/c^{2})^{2}", 600, -0.06, 0.06);
 	dHist_BeamEnergy = new TH1I("BeamEnergy", ";Beam Energy (GeV)", 600, 0.0, 12.0);
 	dHist_BeamBunch = new TH1I("BeamBunch", ";Beam Bunch", 400, -20.0, 20.0);
@@ -85,6 +85,25 @@ void DSelector_kpkpxim__B4_M23_M18::Init(TTree *locTree)
 	dHist_acc_phi_t_2 = new TH2I("acc_phi_t_2", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 100, 0.0, 5.0,180, -180., 180.);
 	dHist_acc_phi_t_3 = new TH2I("acc_phi_t_3", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 100, 0.0, 5.0,180, -180., 180.);
 	dHist_acc_phi_t_4 = new TH2I("acc_phi_t_4", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 100, 0.0, 5.0,180, -180., 180.);
+
+	//plots for spin measurement of Xi-
+	dHist_Xi_cosGJ = new TH2I("Xi_cosGJ", " ;#Lambda#pi^{-} mass (GeV); cos #theta_{GJ}", 80, 1.1, 1.5,180, -1., 1.);
+	dHist_Xi_cosGJ_acc = new TH2I("Xi_cosGJ_acc", " ;#Lambda#pi^{-} mass (GeV); cos #theta_{GJ}", 80, 1.1, 1.5,180, -1., 1.);
+	
+	//plots for cross section measurements
+	dHist_Xi_Egamma = new TH2F("Xi_Egamma", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma}", 400, 1.1, 1.5,180, 3.0, 12.0);
+	dHist_Xi_Egamma_acc = new TH2F("Xi_Egamma_acc", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV)", 400, 1.1, 1.5,180, 3.0, 12.0);
+	dHist_Xi_t = new TH2F("Xi_t", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,100, 0.0, 5.0);
+	dHist_Xi_t_acc = new TH2F("Xi_t_acc", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,100, 0.0, 5.0);
+	
+	//For studying the intermediate hyperon
+	dHist_KlowpXim = new TH1I("KlowpXim",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
+	dHist_KlowpXim_acc = new TH1I("KlowpXim_acc",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
+	dHist_Klowp_pvstheta = new TH2I("Klowp_pvstheta", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_Khighp_pvstheta = new TH2I("Khighp_pvstheta", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_Klowp_pvstheta_acc = new TH2I("Klowp_pvstheta_acc", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_Khighp_pvstheta_acc = new TH2I("Khighp_pvstheta_acc", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+
 	
 	//angular distributions for every particle
 	dHist_XiMass_KinFit_Selected=new TH1I("XiMass_KinFit_Selected","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 80,1.1,1.5);
@@ -128,23 +147,6 @@ void DSelector_kpkpxim__B4_M23_M18::Init(TTree *locTree)
 	dHist_XiMass_MM_kTheta15to35_Measured_acc=new TH1I("XiMass_MM_kTheta_Measured_acc","#Xi- Invariant Mass #theta_{K}(15,35) (GeV/c^{2})", 40,1.1,1.5);
 	dHist_XiMass_MM_kTheta15to35_KinFit_acc=new TH1I("XiMass_MM_kTheta_KinFit_acc","#Xi- Invariant Mass #theta_{K}(15,35) (GeV/c^{2},KinFit)", 40,1.1,1.5);
 
-	//plots for spin measurement of Xi-
-	dHist_Xi_cosGJ = new TH2I("Xi_cosGJ", " ;#Lambda#pi^{-} mass (GeV); cos #theta_{GJ}", 80, 1.1, 1.5,180, -1., 1.);
-	dHist_Xi_cosGJ_acc = new TH2I("Xi_cosGJ_acc", " ;#Lambda#pi^{-} mass (GeV); cos #theta_{GJ}", 80, 1.1, 1.5,180, -1., 1.);
-	
-	//plots for cross section measurements
-	dHist_Xi_Egamma = new TH2F("Xi_Egamma", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma}", 400, 1.1, 1.5,180, 3.0, 12.0);
-	dHist_Xi_Egamma_acc = new TH2F("Xi_Egamma_acc", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV)", 400, 1.1, 1.5,180, 3.0, 12.0);
-	dHist_Xi_t = new TH2F("Xi_t", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,100, 0.0, 5.0);
-	dHist_Xi_t_acc = new TH2F("Xi_t_acc", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,100, 0.0, 5.0);
-	
-	//For studying the intermediate hyperon
-	dHist_KlowpXim = new TH1I("KlowpXim",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
-	dHist_KlowpXim_acc = new TH1I("KlowpXim_acc",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
-	dHist_Klowp_pvstheta = new TH2I("Klowp_pvstheta", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
-	dHist_Khighp_pvstheta = new TH2I("Khighp_pvstheta", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
-	dHist_Klowp_pvstheta_acc = new TH2I("Klowp_pvstheta_acc", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
-	dHist_Khighp_pvstheta_acc = new TH2I("Khighp_pvstheta_acc", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 
 
 	/************************** EXAMPLE USER INITIALIZATION: CUSTOM OUTPUT BRANCHES - MAIN TREE *************************/

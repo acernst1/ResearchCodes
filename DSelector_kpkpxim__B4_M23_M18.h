@@ -51,13 +51,19 @@ class DSelector_kpkpxim__B4_M23_M18 : public DSelector
 		DChargedTrackHypothesis* dPiMinus2Wrapper;
 		DChargedTrackHypothesis* dProtonWrapper;
 
-		// DEFINE YOUR HISTOGRAMS HERE
-		// EXAMPLES:
+		//HISTOGRAMS
+		//General histograms
 		TH1I* dHist_MissingMassSquared;
 		TH1I* dHist_BeamEnergy;
+		TH1I* dHist_BeamBunch;
+		TH1I* dHist_ChiSq;
+		TH2I* dHist_ChiSqXi;
+		TH1I* dHist_XiMass_Measured;	
+		TH1I* dHist_XiMass_KinFit;
+		TH1I* dHist_MMKK_Measured;
+		TH1I* dHist_MMKK_KinFit;	
 
-		TH1I* dHist_MissingMassSquared;
-		TH1I* dHist_BeamEnergy;
+		//Detached vertices check
 		TH1I* dHist_XiPath;
 		TH1I* dHist_XiPath_preCL;
 		TH1I* dHist_XiPath_postCL;
@@ -66,14 +72,33 @@ class DSelector_kpkpxim__B4_M23_M18 : public DSelector
 		TH1I* dHist_LambVert;
 		TH1I* dHist_LambPath;
 
-		TH1I* dHist_BeamBunch;
-		TH1I* dHist_ChiSq;
-		TH2I* dHist_ChiSqXi;
-		TH1I* dHist_XiMass_Measured;	
-		TH1I* dHist_XiMass_KinFit;
+		//Beam asymmetry plots
+		TH2I* dHist_phi_t;
+		TH2I* dHist_acc_phi_t_1;
+		TH2I* dHist_acc_phi_t_2;
+		TH2I* dHist_acc_phi_t_3;
+		TH2I* dHist_acc_phi_t_4;
+
+		//Spin Measurement
+		TH2I* dHist_Xi_cosGJ;
+		TH2I* dHist_Xi_cosGJ_acc;
+
+		//Cross section plots
+		TH2F* dHist_Xi_Egamma;
+		TH2F* dHist_Xi_Egamma_acc;
+		TH2F* dHist_Xi_t;
+		TH2F* dHist_Xi_t_acc;
+
+		//Intermediate hyperon
+		TH1I* dHist_KlowpXim;
+		TH1I* dHist_KlowpXim_acc;
+		TH2I* dHist_Klowp_pvstheta;
+		TH2I* dHist_Khighp_pvstheta;
+		TH2I* dHist_Klowp_pvstheta_acc;
+		TH2I* dHist_Khighp_pvstheta_acc;
+
+		//Angular distributions
 		TH1I* dHist_XiMass_KinFit_Selected;
-		TH1I* dHist_MMKK_Measured;
-		TH1I* dHist_MMKK_KinFit;	
 		TH2I* dHist_K_pTheta_Measured;
 		TH2I* dHist_p_pTheta_Measured;
 		TH2I* dHist_K_pTheta_KinFit;
@@ -91,8 +116,6 @@ class DSelector_kpkpxim__B4_M23_M18 : public DSelector
 		TH1I* dHist_XiMass_MM_piTheta15to35_KinFit;
 		TH1I* dHist_XiMass_MM_kTheta15to35_Measured;
 		TH1I* dHist_XiMass_MM_kTheta15to35_KinFit;
-		TH2I* dHist_phi_t, *dHist_acc_phi_t_1, *dHist_acc_phi_t_2, *dHist_acc_phi_t_3, *dHist_acc_phi_t_4;
-
 		TH1I* dHist_XiMass_KinFit_Selected_acc;	
 		TH1I* dHist_XiMass_Measured_acc;	
 		TH1I* dHist_XiMass_KinFit_acc;
@@ -115,19 +138,7 @@ class DSelector_kpkpxim__B4_M23_M18 : public DSelector
 		TH1I* dHist_XiMass_MM_piTheta15to35_KinFit_acc;
 		TH1I* dHist_XiMass_MM_kTheta15to35_Measured_acc;
 		TH1I* dHist_XiMass_MM_kTheta15to35_KinFit_acc;
-		TH2I* dHist_Xi_cosGJ;
-		TH2I* dHist_Xi_cosGJ_acc;
-		TH2F* dHist_Xi_Egamma;
-		TH2F* dHist_Xi_Egamma_acc;
-		TH2F* dHist_Xi_t;
-		TH2F* dHist_Xi_t_acc;
 		
-		TH1I* dHist_KlowpXim;
-		TH1I* dHist_KlowpXim_acc;
-		TH2I* dHist_Klowp_pvstheta;
-		TH2I* dHist_Khighp_pvstheta;
-		TH2I* dHist_Klowp_pvstheta_acc;
-		TH2I* dHist_Khighp_pvstheta_acc;
 
 	ClassDef(DSelector_kpkpxim__B4_M23_M18, 0);
 };
