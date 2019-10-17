@@ -62,6 +62,8 @@ class DSelector_kpkpxim__B4_M23_M18 : public DSelector
 		TH1I* dHist_XiMass_KinFit;
 		TH1I* dHist_MMKK_Measured;
 		TH1I* dHist_MMKK_KinFit;	
+		TH2F* dHist_Xi_LambFlight;
+		TH2F* dHist_Xi_LambFlight_acc;
 
 		//Detached vertices check
 		TH1I* dHist_XiPath;

@@ -69,6 +69,8 @@ void DSelector_kpkpxim__B4_M23_M18::Init(TTree *locTree)
 	dHist_XiMass_KinFit=new TH1I("XiMass_KinFit","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_MMKK_Measured=new TH1I("MMKK_Measured","MM(K^{+}K^{+}) (GeV/c^{2})", 80,1.1,1.5);
 	dHist_MMKK_KinFit=new TH1I("MMKK_KinFit","MM(K^{+}K^{+}) (GeV/c^{2},KinFit)", 80,1.1,1.5);
+	dHist_Xi_LambFlight = new TH2F("Xi_LambFlight", " ;#Lambda#pi^{-} mass (GeV); #sigma_{#Lambda}", 400, 1.1, 1.5,180, 0.0, 12.0);
+	dHist_Xi_LambFlight_acc = new TH2F("Xi_LambFlight_acc", " ;#Lambda#pi^{-} mass (GeV); #sigma_{#Lambda}", 400, 1.1, 1.5,180, 0.0, 12.0);
 
 	//plots to check vertices
 	dHist_XiPath = new TH1I("XiPathLength", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
