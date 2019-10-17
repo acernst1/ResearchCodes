@@ -65,7 +65,7 @@ void DSelector_kpkpxim__B4_M23_M18::Init(TTree *locTree)
 	dHist_BeamBunch = new TH1I("BeamBunch", ";Beam Bunch", 400, -20.0, 20.0);
 	dHist_ChiSq = new TH1I("ChiSq", "ChiSq", 200, 0.0, 100.0);
 	dHist_ChiSqXi = new TH2I("ChiSqXi", "ChiSq",100,0.0,100.0,80,1.1,1.5);
-	dHist_XiMass_Measured=new TH1I("XiMass","#Xi- Invariant Mass (GeV/c^{2})", 80,1.1,1.5);
+	dHist_XiMass_Measured=new TH1I("XiMass","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
 	dHist_XiMass_KinFit=new TH1I("XiMass_KinFit","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_MMKK_Measured=new TH1I("MMKK_Measured","MM(K^{+}K^{+}) (GeV/c^{2})", 80,1.1,1.5);
 	dHist_MMKK_KinFit=new TH1I("MMKK_KinFit","MM(K^{+}K^{+}) (GeV/c^{2},KinFit)", 80,1.1,1.5);
