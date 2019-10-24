@@ -96,6 +96,8 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_Xi_Egamma_acc = new TH2F("Xi_Egamma_acc", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV)", 400, 1.1, 1.5,180, 3.0, 12.0);
 	dHist_Xi_t = new TH2F("Xi_t", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,100, 0.0, 5.0);
 	dHist_Xi_t_acc = new TH2F("Xi_t_acc", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,100, 0.0, 5.0);
+	dHist_Xi_Egamma_t = new TH3F("Xi_Egamma_t",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,100, 0.0, 5.0);
+	dHist_Xi_Egamma_t_acc = new TH3F("Xi_Egamma_t_acc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,100, 0.0, 5.0);
 	
 	//For studying the intermediate hyperon
 	dHist_KlowpXim = new TH1I("KlowpXim",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
