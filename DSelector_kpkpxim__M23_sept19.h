@@ -169,6 +169,16 @@ class DSelector_kpkpxim__M23_sept19 : public DSelector
 		TH1I* dHist_XiMass_MM_kTheta15to35_Measured_acc;
 		TH1I* dHist_XiMass_MM_kTheta15to35_KinFit_acc;
 
+		//Start timer trigger tests
+		TH1F* dHist_Xi_Egamma_all;
+		TH1F* dHist_Xi_t_all;
+		TH1F* dHist_Xi_pP_all;
+		TH1F* dHist_Xi_pTheta_all;
+		TH1F* dHist_Xi_Egamma_withST;
+		TH1F* dHist_Xi_t_withST;
+		TH1F* dHist_Xi_pP_withST;
+		TH1F* dHist_Xi_pTheta_withST;
+
 
 	ClassDef(DSelector_kpkpxim__M23_sept19, 0);
 };
