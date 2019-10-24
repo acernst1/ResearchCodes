@@ -9,6 +9,9 @@
 
 #include "TH1I.h"
 #include "TH2I.h"
+#include "TH1F.h"
+#include "TH2F.h"
+#include "TH3F.h"
 
 class DSelector_kpkpxim__M23_sept19 : public DSelector
 {
