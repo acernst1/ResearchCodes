@@ -509,6 +509,7 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 					dHist_Xi_cosGJ->Fill(locXiP4_KinFit.M(),cosTheta_GJ);
 					dHist_Xi_Egamma->Fill(locXiP4_KinFit.M(),locBeamP4.E());
 					dHist_Xi_t->Fill(locXiP4_KinFit.M(),-1.*t);
+					dHist_Xi_Egamma_t->Fill(locXiP4_KinFit.M(),locBeamP4.E(),-1.*t);
 					dHist_Xi_LambFlight->Fill(locXiP4_Measured.M(),locPathLengthSignificanceLamb);
 				}
 				else { 
@@ -517,6 +518,7 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 					dHist_Xi_cosGJ_acc->Fill(locXiP4_KinFit.M(),cosTheta_GJ);
 					dHist_Xi_Egamma_acc->Fill(locXiP4_KinFit.M(),locBeamP4.E());
 					dHist_Xi_t_acc->Fill(locXiP4_KinFit.M(),-1.*t);
+					dHist_Xi_Egamma_t_acc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),-1.*t);
 					dHist_Xi_LambFlight_acc->Fill(locXiP4_Measured.M(),locPathLengthSignificanceLamb);
 				}
 				if(locXiP4_KinFit.M() >1.31 && locXiP4_KinFit.M() < 1.33){ 
