@@ -98,6 +98,28 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		TH2F* dHist_Xi_Egamma_acc;
 		TH2F* dHist_Xi_t;
 		TH2F* dHist_Xi_t_acc;
+		TH2F* dHist_Xi_t_064;
+		TH2F* dHist_Xi_t_064_acc;
+		TH2F* dHist_Xi_t_069;
+		TH2F* dHist_Xi_t_069_acc;
+		TH2F* dHist_Xi_t_074;
+		TH2F* dHist_Xi_t_074_acc;
+		TH2F* dHist_Xi_t_079;
+		TH2F* dHist_Xi_t_079_acc;
+		TH2F* dHist_Xi_t_084;
+		TH2F* dHist_Xi_t_084_acc;
+		TH2F* dHist_Xi_t_089;
+		TH2F* dHist_Xi_t_089_acc;
+		TH2F* dHist_Xi_t_094;
+		TH2F* dHist_Xi_t_094_acc;
+		TH2F* dHist_Xi_t_099;
+		TH2F* dHist_Xi_t_099_acc;
+		TH2F* dHist_Xi_t_104;
+		TH2F* dHist_Xi_t_104_acc;
+		TH2F* dHist_Xi_t_109;
+		TH2F* dHist_Xi_t_109_acc;
+		TH2F* dHist_Xi_t_114;
+		TH2F* dHist_Xi_t_114_acc;
 
 		//Intermediate hyperon
 		TH1I* dHist_KlowpXim;
