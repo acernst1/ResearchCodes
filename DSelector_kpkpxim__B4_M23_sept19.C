@@ -27,15 +27,10 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 
 	/*********************************** EXAMPLE USER INITIALIZATION: ANALYSIS ACTIONS **********************************/
 
-	// EXAMPLE: Create deque for histogramming particle masses:
-	// // For histogramming the phi mass in phi -> K+ K-
-	// // Be sure to change this and dAnalyzeCutActions to match reaction
-
 	//ANALYSIS ACTIONS: //Executed in order if added to dAnalysisActions
 	//false/true below: use measured/kinfit data
 
 	//PID
-
 	dAnalysisActions.push_back(new DHistogramAction_ParticleID(dComboWrapper, false));
 	//dAnalysisActions.push_back(new DCutAction_PIDDeltaT(dComboWrapper, false, 0.4, KPlus, SYS_BCAL));
 	//dAnalysisActions.push_back(new DCutAction_PIDDeltaT(dComboWrapper, false, 0.2, KPlus, SYS_TOF));
@@ -57,20 +52,26 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dAnalysisActions.push_back(new DHistogramAction_ParticleComboKinematics(dComboWrapper, false));
 	dAnalysisActions.push_back(new DHistogramAction_ParticleComboKinematics(dComboWrapper, true, "KinFit"));
 
-
-	// ANALYZE CUT ACTIONS
-	// // Change MyPhi to match reaction
-
-
 	//INITIALIZE ACTIONS
 	//If you create any actions that you want to run manually (i.e. don't add to dAnalysisActions), be sure to initialize them here as well
 	Initialize_Actions();
 
-	/******************************** EXAMPLE USER INITIALIZATION: STAND-ALONE HISTOGRAMS *******************************/
+	/******************************** USER INITIALIZATION: STAND-ALONE HISTOGRAMS *******************************/
 
-	//EXAMPLE MANUAL HISTOGRAMS:
+	//General Histograms
 	dHist_MissingMassSquared = new TH1I("MissingMassSquared", ";Missing Mass Squared (GeV/c^{2})^{2}", 600, -0.06, 0.06);
 	dHist_BeamEnergy = new TH1I("BeamEnergy", ";Beam Energy (GeV)", 600, 0.0, 12.0);
+	dHist_BeamBunch = new TH1I("BeamBunch", ";Beam Bunch", 400, -20.0, 20.0);
+	dHist_ChiSq = new TH1I("ChiSq", "ChiSq", 200, 0.0, 100.0);
+	dHist_ChiSqXi = new TH2I("ChiSqXi", "ChiSq",100,0.0,100.0,80,1.1,1.5);
+	dHist_XiMass_Measured=new TH1I("XiMass","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
+	dHist_XiMass_KinFit=new TH1I("XiMass_KinFit","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
+	dHist_MMKK_Measured=new TH1I("MMKK_Measured","MM(K^{+}K^{+}) (GeV/c^{2})", 80,1.1,1.5);
+	dHist_MMKK_KinFit=new TH1I("MMKK_KinFit","MM(K^{+}K^{+}) (GeV/c^{2},KinFit)", 80,1.1,1.5);
+	dHist_Xi_LambFlight = new TH2F("Xi_LambFlight", " ;#Lambda#pi^{-} mass (GeV); #sigma_{#Lambda}", 400, 1.1, 1.5,180, 0.0, 12.0);
+	dHist_Xi_LambFlight_acc = new TH2F("Xi_LambFlight_acc", " ;#Lambda#pi^{-} mass (GeV); #sigma_{#Lambda}", 400, 1.1, 1.5,180, 0.0, 12.0);
+
+	//plots to check vertices
 	dHist_XiPath = new TH1I("XiPathLength", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
 	dHist_XiPath_preCL = new TH1I("XiPathLength_preCL", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
 	dHist_XiPath_postCL = new TH1I("XiPathLength_postCL", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
@@ -79,19 +80,38 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_LambVert = new TH1I("LambVert", ";#Lambda Vertex Z (cm)", 600, -50.0, 200.0);
 	dHist_LambPath = new TH1I("LambPathLength", ";#Lambda Path Length (cm)", 600, 0.0, 15.0);
 	
-	dHist_BeamBunch = new TH1I("BeamBunch", ";Beam Bunch", 400, -20.0, 20.0);
-	dHist_ChiSq = new TH1I("ChiSq", "ChiSq", 200, 0.0, 100.0);
-	dHist_ChiSqXi = new TH2I("ChiSqXi", "ChiSq",100,0.0,100.0,80,1.1,1.5);
+	//plots for beam asymmetry
+	dHist_phi_t = new TH2I("phi_t", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 100, 0.0, 5.0,180, -180., 180.);
+	dHist_acc_phi_t_1 = new TH2I("acc_phi_t_1", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 100, 0.0, 5.0,180, -180., 180.);
+	dHist_acc_phi_t_2 = new TH2I("acc_phi_t_2", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 100, 0.0, 5.0,180, -180., 180.);
+	dHist_acc_phi_t_3 = new TH2I("acc_phi_t_3", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 100, 0.0, 5.0,180, -180., 180.);
+	dHist_acc_phi_t_4 = new TH2I("acc_phi_t_4", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 100, 0.0, 5.0,180, -180., 180.);
+
+	//plots for spin measurement of Xi-
+	dHist_Xi_cosGJ = new TH2I("Xi_cosGJ", " ;#Lambda#pi^{-} mass (GeV); cos #theta_{GJ}", 80, 1.1, 1.5,180, -1., 1.);
+	dHist_Xi_cosGJ_acc = new TH2I("Xi_cosGJ_acc", " ;#Lambda#pi^{-} mass (GeV); cos #theta_{GJ}", 80, 1.1, 1.5,180, -1., 1.);
+	
+	//plots for cross section measurements
+	dHist_Xi_Egamma = new TH2F("Xi_Egamma", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma}", 400, 1.1, 1.5,180, 3.0, 12.0);
+	dHist_Xi_Egamma_acc = new TH2F("Xi_Egamma_acc", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV)", 400, 1.1, 1.5,180, 3.0, 12.0);
+	dHist_Xi_t = new TH2F("Xi_t", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,100, 0.0, 5.0);
+	dHist_Xi_t_acc = new TH2F("Xi_t_acc", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,100, 0.0, 5.0);
+	
+	//For studying the intermediate hyperon
+	dHist_KlowpXim = new TH1I("KlowpXim",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
+	dHist_KlowpXim_acc = new TH1I("KlowpXim_acc",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
+	dHist_Klowp_pvstheta = new TH2I("Klowp_pvstheta", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_Khighp_pvstheta = new TH2I("Khighp_pvstheta", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_Klowp_pvstheta_acc = new TH2I("Klowp_pvstheta_acc", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_Khighp_pvstheta_acc = new TH2I("Khighp_pvstheta_acc", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+
+	//angular distributions for every particle
+	dHist_XiMass_KinFit_Selected=new TH1I("XiMass_KinFit_Selected","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 80,1.1,1.5);
 	dHist_K_pTheta_Measured = new TH2I("K_pTheta_Measured", "K^{+} pvsTheta Measured",28,0.0,140,40,0.0,10.0);
 	dHist_p_pTheta_Measured = new TH2I("p_pTheta_Measured", "p pvsTheta Measured",28,0.0,140,40,0.0,10.0);
 	dHist_K_pTheta_KinFit = new TH2I("K_pTheta_KinFit", "K^{+} pvsTheta KinFit",28,0.0,140,40,0.0,10.0);
 	dHist_K_ptTheta_Measured = new TH2I("K_ptTheta_Measured", "K^{+} ptvsTheta Measured",28,0.0,140,40,0.0,2.0);
 	dHist_K_ptTheta_KinFit = new TH2I("K_ptTheta_KinFit", "K^{+} ptvsTheta KinFit",28,0.0,140,40,0.0,2.0);
-	dHist_XiMass_Measured=new TH1I("XiMass","#Xi- Invariant Mass (GeV/c^{2})", 80,1.1,1.5);
-	dHist_XiMass_KinFit=new TH1I("XiMass_KinFit","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
-	dHist_XiMass_KinFit_Selected=new TH1I("XiMass_KinFit_Selected","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 80,1.1,1.5);
-	dHist_MMKK_Measured=new TH1I("MMKK_Measured","MM(K^{+}K^{+}) (GeV/c^{2})", 80,1.1,1.5);
-	dHist_MMKK_KinFit=new TH1I("MMKK_KinFit","MM(K^{+}K^{+}) (GeV/c^{2},KinFit)", 80,1.1,1.5);
 	dHist_XiMass_kTheta15to35_Measured=new TH1I("XiMass_kTheta_Measured","#Xi- Invariant Mass #theta_{K}(15,35) (GeV/c^{2})", 40,1.1,1.5);
 	dHist_XiMass_kTheta15to35_KinFit=new TH1I("XiMass_kTheta_KinFit","#Xi- Invariant Mass #theta_{K}(15,35) (GeV/c^{2},KinFit)", 40,1.1,1.5);
 	dHist_pi_pTheta_Measured = new TH2I("pi_pTheta_Measured", "#pi^{-} pvsTheta Measured",28,0.0,140,30,0.0,3.0);
@@ -104,31 +124,6 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_XiMass_MM_piTheta15to35_KinFit=new TH1I("XiMass_MM_piTheta_KinFit","#Xi- Invariant Mass #theta_{#pi}(15,35) (GeV/c^{2},KinFit)", 40,1.1,1.5);
 	dHist_XiMass_MM_kTheta15to35_Measured=new TH1I("XiMass_MM_kTheta_Measured","#Xi- Invariant Mass #theta_{K}(15,35) (GeV/c^{2})", 40,1.1,1.5);
 	dHist_XiMass_MM_kTheta15to35_KinFit=new TH1I("XiMass_MM_kTheta_KinFit","#Xi- Invariant Mass #theta_{K}(15,35) (GeV/c^{2},KinFit)", 40,1.1,1.5);
-	dHist_phi_t = new TH2I("phi_t", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 100, 0.0, 5.0,180, -180., 180.);
-	dHist_acc_phi_t_1 = new TH2I("acc_phi_t_1", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 100, 0.0, 5.0,180, -180., 180.);
-	dHist_acc_phi_t_2 = new TH2I("acc_phi_t_2", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 100, 0.0, 5.0,180, -180., 180.);
-	dHist_acc_phi_t_3 = new TH2I("acc_phi_t_3", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 100, 0.0, 5.0,180, -180., 180.);
-	dHist_acc_phi_t_4 = new TH2I("acc_phi_t_4", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 100, 0.0, 5.0,180, -180., 180.);
-	dHist_XiMass024 =new TH1I("XiMass024",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass029 =new TH1I("XiMass029",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass034 =new TH1I("XiMass034",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass039 =new TH1I("XiMass039",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass044 =new TH1I("XiMass044",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass049 =new TH1I("XiMass049",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass054 =new TH1I("XiMass054",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass059 =new TH1I("XiMass059",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass064 =new TH1I("XiMass064",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass069 =new TH1I("XiMass069",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass074 =new TH1I("XiMass074",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass079 =new TH1I("XiMass079",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass084 =new TH1I("XiMass084",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass089 =new TH1I("XiMass089",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass094 =new TH1I("XiMass094",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass099 =new TH1I("XiMass099",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass104 =new TH1I("XiMass104",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass109 =new TH1I("XiMass109",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass114 =new TH1I("XiMass114",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	
 	dHist_K_pTheta_Measured_acc = new TH2I("K_pTheta_Measured_acc", "K^{+} pvsTheta Measured",28,0.0,140,40,0.0,10.0);
 	dHist_p_pTheta_Measured_acc = new TH2I("p_pTheta_Measured_acc", "p pvsTheta Measured",28,0.0,140,40,0.0,10.0);
 	dHist_K_pTheta_KinFit_acc = new TH2I("K_pTheta_KinFit_acc", "K^{+} pvsTheta KinFit",28,0.0,140,40,0.0,10.0);
@@ -151,39 +146,10 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_XiMass_MM_piTheta15to35_KinFit_acc=new TH1I("XiMass_MM_piTheta_KinFit_acc","#Xi- Invariant Mass #theta_{#pi}(15,35) (GeV/c^{2},KinFit)", 40,1.1,1.5);
 	dHist_XiMass_MM_kTheta15to35_Measured_acc=new TH1I("XiMass_MM_kTheta_Measured_acc","#Xi- Invariant Mass #theta_{K}(15,35) (GeV/c^{2})", 40,1.1,1.5);
 	dHist_XiMass_MM_kTheta15to35_KinFit_acc=new TH1I("XiMass_MM_kTheta_KinFit_acc","#Xi- Invariant Mass #theta_{K}(15,35) (GeV/c^{2},KinFit)", 40,1.1,1.5);
-	dHist_XiMass024_acc=new TH1I("XiMass024_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass029_acc=new TH1I("XiMass029_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass034_acc=new TH1I("XiMass034_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass039_acc=new TH1I("XiMass039_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass044_acc=new TH1I("XiMass044_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass049_acc=new TH1I("XiMass049_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass054_acc=new TH1I("XiMass054_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass059_acc=new TH1I("XiMass059_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass064_acc=new TH1I("XiMass064_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass069_acc=new TH1I("XiMass069_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass074_acc=new TH1I("XiMass074_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass079_acc=new TH1I("XiMass079_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass084_acc=new TH1I("XiMass084_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass089_acc=new TH1I("XiMass089_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass094_acc=new TH1I("XiMass094_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass099_acc=new TH1I("XiMass099_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass104_acc=new TH1I("XiMass104_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass109_acc=new TH1I("XiMass109_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
-	dHist_XiMass114_acc=new TH1I("XiMass114_acc",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);	
-	dHist_Xi_cosGJ = new TH2I("Xi_cosGJ", " ;#Lambda#pi^{-} mass (GeV); cos #theta_{GJ}", 80, 1.1, 1.5,180, -1., 1.);
-	dHist_Xi_cosGJ_acc = new TH2I("Xi_cosGJ_acc", " ;#Lambda#pi^{-} mass (GeV); cos #theta_{GJ}", 80, 1.1, 1.5,180, -1., 1.);
-	dHist_Xi_Egamma = new TH2I("Xi_Egamma", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma}", 80, 1.1, 1.5,180, 3.0, 12.0);
-	dHist_Xi_Egamma_acc = new TH2I("Xi_Egamma_acc", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV)", 80, 1.1, 1.5,180, 3.0, 12.0);
-	
-	dHist_KlowpXim = new TH1I("KlowpXim",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
-	dHist_KlowpXim_acc = new TH1I("KlowpXim_acc",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
-	dHist_Klowp_pvstheta = new TH2I("Klowp_pvstheta", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
-	dHist_Khighp_pvstheta = new TH2I("Khighp_pvstheta", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
-	dHist_Klowp_pvstheta_acc = new TH2I("Klowp_pvstheta_acc", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
-	dHist_Khighp_pvstheta_acc = new TH2I("Khighp_pvstheta_acc", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 
-	myfile = new ofstream("XiEventNumbers_XiMassKinFit_2018-08_batch01.txt");
-	*myfile << "RunNumber " << "EventNumber " << "XiMass_Measured " << "XiMass_KinFit " << "DeltaT " << "BeamE " << " ChiSqNDf" <<  endl;
+	//Output file initialization
+	//myfile = new ofstream("XiEventNumbers_XiMassKinFit_2018-08_batch01.txt");
+	//*myfile << "RunNumber " << "EventNumber " << "XiMass_Measured " << "XiMass_KinFit " << "DeltaT " << "BeamE " << " ChiSqNDf" <<  endl;
 
 	/************************** EXAMPLE USER INITIALIZATION: CUSTOM OUTPUT BRANCHES - MAIN TREE *************************/
 
@@ -354,13 +320,17 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 
 		/********************************************* COMBINE FOUR-MOMENTUM ********************************************/
 
-		// DO YOUR STUFF HERE
-
 		// Combine 4-vectors
 		TLorentzVector locMissingP4_Measured = locBeamP4_Measured + dTargetP4;
 		locMissingP4_Measured -= locKPlus1P4_Measured + locKPlus2P4_Measured + locPiMinus1P4_Measured + locPiMinus2P4_Measured + locProtonP4_Measured;
-		TLorentzVector locDecayingLambdaX4 = dDecayingLambdaWrapper->Get_X4();
+		TLorentzVector locXiP4_Measured =  locPiMinus1P4_Measured + locPiMinus2P4_Measured + locProtonP4_Measured;
+		TLorentzVector locXiP4_KinFit =  locPiMinus1P4 + locPiMinus2P4 + locProtonP4;
+		TLorentzVector locMMKKP4_Measured = locBeamP4_Measured + dTargetP4 - locKPlus1P4_Measured - locKPlus2P4_Measured;
+		TLorentzVector locMMKKP4_KinFit = locBeamP4 + dTargetP4 - locKPlus1P4 - locKPlus2P4;
 
+		//Path length and flight significance calculations
+		//TLorentzVector locDecayingLambdaP4 = locPiMinus2P4 +	locProtonP4; //Decaying Lambda for M18 is manually calculated
+		TLorentzVector locDecayingLambdaX4 = dDecayingLambdaWrapper->Get_X4(); //Doesn't exist for M18
 		TLorentzVector locDecayingXiX4 = dTreeInterface->Get_TObject<TLorentzVector>("DecayingXiMinus__X4",loc_i);
 		TLorentzVector locDecayingLambX4 = dTreeInterface->Get_TObject<TLorentzVector>("DecayingLambda__X4",loc_i);
 		TLorentzVector locProdSpacetimeVertex =dComboBeamWrapper->Get_X4();//Get production vertex
@@ -368,11 +338,10 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		TLorentzVector locDeltaSpacetimeLamb = locDecayingXiX4 - locDecayingLambX4;//vertex difference
 		double locPathLengthXi = locDeltaSpacetimeXi.Vect().Mag();//pathlength is just the magnitude
 		double locPathLengthLamb = locDeltaSpacetimeLamb.Vect().Mag();//pathlength is just the magnitude
-
-		TLorentzVector locXiP4_Measured =  locPiMinus1P4_Measured + locPiMinus2P4_Measured + locProtonP4_Measured;
-		TLorentzVector locXiP4_KinFit =  locPiMinus1P4 + locPiMinus2P4 + locProtonP4;
-		TLorentzVector locMMKKP4_Measured = locBeamP4_Measured + dTargetP4 - locKPlus1P4_Measured - locKPlus2P4_Measured;
-		TLorentzVector locMMKKP4_KinFit = locBeamP4 + dTargetP4 - locKPlus1P4 - locKPlus2P4;
+		float locPathLengthSigmaXi = Get_Fundamental<Float_t>("DecayingXiMinus__PathLengthSigma", loc_i);
+		float locPathLengthSigmaLamb = Get_Fundamental<Float_t>("DecayingLambda__PathLengthSigma", loc_i);
+		double locPathLengthSignificanceXi = locPathLengthXi/locPathLengthSigmaXi;
+		double locPathLengthSignificanceLamb = locPathLengthLamb/locPathLengthSigmaLamb;
 
         //BoostVector for CoM
      		TLorentzVector locCoMP4=locBeamP4 + dTargetP4;
@@ -418,7 +387,6 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		double theta_GJ = v_GJ.Theta();
 		double phi_GJ = v_GJ.Phi()*180./TMath::Pi();
 
-
 		/******************************************** EXECUTE ANALYSIS ACTIONS *******************************************/
 
 		// Loop through the analysis actions, executing them in order for the active particle combo
@@ -448,13 +416,33 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 			locUsedSoFar_BeamEnergy.insert(locBeamID);
 		}
 
-		/************************************ EXAMPLE: HISTOGRAM MISSING MASS SQUARED ************************************/
+		/************************************ USER DEFINED HISTOGRAMS************************************/
+
+		//Definitions for filling histograms
+		//ChiSq
+		Float_t locChiSq = dComboWrapper->Get_ChiSq_KinFit("");
+		Float_t locNDF = dComboWrapper->Get_NDF_KinFit("");
+		Float_t locChiSqNdf = locChiSq/locNDF;
+		//DeltaT
+		TLorentzVector locX4 = dComboBeamWrapper->Get_X4();
+		double locRFTime = dComboWrapper->Get_RFTime_Measured();
+		double dTargetCenterZ = dComboWrapper->Get_TargetCenter().Z();
+		double locPropagatedRFTime = locRFTime + (locX4.Z() - dTargetCenterZ)/29.9792458;
+		double locDeltaT = locX4.T() - locPropagatedRFTime;
+
+		//Kaon Definitions and -t Mandelstam variable
+		TLorentzVector locKPlusP4_lowp;
+		TLorentzVector locKPlusP4_highp;		
+		if(locKPlus1P4.Theta() < 13*TMath::Pi()/180.) { locKPlusP4_highp = locKPlus1P4; locKPlusP4_lowp = locKPlus2P4;}
+		else { locKPlusP4_highp = locKPlus2P4; locKPlusP4_lowp = locKPlus1P4; }
+		TLorentzVector locIntermediate_KinFit = locKPlusP4_lowp + locXiP4_KinFit;
+		double t= (locBeamP4 - locKPlusP4_highp).M2();
+		double phi = locKPlusP4_highp.Phi()*180/TMath::Pi();
+		if(phi < -180.) phi = phi + 360.;
+		if (phi > 180.) phi = phi - 360.;
 
 		//Missing Mass Squared
 		double locMissingMassSquared = locMissingP4_Measured.M2();
-
-		//Uniqueness tracking: Build the map of particles used for the missing mass
-			//For beam: Don't want to group with final-state photons. Instead use "Unknown" PID (not ideal, but it's easy).
 		map<Particle_t, set<Int_t> > locUsedThisCombo_MissingMass;
 		locUsedThisCombo_MissingMass[Unknown].insert(locBeamID); //beam
 		locUsedThisCombo_MissingMass[KPlus].insert(locKPlus1TrackID);
@@ -462,16 +450,13 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		locUsedThisCombo_MissingMass[PiMinus].insert(locPiMinus1TrackID);
 		locUsedThisCombo_MissingMass[PiMinus].insert(locPiMinus2TrackID);
 		locUsedThisCombo_MissingMass[Proton].insert(locProtonTrackID);
-
-		//compare to what's been used so far
 		if(locUsedSoFar_MissingMass.find(locUsedThisCombo_MissingMass) == locUsedSoFar_MissingMass.end())
 		{
-			//unique missing mass combo: histogram it, and register this combo of particles
 			dHist_MissingMassSquared->Fill(locMissingMassSquared);
 			locUsedSoFar_MissingMass.insert(locUsedThisCombo_MissingMass);
 		}
-
-
+		
+		//Pathlengths and vertice postions
 		map<Particle_t, set<Int_t> > locUsedThisCombo_Pathlength;
 		locUsedThisCombo_Pathlength[Unknown].insert(locBeamID); 
 		locUsedThisCombo_Pathlength[KPlus].insert(locKPlus1TrackID);
@@ -489,9 +474,6 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		}
 
 		//E.g.  ChiSq 
-		Float_t locChiSq = dComboWrapper->Get_ChiSq_KinFit("");
-		Float_t locNDF = dComboWrapper->Get_NDF_KinFit("");
-		Float_t locChiSqNdf = locChiSq/locNDF;
 		map<Particle_t, set<Int_t> > locUsedThisCombo_ChiSq;
 		locUsedThisCombo_ChiSq[PiMinus].insert(locPiMinus1TrackID);
 		locUsedThisCombo_ChiSq[PiMinus].insert(locPiMinus2TrackID);
@@ -503,43 +485,38 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 			dHist_XiPath_preCL->Fill(locPathLengthXi);
 			//cerr << locNDF << endl;
 			locUsedSoFar_ChiSq.insert(locUsedThisCombo_ChiSq);
-		}		
+		}
 		//E.g. ChiSq Cut
 		if((locChiSqNdf > 3.50))
 		{
 			dComboWrapper->Set_IsComboCut(true);
 			continue;
 		}
-
-
 		//E.g.  PostCuts Hists 
 		map<Particle_t, set<Int_t> > locUsedThisCombo_PostCuts;
 		locUsedThisCombo_PostCuts[PiMinus].insert(locPiMinus1TrackID);
 		locUsedThisCombo_PostCuts[PiMinus].insert(locPiMinus2TrackID);
 		locUsedThisCombo_PostCuts[Proton].insert(locProtonTrackID);
-		TLorentzVector locX4 = dComboBeamWrapper->Get_X4();
-		double locRFTime = dComboWrapper->Get_RFTime_Measured();
-		double dTargetCenterZ = dComboWrapper->Get_TargetCenter().Z();
-		double locPropagatedRFTime = locRFTime + (locX4.Z() - dTargetCenterZ)/29.9792458;
-		double locDeltaT = locX4.T() - locPropagatedRFTime;
 		if(locUsedSoFar_PostCuts.find(locUsedThisCombo_PostCuts) == locUsedSoFar_PostCuts.end()){
 			dHist_XiPath_postCL->Fill(locPathLengthXi);
 			if(fabs(locDeltaT) < 6.004) {	
 				if(fabs(locDeltaT) < 2.004) {	
-					*myfile << Get_RunNumber() << " " << Get_EventNumber() << " " << locXiP4_Measured.M() << " " << locXiP4_KinFit.M() << " " << locDeltaT << " " << locBeamP4.E() << " " << locChiSqNdf  << endl;
+					//*myfile << Get_RunNumber() << " " << Get_EventNumber() << " " << locXiP4_Measured.M() << " " << locXiP4_KinFit.M() << " " << locDeltaT << " " << locBeamP4.E() << " " << locChiSqNdf  << endl;
 					dHist_XiMass_Measured->Fill(locXiP4_Measured.M());
 					dHist_XiMass_KinFit->Fill(locXiP4_KinFit.M());
 					dHist_Xi_cosGJ->Fill(locXiP4_KinFit.M(),cosTheta_GJ);
 					dHist_Xi_Egamma->Fill(locXiP4_KinFit.M(),locBeamP4.E());
+					dHist_Xi_t->Fill(locXiP4_KinFit.M(),-1.*t);
+					dHist_Xi_LambFlight->Fill(locXiP4_Measured.M(),locPathLengthSignificanceLamb);
 				}
 				else { 
 					dHist_XiMass_Measured_acc->Fill(locXiP4_Measured.M());
 					dHist_XiMass_KinFit_acc->Fill(locXiP4_KinFit.M());
 					dHist_Xi_cosGJ_acc->Fill(locXiP4_KinFit.M(),cosTheta_GJ);
 					dHist_Xi_Egamma_acc->Fill(locXiP4_KinFit.M(),locBeamP4.E());
-
+					dHist_Xi_t_acc->Fill(locXiP4_KinFit.M(),-1.*t);
+					dHist_Xi_LambFlight_acc->Fill(locXiP4_Measured.M(),locPathLengthSignificanceLamb);
 				}
-				
 				if(locXiP4_KinFit.M() >1.31 && locXiP4_KinFit.M() < 1.33){ 
 					if(fabs(locDeltaT) < 2.004) { 
 						dHist_p_pTheta_Measured->Fill(locProtonP4_Measured.Theta()*180./TMath::Pi(), locProtonP4_Measured.P());
@@ -558,51 +535,8 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 						dHist_XiMass_piTheta15to35_KinFit_acc->Fill(locXiP4_KinFit.M());
 					}
 				}
-				if(fabs(locDeltaT) < 2.004) {
-					if(locBeamP4.E() >= 2.4 && locBeamP4.E() < 2.9)	{dHist_XiMass024->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 2.9 && locBeamP4.E() < 3.4)	{dHist_XiMass029->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 3.4 && locBeamP4.E() < 3.9)	{dHist_XiMass034->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 3.9 && locBeamP4.E() < 4.4)	{dHist_XiMass039->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 4.4 && locBeamP4.E() < 4.9)	{dHist_XiMass044->Fill(locXiP4_KinFit.M());}	
-					if(locBeamP4.E() >= 4.9 && locBeamP4.E() < 5.4)	{dHist_XiMass049->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 5.4 && locBeamP4.E() < 5.9)	{dHist_XiMass054->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 5.9 && locBeamP4.E() < 6.4)	{dHist_XiMass059->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 6.4 && locBeamP4.E() < 6.9)	{dHist_XiMass064->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 6.9 && locBeamP4.E() < 7.4)	{dHist_XiMass069->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 7.4 && locBeamP4.E() < 7.9)	{dHist_XiMass074->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 7.9 && locBeamP4.E() < 8.4)	{dHist_XiMass079->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 8.4 && locBeamP4.E() < 8.9)	{dHist_XiMass084->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 8.9 && locBeamP4.E() < 9.4)	{dHist_XiMass089->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 9.4 && locBeamP4.E() < 9.9)	{dHist_XiMass094->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 9.9 && locBeamP4.E() < 10.4)	{dHist_XiMass099->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 10.4 && locBeamP4.E() < 10.9)	{dHist_XiMass104->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 10.9 && locBeamP4.E() < 11.4)	{dHist_XiMass109->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 11.4 && locBeamP4.E() < 11.9)	{dHist_XiMass114->Fill(locXiP4_KinFit.M());}
-				}
-				else {
-					if(locBeamP4.E() >= 2.4 && locBeamP4.E() < 2.9)	{dHist_XiMass024_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 2.9 && locBeamP4.E() < 3.4)	{dHist_XiMass029_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 3.4 && locBeamP4.E() < 3.9)	{dHist_XiMass034_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 3.9 && locBeamP4.E() < 4.4)	{dHist_XiMass039_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 4.4 && locBeamP4.E() < 4.9)	{dHist_XiMass044_acc->Fill(locXiP4_KinFit.M());}	
-					if(locBeamP4.E() >= 4.9 && locBeamP4.E() < 5.4)	{dHist_XiMass049_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 5.4 && locBeamP4.E() < 5.9)	{dHist_XiMass054_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 5.9 && locBeamP4.E() < 6.4)	{dHist_XiMass059_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 6.4 && locBeamP4.E() < 6.9)	{dHist_XiMass064_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 6.9 && locBeamP4.E() < 7.4)	{dHist_XiMass069_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 7.4 && locBeamP4.E() < 7.9)	{dHist_XiMass074_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 7.9 && locBeamP4.E() < 8.4)	{dHist_XiMass079_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 8.4 && locBeamP4.E() < 8.9)	{dHist_XiMass084_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 8.9 && locBeamP4.E() < 9.4)	{dHist_XiMass089_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 9.4 && locBeamP4.E() < 9.9)	{dHist_XiMass094_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 9.9 && locBeamP4.E() < 10.4)	{dHist_XiMass099_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 10.4 && locBeamP4.E() < 10.9)	{dHist_XiMass104_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 10.9 && locBeamP4.E() < 11.4)	{dHist_XiMass109_acc->Fill(locXiP4_KinFit.M());}
-					if(locBeamP4.E() >= 11.4 && locBeamP4.E() < 11.9)	{dHist_XiMass114_acc->Fill(locXiP4_KinFit.M());}
-				}
-			}
-
 			locUsedSoFar_PostCuts.insert(locUsedThisCombo_PostCuts);
+			}
 		}
 
 
@@ -676,8 +610,6 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 			locUsedSoFar_PostCuts3.insert(locUsedThisCombo_PostCuts3);
 		}
 
-
-
 		map<Particle_t, set<Int_t> > locUsedThisCombo_PostCuts4;
 		locUsedThisCombo_PostCuts4[KPlus].insert(locKPlus1TrackID);
 		locUsedThisCombo_PostCuts4[KPlus].insert(locKPlus2TrackID);
@@ -739,15 +671,6 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		}
 
 		//Asymmetry and Intermediate hyperon
-		TLorentzVector locKPlusP4_lowp;
-		TLorentzVector locKPlusP4_highp;		
-		if(locKPlus1P4.Theta() < 13*TMath::Pi()/180.) { locKPlusP4_highp = locKPlus1P4; locKPlusP4_lowp = locKPlus2P4;}
-		else { locKPlusP4_highp = locKPlus2P4; locKPlusP4_lowp = locKPlus1P4; }
-		TLorentzVector locIntermediate_KinFit = locKPlusP4_lowp + locXiP4_KinFit;
-		double t= (locBeamP4 - locKPlusP4_highp).M2();
-		double phi = locKPlusP4_highp.Phi()*180/TMath::Pi();
-		if(phi < -180.) phi = phi + 360.;
-		if (phi > 180.) phi = phi - 360.;
 		map<Particle_t, set<Int_t>> locUsedThisCombo_Asymmetry;
 		locUsedThisCombo_Asymmetry[Unknown].insert(locBeamID);
 		locUsedThisCombo_Asymmetry[KPlus].insert(locKPlus1TrackID);
@@ -779,12 +702,7 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 			locUsedSoFar_Asymmetry.insert(locUsedThisCombo_Asymmetry);
 		}
 
-		//E.g. Cut
-		//if((locMissingMassSquared < -0.04) || (locMissingMassSquared > 0.04))
-		//{
-		//	dComboWrapper->Set_IsComboCut(true);
-		//	continue;
-		//}
+
 
 		/****************************************** FILL FLAT TREE (IF DESIRED) ******************************************/
 
@@ -885,8 +803,8 @@ void DSelector_kpkpxim__B4_M23_sept19::Finalize(void)
 		//Besides, it is best-practice to do post-processing (e.g. fitting) separately, in case there is a problem.
 
 	//DO YOUR STUFF HERE
-	myfile->close();
-	delete myfile;
+	//myfile->close();
+	//delete myfile;
 
 	//CALL THIS LAST
 	DSelector::Finalize(); //Saves results to the output file

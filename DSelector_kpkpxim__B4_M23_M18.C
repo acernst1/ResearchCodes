@@ -57,7 +57,7 @@ void DSelector_kpkpxim__B4_M23_M18::Init(TTree *locTree)
 	Initialize_Actions();
 
 
-	/******************************** EXAMPLE USER INITIALIZATION: STAND-ALONE HISTOGRAMS *******************************/
+	/******************************** USER INITIALIZATION: STAND-ALONE HISTOGRAMS *******************************/
 
 	//General Histograms
 	dHist_MissingMassSquared = new TH1I("MissingMassSquared", ";Missing Mass Squared (GeV/c^{2})^{2}", 600, -0.06, 0.06);
@@ -105,7 +105,6 @@ void DSelector_kpkpxim__B4_M23_M18::Init(TTree *locTree)
 	dHist_Khighp_pvstheta = new TH2I("Khighp_pvstheta", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 	dHist_Klowp_pvstheta_acc = new TH2I("Klowp_pvstheta_acc", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 	dHist_Khighp_pvstheta_acc = new TH2I("Khighp_pvstheta_acc", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
-
 	
 	//angular distributions for every particle
 	dHist_XiMass_KinFit_Selected=new TH1I("XiMass_KinFit_Selected","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 80,1.1,1.5);
@@ -323,12 +322,14 @@ Bool_t DSelector_kpkpxim__B4_M23_M18::Process(Long64_t locEntry)
 		// Combine 4-vectors
 		TLorentzVector locMissingP4_Measured = locBeamP4_Measured + dTargetP4;
 		locMissingP4_Measured -= locKPlus1P4_Measured + locKPlus2P4_Measured + locPiMinus1P4_Measured + locPiMinus2P4_Measured + locProtonP4_Measured;
+		TLorentzVector locXiP4_Measured =  locPiMinus1P4_Measured + locPiMinus2P4_Measured + locProtonP4_Measured;
+		TLorentzVector locXiP4_KinFit =  locPiMinus1P4 + locPiMinus2P4 + locProtonP4;
+		TLorentzVector locMMKKP4_Measured = locBeamP4_Measured + dTargetP4 - locKPlus1P4_Measured - locKPlus2P4_Measured;
+		TLorentzVector locMMKKP4_KinFit = locBeamP4 + dTargetP4 - locKPlus1P4 - locKPlus2P4;
 
-		//Decaying Lambda for M18 is manually calculated
-		TLorentzVector locDecayingLambdaP4 = locPiMinus2P4 +	locProtonP4;
-
+		//Path length and flight significance calculations
+		TLorentzVector locDecayingLambdaP4 = locPiMinus2P4 +	locProtonP4; //Decaying Lambda for M18 is manually calculated
 		//TLorentzVector locDecayingLambdaX4 = dDecayingLambdaWrapper->Get_X4(); //Doesn't exist for M18
-
 		TLorentzVector locDecayingXiX4 = dTreeInterface->Get_TObject<TLorentzVector>("DecayingXiMinus__X4",loc_i);
 		TLorentzVector locDecayingLambX4 = dTreeInterface->Get_TObject<TLorentzVector>("DecayingLambda__X4",loc_i);
 		TLorentzVector locProdSpacetimeVertex =dComboBeamWrapper->Get_X4();//Get production vertex
@@ -340,11 +341,6 @@ Bool_t DSelector_kpkpxim__B4_M23_M18::Process(Long64_t locEntry)
 		float locPathLengthSigmaLamb = Get_Fundamental<Float_t>("DecayingLambda__PathLengthSigma", loc_i);
 		double locPathLengthSignificanceXi = locPathLengthXi/locPathLengthSigmaXi;
 		double locPathLengthSignificanceLamb = locPathLengthLamb/locPathLengthSigmaLamb;
-
-		TLorentzVector locXiP4_Measured =  locPiMinus1P4_Measured + locPiMinus2P4_Measured + locProtonP4_Measured;
-		TLorentzVector locXiP4_KinFit =  locPiMinus1P4 + locPiMinus2P4 + locProtonP4;
-		TLorentzVector locMMKKP4_Measured = locBeamP4_Measured + dTargetP4 - locKPlus1P4_Measured - locKPlus2P4_Measured;
-		TLorentzVector locMMKKP4_KinFit = locBeamP4 + dTargetP4 - locKPlus1P4 - locKPlus2P4;
 
         //BoostVector for CoM
      		TLorentzVector locCoMP4=locBeamP4 + dTargetP4;
@@ -419,7 +415,7 @@ Bool_t DSelector_kpkpxim__B4_M23_M18::Process(Long64_t locEntry)
 			locUsedSoFar_BeamEnergy.insert(locBeamID);
 		}
 
-		/************************************ EXAMPLE: HISTOGRAM MISSING MASS SQUARED ************************************/
+		/************************************ USER DEFINED HISTOGRAMS************************************/
 
 		//Definitions for filling histograms
 		//ChiSq
@@ -447,9 +443,6 @@ Bool_t DSelector_kpkpxim__B4_M23_M18::Process(Long64_t locEntry)
 
 		//Missing Mass Squared
 		double locMissingMassSquared = locMissingP4_Measured.M2();
-
-		//Uniqueness tracking: Build the map of particles used for the missing mass
-			//For beam: Don't want to group with final-state photons. Instead use "Unknown" PID (not ideal, but it's easy).
 		map<Particle_t, set<Int_t> > locUsedThisCombo_MissingMass;
 		locUsedThisCombo_MissingMass[Unknown].insert(locBeamID); //beam
 		locUsedThisCombo_MissingMass[KPlus].insert(locKPlus1TrackID);
@@ -457,15 +450,13 @@ Bool_t DSelector_kpkpxim__B4_M23_M18::Process(Long64_t locEntry)
 		locUsedThisCombo_MissingMass[PiMinus].insert(locPiMinus1TrackID);
 		locUsedThisCombo_MissingMass[PiMinus].insert(locPiMinus2TrackID);
 		locUsedThisCombo_MissingMass[Proton].insert(locProtonTrackID);
-
-		//compare to what's been used so far
 		if(locUsedSoFar_MissingMass.find(locUsedThisCombo_MissingMass) == locUsedSoFar_MissingMass.end())
 		{
-			//unique missing mass combo: histogram it, and register this combo of particles
 			dHist_MissingMassSquared->Fill(locMissingMassSquared);
 			locUsedSoFar_MissingMass.insert(locUsedThisCombo_MissingMass);
 		}
 
+		//Pathlengths and vertice postions
 		map<Particle_t, set<Int_t> > locUsedThisCombo_Pathlength;
 		locUsedThisCombo_Pathlength[Unknown].insert(locBeamID); 
 		locUsedThisCombo_Pathlength[KPlus].insert(locKPlus1TrackID);
