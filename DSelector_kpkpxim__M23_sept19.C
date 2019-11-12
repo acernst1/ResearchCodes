@@ -1,6 +1,6 @@
-#include "DSelector_kpkpxim__B4_M23_sept19.h"
+#include "DSelector_kpkpxim__M23_sept19.h"
 
-void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
+void DSelector_kpkpxim__M23_sept19::Init(TTree *locTree)
 {
 	// USERS: IN THIS FUNCTION, ONLY MODIFY SECTIONS WITH A "USER" OR "EXAMPLE" LABEL. LEAVE THE REST ALONE.
 
@@ -9,7 +9,7 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	// Init() will be called many times when running on PROOF (once per file to be processed).
 
 	//USERS: SET OUTPUT FILE NAME //can be overriden by user in PROOF
-	dOutputFileName = "kpkpxim__B4_M23_sept19.root"; //"" for none
+	dOutputFileName = "kpkpxim__M23_sept19.root"; //"" for none
 	dOutputTreeFileName = ""; //"" for none
 	dFlatTreeFileName = ""; //output flat tree (one combo per tree entry), "" for none
 	dFlatTreeName = ""; //if blank, default name will be chosen
@@ -153,6 +153,9 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	//myfile = new ofstream("XiEventNumbers_XiMassKinFit_2018-08_batch01.txt");
 	//*myfile << "RunNumber " << "EventNumber " << "XiMass_Measured " << "XiMass_KinFit " << "DeltaT " << "BeamE " << " ChiSqNDf" <<  endl;
 
+
+
+
 	/************************** EXAMPLE USER INITIALIZATION: CUSTOM OUTPUT BRANCHES - MAIN TREE *************************/
 
 	//EXAMPLE MAIN TREE CUSTOM BRANCHES (OUTPUT ROOT FILE NAME MUST FIRST BE GIVEN!!!! (ABOVE: TOP)):
@@ -192,7 +195,7 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	//dTreeInterface->Register_GetEntryBranch("Proton__P4"); //manually set the branches you want
 }
 
-Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
+Bool_t DSelector_kpkpxim__M23_sept19::Process(Long64_t locEntry)
 {
 	// The Process() function is called for each entry in the tree. The entry argument
 	// specifies which entry in the currently loaded tree is to be processed.
@@ -253,6 +256,8 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 	set<map<Particle_t,set<Int_t>>>locUsedSoFar_PostCuts4;
 	set<map<Particle_t,set<Int_t>>>locUsedSoFar_PostCuts5;
 	set<map<Particle_t,set<Int_t>>>locUsedSoFar_Eventlist;
+	set<map<Particle_t,set<Int_t>>>locUsedSoFar_ST;
+
 	/**************************************** EXAMPLE: FILL CUSTOM OUTPUT BRANCHES **************************************/
 
 	/*
@@ -544,7 +549,6 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 			}
 		}
 
-
 		map<Particle_t, set<Int_t> > locUsedThisCombo_PostCuts2;
 		locUsedThisCombo_PostCuts2[Unknown].insert(locBeamID);
 		locUsedThisCombo_PostCuts2[KPlus].insert(locKPlus1TrackID);
@@ -649,7 +653,6 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 			locUsedSoFar_PostCuts4.insert(locUsedThisCombo_PostCuts4);
 		}
 
-
 		map<Particle_t, set<Int_t> > locUsedThisCombo_PostCuts5;
 		locUsedThisCombo_PostCuts5[KPlus].insert(locKPlus1TrackID);
 		locUsedThisCombo_PostCuts5[KPlus].insert(locKPlus2TrackID);
@@ -708,6 +711,54 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		}
 
 
+		map<Particle_t, set<Int_t> > locUsedThisCombo_ST;
+		locUsedThisCombo_ST[KPlus].insert(locKPlus1TrackID);
+		locUsedThisCombo_ST[KPlus].insert(locKPlus2TrackID);
+		locUsedThisCombo_ST[PiMinus].insert(locPiMinus1TrackID);
+		locUsedThisCombo_ST[PiMinus].insert(locPiMinus2TrackID);
+		locUsedThisCombo_ST[Unknown].insert(locBeamID);
+		locUsedThisCombo_ST[Proton].insert(locProtonTrackID);
+		bool has_ST_hit = false;
+		if(locUsedSoFar_ST.find(locUsedThisCombo_ST) == locUsedSoFar_ST.end()){
+			//Loop over charged track hypotheses
+			for(UInt_t loc_i = 0; loc_i < Get_NumChargedHypos(); ++loc_i){
+		 		//Set branch array indices corresponding to this particle
+				dChargedHypoWrapper->Set_ArrayIndex(loc_i);
+				double dEdx_ST = dChargedHypoWrapper->Get_dEdx_ST();
+				if (dEdx_ST != 0) { 
+					has_ST_hit = true; 
+					break;
+				}
+			}
+			if(fabs(locDeltaT) < 6.004) {	
+				if(locXiP4_KinFit.M() >= 1.31 && locXiP4_KinFit.M() < 1.34){
+					dHist_Xi_Egamma_all->Fill(locBeamP4.E());
+					dHist_Xi_t_all->Fill(-1.*t);
+					dHist_Xi_pP_all->Fill(locProtonP4.P());
+					dHist_Xi_pTheta_all->Fill(locProtonP4.Theta()*180./TMath::Pi());
+					if (!has_ST_hit){ 
+						dComboWrapper->Set_IsComboCut(true); 
+						continue;	
+					}
+					dHist_Xi_Egamma_withST->Fill(locBeamP4.E());
+					dHist_Xi_t_withST->Fill(-1.*t);
+					dHist_Xi_pP_withST->Fill(locProtonP4.P());
+					dHist_Xi_pTheta_withST->Fill(locProtonP4.Theta()*180./TMath::Pi());									
+				}
+			}
+			locUsedSoFar_ST.insert(locUsedThisCombo_ST);
+		}
+
+		
+
+
+
+		//E.g. Cut
+		//if((locMissingMassSquared < -0.04) || (locMissingMassSquared > 0.04))
+		//{
+		//	dComboWrapper->Set_IsComboCut(true);
+		//	continue;
+		//}
 
 		/****************************************** FILL FLAT TREE (IF DESIRED) ******************************************/
 
@@ -798,7 +849,7 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 	return kTRUE;
 }
 
-void DSelector_kpkpxim__B4_M23_sept19::Finalize(void)
+void DSelector_kpkpxim__M23_sept19::Finalize(void)
 {
 	//Save anything to output here that you do not want to be in the default DSelector output ROOT file.
 
@@ -808,8 +859,6 @@ void DSelector_kpkpxim__B4_M23_sept19::Finalize(void)
 		//Besides, it is best-practice to do post-processing (e.g. fitting) separately, in case there is a problem.
 
 	//DO YOUR STUFF HERE
-	//myfile->close();
-	//delete myfile;
 
 	//CALL THIS LAST
 	DSelector::Finalize(); //Saves results to the output file

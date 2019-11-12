@@ -1,6 +1,6 @@
-#include "DSelector_kpkpxim__B4_M23_sept19.h"
+#include "DSelector_kpkpxim__B4_M23_M18.h"
 
-void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
+void DSelector_kpkpxim__B4_M23_M18::Init(TTree *locTree)
 {
 	// USERS: IN THIS FUNCTION, ONLY MODIFY SECTIONS WITH A "USER" OR "EXAMPLE" LABEL. LEAVE THE REST ALONE.
 
@@ -9,7 +9,7 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	// Init() will be called many times when running on PROOF (once per file to be processed).
 
 	//USERS: SET OUTPUT FILE NAME //can be overriden by user in PROOF
-	dOutputFileName = "kpkpxim__B4_M23_sept19.root"; //"" for none
+	dOutputFileName = "kpkpxim__B4_M23_M18.root"; //"" for none
 	dOutputTreeFileName = ""; //"" for none
 	dFlatTreeFileName = ""; //output flat tree (one combo per tree entry), "" for none
 	dFlatTreeName = ""; //if blank, default name will be chosen
@@ -56,6 +56,7 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	//If you create any actions that you want to run manually (i.e. don't add to dAnalysisActions), be sure to initialize them here as well
 	Initialize_Actions();
 
+
 	/******************************** USER INITIALIZATION: STAND-ALONE HISTOGRAMS *******************************/
 
 	//General Histograms
@@ -96,8 +97,6 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_Xi_Egamma_acc = new TH2F("Xi_Egamma_acc", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV)", 400, 1.1, 1.5,180, 3.0, 12.0);
 	dHist_Xi_t = new TH2F("Xi_t", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,100, 0.0, 5.0);
 	dHist_Xi_t_acc = new TH2F("Xi_t_acc", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,100, 0.0, 5.0);
-	dHist_Xi_Egamma_t = new TH3F("Xi_Egamma_t",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,100, 0.0, 5.0);
-	dHist_Xi_Egamma_t_acc = new TH3F("Xi_Egamma_t_acc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,100, 0.0, 5.0);
 	
 	//For studying the intermediate hyperon
 	dHist_KlowpXim = new TH1I("KlowpXim",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
@@ -106,7 +105,7 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_Khighp_pvstheta = new TH2I("Khighp_pvstheta", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 	dHist_Klowp_pvstheta_acc = new TH2I("Klowp_pvstheta_acc", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 	dHist_Khighp_pvstheta_acc = new TH2I("Khighp_pvstheta_acc", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
-
+	
 	//angular distributions for every particle
 	dHist_XiMass_KinFit_Selected=new TH1I("XiMass_KinFit_Selected","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 80,1.1,1.5);
 	dHist_K_pTheta_Measured = new TH2I("K_pTheta_Measured", "K^{+} pvsTheta Measured",28,0.0,140,40,0.0,10.0);
@@ -149,9 +148,7 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_XiMass_MM_kTheta15to35_Measured_acc=new TH1I("XiMass_MM_kTheta_Measured_acc","#Xi- Invariant Mass #theta_{K}(15,35) (GeV/c^{2})", 40,1.1,1.5);
 	dHist_XiMass_MM_kTheta15to35_KinFit_acc=new TH1I("XiMass_MM_kTheta_KinFit_acc","#Xi- Invariant Mass #theta_{K}(15,35) (GeV/c^{2},KinFit)", 40,1.1,1.5);
 
-	//Output file initialization
-	//myfile = new ofstream("XiEventNumbers_XiMassKinFit_2018-08_batch01.txt");
-	//*myfile << "RunNumber " << "EventNumber " << "XiMass_Measured " << "XiMass_KinFit " << "DeltaT " << "BeamE " << " ChiSqNDf" <<  endl;
+
 
 	/************************** EXAMPLE USER INITIALIZATION: CUSTOM OUTPUT BRANCHES - MAIN TREE *************************/
 
@@ -192,7 +189,7 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	//dTreeInterface->Register_GetEntryBranch("Proton__P4"); //manually set the branches you want
 }
 
-Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
+Bool_t DSelector_kpkpxim__B4_M23_M18::Process(Long64_t locEntry)
 {
 	// The Process() function is called for each entry in the tree. The entry argument
 	// specifies which entry in the currently loaded tree is to be processed.
@@ -253,6 +250,7 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 	set<map<Particle_t,set<Int_t>>>locUsedSoFar_PostCuts4;
 	set<map<Particle_t,set<Int_t>>>locUsedSoFar_PostCuts5;
 	set<map<Particle_t,set<Int_t>>>locUsedSoFar_Eventlist;
+
 	/**************************************** EXAMPLE: FILL CUSTOM OUTPUT BRANCHES **************************************/
 
 	/*
@@ -305,7 +303,6 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		//Step 1
 		TLorentzVector locPiMinus1P4 = dPiMinus1Wrapper->Get_P4();
 		//Step 2
-		TLorentzVector locDecayingLambdaP4 = dDecayingLambdaWrapper->Get_P4();
 		TLorentzVector locPiMinus2P4 = dPiMinus2Wrapper->Get_P4();
 		TLorentzVector locProtonP4 = dProtonWrapper->Get_P4();
 
@@ -331,8 +328,8 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		TLorentzVector locMMKKP4_KinFit = locBeamP4 + dTargetP4 - locKPlus1P4 - locKPlus2P4;
 
 		//Path length and flight significance calculations
-		//TLorentzVector locDecayingLambdaP4 = locPiMinus2P4 +	locProtonP4; //Decaying Lambda for M18 is manually calculated
-		TLorentzVector locDecayingLambdaX4 = dDecayingLambdaWrapper->Get_X4(); //Doesn't exist for M18
+		TLorentzVector locDecayingLambdaP4 = locPiMinus2P4 +	locProtonP4; //Decaying Lambda for M18 is manually calculated
+		//TLorentzVector locDecayingLambdaX4 = dDecayingLambdaWrapper->Get_X4(); //Doesn't exist for M18
 		TLorentzVector locDecayingXiX4 = dTreeInterface->Get_TObject<TLorentzVector>("DecayingXiMinus__X4",loc_i);
 		TLorentzVector locDecayingLambX4 = dTreeInterface->Get_TObject<TLorentzVector>("DecayingLambda__X4",loc_i);
 		TLorentzVector locProdSpacetimeVertex =dComboBeamWrapper->Get_X4();//Get production vertex
@@ -443,6 +440,7 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		if(phi < -180.) phi = phi + 360.;
 		if (phi > 180.) phi = phi - 360.;
 
+
 		//Missing Mass Squared
 		double locMissingMassSquared = locMissingP4_Measured.M2();
 		map<Particle_t, set<Int_t> > locUsedThisCombo_MissingMass;
@@ -457,7 +455,7 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 			dHist_MissingMassSquared->Fill(locMissingMassSquared);
 			locUsedSoFar_MissingMass.insert(locUsedThisCombo_MissingMass);
 		}
-		
+
 		//Pathlengths and vertice postions
 		map<Particle_t, set<Int_t> > locUsedThisCombo_Pathlength;
 		locUsedThisCombo_Pathlength[Unknown].insert(locBeamID); 
@@ -487,13 +485,14 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 			dHist_XiPath_preCL->Fill(locPathLengthXi);
 			//cerr << locNDF << endl;
 			locUsedSoFar_ChiSq.insert(locUsedThisCombo_ChiSq);
-		}
+		}		
 		//E.g. ChiSq Cut
 		if((locChiSqNdf > 3.50))
 		{
 			dComboWrapper->Set_IsComboCut(true);
 			continue;
 		}
+
 
 		//E.g.  PostCuts Hists 
 		map<Particle_t, set<Int_t> > locUsedThisCombo_PostCuts;
@@ -510,7 +509,6 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 					dHist_Xi_cosGJ->Fill(locXiP4_KinFit.M(),cosTheta_GJ);
 					dHist_Xi_Egamma->Fill(locXiP4_KinFit.M(),locBeamP4.E());
 					dHist_Xi_t->Fill(locXiP4_KinFit.M(),-1.*t);
-					dHist_Xi_Egamma_t->Fill(locXiP4_KinFit.M(),locBeamP4.E(),-1.*t);
 					dHist_Xi_LambFlight->Fill(locXiP4_Measured.M(),locPathLengthSignificanceLamb);
 				}
 				else { 
@@ -519,7 +517,6 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 					dHist_Xi_cosGJ_acc->Fill(locXiP4_KinFit.M(),cosTheta_GJ);
 					dHist_Xi_Egamma_acc->Fill(locXiP4_KinFit.M(),locBeamP4.E());
 					dHist_Xi_t_acc->Fill(locXiP4_KinFit.M(),-1.*t);
-					dHist_Xi_Egamma_t_acc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),-1.*t);
 					dHist_Xi_LambFlight_acc->Fill(locXiP4_Measured.M(),locPathLengthSignificanceLamb);
 				}
 				if(locXiP4_KinFit.M() >1.31 && locXiP4_KinFit.M() < 1.33){ 
@@ -708,7 +705,6 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		}
 
 
-
 		/****************************************** FILL FLAT TREE (IF DESIRED) ******************************************/
 
 		/*
@@ -798,7 +794,7 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 	return kTRUE;
 }
 
-void DSelector_kpkpxim__B4_M23_sept19::Finalize(void)
+void DSelector_kpkpxim__B4_M23_M18::Finalize(void)
 {
 	//Save anything to output here that you do not want to be in the default DSelector output ROOT file.
 
@@ -808,8 +804,6 @@ void DSelector_kpkpxim__B4_M23_sept19::Finalize(void)
 		//Besides, it is best-practice to do post-processing (e.g. fitting) separately, in case there is a problem.
 
 	//DO YOUR STUFF HERE
-	//myfile->close();
-	//delete myfile;
 
 	//CALL THIS LAST
 	DSelector::Finalize(); //Saves results to the output file

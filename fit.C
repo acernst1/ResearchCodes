@@ -2,7 +2,9 @@
 #include "RooPlot.h"
 {
   //using namespace RooFit;
-char version[100]="2017_ver20_newbin";
+char batch[100]= "batch06";
+char runperiod[100]="2018-01";
+char version[100]="ver03";
 char plotversion[100]="accsub";
 char filename[100];
 char outputname[100];
@@ -11,9 +13,9 @@ char plotname[100];
 char plot[100];
 char accplotname[100];
 char accsubplotname[100];
-sprintf(filename,"kpkpxim_wf_%s.root",version);
-sprintf(outputname,"datafit_kpkpxim_XiMass_KinFit_%s_%s.png",version, plotversion);
-sprintf(testoutputname,"prefit_kpkpxim_XiMass_KinFit_%s_%s.png",version, plotversion);
+sprintf(filename,"/work/halld/home/acernst/kpkpxim/kpkpxim/root_analysis/%s/kpkpxim__B4_M23_%s.root",runperiod,batch);
+sprintf(outputname,"datafit_kpkpxim_XiMass_KinFit_%s_%s_%s_%s.png",runperiod, version, batch,plotversion);
+sprintf(testoutputname,"prefit_kpkpxim_XiMass_KinFit_%s_%s_%s_%s.png",runperiod,version,batch, plotversion);
 sprintf(plotname,"XiMass%s_KinFit",plotversion);
 //sprintf(plot,"xsec_sigfit_%s.png",bin);
 sprintf(plotname,"XiMass_KinFit");
@@ -23,7 +25,7 @@ sprintf(accplotname,"XiMass_KinFit_acc");
 sprintf(accsubplotname,"XiMassKinFitsacc");
 
   gROOT->SetStyle("Plain");
-  gStyle->SetOptStat(0000);
+  gStyle->SetOptStat(1111);
   gStyle->SetOptTitle(0);
 
   // initialization
@@ -35,7 +37,6 @@ sprintf(accsubplotname,"XiMassKinFitsacc");
 
   TH1F * XiMassKinFit = (TH1F*)f->Get(plotname);
   XiMassKinFit->GetXaxis()->SetRangeUser(1.1,1.5);
-  Xi_canvas1->Print("test.png");
   TH1F * XiMassKinFit_acc = (TH1F*)f->Get(accplotname);
   TH1F *h_mass = (TH1F *) XiMassKinFit->Clone(accsubplotname);
   h_mass->Add(XiMassKinFit_acc,-0.5);
@@ -69,17 +70,13 @@ sprintf(accsubplotname,"XiMassKinFitsacc");
   //w->pdf("model")->fitTo(*data,RooFit::Extended(kTRUE),RooFit::Range(1.25,1.5),RooFit::Minos(1));
   w->pdf("model")->fitTo(*data,RooFit::Range(1.25,1.5),RooFit::Minos(1));
   
-  RooArgSet * parameters = w->pdf("model")->getVariables();
-  RooArgSet * subset = (RooArgSet*) parameters->selectByName("nsig,nbkgd");
-  
   // make some plots
   RooPlot* massframe = mass.frame(RooFit::Title(" "));
   //massframe->SetMaximum(1500);
   massframe->SetXTitle("#Lambda#pi^{-} mass (GeV)");
   massframe->GetYaxis()->SetTitleOffset(1.2);
   data->plotOn(massframe,RooFit::MarkerColor(kBlack),RooFit::LineColor(kBlack));
-  //TPaveText *box = model.Parameters("",5,"E");
-  //w->pdf("model")->paramOn(massframe); //comment out to turn off stats
+  w->pdf("model")->paramOn(massframe); //comment out to turn off stats
   w->pdf("model")->plotOn(massframe);
   w->pdf("gaus")->plotOn(massframe, RooFit::LineStyle(kDotted),
   		RooFit::Normalization(w->var("nsig")->getVal(), RooAbsReal::NumEvent));

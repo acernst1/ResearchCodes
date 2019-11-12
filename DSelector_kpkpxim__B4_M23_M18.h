@@ -1,8 +1,7 @@
-#ifndef DSelector_kpkpxim__B4_M23_sept19_h
-#define DSelector_kpkpxim__B4_M23_sept19_h
+#ifndef DSelector_kpkpxim__B4_M23_M18_h
+#define DSelector_kpkpxim__B4_M23_M18_h
 
 #include <iostream>
-#include <fstream>
 
 #include "DSelector/DSelector.h"
 #include "DSelector/DHistogramActions.h"
@@ -14,12 +13,12 @@
 #include "TH2F.h"
 #include "TH3F.h"
 
-class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
+class DSelector_kpkpxim__B4_M23_M18 : public DSelector
 {
 	public:
 
-		DSelector_kpkpxim__B4_M23_sept19(TTree* locTree = NULL) : DSelector(locTree){}
-		virtual ~DSelector_kpkpxim__B4_M23_sept19(){}
+		DSelector_kpkpxim__B4_M23_M18(TTree* locTree = NULL) : DSelector(locTree){}
+		virtual ~DSelector_kpkpxim__B4_M23_M18(){}
 
 		void Init(TTree *tree);
 		Bool_t Process(Long64_t entry);
@@ -52,14 +51,10 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 
 		//Step 2
 		DParticleComboStep* dStep2Wrapper;
-		DKinematicData* dDecayingLambdaWrapper;
 		DChargedTrackHypothesis* dPiMinus2Wrapper;
 		DChargedTrackHypothesis* dProtonWrapper;
 
-		//OUTPUT FILES
-		//ofstream *myfile;
-
-		// HISTOGRAMS
+		//HISTOGRAMS
 		//General histograms
 		TH1I* dHist_MissingMassSquared;
 		TH1I* dHist_BeamEnergy;
@@ -98,30 +93,6 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		TH2F* dHist_Xi_Egamma_acc;
 		TH2F* dHist_Xi_t;
 		TH2F* dHist_Xi_t_acc;
-		TH3F* dHist_Xi_Egamma_t;
-		TH3F* dHist_Xi_Egamma_t_acc;
-		TH2F* dHist_Xi_t_064;
-		TH2F* dHist_Xi_t_064_acc;
-		TH2F* dHist_Xi_t_069;
-		TH2F* dHist_Xi_t_069_acc;
-		TH2F* dHist_Xi_t_074;
-		TH2F* dHist_Xi_t_074_acc;
-		TH2F* dHist_Xi_t_079;
-		TH2F* dHist_Xi_t_079_acc;
-		TH2F* dHist_Xi_t_084;
-		TH2F* dHist_Xi_t_084_acc;
-		TH2F* dHist_Xi_t_089;
-		TH2F* dHist_Xi_t_089_acc;
-		TH2F* dHist_Xi_t_094;
-		TH2F* dHist_Xi_t_094_acc;
-		TH2F* dHist_Xi_t_099;
-		TH2F* dHist_Xi_t_099_acc;
-		TH2F* dHist_Xi_t_104;
-		TH2F* dHist_Xi_t_104_acc;
-		TH2F* dHist_Xi_t_109;
-		TH2F* dHist_Xi_t_109_acc;
-		TH2F* dHist_Xi_t_114;
-		TH2F* dHist_Xi_t_114_acc;
 
 		//Intermediate hyperon
 		TH1I* dHist_KlowpXim;
@@ -174,10 +145,10 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		TH1I* dHist_XiMass_MM_kTheta15to35_KinFit_acc;
 		
 
-	ClassDef(DSelector_kpkpxim__B4_M23_sept19, 0);
+	ClassDef(DSelector_kpkpxim__B4_M23_M18, 0);
 };
 
-void DSelector_kpkpxim__B4_M23_sept19::Get_ComboWrappers(void)
+void DSelector_kpkpxim__B4_M23_M18::Get_ComboWrappers(void)
 {
 	//Step 0
 	dStep0Wrapper = dComboWrapper->Get_ParticleComboStep(0);
@@ -191,9 +162,8 @@ void DSelector_kpkpxim__B4_M23_sept19::Get_ComboWrappers(void)
 
 	//Step 2
 	dStep2Wrapper = dComboWrapper->Get_ParticleComboStep(2);
-	dDecayingLambdaWrapper = dStep2Wrapper->Get_InitialParticle();
 	dPiMinus2Wrapper = static_cast<DChargedTrackHypothesis*>(dStep2Wrapper->Get_FinalParticle(0));
 	dProtonWrapper = static_cast<DChargedTrackHypothesis*>(dStep2Wrapper->Get_FinalParticle(1));
 }
 
-#endif // DSelector_kpkpxim__B4_M23_sept19_h
+#endif // DSelector_kpkpxim__B4_M23_M18_h
