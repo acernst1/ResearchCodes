@@ -25,12 +25,12 @@ char signal_numbers[100];
 char mcsignal_numbers[100];
 char xsecplot[100];
 char xsecplotC[100];
-char version[100]="test";
+//char version[100]="2018-01_ANAver03_test";
 
 double loc_i;
 double getbincontent(TH1F* hist, int bin) {  return hist->GetBinContent(bin);}
 double getbinerror(TH1F* AccH, int bin){  return AccH->GetBinError(bin);}
-void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TString thrownFilePath1, TString thrownFilePath2, TString thrownFilePath3)
+void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TString thrownFilePath1,const char version[17])
 {
     gStyle->SetOptStat(0);
     int numBins=10; 
@@ -57,9 +57,13 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
 
     TCanvas * flux_canvas = new TCanvas("flux_canvas", "flux_canvas",800,600);
     TH1F*  FluxH= (TH1F*) fluxfile->Get("tagged_flux");
-    FluxH->Draw();
-    FluxH->SaveAs("flux_numbers.C");
-    flux_canvas->Print("xsec_flux.png");
+    FluxH->Draw(); 
+    char flux_macro_name[100];
+    sprintf(flux_macro_name,"flux_numbers_%s.C",version);
+    FluxH->SaveAs(flux_macro_name);
+    char flux_plot_name[100];
+   sprintf(flux_plot_name,"xsec_flux_%s.png",version);
+    flux_canvas->Print(flux_plot_name);
 
     TFile* thrownfile_low = TFile::Open(thrownFilePath1);
     TCanvas * thrown_lowI_canvas = new TCanvas("thrown_lowI_canvas", "thrown_lowI_canvas",800,600);
@@ -69,9 +73,14 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
     TTree* thrownT_low=(TTree*) gDirectory->Get("Thrown_Tree");
     cout << "~~~~~~~~~~~" << thrownT_low << endl;
     thrownT_low->Draw("ThrownBeam__P4->E()>>thrown_lowI");
-    thrown_lowI->SaveAs("thrown_low_numbers.C");
-    thrown_lowI_canvas->Print("xsec_thrown_low.png");
+    char thrown_low_numbers_macro_name[100];
+    char thrown_low_numbers_plot_name[100];
+    sprintf(thrown_low_numbers_macro_name,"thrown_low_numbers_%s.C",version);
+    sprintf(thrown_low_numbers_plot_name, "xsec_thrown_low_%s.png",version);
+    thrown_lowI->SaveAs(thrown_low_numbers_macro_name);
+    thrown_lowI_canvas->Print(thrown_low_numbers_plot_name);
 
+/*
     TFile* thrownfile_med = TFile::Open(thrownFilePath2);
     TCanvas * thrown_medI_canvas = new TCanvas("thrown_medI_canvas", "thrown_medI_canvas",800,600);
     thrown_medI_canvas->cd();
@@ -94,18 +103,20 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
     thrownT_high->Draw("ThrownBeam__P4->E()>>thrown_highI");
     thrown_highI->SaveAs("thrown_high_numbers.C");
     thrown_highI_canvas->Print("xsec_thrown_high.png");
-
+*/
     TCanvas * thrown_canvas = new TCanvas("thrown_canvas", "thrown_canvas",800,600);
     sprintf(tplotname, "thrown_plot");
     TH1F * thrown_hist = (TH1F *) thrown_lowI->Clone(tplotname);
-    thrown_hist->Add(thrown_medI,1.);
-    thrown_hist->Add(thrown_highI,1.);
+    //thrown_hist->Add(thrown_medI,1.);
+    //thrown_hist->Add(thrown_highI,1.);
     thrown_hist->Draw();
-    thrown_hist->SaveAs("thrown_total_numbers.C");
-    thrown_canvas->Print("xsec_thrown.png");
-
-
-	    
+    char thrown_total_numbers_macro_name[100];
+    char thrown_total_numbers_plot_name[100];
+    sprintf(thrown_total_numbers_macro_name,"thrown_total_numbers_%s.C",version);
+    sprintf(thrown_total_numbers_plot_name, "xsec_thrown_total_%s.png",version);
+    thrown_hist->SaveAs(thrown_total_numbers_macro_name);
+    thrown_canvas->Print(thrown_total_numbers_plot_name);
+   
     TCanvas * xsec_canvas = new TCanvas("xsec_canvas", "xsec_canvas",800,600);
     TH1F * xsec = new TH1F("xsec", "Cross Section; E_{#gamma}; #sigma_{total} (nb)",numBins,minVal,maxVal); 
     TH1F * xsec_count = new TH1F("xsec_count", "Cross Section; E_{#gamma}; #sigma_{total} (nb)",numBins,minVal,maxVal); 
@@ -162,7 +173,8 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
 	TH1F * XiMassKinFit_acc = (TH1F*)datafile->Get(accplotname);
 	TH1F *mass_hist = (TH1F *) XiMassKinFit->Clone(accsubplotname);
 	mass_hist->Add(XiMassKinFit_acc,-0.5);
-
+	
+	cout << "MC file is " << mcfile << ". MC plot is " << mcplotname << endl;
 	TH1F * XiMassKinFit_mc = (TH1F*)mcfile->Get(mcplotname);
 	//XiMassKinFit_mc->Sumw2();
 	TH1F * XiMassKinFit_acc_mc = (TH1F*)mcfile->Get(mcaccplotname);
@@ -194,7 +206,7 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
 	double_t sig_events_err = w->var("nsig")->getError();
 	cout << "~~~~~~~sig~ " << i << " " << sig_events << " " << sig_events_err << endl; 
         massframe->Draw();
-	sprintf(signal_numbers, "signal_numbers_%s.C", bin);
+	sprintf(signal_numbers, "signal_numbers_%s_%s.C", bin,version);
 	massframe->SaveAs(signal_numbers);
         Xi_canvas->Print(plot);
 
@@ -218,7 +230,7 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
         double_t mc_sig_events = wmc->var("nsigmc")->getVal();
 	double_t mc_sig_events_err = wmc->var("nsigmc")->getError();
         mcmassframe->Draw();
-	sprintf(mcsignal_numbers, "mcsignal_numbers_%s.C", bin);
+	sprintf(mcsignal_numbers, "mcsignal_numbers_%s_%s.C", bin,version);
 	mcmassframe->SaveAs(signal_numbers);
         Xi_mc_canvas->Print(mcplot);
 
@@ -250,10 +262,10 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
 	xsec_count->SetBinError(i, xsec_count_err[i]);
 
 	eff_canvas->cd();
-	eff->SetBinContent(i,  efficiency[i]*100.);
-	eff->SetBinError(i,eff_err[i]*100.);
-	eff_count->SetBinContent(i, efficiency_count[i]*100.);
-	eff_count->SetBinError(i,eff_count_err[i]*100.);
+	eff->SetBinContent(i+1,  efficiency[i]*100.);
+	eff->SetBinError(i+1,eff_err[i]*100.);
+	eff_count->SetBinContent(i+1, efficiency_count[i]*100.);
+	eff_count->SetBinError(i+1,eff_count_err[i]*100.);
 
   }
 	auto legend02 = new TLegend(0.7,0.7,0.9,0.9);
@@ -269,7 +281,9 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
 	xsec->SaveAs(xsecplotC);
 	eff_canvas->cd();	
 	eff->Draw("PE1");
-	eff->SaveAs("efficiency_hist_test.C");
+	char efficiency_hist_numbers[100];
+       sprintf(efficiency_hist_numbers,"efficiency_hist_%s.C",version);
+	eff->SaveAs(efficiency_hist_numbers);
 	//eff_count->Draw("same");
 	legend02->Draw();
 	eff_canvas->Print(effplot);
@@ -299,8 +313,8 @@ for(int ith=13; ith<23; ith++)
 	xsec_gluex->SetBinContent(ith,xsec_val[ith-13]);
 	xsec_gluex->SetBinError(ith,xsec_err[ith-13]);
 }
-xsec_gluex->SetBinContent(14,4.48811);
-xsec_gluex->SetBinError(14,0.43384);
+//xsec_gluex->SetBinContent(14,4.48811);
+//xsec_gluex->SetBinError(14,0.43384);
 xsec_gluex->Draw("PE1");
 //xsec_gluex_count->Draw("same");
 axsec_canvas->Update();
@@ -324,8 +338,12 @@ legend->AddEntry(xsec_gluex,"GlueX");
 legend->AddEntry(xsec_clas, "CLAS g12");
 legend->Draw();
 axsec_canvas->Update();
-axsec_canvas->SaveAs("xsec_wclas.C");
-axsec_canvas->Print("xsec_wclas.png");
+char xsec_wclas_macro_name[100];
+sprintf(xsec_wclas_macro_name,"xsec_wclas_%s.C",version);
+axsec_canvas->SaveAs(xsec_wclas_macro_name);
+char xsec_wclas_plot_name[100];
+sprintf(xsec_wclas_plot_name,"xsec_wclas_%s.png",version);
+axsec_canvas->Print(xsec_wclas_plot_name);
 
 
 }
