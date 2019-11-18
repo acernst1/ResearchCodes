@@ -66,8 +66,14 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_ChiSqXi = new TH2I("ChiSqXi", "ChiSq",100,0.0,100.0,80,1.1,1.5);
 	dHist_XiMass_Measured=new TH1I("XiMass","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
 	dHist_XiMass_KinFit=new TH1I("XiMass_KinFit","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
-	dHist_MMKK_Measured=new TH1I("MMKK_Measured","MM(K^{+}K^{+}) (GeV/c^{2})", 80,1.1,1.5);
-	dHist_MMKK_KinFit=new TH1I("MMKK_KinFit","MM(K^{+}K^{+}) (GeV/c^{2},KinFit)", 80,1.1,1.5);
+	dHist_XiMass_Measured_nonan=new TH1I("XiMass_nonan","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
+	dHist_XiMass_KinFit_nonan=new TH1I("XiMass_KinFit_nonan","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
+	dHist_XiMass_Measured_acc=new TH1I("XiMass_acc","#Xi- Invariant Mass (GeV/c^{2})", 80,1.1,1.5);
+	dHist_XiMass_KinFit_acc=new TH1I("XiMass_KinFit_acc","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
+	dHist_XiMass_Measured_nonan_acc=new TH1I("XiMass_nonan_acc","#Xi- Invariant Mass (GeV/c^{2})", 80,1.1,1.5);
+	dHist_XiMass_KinFit_nonan_acc=new TH1I("XiMass_KinFit_nonan_acc","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
+	dHist_MMKK_Measured=new TH1I("MMKK_Measured","MM(K^{+}K^{+}) (GeV/c^{2})", 400,1.1,1.5);
+	dHist_MMKK_KinFit=new TH1I("MMKK_KinFit","MM(K^{+}K^{+}) (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_Xi_LambFlight = new TH2F("Xi_LambFlight", " ;#Lambda#pi^{-} mass (GeV); #sigma_{#Lambda}", 400, 1.1, 1.5,180, 0.0, 12.0);
 	dHist_Xi_LambFlight_acc = new TH2F("Xi_LambFlight_acc", " ;#Lambda#pi^{-} mass (GeV); #sigma_{#Lambda}", 400, 1.1, 1.5,180, 0.0, 12.0);
 
@@ -88,8 +94,8 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_acc_phi_t_4 = new TH2I("acc_phi_t_4", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 100, 0.0, 5.0,180, -180., 180.);
 
 	//plots for spin measurement of Xi-
-	dHist_Xi_cosGJ = new TH2I("Xi_cosGJ", " ;#Lambda#pi^{-} mass (GeV); cos #theta_{GJ}", 80, 1.1, 1.5,180, -1., 1.);
-	dHist_Xi_cosGJ_acc = new TH2I("Xi_cosGJ_acc", " ;#Lambda#pi^{-} mass (GeV); cos #theta_{GJ}", 80, 1.1, 1.5,180, -1., 1.);
+	dHist_Xi_cosGJ = new TH2I("Xi_cosGJ", " ;#Lambda#pi^{-} mass (GeV); cos #theta_{GJ}", 400, 1.1, 1.5,180, -1., 1.);
+	dHist_Xi_cosGJ_acc = new TH2I("Xi_cosGJ_acc", " ;#Lambda#pi^{-} mass (GeV); cos #theta_{GJ}", 400, 1.1, 1.5,180, -1., 1.);
 	
 	//plots for cross section measurements
 	dHist_Xi_Egamma = new TH2F("Xi_Egamma", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma}", 400, 1.1, 1.5,180, 3.0, 12.0);
@@ -171,8 +177,6 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_K_pTheta_KinFit_acc = new TH2I("K_pTheta_KinFit_acc", "K^{+} pvsTheta KinFit",28,0.0,140,40,0.0,10.0);
 	dHist_K_ptTheta_Measured_acc = new TH2I("K_ptTheta_Measured_acc", "K^{+} ptvsTheta Measured",28,0.0,140,40,0.0,2.0);
 	dHist_K_ptTheta_KinFit_acc = new TH2I("K_ptTheta_KinFit_acc", "K^{+} ptvsTheta KinFit",28,0.0,140,40,0.0,2.0);
-	dHist_XiMass_Measured_acc=new TH1I("XiMass_acc","#Xi- Invariant Mass (GeV/c^{2})", 80,1.1,1.5);
-	dHist_XiMass_KinFit_acc=new TH1I("XiMass_KinFit_acc","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_XiMass_KinFit_Selected_acc=new TH1I("XiMass_KinFit_Selected_acc","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 80,1.1,1.5);
 	dHist_MMKK_Measured_acc=new TH1I("MMKK_Measured_acc","MM(K^{+}K^{+}) (GeV/c^{2})", 80,1.1,1.5);
 	dHist_MMKK_KinFit_acc=new TH1I("MMKK_KinFit_acc","MM(K^{+}K^{+}) (GeV/c^{2},KinFit)", 80,1.1,1.5);
