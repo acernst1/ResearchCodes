@@ -102,8 +102,8 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_Xi_Egamma_acc = new TH2F("Xi_Egamma_acc", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV)", 400, 1.1, 1.5,180, 3.0, 12.0);
 	dHist_Xi_t = new TH2F("Xi_t", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,100, 0.0, 5.0);
 	dHist_Xi_t_acc = new TH2F("Xi_t_acc", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,100, 0.0, 5.0);
-	dHist_Xi_Egamma_t = new TH3F("Xi_Egamma_t",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,100, 0.0, 5.0);
-	dHist_Xi_Egamma_t_acc = new TH3F("Xi_Egamma_t_acc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,100, 0.0, 5.0);
+	dHist_Xi_Egamma_t = new TH3F("Xi_Egamma_t",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,200, 0.0, 10.0);
+	dHist_Xi_Egamma_t_acc = new TH3F("Xi_Egamma_t_acc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,200, 0.0, 10.0);
 	dHist_XiMass024 =new TH1I("XiMass024",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
 	dHist_XiMass029 =new TH1I("XiMass029",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
 	dHist_XiMass034 =new TH1I("XiMass034",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
