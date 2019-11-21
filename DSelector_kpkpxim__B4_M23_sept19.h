@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <math.h>
 
 #include "DSelector/DSelector.h"
 #include "DSelector/DHistogramActions.h"
@@ -57,7 +58,7 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		DChargedTrackHypothesis* dProtonWrapper;
 
 		//OUTPUT FILES
-		//ofstream *myfile;
+		ofstream *myfile;
 
 		// HISTOGRAMS
 		//General histograms
@@ -78,8 +79,6 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		TH1I* dHist_MMKK_KinFit;	
 		TH2F* dHist_Xi_LambFlight;
 		TH2F* dHist_Xi_LambFlight_acc;
-
-
 
 		//Detached vertices check
 		TH1I* dHist_XiPath;

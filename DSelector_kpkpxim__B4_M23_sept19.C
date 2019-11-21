@@ -194,8 +194,10 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_XiMass_MM_kTheta15to35_KinFit_acc=new TH1I("XiMass_MM_kTheta_KinFit_acc","#Xi- Invariant Mass #theta_{K}(15,35) (GeV/c^{2},KinFit)", 40,1.1,1.5);
 
 	//Output file initialization
-	//myfile = new ofstream("XiEventNumbers_XiMassKinFit_2018-08_batch01.txt");
-	//*myfile << "RunNumber " << "EventNumber " << "XiMass_Measured " << "XiMass_KinFit " << "DeltaT " << "BeamE " << " ChiSqNDf" <<  endl;
+	myfile = new ofstream("XiEventNumbers_brokenChiSq.txt");
+		*myfile << "Run Number " << "Event Number " << "locXiP4_Measured.M() " << "locXiP4_KinFit.M()  " << "locChiSqNdf  " << "ConfidenceLevel "<< "locBeamP4.E() " << "locDeltaT " << endl;
+		*myfile << "       " << "locKPlus1P4_Measured.P() " << "locKPlus2P4_Measured.P() " << "locProtonP4_Measured.P() " << "locPiMinus1P4_Measured.P() " << "locPiMinus2P4_Measured.P()" << endl;
+		*myfile << "       " << "locKPlus1P4.P() " << "locKPlus2P4.P() " << "locProtonP4.P() " << "locPiMinus1P4.P() " << "locPiMinus2P4.P()" << endl;
 
 	/************************** EXAMPLE USER INITIALIZATION: CUSTOM OUTPUT BRANCHES - MAIN TREE *************************/
 
@@ -533,11 +535,18 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 			locUsedSoFar_ChiSq.insert(locUsedThisCombo_ChiSq);
 		}
 		//E.g. ChiSq Cut
-		if((locChiSqNdf > 3.50))
+		if((locChiSqNdf > 3.50 || isnan(locChiSqNdf))) //In the 2018-08 dataset, some events that failed the KinFit have been written out
 		{
 			dComboWrapper->Set_IsComboCut(true);
 			continue;
 		}
+		if(isnan(locChiSqNdf))
+		{
+			*myfile << Get_RunNumber() << " " << Get_EventNumber() << " " << locXiP4_Measured.M() << " " << locXiP4_KinFit.M() << " " << locChiSqNdf << " " << dComboWrapper->Get_ConfidenceLevel_KinFit("") << " "<< locBeamP4.E() << " " << locDeltaT << endl;
+			*myfile << "       " << locKPlus1P4_Measured.P() << " " << locKPlus2P4_Measured.P() << " " << locProtonP4_Measured.P() << " " << locPiMinus1P4_Measured.P() << " " << locPiMinus2P4_Measured.P() << endl;
+			*myfile << "       " << locKPlus1P4.P() << " " << locKPlus2P4.P() << " " << locProtonP4.P() << " " << locPiMinus1P4.P() << " " << locPiMinus2P4.P() << endl;
+		}
+		
 
 		//E.g.  PostCuts Hists 
 		map<Particle_t, set<Int_t> > locUsedThisCombo_PostCuts;
@@ -895,8 +904,8 @@ void DSelector_kpkpxim__B4_M23_sept19::Finalize(void)
 		//Besides, it is best-practice to do post-processing (e.g. fitting) separately, in case there is a problem.
 
 	//DO YOUR STUFF HERE
-	//myfile->close();
-	//delete myfile;
+	myfile->close();
+	delete myfile;
 
 	//CALL THIS LAST
 	DSelector::Finalize(); //Saves results to the output file
