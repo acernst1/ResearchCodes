@@ -25,36 +25,40 @@ char signal_numbers[100];
 char mcsignal_numbers[100];
 char xsecplot[100];
 char xsecplotC[100];
-//char version[100]="2018-01_ANAver03_test";
 
-double loc_i;
 double getbincontent(TH1F* hist, int bin) {  return hist->GetBinContent(bin);}
 double getbinerror(TH1F* AccH, int bin){  return AccH->GetBinError(bin);}
+
 void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TString thrownFilePath1,const char version[17])
 {
     gStyle->SetOptStat(0);
-    int numBins=10; 
-    double minVal=6.4; 
-    double maxVal=11.4; 
+    double mintval = 0.0;
+    double maxtval = 10.0;
+    int numtBins=10; 
+    double minEval=6.4; 
+    double maxEval=11.4; 
+    int numEBins=10;
+    double deltat = (maxtval - mintval) / float(numtBins) ;
+    double deltaE = (maxEval - minEval) / float(numEBins) ;
     double constant = 1.22e-9; // constant in nb
     double flux=1.0;
     double flux_err=0.0;
     double tagged=1.0;
     double tagged_err=0.0;
-    double xsec_val[numBins];
-    double xsec_err[numBins];
-    double efficiency[numBins];
-    double eff_err[numBins];
-    double efficiency_count[numBins];
-    double eff_count_err[numBins];
-    double xsec_count_val[numBins];
-    double xsec_count_err[numBins];
-  
+    double xsec_val[numEBins][numtBins];
+    double xsec_err[numEBins][numtBins];
+    double efficiency[numEBins][numtBins];
+    double eff_err[numEBins][numtBins];
+    double canvas_margins = 1e-50;
+    TH1F * SignalYields[numEBins+1];
+    TH1F * MCYields[numEBins+1];
+    TH1F * ThrownYields[numEBins+1];
+    TH1F * Xsec[numEBins+1];
+
     TFile* datafile = TFile::Open(dataFilePath);
     TFile* fluxfile = TFile::Open(fluxFilePath);
     TFile* mcfile = TFile::Open(mcFilePath);
     
-
     TCanvas * flux_canvas = new TCanvas("flux_canvas", "flux_canvas",800,600);
     TH1F*  FluxH= (TH1F*) fluxfile->Get("tagged_flux");
     FluxH->Draw(); 
@@ -65,10 +69,11 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
    sprintf(flux_plot_name,"xsec_flux_%s.png",version);
     flux_canvas->Print(flux_plot_name);
 
+/*
     TFile* thrownfile_low = TFile::Open(thrownFilePath1);
     TCanvas * thrown_lowI_canvas = new TCanvas("thrown_lowI_canvas", "thrown_lowI_canvas",800,600);
     thrown_lowI_canvas->cd();
-    TH1F* thrown_lowI=new TH1F("thrown_lowI","thrown_lowI",numBins,minVal,maxVal);
+    TH1F* thrown_lowI=new TH1F("thrown_lowI","thrown_lowI",numtBins,minEval,maxEval);
     thrownfile_low->cd(); 
     TTree* thrownT_low=(TTree*) gDirectory->Get("Thrown_Tree");
     cout << "~~~~~~~~~~~" << thrownT_low << endl;
@@ -79,12 +84,12 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
     sprintf(thrown_low_numbers_plot_name, "xsec_thrown_low_%s.png",version);
     thrown_lowI->SaveAs(thrown_low_numbers_macro_name);
     thrown_lowI_canvas->Print(thrown_low_numbers_plot_name);
-
+*/
 /*
     TFile* thrownfile_med = TFile::Open(thrownFilePath2);
     TCanvas * thrown_medI_canvas = new TCanvas("thrown_medI_canvas", "thrown_medI_canvas",800,600);
     thrown_medI_canvas->cd();
-    TH1F* thrown_medI=new TH1F("thrown_medI","thrown_medI",numBins,minVal,maxVal);
+    TH1F* thrown_medI=new TH1F("thrown_medI","thrown_medI",numtBins,minEval,maxEval);
     thrownfile_med->cd(); 
     TTree* thrownT_med=(TTree*) gDirectory->Get("Thrown_Tree");
     cout << "~~~~~~~~~~~" << thrownT_med << endl;
@@ -95,7 +100,7 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
     TFile* thrownfile_high = TFile::Open(thrownFilePath3);
     TCanvas * thrown_highI_canvas = new TCanvas("thrown_highI_canvas", "thrown_highI_canvas",800,600);
     thrown_highI_canvas->cd();
-    TH1F* thrown_highI = new TH1F("thrown_highI","thrown_highI",numBins,minVal,maxVal);
+    TH1F* thrown_highI = new TH1F("thrown_highI","thrown_highI",numtBins,minEval,maxEval);
     thrown_highI_canvas->cd();
     thrownfile_high->cd(); 
     TTree* thrownT_high=(TTree*) gDirectory->Get("Thrown_Tree");
@@ -104,6 +109,7 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
     thrown_highI->SaveAs("thrown_high_numbers.C");
     thrown_highI_canvas->Print("xsec_thrown_high.png");
 */
+/*
     TCanvas * thrown_canvas = new TCanvas("thrown_canvas", "thrown_canvas",800,600);
     sprintf(tplotname, "thrown_plot");
     TH1F * thrown_hist = (TH1F *) thrown_lowI->Clone(tplotname);
@@ -116,34 +122,161 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
     sprintf(thrown_total_numbers_plot_name, "xsec_thrown_total_%s.png",version);
     thrown_hist->SaveAs(thrown_total_numbers_macro_name);
     thrown_canvas->Print(thrown_total_numbers_plot_name);
-   
-    TCanvas * xsec_canvas = new TCanvas("xsec_canvas", "xsec_canvas",800,600);
-    TH1F * xsec = new TH1F("xsec", "Cross Section; E_{#gamma}; #sigma_{total} (nb)",numBins,minVal,maxVal); 
-    TH1F * xsec_count = new TH1F("xsec_count", "Cross Section; E_{#gamma}; #sigma_{total} (nb)",numBins,minVal,maxVal); 
-    xsec->SetMarkerColor(kRed);
-    xsec->SetMarkerStyle(21);
-    xsec_count->SetMarkerColor(kBlue);
-    xsec_count->SetMarkerStyle(21);
-    xsec->SetLabelSize(0.035,"xy");
-    xsec->SetLabelOffset(0.001,"xy");
+  */ 
 
-    TH1F * eff = new TH1F("eff", "Efficiency; E_{#gamma}; Efficiency (%)",numBins,minVal,maxVal);
-    TH1F * eff_count = new TH1F("eff_count", "Efficiency; E_{#gamma}; #Efficiency (%)",numBins,minVal,maxVal);
+    TCanvas * sigyields_canvas = new TCanvas("sigyields_canvas", "sigyields_canvas",1200,900);
+    sigyields_canvas->Divide(4,3,canvas_margins,canvas_margins);
+    char sigyields_EBin_name[100];
+    char EBin_Title[100];
+
+    TCanvas * mcyields_canvas = new TCanvas("mcyields_canvas", "mcyields_canvas",1200,900);
+    mcyields_canvas->Divide(4,3,canvas_margins,canvas_margins);
+    char mcyields_EBin_name[100];
+
+   TH3F * XiMassKinFit_Egamma_t = (TH3F*)datafile->Get("Xi_Egamma_t");
+   TH3F * XiMassKinFit_Egamma_t_acc = (TH3F*)datafile->Get("Xi_Egamma_t_acc");
+   TH3F * XiMassKinFit_Egamma_t_accsub = (TH3F *) XiMassKinFit_Egamma_t->Clone("XiMassKinFit_Egamma_t_accsub");
+   XiMassKinFit_Egamma_t_accsub->Add(XiMassKinFit_Egamma_t_acc,-0.5);
+
+   TH3F * MC_XiMassKinFit_Egamma_t = (TH3F*)mcfile->Get("Xi_Egamma_t");
+   TH3F * MC_XiMassKinFit_Egamma_t_acc = (TH3F*)mcfile->Get("Xi_Egamma_t_acc");
+   TH3F * MC_XiMassKinFit_Egamma_t_accsub = (TH3F *) MC_XiMassKinFit_Egamma_t->Clone("MC_XiMassKinFit_Egamma_t_accsub");
+   MC_XiMassKinFit_Egamma_t_accsub->Add(MC_XiMassKinFit_Egamma_t_acc,-0.5);
+
+    for(int iE=0; iE<numEBins; iE++){
+	sigyields_canvas->cd(iE+1);
+	double Emin = deltaE * iE + (minEval);
+	double Emax = deltaE * (iE+1) + (minEval);
+	int Ebuffer = Emin*10;
+	int Ebinmin = XiMassKinFit_Egamma_t_accsub->GetYaxis()->FindBin(Emin);
+	int Ebinmax = XiMassKinFit_Egamma_t_accsub->GetYaxis()->FindBin(Emax) -1.;
+	XiMassKinFit_Egamma_t_accsub->GetYaxis()->SetRange(Ebinmin,Ebinmax);
+	TH2F * XiMassKinFit_Ebin_t_accsub = (TH2F *) XiMassKinFit_Egamma_t_accsub->Project3D("xz");
+	sprintf(sigyields_EBin_name,"sigyields_%03d",Ebuffer);
+    	SignalYields[iE+1] = new TH1F(sigyields_EBin_name, "; -t (GeV^2); Yields",numtBins,mintval,maxtval); 
+	sprintf(EBin_Title,"%3.1f <= E_{#gamma} < %3.1f",Emin,Emax);
+	SignalYields[iE+1]->SetTitle(EBin_Title);
+    	SignalYields[iE+1]->SetMarkerColor(kRed);
+    	SignalYields[iE+1]->SetMarkerStyle(21);
+    	SignalYields[iE+1]->SetLabelSize(0.035,"xy");
+    	SignalYields[iE+1]->SetLabelOffset(0.001,"xy");
+
+	mcyields_canvas->cd(iE+1);
+	int MC_Ebinmin = MC_XiMassKinFit_Egamma_t_accsub->GetYaxis()->FindBin(Emin);
+	int MC_Ebinmax = MC_XiMassKinFit_Egamma_t_accsub->GetYaxis()->FindBin(Emax) -1.;
+	MC_XiMassKinFit_Egamma_t_accsub->GetYaxis()->SetRange(MC_Ebinmin,MC_Ebinmax);
+	TH2F * MC_XiMassKinFit_Ebin_t_accsub = (TH2F *) MC_XiMassKinFit_Egamma_t_accsub->Project3D("xz");
+	sprintf(mcyields_EBin_name,"mcyields_%03d",Ebuffer);
+    	MCYields[iE+1] = new TH1F(mcyields_EBin_name, "; -t (GeV^2); Yields",numtBins,mintval,maxtval); 
+	sprintf(EBin_Title,"%3.1f <= E_{#gamma} < %3.1f",Emin,Emax);
+	MCYields[iE+1]->SetTitle(EBin_Title);
+    	MCYields[iE+1]->SetMarkerColor(kRed);
+    	MCYields[iE+1]->SetMarkerStyle(21);
+    	MCYields[iE+1]->SetLabelSize(0.035,"xy");
+    	MCYields[iE+1]->SetLabelOffset(0.001,"xy");
+
+	for(int it =0; it<numtBins; it++){
+		double tmin = deltat * it + mintval;
+		double tmax = deltat * (it+1) +mintval;
+		int tbuffer = tmin*10;
+		int tbinmin = XiMassKinFit_Ebin_t_accsub->GetXaxis()->FindBin(tmin);
+		int tbinmax = XiMassKinFit_Ebin_t_accsub->GetXaxis()->FindBin(tmax) -1.;
+		XiMassKinFit_Ebin_t_accsub->GetXaxis()->SetRange(tbinmin,tbinmax);
+		TH1F * XiMassKinFit_Ebin_tbin_accsub = (TH1F *) XiMassKinFit_Ebin_t_accsub->ProjectionY("XiMassKinFit_Ebin_tbin_accsub",tbinmin,tbinmax);
+
+		int MC_tbinmin = MC_XiMassKinFit_Ebin_t_accsub->GetXaxis()->FindBin(tmin);
+		int MC_tbinmax = MC_XiMassKinFit_Ebin_t_accsub->GetXaxis()->FindBin(tmax) -1.;
+		MC_XiMassKinFit_Ebin_t_accsub->GetXaxis()->SetRange(MC_tbinmin,MC_tbinmax);
+		TH1F * MC_XiMassKinFit_Ebin_tbin_accsub = (TH1F *) MC_XiMassKinFit_Ebin_t_accsub->ProjectionY("MC_XiMassKinFit_Ebin_tbin_accsub",MC_tbinmin,MC_tbinmax); 
+
+		sprintf(workspace,"w%03d_%03d",Ebuffer,tbuffer);
+        	sprintf(canvas,"Xi_canvas_%03d_%03d",Ebuffer,tbuffer);
+        	sprintf(plot,"diffxsec_sigfit_%s_%03d_%03d.png",version, Ebuffer,tbuffer);
+       
+		 sprintf(mcworkspace,"wmc%03d_%03d",Ebuffer,tbuffer);
+		sprintf(mccanvas,"Xi_canvas_mc_%03d_%03d",Ebuffer,tbuffer);
+        	sprintf(mcplot,"diffxsec_mcfit_%s_%03d_%03d.png",version, Ebuffer,tbuffer);
+       
+		RooWorkspace* w = new RooWorkspace(workspace);
+        	TCanvas * Xi_canvas = new TCanvas(canvas, canvas,800,600);
+        	RooRealVar mass("mass", "mass", 1.2, 1.5);
+        	RooDataHist *data = new RooDataHist("data", "Dataset of mass", mass, XiMassKinFit_Ebin_tbin_accsub);
+        	XiMassKinFit_Ebin_tbin_accsub->Print();
+        	w->import(RooArgSet(mass));
+        	w->factory("Chebychev::bkgd(mass,{c1[2.20,-1.e4,1.e4],c2[-1.557,-1.e4,1.e4]})");
+        	w->factory("Gaussian::gaus(mass,mean[1.32,1.31,1.33],sigma[0.005,0.001,0.01])");
+        	w->factory("SUM::model(nbkgd[150,0,1e5]*bkgd, nsig[20,0,1e3]*gaus)");
+        	w->pdf("model")->fitTo(*data,RooFit::Range(1.27,1.5),RooFit::Minos(1));
+        	RooPlot* massframe = mass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
+        	massframe->SetMaximum(75);
+        	massframe->SetXTitle("#Lambda#pi^{-} mass");
+        	data->plotOn(massframe) ;
+        	w->pdf("model")->paramOn(massframe);
+        	w->pdf("model")->plotOn(massframe);
+        	w->pdf("gaus")->plotOn(massframe, RooFit::LineStyle(kDotted),
+ 		RooFit::Normalization(w->var("nsig")->getVal(), RooAbsReal::NumEvent));
+        	w->pdf("bkgd")->plotOn(massframe, RooFit::LineStyle(kDotted),
+  			RooFit::Normalization(w->var("nbkgd")->getVal(), RooAbsReal::NumEvent));
+		double_t sig_events = w->var("nsig")->getVal();
+		double_t sig_events_err = w->var("nsig")->getError();
+		cout << "~~~~~~~sig~" << iE << "~" << it << " " << sig_events << " " << sig_events_err << endl; 
+		double max_y = sig_events*0.3;
+		massframe->SetMaximum(max_y);
+        	massframe->Draw();
+	     	Xi_canvas->Print(plot);
+
+       		RooWorkspace* wmc = new RooWorkspace(mcworkspace);
+        	TCanvas * Xi_mc_canvas = new TCanvas(mccanvas, mccanvas,800,600);
+        	RooRealVar mcmass("mcmass", "mcmass", 1.2, 1.5);
+        	RooDataHist *mc = new RooDataHist("mc", "MC of mass", mcmass, MC_XiMassKinFit_Ebin_tbin_accsub );
+        	MC_XiMassKinFit_Ebin_tbin_accsub->Print();
+        	wmc->import(RooArgSet(mcmass));
+        	wmc->factory("Gaussian::gausmc(mcmass,meanmc[1.32,1.31,1.33],sigmamc[0.005,0.001,0.01])");
+        	wmc->factory("SUM::mcmodel(nsigmc[50,0,1e6]*gausmc)");
+        	wmc->pdf("mcmodel")->fitTo(*mc,RooFit::Range(1.305,1.35),RooFit::Minos(1));
+        	RooPlot* mcmassframe = mcmass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
+        	mcmassframe->SetMaximum(2000);
+        	mcmassframe->SetXTitle("#Lambda#pi^{-} mass");
+        	mc->plotOn(mcmassframe) ;
+        	wmc->pdf("mcmodel")->paramOn(mcmassframe);
+       	 	wmc->pdf("mcmodel")->plotOn(mcmassframe);
+        	wmc->pdf("gausmc")->plotOn(mcmassframe, RooFit::LineStyle(kDotted),
+ 			RooFit::Normalization(wmc->var("nsigmc")->getVal(), RooAbsReal::NumEvent));
+        	double_t mc_sig_events = wmc->var("nsigmc")->getVal();
+		double_t mc_sig_events_err = wmc->var("nsigmc")->getError();
+		cout << "~~~~~~~MC~" << iE << "~" << it << " " << mc_sig_events << " " << mc_sig_events_err << endl; 
+		double mc_max_y = mc_sig_events *0.3;
+		mcmassframe->SetMaximum(mc_max_y);
+        	mcmassframe->Draw();
+	     	Xi_mc_canvas->Print(mcplot);
+
+		SignalYields[iE+1]->SetBinContent(it+1,sig_events);
+		SignalYields[iE+1]->SetBinError(it+1,sig_events_err);
+		MCYields[iE+1]->SetBinContent(it+1,mc_sig_events);
+		MCYields[iE+1]->SetBinError(it+1,mc_sig_events_err);
+
+	}
+	sigyields_canvas->cd(iE+1);
+	SignalYields[iE+1]->GetYaxis()->SetRangeUser(0,650);
+	SignalYields[iE+1]->Draw("pe1");
+	sigyields_canvas->Print("SignalYields_test.png");
+	sigyields_canvas->SaveAs("SignalYields_test.C");
+	mcyields_canvas->cd(iE+1);
+	MCYields[iE+1]->GetYaxis()->SetRangeUser(0,1750);
+	MCYields[iE+1]->Draw("pe1");
+	mcyields_canvas->Print("MCYields_test.png");
+	mcyields_canvas->SaveAs("MCYields_test.C");
+	
+   }
+/*
+    TH1F * eff = new TH1F("eff", "Efficiency; E_{#gamma}; Efficiency (%)",numtBins,minEval,maxEval);
     TCanvas * eff_canvas = new TCanvas("eff_canvas", "eff_canvas",800,600);
     eff->SetMarkerColor(kRed);
     eff->SetMarkerStyle(21);
-    eff_count->SetMarkerColor(kBlue);
-    eff_count->SetMarkerStyle(21);
     eff->SetLabelSize(0.035,"xy");
     eff->SetLabelOffset(0.001,"xy");
     eff->GetYaxis()->SetRangeUser(0,3);
 
-    for(int i=0; i<numBins; i++)
-	{
-	double delta=(maxVal- minVal)/float(numBins);
-	double Emin = delta * i + (minVal);
-	double Emax = delta * i + (minVal);
-	int buffer = Emin*10;
 	cout << "~~~~~~~E~ " << i << " " << Emin << " " << Emax << " " << buffer << endl;
         flux=getbincontent(FluxH,i+1);
         flux_err=getbinerror(FluxH,i+1); //+1 because 0 is the underflow, +5 because of binning
@@ -152,131 +285,28 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
         tagged_err=getbinerror(thrown_hist,i+1);
 	cout << "~~~~~~~thrown~ " << i << " " << tagged << " " << tagged_err << endl; 
         
-	sprintf(bin,"%03d",buffer);
-
-        sprintf(workspace,"w%s",bin);
-        sprintf(canvas,"Xi_canvas_%s",bin);
-        sprintf(plot,"xsec_sigfit_%s_%s.png",version, bin);
-        sprintf(plotname,"XiMass%s",bin);
-        sprintf(accplotname,"XiMass%s_acc",bin);
-        sprintf(accsubplotname,"XiMassKinFit%sacc",bin);
-
-        sprintf(mcworkspace,"wmc%s",bin);
-        sprintf(mccanvas,"Xi_canvas_mc_%s",bin);
-        sprintf(mcplot,"xsec_mcfit_%s_%s.png",version, bin);
-        sprintf(effplot,"xsec_eff_beamenergy_%s.png",version);
-        sprintf(mcplotname,"XiMass%s",bin);
-        sprintf(mcaccplotname,"XiMass%s_acc",bin);
-        sprintf(mcaccsubplotname,"XiMassKinFit%sacc",bin);
-
-	TH1F * XiMassKinFit = (TH1F*)datafile->Get(plotname);
-	TH1F * XiMassKinFit_acc = (TH1F*)datafile->Get(accplotname);
-	TH1F *mass_hist = (TH1F *) XiMassKinFit->Clone(accsubplotname);
-	mass_hist->Add(XiMassKinFit_acc,-0.5);
-	
-	cout << "MC file is " << mcfile << ". MC plot is " << mcplotname << endl;
-	TH1F * XiMassKinFit_mc = (TH1F*)mcfile->Get(mcplotname);
-	//XiMassKinFit_mc->Sumw2();
-	TH1F * XiMassKinFit_acc_mc = (TH1F*)mcfile->Get(mcaccplotname);
-	//XiMassKinFit_acc_mc->Sumw2();
-	TH1F *mass_mc_hist = (TH1F *) XiMassKinFit_mc->Clone(mcaccsubplotname);
-	mass_mc_hist->Add(XiMassKinFit_acc_mc,-0.5);
-
-        RooWorkspace* w = new RooWorkspace(workspace);
-        TCanvas * Xi_canvas = new TCanvas(canvas, canvas,800,600);
-        RooRealVar mass("mass", "mass", 1.2, 1.5);
-        RooDataHist *data = new RooDataHist("data", "Dataset of mass", mass, mass_hist);
-        mass_hist->Print();
-        w->import(RooArgSet(mass));
-        w->factory("Chebychev::bkgd(mass,{c1[2.20,-1.e4,1.e4],c2[-1.557,-1.e4,1.e4]})");
-        w->factory("Gaussian::gaus(mass,mean[1.32,1.31,1.33],sigma[0.005,0.001,0.01])");
-        w->factory("SUM::model(nbkgd[150,0,1e5]*bkgd, nsig[100,0,1e3]*gaus)");
-        w->pdf("model")->fitTo(*data,RooFit::Range(1.27,1.5),RooFit::Minos(1));
-        RooPlot* massframe = mass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
-        massframe->SetMaximum(325);
-        massframe->SetXTitle("#Lambda#pi^{-} mass");
-        data->plotOn(massframe) ;
-        w->pdf("model")->paramOn(massframe);
-        w->pdf("model")->plotOn(massframe);
-        w->pdf("gaus")->plotOn(massframe, RooFit::LineStyle(kDotted),
- 		RooFit::Normalization(w->var("nsig")->getVal(), RooAbsReal::NumEvent));
-        w->pdf("bkgd")->plotOn(massframe, RooFit::LineStyle(kDotted),
-  		RooFit::Normalization(w->var("nbkgd")->getVal(), RooAbsReal::NumEvent));
-	double_t sig_events = w->var("nsig")->getVal();
-	double_t sig_events_err = w->var("nsig")->getError();
-	cout << "~~~~~~~sig~ " << i << " " << sig_events << " " << sig_events_err << endl; 
-        massframe->Draw();
-	sprintf(signal_numbers, "signal_numbers_%s_%s.C", bin,version);
-	massframe->SaveAs(signal_numbers);
-        Xi_canvas->Print(plot);
-
-        RooWorkspace* wmc = new RooWorkspace(mcworkspace);
-        TCanvas * Xi_mc_canvas = new TCanvas(mccanvas, mccanvas,800,600);
-        RooRealVar mcmass("mcmass", "mcmass", 1.2, 1.5);
-        RooDataHist *mc = new RooDataHist("mc", "MC of mass", mcmass, mass_mc_hist);
-        mass_mc_hist->Print();
-        wmc->import(RooArgSet(mcmass));
-        wmc->factory("Gaussian::gausmc(mcmass,meanmc[1.32,1.31,1.33],sigmamc[0.005,0.001,0.01])");
-        wmc->factory("SUM::mcmodel(nsigmc[50,0,1e6]*gausmc)");
-        wmc->pdf("mcmodel")->fitTo(*mc,RooFit::Range(1.305,1.35),RooFit::Minos(1));
-        RooPlot* mcmassframe = mcmass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
-        mcmassframe->SetMaximum(1000);
-        mcmassframe->SetXTitle("#Lambda#pi^{-} mass");
-        mc->plotOn(mcmassframe) ;
-        wmc->pdf("mcmodel")->paramOn(mcmassframe);
-        wmc->pdf("mcmodel")->plotOn(mcmassframe);
-        wmc->pdf("gausmc")->plotOn(mcmassframe, RooFit::LineStyle(kDotted),
- 		RooFit::Normalization(wmc->var("nsigmc")->getVal(), RooAbsReal::NumEvent));
-        double_t mc_sig_events = wmc->var("nsigmc")->getVal();
-	double_t mc_sig_events_err = wmc->var("nsigmc")->getError();
-        mcmassframe->Draw();
-	sprintf(mcsignal_numbers, "mcsignal_numbers_%s_%s.C", bin,version);
-	mcmassframe->SaveAs(signal_numbers);
-        Xi_mc_canvas->Print(mcplot);
-
-        double mc_sig_events_count= getbincontent(mass_mc_hist, 22)+getbincontent(mass_mc_hist, 23)+getbincontent(mass_mc_hist, 24);
-        double mc_sig_events_count_err= sqrt(pow(getbinerror(mass_mc_hist,22),2)+pow(getbinerror(mass_mc_hist, 23),2)+pow(getbinerror(mass_mc_hist, 24),2));
-
 	efficiency[i]= mc_sig_events / tagged; 
 	eff_err[i] = efficiency[i]*sqrt(pow(mc_sig_events_err/mc_sig_events,2)+pow(tagged_err/tagged,2));
 
-        efficiency_count[i]= mc_sig_events_count / tagged; 
-        eff_count_err[i] = efficiency_count[i]*sqrt(pow(mc_sig_events_count_err/mc_sig_events_count,2)+pow(tagged_err/tagged,2));
+       cout << "~~~~~~~~~fit~mc~efficiency~" << i << " " << mc_sig_events << " " << tagged << " " << efficiency[i] << " " << eff_err[i] << endl;
 
-        cout << "~~~~~~~~~fit~mc~efficiency~" << i << " " << mc_sig_events << " " << tagged << " " << efficiency[i] << " " << eff_err[i] << endl;
-        cout << "~~~~~~~~~count~mc~efficiency~" << i << " " << mc_sig_events_count << " " << tagged << " " << efficiency_count[i] << " " << eff_count_err[i] << endl; 
- 
         xsec_val[i] = (sig_events)/(constant * flux * mc_sig_events / tagged);
 	xsec_err[i] = xsec_val[i]*sqrt(pow(sig_events_err/sig_events,2)+pow(flux_err/flux,2)+pow(mc_sig_events_err/mc_sig_events,2)+pow(tagged_err/tagged,2));
 
-        xsec_count_val[i] = (sig_events)/(constant  * flux * (efficiency_count[i]));
-	xsec_count_err[i] = xsec_count_val[i]*sqrt(pow(sig_events_err/sig_events,2)+pow(flux_err/flux,2)+pow(eff_count_err[i]/efficiency_count[i],2));
-
 	cout << "~~~~~~~fit~xsec~ " << i << " " << xsec_val[i] << " " << xsec_err[i] << endl;
-	cout << "~~~~~~~count~xsec~ " << i << " " << xsec_count_val[i] << " " << xsec_count_err[i] << endl; 
 
  	xsec_canvas->cd();
 	xsec->SetBinContent(i, xsec_val[i]);
 	xsec->SetBinError(i, xsec_err[i]);
-	xsec_count->SetBinContent(i, xsec_count_val[i]);
-	xsec_count->SetBinError(i, xsec_count_err[i]);
 
 	eff_canvas->cd();
 	eff->SetBinContent(i+1,  efficiency[i]*100.);
 	eff->SetBinError(i+1,eff_err[i]*100.);
-	eff_count->SetBinContent(i+1, efficiency_count[i]*100.);
-	eff_count->SetBinError(i+1,eff_count_err[i]*100.);
-
   }
-	auto legend02 = new TLegend(0.7,0.7,0.9,0.9);
-	legend02->AddEntry(xsec,"GlueX MC Fitting");
-	legend02->AddEntry(xsec_count,"GlueX MC Counting");
   	xsec_canvas->cd();
         xsec->Draw("PE1");
-	xsec_count->Draw("same");
-	legend02->Draw();
-	sprintf(xsecplot,"xsec_fitandcount_%s.png",version );
-	sprintf(xsecplotC,"xsec_fitandcount_%s.C",version );
+	sprintf(xsecplot,"xsec_fit_%s.png",version );
+	sprintf(xsecplotC,"xsec_fit_%s.C",version );
 	xsec_canvas->Print(xsecplot);
 	xsec->SaveAs(xsecplotC);
 	eff_canvas->cd();	
@@ -284,8 +314,6 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
 	char efficiency_hist_numbers[100];
        sprintf(efficiency_hist_numbers,"efficiency_hist_%s.C",version);
 	eff->SaveAs(efficiency_hist_numbers);
-	//eff_count->Draw("same");
-	legend02->Draw();
 	eff_canvas->Print(effplot);
 
 
@@ -345,7 +373,7 @@ char xsec_wclas_plot_name[100];
 sprintf(xsec_wclas_plot_name,"xsec_wclas_%s.png",version);
 axsec_canvas->Print(xsec_wclas_plot_name);
 
-
+*/
 }
 //xsec_gluex->SetName("Xi- Cross Section");
 //axsec->SetTitle("#Xi^{-} Cross Section; E_{#gamma} (GeV); #sigma (nb)");
