@@ -87,44 +87,7 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
     ThrownH->SaveAs(thrown_numbers_macro_name);
     thrown_canvas->Print(thrown_numbers_plot_name);
 
-/*
-    TFile* thrownfile_med = TFile::Open(thrownFilePath2);
-    TCanvas * thrown_medI_canvas = new TCanvas("thrown_medI_canvas", "thrown_medI_canvas",800,600);
-    thrown_medI_canvas->cd();
-    TH1F* thrown_medI=new TH1F("thrown_medI","thrown_medI",numtBins,minEval,maxEval);
-    thrownfile_med->cd(); 
-    TTree* thrownT_med=(TTree*) gDirectory->Get("Thrown_Tree");
-    cout << "~~~~~~~~~~~" << thrownT_med << endl;
-    thrownT_med->Draw("ThrownBeam__P4->E()>>thrown_medI");
-    thrown_medI->SaveAs("thrown_med_numbers.C");
-    thrown_medI_canvas->Print("xsec_thrown_med.png");
 
-    TFile* thrownfile_high = TFile::Open(thrownFilePath3);
-    TCanvas * thrown_highI_canvas = new TCanvas("thrown_highI_canvas", "thrown_highI_canvas",800,600);
-    thrown_highI_canvas->cd();
-    TH1F* thrown_highI = new TH1F("thrown_highI","thrown_highI",numtBins,minEval,maxEval);
-    thrown_highI_canvas->cd();
-    thrownfile_high->cd(); 
-    TTree* thrownT_high=(TTree*) gDirectory->Get("Thrown_Tree");
-    cout << "~~~~~~~~~~~" << thrownT_high << endl;
-    thrownT_high->Draw("ThrownBeam__P4->E()>>thrown_highI");
-    thrown_highI->SaveAs("thrown_high_numbers.C");
-    thrown_highI_canvas->Print("xsec_thrown_high.png");
-*/
-/*
-    TCanvas * thrown_canvas = new TCanvas("thrown_canvas", "thrown_canvas",800,600);
-    sprintf(tplotname, "thrown_plot");
-    TH1F * thrown_hist = (TH1F *) thrown_lowI->Clone(tplotname);
-    //thrown_hist->Add(thrown_medI,1.);
-    //thrown_hist->Add(thrown_highI,1.);
-    thrown_hist->Draw();
-    char thrown_total_numbers_macro_name[100];
-    char thrown_total_numbers_plot_name[100];
-    sprintf(thrown_total_numbers_macro_name,"thrown_total_numbers_%s.C",version);
-    sprintf(thrown_total_numbers_plot_name, "xsec_thrown_total_%s.png",version);
-    thrown_hist->SaveAs(thrown_total_numbers_macro_name);
-    thrown_canvas->Print(thrown_total_numbers_plot_name);
-  */ 
 /* DONE
     TCanvas * sigyields_canvas = new TCanvas("sigyields_canvas", "sigyields_canvas",1200,900);
     sigyields_canvas->Divide(4,3,canvas_margins,canvas_margins);
