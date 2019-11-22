@@ -58,7 +58,7 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
     TFile* datafile = TFile::Open(dataFilePath);
     TFile* fluxfile = TFile::Open(fluxFilePath);
     TFile* mcfile = TFile::Open(mcFilePath);
-    
+ /*   DONE
     TCanvas * flux_canvas = new TCanvas("flux_canvas", "flux_canvas",800,600);
     TH1F*  FluxH= (TH1F*) fluxfile->Get("tagged_flux");
     FluxH->Draw(); 
@@ -68,23 +68,25 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
     char flux_plot_name[100];
    sprintf(flux_plot_name,"xsec_flux_%s.png",version);
     flux_canvas->Print(flux_plot_name);
-
-/*
-    TFile* thrownfile_low = TFile::Open(thrownFilePath1);
-    TCanvas * thrown_lowI_canvas = new TCanvas("thrown_lowI_canvas", "thrown_lowI_canvas",800,600);
-    thrown_lowI_canvas->cd();
-    TH1F* thrown_lowI=new TH1F("thrown_lowI","thrown_lowI",numtBins,minEval,maxEval);
-    thrownfile_low->cd(); 
-    TTree* thrownT_low=(TTree*) gDirectory->Get("Thrown_Tree");
-    cout << "~~~~~~~~~~~" << thrownT_low << endl;
-    thrownT_low->Draw("ThrownBeam__P4->E()>>thrown_lowI");
-    char thrown_low_numbers_macro_name[100];
-    char thrown_low_numbers_plot_name[100];
-    sprintf(thrown_low_numbers_macro_name,"thrown_low_numbers_%s.C",version);
-    sprintf(thrown_low_numbers_plot_name, "xsec_thrown_low_%s.png",version);
-    thrown_lowI->SaveAs(thrown_low_numbers_macro_name);
-    thrown_lowI_canvas->Print(thrown_low_numbers_plot_name);
 */
+
+    TFile* thrownfile = TFile::Open(thrownFilePath1);
+    TCanvas * thrown_canvas = new TCanvas("thrown_canvas", "thrown_canvas",800,600);
+    thrown_canvas->cd();
+    thrownfile->cd(); 
+    TH2F*  ThrownH= (TH2F*) thrownfile->Get("Egamma_t");
+    ThrownH->GetXaxis()->SetRangeUser(minEval,maxEval);	
+    ThrownH->GetYaxis()->SetRangeUser(mintval,maxtval);
+    ThrownH->RebinX(ThrownH->GetNbinsX()/numEBins);    
+    ThrownH->RebinY(ThrownH->GetNbinsY()/numtBins);
+    ThrownH->Draw("colz");
+    char thrown_numbers_macro_name[100];
+    char thrown_numbers_plot_name[100];
+    sprintf(thrown_numbers_macro_name,"thrown_numbers_%s.C",version);
+    sprintf(thrown_numbers_plot_name, "xsec_thrown_%s.png",version);
+    ThrownH->SaveAs(thrown_numbers_macro_name);
+    thrown_canvas->Print(thrown_numbers_plot_name);
+
 /*
     TFile* thrownfile_med = TFile::Open(thrownFilePath2);
     TCanvas * thrown_medI_canvas = new TCanvas("thrown_medI_canvas", "thrown_medI_canvas",800,600);
@@ -123,7 +125,7 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
     thrown_hist->SaveAs(thrown_total_numbers_macro_name);
     thrown_canvas->Print(thrown_total_numbers_plot_name);
   */ 
-
+/* DONE
     TCanvas * sigyields_canvas = new TCanvas("sigyields_canvas", "sigyields_canvas",1200,900);
     sigyields_canvas->Divide(4,3,canvas_margins,canvas_margins);
     char sigyields_EBin_name[100];
@@ -268,6 +270,7 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
 	mcyields_canvas->SaveAs("MCYields_test.C");
 	
    }
+*/
 /*
     TH1F * eff = new TH1F("eff", "Efficiency; E_{#gamma}; Efficiency (%)",numtBins,minEval,maxEval);
     TCanvas * eff_canvas = new TCanvas("eff_canvas", "eff_canvas",800,600);
