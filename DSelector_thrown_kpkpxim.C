@@ -26,6 +26,13 @@ void DSelector_thrown_kpkpxim::Init(TTree *locTree)
 	dPreviousRunNumber = 0;
 
 	/******************************** EXAMPLE USER INITIALIZATION: STAND-ALONE HISTOGRAMS *******************************/
+	dHist_Egamma_t = new TH2F("Egamma_t","; E_{#gamma} (GeV); -t (GeV/c)^{2}",180, 3.0, 12.0,200, 0.0, 10.0);
+	dHist_Egamma_t_acc = new TH2F("Egamma_t_acc","; E_{#gamma} (GeV); -t (GeV/c)^{2}",180, 3.0, 12.0,200, 0.0, 10.0);
+	dHist_KPlus1vsKPlus2_p = new TH2F("KPlus1vsKPlus2_p",";K^{+}_{1} p (GeV);K^{+}_{2} p (GeV)",200,0.0,10.0,200,0.0,10.0);
+	dHist_KPlus1vsKPlus2_theta = new TH2F("KPlus1vsKPlus2_theta",";K^{+}_{1} #theta;K^{+}_{2} #theta",140,0.0,140.0,140,0.0,140.0);
+	dHist_KPlus1_pTheta = new TH2F("KPlus1_ptheta",";K^{+}_{1} #theta; K^{+}_{1} p (GeV);",140,0.0,140.0, 200,0.0,10.0);
+	dHist_KPlus2_pTheta = new TH2F("KPlus2_ptheta",";K^{+}_{2} #theta; K^{+}_{2} p (GeV);",140,0.0,140.0, 200,0.0,10.0);
+
 
 	/************************************* ADVANCED EXAMPLE: CHOOSE BRANCHES TO READ ************************************/
 
@@ -70,6 +77,7 @@ Bool_t DSelector_thrown_kpkpxim::Process(Long64_t locEntry)
 	/********************************************* SETUP UNIQUENESS TRACKING ********************************************/
 
 	//INSERT USER ANALYSIS UNIQUENESS TRACKING HERE
+	set<map<Particle_t,set<Int_t>>>locUsedSoFar_thrown;
 
 	/******************************************* LOOP OVER THROWN DATA ***************************************/
 
@@ -77,7 +85,11 @@ Bool_t DSelector_thrown_kpkpxim::Process(Long64_t locEntry)
 	double locBeamEnergyUsedForBinning = 0.0;
 	if(dThrownBeam != NULL)
 		locBeamEnergyUsedForBinning = dThrownBeam->Get_P4().E();
+		TLorentzVector locBeamP4 = dThrownBeam->Get_P4();
 
+
+	TLorentzVector locKPlus1P4;
+	TLorentzVector locKPlus2P4;
 	//Loop over throwns
 	for(UInt_t loc_i = 0; loc_i < Get_NumThrown(); ++loc_i)
 	{
@@ -88,7 +100,28 @@ Bool_t DSelector_thrown_kpkpxim::Process(Long64_t locEntry)
 		Particle_t locPID = dThrownWrapper->Get_PID();
 		TLorentzVector locThrownP4 = dThrownWrapper->Get_P4();
 		//cout << "Thrown " << loc_i << ": " << locPID << ", " << locThrownP4.Px() << ", " << locThrownP4.Py() << ", " << locThrownP4.Pz() << ", " << locThrownP4.E() << endl;
+		if(locPID == 11) {
+			if(loc_i==0) {locKPlus1P4 = locThrownP4; }
+			if(loc_i==1) {locKPlus2P4 = locThrownP4; }
+		}
 	}
+
+	TLorentzVector locKPlusP4_lowp;
+	TLorentzVector locKPlusP4_highp;		
+	if(locKPlus1P4.Theta() < 13*TMath::Pi()/180.) { locKPlusP4_highp = locKPlus1P4; locKPlusP4_lowp = locKPlus2P4;}
+	else { locKPlusP4_highp = locKPlus2P4; locKPlusP4_lowp = locKPlus1P4; }
+	double t= (locBeamP4 - locKPlusP4_highp).M2();
+
+	map<Particle_t, set<Int_t> > locUsedThisCombo_thrown;
+		if(locUsedSoFar_thrown.find(locUsedThisCombo_thrown) == locUsedSoFar_thrown.end()){
+			dHist_KPlus1vsKPlus2_p->Fill(locKPlus1P4.P(),locKPlus2P4.P());
+			dHist_KPlus1vsKPlus2_theta->Fill(locKPlus1P4.Theta()*180./TMath::Pi(),locKPlus2P4.Theta()*180./TMath::Pi());
+			dHist_KPlus1_pTheta->Fill(locKPlus1P4.Theta()*180./TMath::Pi(),locKPlus1P4.P()); 
+			dHist_KPlus2_pTheta->Fill(locKPlus2P4.Theta()*180./TMath::Pi(),locKPlus2P4.P());  
+			dHist_Egamma_t->Fill(locBeamEnergyUsedForBinning,-1.*t);
+		locUsedSoFar_thrown.insert(locUsedThisCombo_thrown);
+	}
+	
 
 	//OR Manually:
 	//BEWARE: Do not expect the particles to be at the same array indices from one event to the next!!!!
