@@ -63,14 +63,14 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_BeamEnergy = new TH1I("BeamEnergy", ";Beam Energy (GeV)", 600, 0.0, 12.0);
 	dHist_BeamBunch = new TH1I("BeamBunch", ";Beam Bunch", 400, -20.0, 20.0);
 	dHist_ChiSq = new TH1I("ChiSq", "ChiSq", 200, 0.0, 100.0);
-	dHist_ChiSqXi = new TH2I("ChiSqXi", "ChiSq",100,0.0,100.0,80,1.1,1.5);
+	dHist_ChiSqXi = new TH2I("ChiSqXi", "ChiSq",100,0.0,100.0,400,1.1,1.5);
 	dHist_XiMass_Measured=new TH1I("XiMass","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
 	dHist_XiMass_KinFit=new TH1I("XiMass_KinFit","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_XiMass_Measured_nonan=new TH1I("XiMass_nonan","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
 	dHist_XiMass_KinFit_nonan=new TH1I("XiMass_KinFit_nonan","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
-	dHist_XiMass_Measured_acc=new TH1I("XiMass_acc","#Xi- Invariant Mass (GeV/c^{2})", 80,1.1,1.5);
+	dHist_XiMass_Measured_acc=new TH1I("XiMass_acc","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
 	dHist_XiMass_KinFit_acc=new TH1I("XiMass_KinFit_acc","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
-	dHist_XiMass_Measured_nonan_acc=new TH1I("XiMass_nonan_acc","#Xi- Invariant Mass (GeV/c^{2})", 80,1.1,1.5);
+	dHist_XiMass_Measured_nonan_acc=new TH1I("XiMass_nonan_acc","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
 	dHist_XiMass_KinFit_nonan_acc=new TH1I("XiMass_KinFit_nonan_acc","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_MMKK_Measured=new TH1I("MMKK_Measured","MM(K^{+}K^{+}) (GeV/c^{2})", 400,1.1,1.5);
 	dHist_MMKK_KinFit=new TH1I("MMKK_KinFit","MM(K^{+}K^{+}) (GeV/c^{2},KinFit)", 400,1.1,1.5);
@@ -152,7 +152,7 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_Khighp_pvstheta_acc = new TH2I("Khighp_pvstheta_acc", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 
 	//angular distributions for every particle
-	dHist_XiMass_KinFit_Selected=new TH1I("XiMass_KinFit_Selected","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 80,1.1,1.5);
+	dHist_XiMass_KinFit_Selected=new TH1I("XiMass_KinFit_Selected","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_K_pTheta_Measured = new TH2I("K_pTheta_Measured", "K^{+} pvsTheta Measured",28,0.0,140,40,0.0,10.0);
 	dHist_p_pTheta_Measured = new TH2I("p_pTheta_Measured", "p pvsTheta Measured",28,0.0,140,40,0.0,10.0);
 	dHist_p_pTheta_KinFit = new TH2I("p_pTheta_KinFit", "p pvsTheta Measured",28,0.0,140,40,0.0,10.0);
@@ -177,9 +177,9 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_K_pTheta_KinFit_acc = new TH2I("K_pTheta_KinFit_acc", "K^{+} pvsTheta KinFit",28,0.0,140,40,0.0,10.0);
 	dHist_K_ptTheta_Measured_acc = new TH2I("K_ptTheta_Measured_acc", "K^{+} ptvsTheta Measured",28,0.0,140,40,0.0,2.0);
 	dHist_K_ptTheta_KinFit_acc = new TH2I("K_ptTheta_KinFit_acc", "K^{+} ptvsTheta KinFit",28,0.0,140,40,0.0,2.0);
-	dHist_XiMass_KinFit_Selected_acc=new TH1I("XiMass_KinFit_Selected_acc","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 80,1.1,1.5);
-	dHist_MMKK_Measured_acc=new TH1I("MMKK_Measured_acc","MM(K^{+}K^{+}) (GeV/c^{2})", 80,1.1,1.5);
-	dHist_MMKK_KinFit_acc=new TH1I("MMKK_KinFit_acc","MM(K^{+}K^{+}) (GeV/c^{2},KinFit)", 80,1.1,1.5);
+	dHist_XiMass_KinFit_Selected_acc=new TH1I("XiMass_KinFit_Selected_acc","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
+	dHist_MMKK_Measured_acc=new TH1I("MMKK_Measured_acc","MM(K^{+}K^{+}) (GeV/c^{2})", 400,1.1,1.5);
+	dHist_MMKK_KinFit_acc=new TH1I("MMKK_KinFit_acc","MM(K^{+}K^{+}) (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_XiMass_kTheta15to35_Measured_acc=new TH1I("XiMass_kTheta_Measured_acc","#Xi- Invariant Mass #theta_{K}(15,35) (GeV/c^{2})", 40,1.1,1.5);
 	dHist_XiMass_kTheta15to35_KinFit_acc=new TH1I("XiMass_kTheta_KinFit_acc","#Xi- Invariant Mass #theta_{K}(15,35) (GeV/c^{2},KinFit)", 40,1.1,1.5);
 	dHist_pi_pTheta_Measured_acc = new TH2I("pi_pTheta_Measured_acc", "#pi^{-} pvsTheta Measured",28,0.0,140,30,0.0,3.0);
