@@ -4,6 +4,7 @@
 #include "TMath.h"
 #include "RooPlot.h"
 
+//initialize all the things
 double getbincontent(TH1F* AccH, int bin);
 double getbinerror(TH1F* AccH, int bin);
 char plotname[100];
@@ -25,6 +26,44 @@ char signal_numbers[100];
 char mcsignal_numbers[100];
 char xsecplot[100];
 char xsecplotC[100];
+char flux_macro_name[100];
+char flux_plot_name[100];
+char thrown_numbers_macro_name[100];
+char thrown_numbers_plot_name[100];
+char xsec_EBin_name[100];
+char sigyields_EBin_name[100];
+char EBin_Title[100];
+char mcyields_EBin_name[100];
+char eff_EBin_name[100];
+double mintval = 0.0;
+double maxtval = 10.0;
+int numtBins=10; 
+double minEval=6.4; 
+double maxEval=11.4; 
+int numEBins=10;
+double constant = 1.22e-9; // constant in nb
+double tagged=1.0;
+double tagged_err=0.0;
+double sig_val[numEBins+1][numtBins+1];
+double sig_err[numEBins+1][numtBins+1];
+double mc_val[numEBins+1][numtBins+1];
+double mc_err[numEBins+1][numtBins+1];
+double thrown_val[numEBins+1][numtBins+1];
+double thrown_err[numEBins+1][numtBins+1];
+double flux_val[numEBins+1];
+double flux_err[numEBins+1];
+double eff_val[numEBins+1][numtBins+1];
+double eff_err[numEBins+1][numtBins+1];
+double xsec_val[numEBins+1][numtBins+1];
+double xsec_err[numEBins+1][numtBins+1];
+double canvas_margins = 1e-50;
+double deltat;
+double deltaE;
+TH1F * SignalYields[numEBins+1];
+TH1F * MCYields[numEBins+1];
+TH1F *Eff[numEBins+1];
+TH1F * ThrownYields[numEBins+1];
+TH1F * XSec[numEBins+1];
 
 double getbincontent(TH1F* hist, int bin) {  return hist->GetBinContent(bin);}
 double getbinerror(TH1F* AccH, int bin){  return AccH->GetBinError(bin);}
@@ -32,35 +71,8 @@ double getbinerror(TH1F* AccH, int bin){  return AccH->GetBinError(bin);}
 void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TString thrownFilePath1,const char version[17])
 {
     gStyle->SetOptStat(0);
-    double mintval = 0.0;
-    double maxtval = 10.0;
-    int numtBins=10; 
-    double minEval=6.4; 
-    double maxEval=11.4; 
-    int numEBins=10;
-    double deltat = (maxtval - mintval) / float(numtBins) ;
-    double deltaE = (maxEval - minEval) / float(numEBins) ;
-    double constant = 1.22e-9; // constant in nb
-    double tagged=1.0;
-    double tagged_err=0.0;
-    double sig_val[numEBins+1][numtBins+1];
-    double sig_err[numEBins+1][numtBins+1];
-    double mc_val[numEBins+1][numtBins+1];
-    double mc_err[numEBins+1][numtBins+1];
-    double thrown_val[numEBins+1][numtBins+1];
-    double thrown_err[numEBins+1][numtBins+1];
-    double flux_val[numEBins+1];
-    double flux_err[numEBins+1];
-    double eff_val[numEBins+1][numtBins+1];
-    double eff_err[numEBins+1][numtBins+1];
-    double xsec_val[numEBins+1][numtBins+1];
-    double xsec_err[numEBins+1][numtBins+1];
-    double canvas_margins = 1e-50;
-    TH1F * SignalYields[numEBins+1];
-    TH1F * MCYields[numEBins+1];
-    TH1F *Eff[numEBins+1];
-    TH1F * ThrownYields[numEBins+1];
-    TH1F * XSec[numEBins+1];
+    deltat = (maxtval - mintval) / float(numtBins) ;
+    deltaE = (maxEval - minEval) / float(numEBins) ;
 
     TFile* datafile = TFile::Open(dataFilePath);
     TFile* fluxfile = TFile::Open(fluxFilePath);
@@ -69,11 +81,9 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
     TCanvas * flux_canvas = new TCanvas("flux_canvas", "flux_canvas",800,600);
     TH1F*  FluxH= (TH1F*) fluxfile->Get("tagged_flux");
     FluxH->Draw(); 
-    char flux_macro_name[100];
     sprintf(flux_macro_name,"flux_numbers_%s.C",version);
     FluxH->SaveAs(flux_macro_name);
-    char flux_plot_name[100];
-   sprintf(flux_plot_name,"xsec_flux_%s.png",version);
+    sprintf(flux_plot_name,"xsec_flux_%s.png",version);
     flux_canvas->Print(flux_plot_name);
 
     TFile* thrownfile = TFile::Open(thrownFilePath1);
@@ -86,8 +96,6 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
     ThrownH->RebinX(ThrownH->GetNbinsX()/numEBins);    
     ThrownH->RebinY(ThrownH->GetNbinsY()/numtBins);
     ThrownH->Draw("colz");
-    char thrown_numbers_macro_name[100];
-    char thrown_numbers_plot_name[100];
     sprintf(thrown_numbers_macro_name,"thrown_numbers_%s.C",version);
     sprintf(thrown_numbers_plot_name, "xsec_thrown_%s.png",version);
     ThrownH->SaveAs(thrown_numbers_macro_name);
@@ -95,20 +103,15 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
 
     TCanvas * sigyields_canvas = new TCanvas("sigyields_canvas", "sigyields_canvas",1200,900);
     sigyields_canvas->Divide(4,3,canvas_margins,canvas_margins);
-    char sigyields_EBin_name[100];
-    char EBin_Title[100];
 
     TCanvas * mcyields_canvas = new TCanvas("mcyields_canvas", "mcyields_canvas",1200,900);
     mcyields_canvas->Divide(4,3,canvas_margins,canvas_margins);
-    char mcyields_EBin_name[100];
 
     TCanvas * eff_canvas = new TCanvas("eff_canvas", "eff_canvas",1200,900);
     eff_canvas->Divide(4,3,canvas_margins,canvas_margins);
-    char eff_EBin_name[100];
 
     TCanvas * xsec_canvas = new TCanvas("xsec_canvas", "xsec_canvas",1200,900);
     xsec_canvas->Divide(4,3,canvas_margins,canvas_margins);
-    char xsec_EBin_name[100];
 
    TH3F * XiMassKinFit_Egamma_t = (TH3F*)datafile->Get("Xi_Egamma_t");
    TH3F * XiMassKinFit_Egamma_t_acc = (TH3F*)datafile->Get("Xi_Egamma_t_acc");
