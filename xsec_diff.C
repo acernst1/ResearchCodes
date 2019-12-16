@@ -184,11 +184,13 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
 		int tbinmax = XiMassKinFit_Ebin_t_accsub->GetXaxis()->FindBin(tmax) -1.;
 		XiMassKinFit_Ebin_t_accsub->GetXaxis()->SetRange(tbinmin,tbinmax);
 		TH1F * XiMassKinFit_Ebin_tbin_accsub = (TH1F *) XiMassKinFit_Ebin_t_accsub->ProjectionY("XiMassKinFit_Ebin_tbin_accsub",tbinmin,tbinmax);
+		XiMassKinFit_Ebin_tbin_accsub->Rebin(XiMassKinFit_Ebin_tbin_accsub->GetNbinsX()/nummassBins);
 
 		int MC_tbinmin = MC_XiMassKinFit_Ebin_t_accsub->GetXaxis()->FindBin(tmin);
 		int MC_tbinmax = MC_XiMassKinFit_Ebin_t_accsub->GetXaxis()->FindBin(tmax) -1.;
 		MC_XiMassKinFit_Ebin_t_accsub->GetXaxis()->SetRange(MC_tbinmin,MC_tbinmax);
 		TH1F * MC_XiMassKinFit_Ebin_tbin_accsub = (TH1F *) MC_XiMassKinFit_Ebin_t_accsub->ProjectionY("MC_XiMassKinFit_Ebin_tbin_accsub",MC_tbinmin,MC_tbinmax); 
+		MC_XiMassKinFit_Ebin_tbin_accsub->Rebin(MC_XiMassKinFit_Ebin_tbin_accsub->GetNbinsX()/nummassBins);
 
 		sprintf(workspace,"w%03d_%03d",Ebuffer,tbuffer);
         	sprintf(canvas,"Xi_canvas_%03d_%03d",Ebuffer,tbuffer);
