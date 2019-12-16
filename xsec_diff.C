@@ -84,6 +84,8 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
 
     TCanvas * flux_canvas = new TCanvas("flux_canvas", "flux_canvas",800,600);
     TH1F*  FluxH= (TH1F*) fluxfile->Get("tagged_flux");
+    FluxH->GetXaxis()->SetRangeUser(minEval,maxEval);
+    FluxH->Rebin(FluxH->GetNbinsX()/numEBins);
     FluxH->Draw(); 
     sprintf(flux_macro_name,"flux_numbers_%s.C",version);
     FluxH->SaveAs(flux_macro_name);
@@ -267,7 +269,7 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
 		cout << "~~~~~~~Thrown~ " << iE << "~" << it << " " << thrown_Ebin_tbin << " " << thrown_Ebin_tbin_err << endl;
 
         	flux_val[iE+1]=getbincontent(FluxH,iE+1);
-        	flux_err[iE+1]=getbinerror(FluxH,iE+1); //+1 because 0 is the underflow, +5 because of binning
+        	flux_err[iE+1]=getbinerror(FluxH,iE+1); //+1 because 0 is the underflow
 		cout << "~~~~~~~flux~" << iE << "~" << it << " " << flux_val[iE+1] << " " << flux_err[iE+1] << endl;
 
 		eff_val[iE+1][it+1] = mc_val[iE+1][it+1]/thrown_val[iE+1][it+1];
