@@ -41,6 +41,10 @@ int numtBins=10;
 double minEval=6.4; 
 double maxEval=11.4; 
 int numEBins=10;
+double minmass=1.2; 
+double minfitmass=1.27;
+double maxmass=1.5; 
+int nummassBins=80;
 double constant = 1.22e-9; // constant in nb
 double tagged=1.0;
 double tagged_err=0.0;
@@ -196,16 +200,15 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
        
 		RooWorkspace* w = new RooWorkspace(workspace);
         	TCanvas * Xi_canvas = new TCanvas(canvas, canvas,800,600);
-        	RooRealVar mass("mass", "mass", 1.2, 1.5);
+        	RooRealVar mass("mass", "mass", minmass, maxmass);
         	RooDataHist *data = new RooDataHist("data", "Dataset of mass", mass, XiMassKinFit_Ebin_tbin_accsub);
         	XiMassKinFit_Ebin_tbin_accsub->Print();
         	w->import(RooArgSet(mass));
         	w->factory("Chebychev::bkgd(mass,{c1[2.20,-1.e4,1.e4],c2[-1.557,-1.e4,1.e4]})");
         	w->factory("Gaussian::gaus(mass,mean[1.32,1.31,1.33],sigma[0.005,0.001,0.01])");
         	w->factory("SUM::model(nbkgd[150,0,1e5]*bkgd, nsig[20,0,1e3]*gaus)");
-        	w->pdf("model")->fitTo(*data,RooFit::Range(1.27,1.5),RooFit::Minos(1));
+        	w->pdf("model")->fitTo(*data,RooFit::Range(minfitmass,maxmass),RooFit::Minos(1));
         	RooPlot* massframe = mass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
-        	massframe->SetMaximum(75);
         	massframe->SetXTitle("#Lambda#pi^{-} mass");
         	data->plotOn(massframe) ;
         	w->pdf("model")->paramOn(massframe);
@@ -226,7 +229,7 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
 
        		RooWorkspace* wmc = new RooWorkspace(mcworkspace);
         	TCanvas * Xi_mc_canvas = new TCanvas(mccanvas, mccanvas,800,600);
-        	RooRealVar mcmass("mcmass", "mcmass", 1.2, 1.5);
+        	RooRealVar mcmass("mcmass", "mcmass", minmass, maxmass);
         	RooDataHist *mc = new RooDataHist("mc", "MC of mass", mcmass, MC_XiMassKinFit_Ebin_tbin_accsub );
         	MC_XiMassKinFit_Ebin_tbin_accsub->Print();
         	wmc->import(RooArgSet(mcmass));
@@ -234,7 +237,6 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
         	wmc->factory("SUM::mcmodel(nsigmc[50,0,1e6]*gausmc)");
         	wmc->pdf("mcmodel")->fitTo(*mc,RooFit::Range(1.305,1.35),RooFit::Minos(1));
         	RooPlot* mcmassframe = mcmass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
-        	mcmassframe->SetMaximum(2000);
         	mcmassframe->SetXTitle("#Lambda#pi^{-} mass");
         	mc->plotOn(mcmassframe) ;
         	wmc->pdf("mcmodel")->paramOn(mcmassframe);
