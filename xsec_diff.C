@@ -34,6 +34,8 @@ char xsec_EBin_name[100];
 char sigyields_EBin_name[100];
 char sigmass_EBin_name[100];
 char sigwidth_EBin_name[100];
+char mcmass_EBin_name[100];
+char mcwidth_EBin_name[100];
 char EBin_Title[100];
 char mcyields_EBin_name[100];
 char eff_EBin_name[100];
@@ -68,6 +70,8 @@ double deltaE;
 TH1F * SignalYields[numEBins+1];
 TH1F * SignalMass[numEBins+1];
 TH1F * SignalWidth[numEBins+1];
+TH1F * MCMass[numEBins+1];
+TH1F * MCWidth[numEBins+1];
 TH1F * MCYields[numEBins+1];
 TH1F *Eff[numEBins+1];
 TH1F * ThrownYields[numEBins+1];
@@ -123,6 +127,12 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
     TCanvas * mcyields_canvas = new TCanvas("mcyields_canvas", "mcyields_canvas",1200,900);
     mcyields_canvas->Divide(4,3,canvas_margins,canvas_margins);
 
+    TCanvas * mcmass_canvas = new TCanvas("mcmass_canvas", "mcmass_canvas",1200,900);
+    mcmass_canvas->Divide(4,3,canvas_margins,canvas_margins);
+
+    TCanvas * mcwidth_canvas = new TCanvas("mcwidth_canvas", "mcwidth_canvas",1200,900);
+    mcwidth_canvas->Divide(4,3,canvas_margins,canvas_margins);
+
     TCanvas * eff_canvas = new TCanvas("eff_canvas", "eff_canvas",1200,900);
     eff_canvas->Divide(4,3,canvas_margins,canvas_margins);
 
@@ -159,7 +169,7 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
 
 	sigmass_canvas->cd(iE+1);
 	sprintf(sigmass_EBin_name,"sigmass_%03d",Ebuffer);
-    	SignalMass[iE+1] = new TH1F(sigmass_EBin_name, "; -t (GeV^2); Yields",numtBins,mintval,maxtval); 
+    	SignalMass[iE+1] = new TH1F(sigmass_EBin_name, "; -t (GeV^2); Mass",numtBins,mintval,maxtval); 
 	SignalMass[iE+1]->SetTitle(EBin_Title);
     	SignalMass[iE+1]->SetMarkerColor(kRed);
     	SignalMass[iE+1]->SetMarkerStyle(21);
@@ -168,7 +178,7 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
 
 	sigwidth_canvas->cd(iE+1);
 	sprintf(sigwidth_EBin_name,"sigwidth_%03d",Ebuffer);
-    	SignalWidth[iE+1] = new TH1F(sigwidth_EBin_name, "; -t (GeV^2); Yields",numtBins,mintval,maxtval); 
+    	SignalWidth[iE+1] = new TH1F(sigwidth_EBin_name, "; -t (GeV^2); Width",numtBins,mintval,maxtval); 
 	SignalWidth[iE+1]->SetTitle(EBin_Title);
     	SignalWidth[iE+1]->SetMarkerColor(kRed);
     	SignalWidth[iE+1]->SetMarkerStyle(21);
@@ -187,6 +197,24 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
     	MCYields[iE+1]->SetMarkerStyle(21);
     	MCYields[iE+1]->SetLabelSize(0.035,"xy");
     	MCYields[iE+1]->SetLabelOffset(0.001,"xy");
+
+	mcmass_canvas->cd(iE+1);
+	sprintf(mcmass_EBin_name,"mcmass_%03d",Ebuffer);
+    	MCMass[iE+1] = new TH1F(mcmass_EBin_name, "; -t (GeV^2); Mass",numtBins,mintval,maxtval); 
+	MCMass[iE+1]->SetTitle(EBin_Title);
+    	MCMass[iE+1]->SetMarkerColor(kRed);
+    	MCMass[iE+1]->SetMarkerStyle(21);
+    	MCMass[iE+1]->SetLabelSize(0.035,"xy");
+    	MCMass[iE+1]->SetLabelOffset(0.001,"xy");
+
+	mcwidth_canvas->cd(iE+1);
+	sprintf(mcwidth_EBin_name,"mcwidth_%03d",Ebuffer);
+    	MCWidth[iE+1] = new TH1F(mcwidth_EBin_name, "; -t (GeV^2); Width",numtBins,mintval,maxtval); 
+	MCWidth[iE+1]->SetTitle(EBin_Title);
+    	MCWidth[iE+1]->SetMarkerColor(kRed);
+    	MCWidth[iE+1]->SetMarkerStyle(21);
+    	MCWidth[iE+1]->SetLabelSize(0.035,"xy");
+    	MCWidth[iE+1]->SetLabelOffset(0.001,"xy");
 
 	eff_canvas->cd(iE+1);
 	sprintf(eff_EBin_name,"eff_%03d",Ebuffer);
@@ -281,6 +309,10 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
  			RooFit::Normalization(wmc->var("nsigmc")->getVal(), RooAbsReal::NumEvent));
         	double_t mc_sig_events = wmc->var("nsigmc")->getVal();
 		double_t mc_sig_events_err = wmc->var("nsigmc")->getError();
+		double_t mc_mass = wmc->var("meanmc")->getVal();
+		double_t mc_mass_err = wmc->var("meanmc")->getError();
+		double_t mc_width = wmc->var("sigmamc")->getVal();
+		double_t mc_width_err = wmc->var("sigmamc")->getError();
 		mc_val[iE+1][it+1] = mc_sig_events;
 		mc_err[iE+1][it+1] = mc_sig_events_err;
 		cout << "~~~~~~~MC~" << iE << "~" << it << " " << mc_sig_events << " " << mc_sig_events_err << endl; 
@@ -295,8 +327,13 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
 		SignalMass[iE+1]->SetBinError(it+1,sig_mass_err);
 		SignalWidth[iE+1]->SetBinContent(it+1,sig_width);
 		SignalWidth[iE+1]->SetBinError(it+1,sig_width_err);
+		
 		MCYields[iE+1]->SetBinContent(it+1,mc_sig_events);
 		MCYields[iE+1]->SetBinError(it+1,mc_sig_events_err);
+		MCMass[iE+1]->SetBinContent(it+1,mc_mass);
+		MCMass[iE+1]->SetBinError(it+1,mc_mass_err);
+		MCWidth[iE+1]->SetBinContent(it+1,mc_width);
+		MCWidth[iE+1]->SetBinError(it+1,mc_width_err);
 
 		double thrown_Ebin_tbin = ThrownH->GetBinContent(iE+1,it+1);
 		double thrown_Ebin_tbin_err = ThrownH->GetBinError(iE+1,it+1);
@@ -343,6 +380,18 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
 	MCYields[iE+1]->Draw("pe1");
 	mcyields_canvas->Print("MCYields_test.png");
 	mcyields_canvas->SaveAs("MCYields_test.C");
+
+	mcmass_canvas->cd(iE+1);
+	MCMass[iE+1]->GetYaxis()->SetRangeUser(1.30,1.35);
+	MCMass[iE+1]->Draw("pe1");
+	mcmass_canvas->Print("MCMass_test.png");
+	mcmass_canvas->SaveAs("MCMass_test.C");
+
+	mcwidth_canvas->cd(iE+1);
+	MCWidth[iE+1]->GetYaxis()->SetRangeUser(0.001,0.01);
+	MCWidth[iE+1]->Draw("pe1");
+	mcwidth_canvas->Print("MCWidth_test.png");
+	mcwidth_canvas->SaveAs("MCWidth_test.C");
 
 	eff_canvas->cd(iE+1);
 	Eff[iE+1]->GetYaxis()->SetRangeUser(0,0.25);
