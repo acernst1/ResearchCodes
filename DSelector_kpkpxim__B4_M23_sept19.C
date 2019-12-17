@@ -493,8 +493,8 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		if (phi > 180.) phi = phi - 360.;
 
 		//Scaling factor for accidental subtraction
-		double scaling_factor = dAnalysisUtilities.Get_AccidentalScalingFactor(locRunNumber, locPhotonBeamEnergy);
-		double scaling_factor_err = dAnalysisUtilities.Get_AccidentalScalingFactorError(locRunNumber, locPhotonBeamEnergy);
+		double scaling_factor = dAnalysisUtilities.Get_AccidentalScalingFactor(locRunNumber, locBeamP4.E());
+		double scaling_factor_err = dAnalysisUtilities.Get_AccidentalScalingFactorError(locRunNumber, locBeamP4.E());
 
 		//Missing Mass Squared
 		double locMissingMassSquared = locMissingP4_Measured.M2();
