@@ -73,6 +73,7 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		TH1I* dHist_XiMass_KinFit_nonan;
 		TH1I* dHist_XiMass_Measured_acc;	
 		TH1I* dHist_XiMass_KinFit_acc;
+		TH1I* dHist_XiMass_KinFit_wacc;
 		TH1I* dHist_XiMass_Measured_nonan_acc;	
 		TH1I* dHist_XiMass_KinFit_nonan_acc;
 		TH1I* dHist_MMKK_Measured;
@@ -103,10 +104,12 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		//Cross section plots
 		TH2F* dHist_Xi_Egamma;
 		TH2F* dHist_Xi_Egamma_acc;
+		TH2F* dHist_Xi_Egamma_wacc;
 		TH2F* dHist_Xi_t;
 		TH2F* dHist_Xi_t_acc;
 		TH3F* dHist_Xi_Egamma_t;
 		TH3F* dHist_Xi_Egamma_t_acc;
+		TH3F* dHist_Xi_Egamma_t_wacc;
 		TH1I* dHist_XiMass024;
 		TH1I* dHist_XiMass029;
 		TH1I* dHist_XiMass034;
