@@ -493,8 +493,8 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 		if (phi > 180.) phi = phi - 360.;
 
 		//Scaling factor for accidental subtraction
-		double scaling_factor = dAnalysisUtilities.Get_AccidentalScalingFactor(locRunNumber, locBeamP4.E());
-		double scaling_factor_err = dAnalysisUtilities.Get_AccidentalScalingFactorError(locRunNumber, locBeamP4.E());
+		//double scaling_factor = dAnalysisUtilities.Get_AccidentalScalingFactor(locRunNumber, locBeamP4.E());
+		//double scaling_factor_err = dAnalysisUtilities.Get_AccidentalScalingFactorError(locRunNumber, locBeamP4.E());
 
 		//Missing Mass Squared
 		double locMissingMassSquared = locMissingP4_Measured.M2();
@@ -576,14 +576,14 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 				else { 
 					dHist_XiMass_Measured_acc->Fill(locXiP4_Measured.M());
 					dHist_XiMass_KinFit_acc->Fill(locXiP4_KinFit.M());
-					dHist_XiMass_KinFit_wacc->Fill(locXiP4_KinFit.M(),scaling_factor);
+					//dHist_XiMass_KinFit_wacc->Fill(locXiP4_KinFit.M(),scaling_factor);
 					dHist_Xi_cosGJ_acc->Fill(locXiP4_KinFit.M(),cosTheta_GJ);
 					dHist_Xi_Egamma_acc->Fill(locXiP4_KinFit.M(),locBeamP4.E());
 					dHist_Xi_t_acc->Fill(locXiP4_KinFit.M(),-1.*t);
 					dHist_Xi_Egamma_t_acc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),-1.*t);
-					dHist_Xi_Egamma_wacc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),scaling_factor);
+					//dHist_Xi_Egamma_wacc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),scaling_factor);
 					dHist_Xi_t_acc->Fill(locXiP4_KinFit.M(),-1.*t);
-					dHist_Xi_Egamma_t_wacc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),-1.*t,scaling_factor);
+					//dHist_Xi_Egamma_t_wacc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),-1.*t,scaling_factor);
 					dHist_Xi_LambFlight_acc->Fill(locXiP4_Measured.M(),locPathLengthSignificanceLamb);
 				}
 				if(locXiP4_KinFit.M() >1.31 && locXiP4_KinFit.M() < 1.33){ 
