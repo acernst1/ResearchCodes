@@ -2,9 +2,9 @@
 #include "RooPlot.h"
 {
   //using namespace RooFit;
-char batch[100]= "batch06";
-char runperiod[100]="2018-01";
-char version[100]="ver03";
+char batch[100]= "347runs_dec20";
+char runperiod[100]="2017-01";
+char version[100]="ANAver03";
 char plotversion[100]="accsub";
 char filename[100];
 char outputname[100];
@@ -13,8 +13,8 @@ char plotname[100];
 char plot[100];
 char accplotname[100];
 char accsubplotname[100];
-sprintf(filename,"/work/halld/home/acernst/kpkpxim/kpkpxim/root_analysis/%s/kpkpxim__B4_M23_%s.root",runperiod,batch);
-sprintf(outputname,"datafit_kpkpxim_XiMass_KinFit_%s_%s_%s_%s.png",runperiod, version, batch,plotversion);
+sprintf(filename,"/cache/halld/home/acernst/data/kpkpxim__B4_M23_%s_%s_%s.root",runperiod,version,batch);
+sprintf(outputname,"datafit_kpkpxim_XiMass_KinFit_%s_%s_%s_%s.png",runperiod,version,batch,plotversion);
 sprintf(testoutputname,"prefit_kpkpxim_XiMass_KinFit_%s_%s_%s_%s.png",runperiod,version,batch, plotversion);
 sprintf(plotname,"XiMass%s_KinFit",plotversion);
 //sprintf(plot,"xsec_sigfit_%s.png",bin);
