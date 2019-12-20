@@ -66,13 +66,13 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_ChiSqXi = new TH2I("ChiSqXi", "ChiSq",100,0.0,100.0,400,1.1,1.5);
 	dHist_XiMass_Measured=new TH1I("XiMass","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
 	dHist_XiMass_KinFit=new TH1I("XiMass_KinFit","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
-	dHist_XiMass_Measured_nonan=new TH1I("XiMass_nonan","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
-	dHist_XiMass_KinFit_nonan=new TH1I("XiMass_KinFit_nonan","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
+	dHist_XiMass_Measured_nan=new TH1I("XiMass_nan","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
+	dHist_XiMass_KinFit_nan=new TH1I("XiMass_KinFit_nan","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_XiMass_Measured_acc=new TH1I("XiMass_acc","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
 	dHist_XiMass_KinFit_acc=new TH1I("XiMass_KinFit_acc","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_XiMass_KinFit_wacc=new TH1I("XiMass_KinFit_wacc","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
-	dHist_XiMass_Measured_nonan_acc=new TH1I("XiMass_nonan_acc","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
-	dHist_XiMass_KinFit_nonan_acc=new TH1I("XiMass_KinFit_nonan_acc","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
+	dHist_XiMass_Measured_nan_acc=new TH1I("XiMass_nan_acc","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
+	dHist_XiMass_KinFit_nan_acc=new TH1I("XiMass_KinFit_nan_acc","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_MMKK_Measured=new TH1I("MMKK_Measured","MM(K^{+}K^{+}) (GeV/c^{2})", 400,1.1,1.5);
 	dHist_MMKK_KinFit=new TH1I("MMKK_KinFit","MM(K^{+}K^{+}) (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_Xi_LambFlight = new TH2F("Xi_LambFlight", " ;#Lambda#pi^{-} mass (GeV); #sigma_{#Lambda}", 400, 1.1, 1.5,180, 0.0, 12.0);
@@ -538,6 +538,19 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 			dHist_ChiSq->Fill(locChiSqNdf);
 			dHist_ChiSqXi->Fill(locChiSqNdf, locXiP4_Measured.M());
 			dHist_XiPath_preCL->Fill(locPathLengthXi);
+			if(locChiSqNdf < 3.50){
+				if(fabs(locDeltaT) < 6.004) {	
+					if(fabs(locDeltaT) < 2.004) {	
+					dHist_XiMass_Measured_nan->Fill(locXiP4_Measured.M());
+					dHist_XiMass_KinFit_nan->Fill(locXiP4_KinFit.M());
+					}
+					else { 
+					dHist_XiMass_Measured_nan_acc->Fill(locXiP4_Measured.M());
+					dHist_XiMass_KinFit_nan_acc->Fill(locXiP4_KinFit.M());
+					
+					}
+				}
+			}
 			//cerr << locNDF << endl;
 			locUsedSoFar_ChiSq.insert(locUsedThisCombo_ChiSq);
 		}

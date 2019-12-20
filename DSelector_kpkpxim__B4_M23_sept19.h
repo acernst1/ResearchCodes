@@ -69,13 +69,13 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		TH2I* dHist_ChiSqXi;
 		TH1I* dHist_XiMass_Measured;	
 		TH1I* dHist_XiMass_KinFit;
-		TH1I* dHist_XiMass_Measured_nonan;	
-		TH1I* dHist_XiMass_KinFit_nonan;
+		TH1I* dHist_XiMass_Measured_nan;	
+		TH1I* dHist_XiMass_KinFit_nan;
 		TH1I* dHist_XiMass_Measured_acc;	
 		TH1I* dHist_XiMass_KinFit_acc;
 		TH1I* dHist_XiMass_KinFit_wacc;
-		TH1I* dHist_XiMass_Measured_nonan_acc;	
-		TH1I* dHist_XiMass_KinFit_nonan_acc;
+		TH1I* dHist_XiMass_Measured_nan_acc;	
+		TH1I* dHist_XiMass_KinFit_nan_acc;
 		TH1I* dHist_MMKK_Measured;
 		TH1I* dHist_MMKK_KinFit;	
 		TH2F* dHist_Xi_LambFlight;
