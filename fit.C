@@ -13,7 +13,7 @@ char plotname[100];
 char plot[100];
 char accplotname[100];
 char accsubplotname[100];
-sprintf(filename,"/cache/halld/home/acernst/data/kpkpxim__B4_M23_%s_%s_%s.root",runperiod,version,batch);
+sprintf(filename,"/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_%s_%s_%s.root",runperiod,version,batch);
 sprintf(outputname,"datafit_kpkpxim_XiMass_KinFit_%s_%s_%s_%s.png",runperiod,version,batch,plotversion);
 sprintf(testoutputname,"prefit_kpkpxim_XiMass_KinFit_%s_%s_%s_%s.png",runperiod,version,batch, plotversion);
 sprintf(plotname,"XiMass%s_KinFit",plotversion);
