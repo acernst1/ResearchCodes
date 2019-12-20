@@ -637,7 +637,7 @@ void plots_kinematics() {
 	legend_sets->AddEntry(CL188,"2018-08 ANAver02","lep");
 	legend_sets->Draw();
 	ccCL->SetLogy();
-	sprintf(CLname, "CL_logy.png);
+	sprintf(CLname, "CL_logy.png");
 	ccCL->Print(CLname);
 
 	char ChiSqname[100];
@@ -649,7 +649,7 @@ void plots_kinematics() {
 	ChiSq181->Draw("same");
 	ChiSq188->Draw("same");
 	legend_sets->Draw();
-	sprintf(ChiSqname, "ChiSq.png);
+	sprintf(ChiSqname, "ChiSq.png");
 	ccChiSq->Print(ChiSqname);
 
 	char CLMCname[100];
@@ -662,7 +662,7 @@ void plots_kinematics() {
 	CLMC188->Draw("same");
 	legend_sets->Draw();
 	ccCLMC->SetLogy();
-	sprintf(CLMCname, "CLMC_logy.png);
+	sprintf(CLMCname, "CLMC_logy.png");
 	ccCLMC->Print(CLMCname);
 
 	char ChiSqMCname[100];
@@ -674,7 +674,7 @@ void plots_kinematics() {
 	ChiSqMC181->Draw("same");
 	ChiSqMC188->Draw("same");
 	legend_sets->Draw();
-	sprintf(ChiSqMCname, "ChiSqMC.png);
+	sprintf(ChiSqMCname, "ChiSqMC.png");
 	ccChiSqMC->Print(ChiSqMCname);
 
 
