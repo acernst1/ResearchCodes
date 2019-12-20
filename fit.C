@@ -2,9 +2,9 @@
 #include "RooPlot.h"
 {
   //using namespace RooFit;
-char batch[100]= "543runs_dec20";
-char runperiod[100]="2018-01";
-char version[100]="ANAver03";
+char batch[100]= "449runs_dec20";
+char runperiod[100]="2018-08";
+char version[100]="ANAver02";
 char plotversion[100]="accsub";
 char filename[100];
 char outputname[100];
