@@ -88,11 +88,11 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_LambPath = new TH1I("LambPathLength", ";#Lambda Path Length (cm)", 600, 0.0, 15.0);
 	
 	//plots for beam asymmetry
-	dHist_phi_t = new TH2I("phi_t", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 10000, 0.0, 10.0,180, -180., 180.);
-	dHist_acc_phi_t_1 = new TH2I("acc_phi_t_1", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 10000, 0.0, 10.0,180, -180., 180.);
-	dHist_acc_phi_t_2 = new TH2I("acc_phi_t_2", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 10000, 0.0, 10.0,180, -180., 180.);
-	dHist_acc_phi_t_3 = new TH2I("acc_phi_t_3", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 10000, 0.0, 10.0,180, -180., 180.);
-	dHist_acc_phi_t_4 = new TH2I("acc_phi_t_4", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 10000, 0.0, 10.0,180, -180., 180.);
+	dHist_phi_t = new TH2I("phi_t", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 1000, 0.0, 5.0,180, -180., 180.);
+	dHist_acc_phi_t_1 = new TH2I("acc_phi_t_1", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 1000, 0.0, 5.0,180, -180., 180.);
+	dHist_acc_phi_t_2 = new TH2I("acc_phi_t_2", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 1000, 0.0, 5.0,180, -180., 180.);
+	dHist_acc_phi_t_3 = new TH2I("acc_phi_t_3", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 1000, 0.0, 5.0,180, -180., 180.);
+	dHist_acc_phi_t_4 = new TH2I("acc_phi_t_4", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 1000, 0.0, 5.0,180, -180., 180.);
 
 	//plots for spin measurement of Xi-
 	dHist_Xi_cosGJ = new TH2I("Xi_cosGJ", " ;#Lambda#pi^{-} mass (GeV); cos #theta_{GJ}", 400, 1.1, 1.5,180, -1., 1.);
@@ -102,11 +102,11 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_Xi_Egamma = new TH2F("Xi_Egamma", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma}", 400, 1.1, 1.5,180, 3.0, 12.0);
 	dHist_Xi_Egamma_acc = new TH2F("Xi_Egamma_acc", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV)", 400, 1.1, 1.5,180, 3.0, 12.0);
 	dHist_Xi_Egamma_wacc = new TH2F("Xi_Egamma_wacc", " ;#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV)", 400, 1.1, 1.5,180, 3.0, 12.0);
-	dHist_Xi_t = new TH2F("Xi_t", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,10000, 0.0, 10.0);
-	dHist_Xi_t_acc = new TH2F("Xi_t_acc", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,10000, 0.0, 10.0);
-	dHist_Xi_Egamma_t = new TH3F("Xi_Egamma_t",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,10000, 0.0, 10.0);
-	dHist_Xi_Egamma_t_acc = new TH3F("Xi_Egamma_t_acc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,10000, 0.0, 10.0);
-	dHist_Xi_Egamma_t_wacc = new TH3F("Xi_Egamma_t_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,10000, 0.0, 10.0);
+	dHist_Xi_t = new TH2F("Xi_t", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,1000, 0.0, 5.0);
+	dHist_Xi_t_acc = new TH2F("Xi_t_acc", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,1000, 0.0, 5.0);
+	dHist_Xi_Egamma_t = new TH3F("Xi_Egamma_t",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,1000, 0.0, 5.0);
+	dHist_Xi_Egamma_t_acc = new TH3F("Xi_Egamma_t_acc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,1000, 0.0, 5.0);
+	dHist_Xi_Egamma_t_wacc = new TH3F("Xi_Egamma_t_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,1000, 0.0, 5.0);
 	dHist_XiMass024 =new TH1I("XiMass024",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
 	dHist_XiMass029 =new TH1I("XiMass029",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
 	dHist_XiMass034 =new TH1I("XiMass034",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
