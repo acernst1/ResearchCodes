@@ -4,7 +4,7 @@
   //using namespace RooFit;
 char batch[100]= "347runs_dec20";
 char runperiod[100]="2017-01";
-char version[100]="ANAver03";
+char version[100]="ANAver20";
 char plotversion[100]="accsub";
 char filename[100];
 char outputname[100];
