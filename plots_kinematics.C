@@ -373,9 +373,9 @@ void plots_kinematics() {
 	TCanvas *ccXiMassMeasured17 = new TCanvas("ccXiMassMeasured17", "ccXiMassMeasured17", 800, 600);
 	TH1I * XiMassMeasured17 = (TH1I*)file1->Get("XiMass");	
 	TH1I * XiMassMeasured17_acc = (TH1I*)file1->Get("XiMass_acc");
-	XiMassMeasured17->RebinX(5);
 	TH1I *XiMassMeasured17_accsub = (TH1I *) XiMassMeasured17->Clone("XiMassMeasured17_accsub");
 	XiMassMeasured17_accsub->Add(XiMassMeasured17_acc,-0.5);
+	XiMassMeasured17_accsub->RebinX(5);
 	TH1I * XiMass17KinFit = (TH1I*)file1->Get("XiMass_KinFit");
 	TH1I * XiMass17KinFit_acc = (TH1I*)file1->Get("XiMass_KinFit_acc");
 	TH1I *XiMass17KinFit_accsub = (TH1I *) XiMass17KinFit->Clone("XiMass17KinFit_accsub");
@@ -402,9 +402,9 @@ void plots_kinematics() {
 	TCanvas *ccXiMassMeasured181 = new TCanvas("ccXiMassMeasured181", "ccXiMassMeasured181", 800, 600);
 	TH1I * XiMassMeasured181 = (TH1I*)file2->Get("XiMass");	
 	TH1I * XiMassMeasured181_acc = (TH1I*)file2->Get("XiMass_acc");
-	XiMassMeasured181->RebinX(5);
 	TH1I *XiMassMeasured181_accsub = (TH1I *) XiMassMeasured181->Clone("XiMassMeasured181_accsub");
 	XiMassMeasured181_accsub->Add(XiMassMeasured181_acc,-0.5);
+	XiMassMeasured181_accsub->RebinX(5);
 	TH1I * XiMass181KinFit = (TH1I*)file2->Get("XiMass_KinFit");
 	TH1I * XiMass181KinFit_acc = (TH1I*)file2->Get("XiMass_KinFit_acc");
 	TH1I *XiMass181KinFit_accsub = (TH1I *) XiMass181KinFit->Clone("XiMass181KinFit_accsub");
