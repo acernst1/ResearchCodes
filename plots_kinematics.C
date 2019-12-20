@@ -632,9 +632,9 @@ void plots_kinematics() {
 	CL181->Draw("same");
 	CL188->Draw("same");
 	auto legend_sets = new TLegend(0.70,0.8,0.98,0.93);
-	legend_sets->AddEntry(CL171,"2017-01 ANAver20","lep");
-	legend_sets->AddEntry(CL181,"2018-01 ANAver03","lep");
-	legend_sets->AddEntry(CL188,"2018-08 ANAver02","lep");
+	legend_sets->AddEntry(CL171,"2017-01 ANAver20","l");
+	legend_sets->AddEntry(CL181,"2018-01 ANAver03","l");
+	legend_sets->AddEntry(CL188,"2018-08 ANAver02","l");
 	legend_sets->Draw();
 	ccCL->SetLogy();
 	sprintf(CLname, "CL_logy.png");
@@ -676,6 +676,60 @@ void plots_kinematics() {
 	legend_sets->Draw();
 	sprintf(ChiSqMCname, "ChiSqMC.png");
 	ccChiSqMC->Print(ChiSqMCname);
+
+	char tdistname[100];
+	TCanvas *cctdist = new TCanvas("cctdist", "cctdist", 800, 600);
+ 	TH3F * XiMassKinFit_Egamma_t171 = (TH3F*)file1->Get("Xi_Egamma_t");
+	TH3F * XiMassKinFit_Egamma_t171_acc = (TH3F*)file1->Get("Xi_Egamma_t_acc");
+	TH3F * XiMassKinFit_Egamma_t171_accsub = (TH3F *) XiMassKinFit_Egamma_t171->Clone("XiMassKinFit_Egamma_t171_accsub");
+	XiMassKinFit_Egamma_t171_accsub->Add(XiMassKinFit_Egamma_t171_acc,-0.5);
+	TH1F * t171 = (TH1F *)XiMassKinFit_Egamma_t171_accsub->Project3D("z");
+ 	TH3F * XiMassKinFit_Egamma_t181 = (TH3F*)file2->Get("Xi_Egamma_t");
+	TH3F * XiMassKinFit_Egamma_t181_acc = (TH3F*)file2->Get("Xi_Egamma_t_acc");
+	TH3F * XiMassKinFit_Egamma_t181_accsub = (TH3F *) XiMassKinFit_Egamma_t181->Clone("XiMassKinFit_Egamma_t181_accsub");
+	XiMassKinFit_Egamma_t181_accsub->Add(XiMassKinFit_Egamma_t181_acc,-0.5);
+	TH1F * t181 = (TH1F *)XiMassKinFit_Egamma_t181_accsub->Project3D("z");
+ 	TH3F * XiMassKinFit_Egamma_t188 = (TH3F*)file3->Get("Xi_Egamma_t");
+	TH3F * XiMassKinFit_Egamma_t188_acc = (TH3F*)file3->Get("Xi_Egamma_t_acc");
+	TH3F * XiMassKinFit_Egamma_t188_accsub = (TH3F *) XiMassKinFit_Egamma_t188->Clone("XiMassKinFit_Egamma_t188_accsub");
+	XiMassKinFit_Egamma_t188_accsub->Add(XiMassKinFit_Egamma_t188_acc,-0.5);
+	TH1F * t188 = (TH1F *)XiMassKinFit_Egamma_t188_accsub->Project3D("z");
+	t171->RebinX(5);
+	t181->RebinX(5);
+	t188->RebinX(5);
+	t171->Draw();
+	t181->Draw("same");
+	t188->Draw("same");
+	legend_sets->Draw();
+	sprintf(tdistname,"tdist.png");
+	cctdist->Print(tdistname);
+
+	TCanvas *cctdistMC = new TCanvas("cctdistMC", "cctdistMC", 800, 600);
+ 	TH3F * XiMassKinFit_Egamma_t171MC = (TH3F*)file1MC->Get("Xi_Egamma_t");
+	TH3F * XiMassKinFit_Egamma_t171MC_acc = (TH3F*)file1MC->Get("Xi_Egamma_t_acc");
+	TH3F * XiMassKinFit_Egamma_t171MC_accsub = (TH3F *) XiMassKinFit_Egamma_t171MC->Clone("XiMassKinFit_Egamma_t171MC_accsub");
+	XiMassKinFit_Egamma_t171MC_accsub->Add(XiMassKinFit_Egamma_t171MC_acc,-0.5);
+	TH1F * t171MC = (TH1F *)XiMassKinFit_Egamma_t171MC_accsub->Project3D("z");
+ 	TH3F * XiMassKinFit_Egamma_t181MC = (TH3F*)file2MC->Get("Xi_Egamma_t");
+	TH3F * XiMassKinFit_Egamma_t181MC_acc = (TH3F*)file2MC->Get("Xi_Egamma_t_acc");
+	TH3F * XiMassKinFit_Egamma_t181MC_accsub = (TH3F *) XiMassKinFit_Egamma_t181MC->Clone("XiMassKinFit_Egamma_t181MC_accsub");
+	XiMassKinFit_Egamma_t181MC_accsub->Add(XiMassKinFit_Egamma_t181MC_acc,-0.5);
+	TH1F * t181MC = (TH1F *)XiMassKinFit_Egamma_t181MC_accsub->Project3D("z");
+ 	TH3F * XiMassKinFit_Egamma_t188MC = (TH3F*)file3MC->Get("Xi_Egamma_t");
+	TH3F * XiMassKinFit_Egamma_t188MC_acc = (TH3F*)file3MC->Get("Xi_Egamma_t_acc");
+	TH3F * XiMassKinFit_Egamma_t188MC_accsub = (TH3F *) XiMassKinFit_Egamma_t188MC->Clone("XiMassKinFit_Egamma_t188MC_accsub");
+	XiMassKinFit_Egamma_t188MC_accsub->Add(XiMassKinFit_Egamma_t188MC_acc,-0.5);
+	TH1F * t188MC = (TH1F *)XiMassKinFit_Egamma_t188MC_accsub->Project3D("z");
+	t171MC->RebinX(5);
+	t181MC->RebinX(5);
+	t188MC->RebinX(5);
+	t171MC->Draw();
+	t181MC->Draw("same");
+	t188MC->Draw("same");
+	legend_sets->Draw();
+	sprintf(tdistMCname,"tdistMC.png");
+	cctdistMC->Print(tdistMCname);
+
 
 
 
