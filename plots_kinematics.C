@@ -430,7 +430,7 @@ void plots_kinematics() {
 	TH1I * XiMassMeasured188_acc = (TH1I*)file3->Get("XiMass_acc");
 	TH1I *XiMassMeasured188_accsub = (TH1I *) XiMassMeasured188->Clone("XiMassMeasured188_accsub");
 	XiMassMeasured188_accsub->Add(XiMassMeasured188_acc,-0.5);
-	XiMassMeasured188_accsub-RebinX(5);
+	XiMassMeasured188_accsub->RebinX(5);
 	TH1I * XiMassMeasured188_nan = (TH1I*)file3->Get("XiMass_nan");	
 	TH1I * XiMassMeasured188_nan_acc = (TH1I*)file3->Get("XiMass_nan_acc");
 	TH1I *XiMass188Measured_nan_accsub = (TH1I *) XiMassMeasured188_nan->Clone("XiMass188Measured_nan_accsub");
@@ -455,7 +455,7 @@ void plots_kinematics() {
 	XiMassMeasured188_accsub->GetYaxis()->SetRangeUser(0,3750);
         XiMassMeasured188_accsub->Draw("");
         XiMass188KinFit_accsub->Draw("same");
-	XiMass188Measured_nan_accsub-Draw("same");
+	XiMass188Measured_nan_accsub->Draw("same");
 	auto legend_nonan = new TLegend(0.70,0.8,0.98,0.93);
 	legend_nonan->AddEntry(XiMass188Measured_nan_accsub,"Measured P4 - NaN","lep");
 	legend_nonan->AddEntry(XiMassMeasured17_accsub,"Measured P4 - no NaN","lep");
@@ -704,6 +704,7 @@ void plots_kinematics() {
 	sprintf(tdistname,"tdist.png");
 	cctdist->Print(tdistname);
 
+	char tdistMCname[100];
 	TCanvas *cctdistMC = new TCanvas("cctdistMC", "cctdistMC", 800, 600);
  	TH3F * XiMassKinFit_Egamma_t171MC = (TH3F*)file1MC->Get("Xi_Egamma_t");
 	TH3F * XiMassKinFit_Egamma_t171MC_acc = (TH3F*)file1MC->Get("Xi_Egamma_t_acc");
