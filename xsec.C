@@ -25,7 +25,16 @@ char signal_numbers[100];
 char mcsignal_numbers[100];
 char xsecplot[100];
 char xsecplotC[100];
-//char version[100]="2018-01_ANAver03_test";
+double minEval=6.4; 
+double maxEval=11.4; 
+int numEBins=10;
+double mintval = 0.0;
+double maxtval = 5.0;
+int numtBins = 1.0;
+double minmass=1.2; 
+double minfitmass=1.27;
+double maxmass=1.5; 
+int nummassBins=80;
 
 double loc_i;
 double getbincontent(TH1F* hist, int bin) {  return hist->GetBinContent(bin);}
@@ -33,9 +42,6 @@ double getbinerror(TH1F* AccH, int bin){  return AccH->GetBinError(bin);}
 void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TString thrownFilePath1,const char version[17])
 {
     gStyle->SetOptStat(0);
-    int numBins=10; 
-    double minVal=6.4; 
-    double maxVal=11.4; 
     double constant = 1.22e-9; // constant in nb
     double flux=1.0;
     double flux_err=0.0;
@@ -57,6 +63,8 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
 
     TCanvas * flux_canvas = new TCanvas("flux_canvas", "flux_canvas",800,600);
     TH1F*  FluxH= (TH1F*) fluxfile->Get("tagged_flux");
+    FluxH->GetXaxis()->SetRangeUser(minEval,maxEval);
+    FluxH->Rebin(FluxH->GetNbinsX()/numEBins);
     FluxH->Draw(); 
     char flux_macro_name[100];
     sprintf(flux_macro_name,"flux_numbers_%s.C",version);
@@ -65,58 +73,28 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
    sprintf(flux_plot_name,"xsec_flux_%s.png",version);
     flux_canvas->Print(flux_plot_name);
 
-    TFile* thrownfile_low = TFile::Open(thrownFilePath1);
-    TCanvas * thrown_lowI_canvas = new TCanvas("thrown_lowI_canvas", "thrown_lowI_canvas",800,600);
-    thrown_lowI_canvas->cd();
-    TH1F* thrown_lowI=new TH1F("thrown_lowI","thrown_lowI",numBins,minVal,maxVal);
-    thrownfile_low->cd(); 
-    TTree* thrownT_low=(TTree*) gDirectory->Get("Thrown_Tree");
-    cout << "~~~~~~~~~~~" << thrownT_low << endl;
-    thrownT_low->Draw("ThrownBeam__P4->E()>>thrown_lowI");
-    char thrown_low_numbers_macro_name[100];
-    char thrown_low_numbers_plot_name[100];
-    sprintf(thrown_low_numbers_macro_name,"thrown_low_numbers_%s.C",version);
-    sprintf(thrown_low_numbers_plot_name, "xsec_thrown_low_%s.png",version);
-    thrown_lowI->SaveAs(thrown_low_numbers_macro_name);
-    thrown_lowI_canvas->Print(thrown_low_numbers_plot_name);
 
-/*
-    TFile* thrownfile_med = TFile::Open(thrownFilePath2);
-    TCanvas * thrown_medI_canvas = new TCanvas("thrown_medI_canvas", "thrown_medI_canvas",800,600);
-    thrown_medI_canvas->cd();
-    TH1F* thrown_medI=new TH1F("thrown_medI","thrown_medI",numBins,minVal,maxVal);
-    thrownfile_med->cd(); 
-    TTree* thrownT_med=(TTree*) gDirectory->Get("Thrown_Tree");
-    cout << "~~~~~~~~~~~" << thrownT_med << endl;
-    thrownT_med->Draw("ThrownBeam__P4->E()>>thrown_medI");
-    thrown_medI->SaveAs("thrown_med_numbers.C");
-    thrown_medI_canvas->Print("xsec_thrown_med.png");
-
-    TFile* thrownfile_high = TFile::Open(thrownFilePath3);
-    TCanvas * thrown_highI_canvas = new TCanvas("thrown_highI_canvas", "thrown_highI_canvas",800,600);
-    thrown_highI_canvas->cd();
-    TH1F* thrown_highI = new TH1F("thrown_highI","thrown_highI",numBins,minVal,maxVal);
-    thrown_highI_canvas->cd();
-    thrownfile_high->cd(); 
-    TTree* thrownT_high=(TTree*) gDirectory->Get("Thrown_Tree");
-    cout << "~~~~~~~~~~~" << thrownT_high << endl;
-    thrownT_high->Draw("ThrownBeam__P4->E()>>thrown_highI");
-    thrown_highI->SaveAs("thrown_high_numbers.C");
-    thrown_highI_canvas->Print("xsec_thrown_high.png");
-*/
+    TFile* thrownfile = TFile::Open(thrownFilePath1);
     TCanvas * thrown_canvas = new TCanvas("thrown_canvas", "thrown_canvas",800,600);
-    sprintf(tplotname, "thrown_plot");
-    TH1F * thrown_hist = (TH1F *) thrown_lowI->Clone(tplotname);
-    //thrown_hist->Add(thrown_medI,1.);
-    //thrown_hist->Add(thrown_highI,1.);
-    thrown_hist->Draw();
-    char thrown_total_numbers_macro_name[100];
-    char thrown_total_numbers_plot_name[100];
-    sprintf(thrown_total_numbers_macro_name,"thrown_total_numbers_%s.C",version);
-    sprintf(thrown_total_numbers_plot_name, "xsec_thrown_total_%s.png",version);
-    thrown_hist->SaveAs(thrown_total_numbers_macro_name);
-    thrown_canvas->Print(thrown_total_numbers_plot_name);
-   
+    thrown_canvas->cd();
+    thrownfile->cd(); 
+    TH2F*  ThrownHtemp= (TH2F*) thrownfile->Get("Egamma_t");
+    ThrownHtemp->GetXaxis()->SetRangeUser(minEval,maxEval);	
+    ThrownHtemp->GetYaxis()->SetRangeUser(mintval,maxtval);
+    ThrownHtemp->RebinX(ThrownHtemp->GetNbinsX()/numEBins);    
+    ThrownHtemp->RebinY(ThrownHtemp->GetNbinsY()/numtBins);
+    double tmin = mintval; 
+    double tmax = maxtval;
+    int tbinmin = ThrownHtemp->GetYaxis()->FindBin(tmin);
+    int tbinmax = ThrownHtemp->GetYaxis()->FindBin(tmax) -1.;
+    TH1F * ThrownH = (TH1F *) ThrownHtemp->ProjectionY("ThrownH",tbinmin,tbinmax);
+    ThrownH->Draw("colz");
+    sprintf(thrown_numbers_macro_name,"thrown_numbers_%s.C",version);
+    sprintf(thrown_numbers_plot_name, "xsec_thrown_%s.png",version);
+    ThrownH->SaveAs(thrown_numbers_macro_name);
+    thrown_canvas->Print(thrown_numbers_plot_name);
+
+ 
     TCanvas * xsec_canvas = new TCanvas("xsec_canvas", "xsec_canvas",800,600);
     TH1F * xsec = new TH1F("xsec", "Cross Section; E_{#gamma}; #sigma_{total} (nb)",numBins,minVal,maxVal); 
     TH1F * xsec_count = new TH1F("xsec_count", "Cross Section; E_{#gamma}; #sigma_{total} (nb)",numBins,minVal,maxVal); 
@@ -148,8 +126,8 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
         flux=getbincontent(FluxH,i+1);
         flux_err=getbinerror(FluxH,i+1); //+1 because 0 is the underflow, +5 because of binning
 	cout << "~~~~~~~flux~ " << i << " " << flux << " " << flux_err << endl;
-        tagged=getbincontent(thrown_hist,i+1);
-        tagged_err=getbinerror(thrown_hist,i+1);
+        tagged=getbincontent(ThrownH,i+1);
+        tagged_err=getbinerror(ThrownH,i+1);
 	cout << "~~~~~~~thrown~ " << i << " " << tagged << " " << tagged_err << endl; 
         
 	sprintf(bin,"%03d",buffer);
