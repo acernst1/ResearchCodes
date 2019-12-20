@@ -1,8 +1,10 @@
 void plots_kinematics() {
 
-	TFile *file1 = TFile::Open("kpkpxim__B4_M23_allbatches_2017-01_new.root");
-	TFile *file2 = TFile::Open("kpkpxim__B4_M23_allbatches_2018-01_new.root");
-	TFile *file3 = TFile::Open("kpkpxim__B4_M23_allbatches_2018-08_new.root");
+	TFile *file1 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2017-01_347runs_dec19.root");
+	TFile *file2 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2018-01_543runs_dec19.root");
+	TFile *file3 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2018-08_449runs_dec19.root");
+	TFile *file1MC = TFile::Open("/cache/halld/home/acernst/MC/2017-01_ANAver20/kpkpxim__B4_M23_2017-01_ANAver20_dec19.root");
+
 
 	gStyle->SetOptStat(0000);
 
