@@ -628,7 +628,7 @@ void plots_kinematics() {
 	TH1I * CL171 = (TH1I*)file1->Get("Hist_KinFitResults/ConfidenceLevel");	
 	TH1I * CL181 = (TH1I*)file2->Get("Hist_KinFitResults/ConfidenceLevel");	
 	TH1I * CL188 = (TH1I*)file3->Get("Hist_KinFitResults/ConfidenceLevel");	
-      CL171->Draw();
+ 	CL171->Draw();
 	CL181->Draw("same");
 	CL188->Draw("same");
 	auto legend_sets = new TLegend(0.70,0.8,0.98,0.93);
@@ -645,16 +645,37 @@ void plots_kinematics() {
 	TH1I * ChiSq171 = (TH1I*)file1->Get("Hist_KinFitResults/ChiSqPerDF");	
 	TH1I * ChiSq181 = (TH1I*)file2->Get("Hist_KinFitResults/ChiSqPerDF");	
 	TH1I * ChiSq188 = (TH1I*)file3->Get("Hist_KinFitResults/ChiSqPerDF");	
-      ChiSq171->Draw();
+      	ChiSq171->Draw();
 	ChiSq181->Draw("same");
 	ChiSq188->Draw("same");
-	auto legend_sets = new TLegend(0.70,0.8,0.98,0.93);
-	legend_sets->AddEntry(ChiSq171,"2017-01 ANAver20","lep");
-	legend_sets->AddEntry(ChiSq181,"2018-01 ANAver03","lep");
-	legend_sets->AddEntry(ChiSq188,"2018-08 ANAver02","lep");
 	legend_sets->Draw();
-	sprintf(ChiSqname, "ChiSq_logy.png);
+	sprintf(ChiSqname, "ChiSq.png);
 	ccChiSq->Print(ChiSqname);
+
+	char CLMCname[100];
+	TCanvas *ccCLMC = new TCanvas("ccCLMC", "ccCLMC", 800, 600);
+	TH1I * CLMC171 = (TH1I*)file1MC->Get("Hist_KinFitResults/ConfidenceLevel");	
+	TH1I * CLMC181 = (TH1I*)file2MC->Get("Hist_KinFitResults/ConfidenceLevel");	
+	TH1I * CLMC188 = (TH1I*)file3MC->Get("Hist_KinFitResults/ConfidenceLevel");	
+      	CLMC171->Draw();
+	CLMC181->Draw("same");
+	CLMC188->Draw("same");
+	legend_sets->Draw();
+	ccCLMC->SetLogy();
+	sprintf(CLMCname, "CLMC_logy.png);
+	ccCLMC->Print(CLMCname);
+
+	char ChiSqMCname[100];
+	TCanvas *ccChiSqMC = new TCanvas("ccChiSqMC", "ccChiSqMC", 800, 600);
+	TH1I * ChiSqMC171 = (TH1I*)file1MC->Get("Hist_KinFitResults/ChiSqPerDF");	
+	TH1I * ChiSqMC181 = (TH1I*)file2MC->Get("Hist_KinFitResults/ChiSqPerDF");	
+	TH1I * ChiSqMC188 = (TH1I*)file3MC->Get("Hist_KinFitResults/ChiSqPerDF");	
+      	ChiSqMC171->Draw();
+	ChiSqMC181->Draw("same");
+	ChiSqMC188->Draw("same");
+	legend_sets->Draw();
+	sprintf(ChiSqMCname, "ChiSqMC.png);
+	ccChiSqMC->Print(ChiSqMCname);
 
 
 
