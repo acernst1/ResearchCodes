@@ -628,6 +628,9 @@ void plots_kinematics() {
 	TH1I * CL171 = (TH1I*)file1->Get("Hist_KinFitResults/ConfidenceLevel");	
 	TH1I * CL181 = (TH1I*)file2->Get("Hist_KinFitResults/ConfidenceLevel");	
 	TH1I * CL188 = (TH1I*)file3->Get("Hist_KinFitResults/ConfidenceLevel");	
+	CL171->SetLineColor(kBlue);
+	CL181->->SetLineColor(kRed);
+	CL188->SetLineColor(kGreen);	
  	CL171->Draw();
 	CL181->Draw("same");
 	CL188->Draw("same");
@@ -644,7 +647,10 @@ void plots_kinematics() {
 	TCanvas *ccChiSq = new TCanvas("ccChiSq", "ccChiSq", 800, 600);
 	TH1I * ChiSq171 = (TH1I*)file1->Get("Hist_KinFitResults/ChiSqPerDF");	
 	TH1I * ChiSq181 = (TH1I*)file2->Get("Hist_KinFitResults/ChiSqPerDF");	
-	TH1I * ChiSq188 = (TH1I*)file3->Get("Hist_KinFitResults/ChiSqPerDF");	
+	TH1I * ChiSq188 = (TH1I*)file3->Get("Hist_KinFitResults/ChiSqPerDF");
+	ChiSq171->SetLineColor(kBlue);
+	ChiSq181->->SetLineColor(kRed);
+	ChiSq188->SetLineColor(kGreen);	
       	ChiSq171->Draw();
 	ChiSq181->Draw("same");
 	ChiSq188->Draw("same");
@@ -657,7 +663,12 @@ void plots_kinematics() {
 	TH1I * CLMC171 = (TH1I*)file1MC->Get("Hist_KinFitResults/ConfidenceLevel");	
 	TH1I * CLMC181 = (TH1I*)file2MC->Get("Hist_KinFitResults/ConfidenceLevel");	
 	TH1I * CLMC188 = (TH1I*)file3MC->Get("Hist_KinFitResults/ConfidenceLevel");	
-      	CLMC171->Draw();
+	double norm201801 = CLMC181->GetEntries();
+	CLMC171->SetLineColor(kBlue);
+	CLMC181->->SetLineColor(kRed);
+	CLMC188->SetLineColor(kGreen);
+	CLMC171->Scale(norm);	      	
+	CLMC171->Draw();
 	CLMC181->Draw("same");
 	CLMC188->Draw("same");
 	legend_sets->Draw();
@@ -670,6 +681,10 @@ void plots_kinematics() {
 	TH1I * ChiSqMC171 = (TH1I*)file1MC->Get("Hist_KinFitResults/ChiSqPerDF");	
 	TH1I * ChiSqMC181 = (TH1I*)file2MC->Get("Hist_KinFitResults/ChiSqPerDF");	
 	TH1I * ChiSqMC188 = (TH1I*)file3MC->Get("Hist_KinFitResults/ChiSqPerDF");	
+	ChiSqMC171->SetLineColor(kBlue);
+	ChiSqMC181->->SetLineColor(kRed);
+	ChiSqMC188->SetLineColor(kGreen);	
+	ChiSqMC171->Scale(norm);
       	ChiSqMC171->Draw();
 	ChiSqMC181->Draw("same");
 	ChiSqMC188->Draw("same");
@@ -724,6 +739,10 @@ void plots_kinematics() {
 	t171MC->RebinX(5);
 	t181MC->RebinX(5);
 	t188MC->RebinX(5);
+	t171MC->Scale(norm);
+	t171MC->SetLineColor(kBlue);
+	t181MC->->SetLineColor(kRed);
+	t188MC->SetLineColor(kGreen);	
 	t171MC->Draw();
 	t181MC->Draw("same");
 	t188MC->Draw("same");
