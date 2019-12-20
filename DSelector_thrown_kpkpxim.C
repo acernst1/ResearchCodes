@@ -26,8 +26,8 @@ void DSelector_thrown_kpkpxim::Init(TTree *locTree)
 	dPreviousRunNumber = 0;
 
 	/******************************** EXAMPLE USER INITIALIZATION: STAND-ALONE HISTOGRAMS *******************************/
-	dHist_Egamma_t = new TH2F("Egamma_t","; E_{#gamma} (GeV); -t (GeV/c)^{2}",180, 3.0, 12.0,200, 0.0, 10.0);
-	dHist_Egamma_t_acc = new TH2F("Egamma_t_acc","; E_{#gamma} (GeV); -t (GeV/c)^{2}",180, 3.0, 12.0,200, 0.0, 10.0);
+	dHist_Egamma_t = new TH2F("Egamma_t","; E_{#gamma} (GeV); -t (GeV/c)^{2}",180, 3.0, 12.0,1000, 0.0, 5.0);
+	dHist_Egamma_t_acc = new TH2F("Egamma_t_acc","; E_{#gamma} (GeV); -t (GeV/c)^{2}",180, 3.0, 12.0,1000, 0.0, 5.0);
 	dHist_KPlus1vsKPlus2_p = new TH2F("KPlus1vsKPlus2_p",";K^{+}_{1} p (GeV);K^{+}_{2} p (GeV)",200,0.0,10.0,200,0.0,10.0);
 	dHist_KPlus1vsKPlus2_theta = new TH2F("KPlus1vsKPlus2_theta",";K^{+}_{1} #theta;K^{+}_{2} #theta",140,0.0,140.0,140,0.0,140.0);
 	dHist_KPlus1_pTheta = new TH2F("KPlus1_ptheta",";K^{+}_{1} #theta; K^{+}_{1} p (GeV);",140,0.0,140.0, 200,0.0,10.0);
