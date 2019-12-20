@@ -7,7 +7,6 @@ void plots_kinematics() {
 	TFile *file2MC = TFile::Open("/cache/halld/home/acernst/MC/2018-01_ANAver03/kpkpxim__B4_M23_2018-01_ANAver03_dec20.root");
 	TFile *file3MC = TFile::Open("/cache/halld/home/acernst/MC/2018-08_ANAver02/kpkpxim__B4_M23_2018-08_ANAver02_dec20.root");
 
-
 	gStyle->SetOptStat(0000);
 
 	char XiKptheta17name[100];
@@ -623,7 +622,47 @@ void plots_kinematics() {
 	legend_vert->Draw();
 	sprintf(VertZname188MC, "VertZ_MC_2018-08_ANAver02.png");
 	ccVertZ188MC->Print(VertZname188MC);
+
+	char CLname[100];
+	TCanvas *ccCL = new TCanvas("ccCL", "ccCL", 800, 600);
+	TH1I * CL171 = (TH1I*)file1->Get("Hist_KinFitResults/ConfidenceLevel");	
+	TH1I * CL181 = (TH1I*)file2->Get("Hist_KinFitResults/ConfidenceLevel");	
+	TH1I * CL188 = (TH1I*)file3->Get("Hist_KinFitResults/ConfidenceLevel");	
+      CL171->Draw();
+	CL181->Draw("same");
+	CL188->Draw("same");
+	auto legend_sets = new TLegend(0.70,0.8,0.98,0.93);
+	legend_sets->AddEntry(CL171,"2017-01 ANAver20","lep");
+	legend_sets->AddEntry(CL181,"2018-01 ANAver03","lep");
+	legend_sets->AddEntry(CL188,"2018-08 ANAver02","lep");
+	legend_sets->Draw();
+	ccCL->SetLogy();
+	sprintf(CLname, "CL_logy.png);
+	ccCL->Print(CLname);
+
+	char ChiSqname[100];
+	TCanvas *ccChiSq = new TCanvas("ccChiSq", "ccChiSq", 800, 600);
+	TH1I * ChiSq171 = (TH1I*)file1->Get("Hist_KinFitResults/ChiSqPerDF");	
+	TH1I * ChiSq181 = (TH1I*)file2->Get("Hist_KinFitResults/ChiSqPerDF");	
+	TH1I * ChiSq188 = (TH1I*)file3->Get("Hist_KinFitResults/ChiSqPerDF");	
+      ChiSq171->Draw();
+	ChiSq181->Draw("same");
+	ChiSq188->Draw("same");
+	auto legend_sets = new TLegend(0.70,0.8,0.98,0.93);
+	legend_sets->AddEntry(ChiSq171,"2017-01 ANAver20","lep");
+	legend_sets->AddEntry(ChiSq181,"2018-01 ANAver03","lep");
+	legend_sets->AddEntry(ChiSq188,"2018-08 ANAver02","lep");
+	legend_sets->Draw();
+	sprintf(ChiSqname, "ChiSq_logy.png);
+	ccChiSq->Print(ChiSqname);
+
+
+
+
+
+
 /*
+
 	char KPxname[100];
 	TH2I * KPx = (TH2I*)file1->Get("kpkpxim__B4_M23/Hist_KinFitResults/Step0__Photon_Proton__K+_K+_Xi-/K+/Pull_Px_VsPhi");	
 	TCanvas *ccPx = new TCanvas("ccPx", "ccPx", 800, 600);
