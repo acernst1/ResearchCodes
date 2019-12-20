@@ -1,9 +1,11 @@
 void plots_kinematics() {
 
-	TFile *file1 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2017-01_347runs_dec19.root");
-	TFile *file2 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2018-01_543runs_dec19.root");
-	TFile *file3 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2018-08_449runs_dec19.root");
-	TFile *file1MC = TFile::Open("/cache/halld/home/acernst/MC/2017-01_ANAver20/kpkpxim__B4_M23_2017-01_ANAver20_dec19.root");
+	TFile *file1 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2017-01_347runs_dec20.root");
+	TFile *file2 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2018-01_543runs_dec20.root");
+	TFile *file3 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2018-08_449runs_dec20.root");
+	TFile *file1MC = TFile::Open("/cache/halld/home/acernst/MC/2017-01_ANAver20/kpkpxim__B4_M23_2017-01_ANAver20_dec20.root");
+	TFile *file2MC = TFile::Open("/cache/halld/home/acernst/MC/2018-01_ANAver03/kpkpxim__B4_M23_2018-01_ANAver03_dec20.root");
+	TFile *file3MC = TFile::Open("/cache/halld/home/acernst/MC/2018-08_ANAver02/kpkpxim__B4_M23_2018-08_ANAver02_dec20.root");
 
 
 	gStyle->SetOptStat(0000);
@@ -128,7 +130,6 @@ void plots_kinematics() {
 	sprintf(Xipptheta181KinFitname, "XippthetaKinFit_2018-01_ANAver03.png");
 	ccXipptheta181KinFit->Print(Xipptheta181KinFitname);
 
-
 	char XiKptheta188name[100];
 	TCanvas *ccXiKptheta188 = new TCanvas("ccXiKptheta188", "ccXiKptheta188", 800, 600);
 	TH2I * XiKptheta188 = (TH2I*)file3->Get("K_pTheta_Measured");	
@@ -208,6 +209,7 @@ void plots_kinematics() {
 	XiMass17KinFit_accsub->SetMarkerStyle(21);
 	XiMass17KinFit_accsub->SetMarkerColor(kBlue);
 	XiMass17KinFit_accsub->SetMarkerSize(0.8);
+	XiMassMeasured17_accsub->GetYaxis()->SetRangeUser(0,2000);
         XiMassMeasured17_accsub->Draw("");
         XiMass17KinFit_accsub->Draw("same");
 	auto legend = new TLegend(0.70,0.8,0.98,0.93);
@@ -236,6 +238,7 @@ void plots_kinematics() {
 	XiMass181KinFit_accsub->SetMarkerStyle(21);
 	XiMass181KinFit_accsub->SetMarkerColor(kBlue);
 	XiMass181KinFit_accsub->SetMarkerSize(0.8);
+	XiMassMeasured181_accsub->GetYaxis()->SetRangeUser(0,2000);
         XiMassMeasured181_accsub->Draw("");
         XiMass181KinFit_accsub->Draw("same");
 	legend->Draw();
@@ -246,9 +249,14 @@ void plots_kinematics() {
 	TCanvas *ccXiMassMeasured188 = new TCanvas("ccXiMassMeasured188", "ccXiMassMeasured188", 800, 600);
 	TH1I * XiMassMeasured188 = (TH1I*)file3->Get("XiMass");	
 	TH1I * XiMassMeasured188_acc = (TH1I*)file3->Get("XiMass_acc");
-	XiMassMeasured188->RebinX(5);
 	TH1I *XiMassMeasured188_accsub = (TH1I *) XiMassMeasured188->Clone("XiMassMeasured188_accsub");
 	XiMassMeasured188_accsub->Add(XiMassMeasured188_acc,-0.5);
+	XiMassMeasured188_accsub-RebinX(5);
+	TH1I * XiMassMeasured188_nan = (TH1I*)file3->Get("XiMass_nan");	
+	TH1I * XiMassMeasured188_nan_acc = (TH1I*)file3->Get("XiMass_nan_acc");
+	TH1I *XiMass188Measured_nan_accsub = (TH1I *) XiMassMeasured188_nan->Clone("XiMass188Measured_nan_accsub");
+	XiMass188Measured_nan_accsub->Add(XiMassMeasured188_nan_acc,-0.5);
+	XiMass188Measured_nan_accsub->RebinX(5);
 	TH1I * XiMass188KinFit = (TH1I*)file3->Get("XiMass_KinFit");
 	TH1I * XiMass188KinFit_acc = (TH1I*)file3->Get("XiMass_KinFit_acc");
 	TH1I *XiMass188KinFit_accsub = (TH1I *) XiMass188KinFit->Clone("XiMass188KinFit_accsub");
@@ -261,9 +269,19 @@ void plots_kinematics() {
 	XiMass188KinFit_accsub->SetMarkerStyle(21);
 	XiMass188KinFit_accsub->SetMarkerColor(kBlue);
 	XiMass188KinFit_accsub->SetMarkerSize(0.8);
+	XiMass188Measured_nan_accsub->SetLineColor(kGreen);
+	XiMass188Measured_nan_accsub->SetMarkerStyle(21);
+	XiMass188Measured_nan_accsub->SetMarkerColor(kRed);
+	XiMass188Measured_nan_accsub->SetMarkerSize(0.8);
+	XiMassMeasured188_accsub->GetYaxis()->SetRangeUser(0,3750);
         XiMassMeasured188_accsub->Draw("");
         XiMass188KinFit_accsub->Draw("same");
-	legend->Draw();
+	XiMass188Measured_nan_accsub-Draw("same");
+	auto legend_nonan = new TLegend(0.70,0.8,0.98,0.93);
+	legend_nonan->AddEntry(XiMass188Measured_nan_accsub,"Measured P4 - NaN","lep");
+	legend_nonan->AddEntry(XiMassMeasured17_accsub,"Measured P4 - no NaN","lep");
+	legend_nonan->AddEntry(XiMass17KinFit_accsub,"KinFit P4","lep");
+	legend_nonan->Draw();
 	sprintf(XiMassMeasured188name, "XiMass_2018-08_ANAver02.png");
 	ccXiMassMeasured188->Print(XiMassMeasured188name);
 /*
