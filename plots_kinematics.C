@@ -190,6 +190,186 @@ void plots_kinematics() {
 	sprintf(Xipptheta188KinFitname, "XippthetaKinFit_2018-08_ANAver02.png");
 	ccXipptheta188KinFit->Print(Xipptheta188KinFitname);
 
+	char XiKptheta171MCname[100];
+	TCanvas *ccXiKptheta171MC = new TCanvas("ccXiKptheta171MC", "ccXiKptheta171MC", 800, 600);
+	TH2I * XiKptheta171MC = (TH2I*)file1MC->Get("K_pTheta_Measured");	
+	TH2I * XiKptheta171MC_acc = (TH2I*)file1MC->Get("K_pTheta_Measured_acc");
+	TH2I *XiKptheta171MC_accsub = (TH2I *) XiKptheta171MC->Clone("XiKptheta171MC_accsub");
+	XiKptheta171MC_accsub->Add(XiKptheta171MC_acc,-0.5);
+        XiKptheta171MC_accsub->Draw("colz");
+	sprintf(XiKptheta171MCname, "XiKptheta_MC_2017-01_ANAver20.png");
+	ccXiKptheta171MC->Print(XiKptheta171MCname);
+
+	char Xipiptheta171MCname[100];
+	TCanvas *ccXipiptheta171MC = new TCanvas("ccXipiptheta171MC", "ccXipiptheta171MC", 800, 600);
+	TH2I * Xipiptheta171MC = (TH2I*)file1MC->Get("pi_pTheta_Measured");	
+	TH2I * Xipiptheta171MC_acc = (TH2I*)file1MC->Get("pi_pTheta_Measured_acc");
+	TH2I *Xipiptheta171MC_accsub = (TH2I *) Xipiptheta171MC->Clone("Xipiptheta171MC_accsub");
+	Xipiptheta171MC_accsub->Add(Xipiptheta171MC_acc,-0.5);
+        Xipiptheta171MC_accsub->Draw("colz");
+	sprintf(Xipiptheta171MCname, "Xipiptheta_MC_2017-01_ANAver20.png");
+	ccXipiptheta171MC->Print(Xipiptheta171MCname);
+
+	char Xipptheta171MCname[100];
+	TCanvas *ccXipptheta171MC = new TCanvas("ccXipptheta171MC", "ccXipptheta171MC", 800, 600);
+	TH2I * Xipptheta171MC = (TH2I*)file1MC->Get("p_pTheta_Measured");	
+	TH2I * Xipptheta171MC_acc = (TH2I*)file1MC->Get("p_pTheta_Measured_acc");
+	TH2I *Xipptheta171MC_accsub = (TH2I *) Xipptheta171MC->Clone("Xipptheta171MC_accsub");
+	Xipptheta171MC_accsub->Add(Xipptheta171MC_acc,-0.5);
+        Xipptheta171MC_accsub->Draw("colz");
+	sprintf(Xipptheta171MCname, "Xipptheta_MC_2017-01_ANAver20.png");
+	ccXipptheta171MC->Print(Xipptheta171MCname);
+
+	char XiKptheta171MCKinFitname[100];
+	TCanvas *ccXiKptheta171MCKinFit = new TCanvas("ccXiKptheta171MCKinFit", "ccXiKptheta171MCKinFit", 800, 600);
+	TH2I * XiKptheta171MCKinFit = (TH2I*)file1MC->Get("K_pTheta_KinFit");	
+	TH2I * XiKptheta171MCKinFit_acc = (TH2I*)file1MC->Get("K_pTheta_KinFit_acc");
+	TH2I *XiKptheta171MCKinFit_accsub = (TH2I *) XiKptheta171MCKinFit->Clone("XiKptheta171MCKinFit_accsub");
+	XiKptheta171MCKinFit_accsub->Add(XiKptheta171MCKinFit_acc,-0.5);
+        XiKptheta171MCKinFit_accsub->Draw("colz");
+	sprintf(XiKptheta171MCKinFitname, "XiKpthetaKinFit_MC_2017-01_ANAver20.png");
+	ccXiKptheta171MCKinFit->Print(XiKptheta171MCKinFitname);
+
+	char Xipiptheta171MCKinFitname[100];
+	TCanvas *ccXipiptheta171MCKinFit = new TCanvas("ccXipiptheta171MCKinFit", "ccXipiptheta171MCKinFit", 800, 600);
+	TH2I * Xipiptheta171MCKinFit = (TH2I*)file1MC->Get("pi_pTheta_KinFit");	
+	TH2I * Xipiptheta171MCKinFit_acc = (TH2I*)file1MC->Get("pi_pTheta_KinFit_acc");
+	TH2I *Xipiptheta171MCKinFit_accsub = (TH2I *) Xipiptheta171MCKinFit->Clone("Xipiptheta171MCKinFit_accsub");
+	Xipiptheta171MCKinFit_accsub->Add(Xipiptheta171MCKinFit_acc,-0.5);
+        Xipiptheta171MCKinFit_accsub->Draw("colz");
+	sprintf(Xipiptheta171MCKinFitname, "XipipthetaKinFit_MC_2017-01_ANAver20.png");
+	ccXipiptheta171MCKinFit->Print(Xipiptheta171MCKinFitname);
+
+	char Xipptheta171MCKinFitname[100];
+	TCanvas *ccXipptheta171MCKinFit = new TCanvas("ccXipptheta171MCKinFit", "ccXipptheta171MCKinFit", 800, 600);
+	TH2I * Xipptheta171MCKinFit = (TH2I*)file1MC->Get("p_pTheta_KinFit");	
+	TH2I * Xipptheta171MCKinFit_acc = (TH2I*)file1MC->Get("p_pTheta_KinFit_acc");
+	TH2I *Xipptheta171MCKinFit_accsub = (TH2I *) Xipptheta171MCKinFit->Clone("Xipptheta171MCKinFit_accsub");
+	Xipptheta171MCKinFit_accsub->Add(Xipptheta171MCKinFit_acc,-0.5);
+        Xipptheta171MCKinFit_accsub->Draw("colz");
+	sprintf(Xipptheta171MCKinFitname, "XippthetaKinFit_MC_2017-01_ANAver20.png");
+	ccXipptheta171MCKinFit->Print(Xipptheta171MCKinFitname);
+
+	char XiKptheta181MCname[100];
+	TCanvas *ccXiKptheta181MC = new TCanvas("ccXiKptheta181MC", "ccXiKptheta181MC", 800, 600);
+	TH2I * XiKptheta181MC = (TH2I*)file2MC->Get("K_pTheta_Measured");	
+	TH2I * XiKptheta181MC_acc = (TH2I*)file2MC->Get("K_pTheta_Measured_acc");
+	TH2I *XiKptheta181MC_accsub = (TH2I *) XiKptheta181MC->Clone("XiKptheta181MC_accsub");
+	XiKptheta181MC_accsub->Add(XiKptheta181MC_acc,-0.5);
+        XiKptheta181MC_accsub->Draw("colz");
+	sprintf(XiKptheta181MCname, "XiKptheta_MC_2018-01_ANAver03.png");
+	ccXiKptheta181MC->Print(XiKptheta181MCname);
+
+	char Xipiptheta181MCname[100];
+	TCanvas *ccXipiptheta181MC = new TCanvas("ccXipiptheta181MC", "ccXipiptheta181MC", 800, 600);
+	TH2I * Xipiptheta181MC = (TH2I*)file2MC->Get("pi_pTheta_Measured");	
+	TH2I * Xipiptheta181MC_acc = (TH2I*)file2MC->Get("pi_pTheta_Measured_acc");
+	TH2I *Xipiptheta181MC_accsub = (TH2I *) Xipiptheta181MC->Clone("Xipiptheta181MC_accsub");
+	Xipiptheta181MC_accsub->Add(Xipiptheta181MC_acc,-0.5);
+        Xipiptheta181MC_accsub->Draw("colz");
+	sprintf(Xipiptheta181MCname, "Xipiptheta_MC_2018-01_ANAver03.png");
+	ccXipiptheta181MC->Print(Xipiptheta181MCname);
+
+	char Xipptheta181MCname[100];
+	TCanvas *ccXipptheta181MC = new TCanvas("ccXipptheta181MC", "ccXipptheta181MC", 800, 600);
+	TH2I * Xipptheta181MC = (TH2I*)file2MC->Get("p_pTheta_Measured");	
+	TH2I * Xipptheta181MC_acc = (TH2I*)file2MC->Get("p_pTheta_Measured_acc");
+	TH2I *Xipptheta181MC_accsub = (TH2I *) Xipptheta181MC->Clone("Xipptheta181MC_accsub");
+	Xipptheta181MC_accsub->Add(Xipptheta181MC_acc,-0.5);
+        Xipptheta181MC_accsub->Draw("colz");
+	sprintf(Xipptheta181MCname, "Xipptheta_MC_2018-01_ANAver03.png");
+	ccXipptheta181MC->Print(Xipptheta181MCname);
+
+	char XiKptheta181MCKinFitname[100];
+	TCanvas *ccXiKptheta181MCKinFit = new TCanvas("ccXiKptheta181MCKinFit", "ccXiKptheta181MCKinFit", 800, 600);
+	TH2I * XiKptheta181MCKinFit = (TH2I*)file2MC->Get("K_pTheta_KinFit");	
+	TH2I * XiKptheta181MCKinFit_acc = (TH2I*)file2MC->Get("K_pTheta_KinFit_acc");
+	TH2I *XiKptheta181MCKinFit_accsub = (TH2I *) XiKptheta181MCKinFit->Clone("XiKptheta181MCKinFit_accsub");
+	XiKptheta181MCKinFit_accsub->Add(XiKptheta181MCKinFit_acc,-0.5);
+        XiKptheta181MCKinFit_accsub->Draw("colz");
+	sprintf(XiKptheta181MCKinFitname, "XiKpthetaKinFit_MC_2018-01_ANAver03.png");
+	ccXiKptheta181MCKinFit->Print(XiKptheta181MCKinFitname);
+
+	char Xipiptheta181MCKinFitname[100];
+	TCanvas *ccXipiptheta181MCKinFit = new TCanvas("ccXipiptheta181MCKinFit", "ccXipiptheta181MCKinFit", 800, 600);
+	TH2I * Xipiptheta181MCKinFit = (TH2I*)file2MC->Get("pi_pTheta_KinFit");	
+	TH2I * Xipiptheta181MCKinFit_acc = (TH2I*)file2MC->Get("pi_pTheta_KinFit_acc");
+	TH2I *Xipiptheta181MCKinFit_accsub = (TH2I *) Xipiptheta181MCKinFit->Clone("Xipiptheta181MCKinFit_accsub");
+	Xipiptheta181MCKinFit_accsub->Add(Xipiptheta181MCKinFit_acc,-0.5);
+        Xipiptheta181MCKinFit_accsub->Draw("colz");
+	sprintf(Xipiptheta181MCKinFitname, "XipipthetaKinFit_MC_2018-01_ANAver03.png");
+	ccXipiptheta181MCKinFit->Print(Xipiptheta181MCKinFitname);
+
+	char Xipptheta181MCKinFitname[100];
+	TCanvas *ccXipptheta181MCKinFit = new TCanvas("ccXipptheta181MCKinFit", "ccXipptheta181MCKinFit", 800, 600);
+	TH2I * Xipptheta181MCKinFit = (TH2I*)file2MC->Get("p_pTheta_KinFit");	
+	TH2I * Xipptheta181MCKinFit_acc = (TH2I*)file2MC->Get("p_pTheta_KinFit_acc");
+	TH2I *Xipptheta181MCKinFit_accsub = (TH2I *) Xipptheta181MCKinFit->Clone("Xipptheta181MCKinFit_accsub");
+	Xipptheta181MCKinFit_accsub->Add(Xipptheta181MCKinFit_acc,-0.5);
+        Xipptheta181MCKinFit_accsub->Draw("colz");
+	sprintf(Xipptheta181MCKinFitname, "XippthetaKinFit_MC_2018-01_ANAver03.png");
+	ccXipptheta181MCKinFit->Print(Xipptheta181MCKinFitname);
+
+	char XiKptheta188MCname[100];
+	TCanvas *ccXiKptheta188MC = new TCanvas("ccXiKptheta188MC", "ccXiKptheta188MC", 800, 600);
+	TH2I * XiKptheta188MC = (TH2I*)file3MC->Get("K_pTheta_Measured");	
+	TH2I * XiKptheta188MC_acc = (TH2I*)file3MC->Get("K_pTheta_Measured_acc");
+	TH2I *XiKptheta188MC_accsub = (TH2I *) XiKptheta188MC->Clone("XiKptheta188MC_accsub");
+	XiKptheta188MC_accsub->Add(XiKptheta188MC_acc,-0.5);
+        XiKptheta188MC_accsub->Draw("colz");
+	sprintf(XiKptheta188MCname, "XiKptheta_MC_2018-08_ANAver02.png");
+	ccXiKptheta188MC->Print(XiKptheta188MCname);
+
+	char Xipiptheta188MCname[100];
+	TCanvas *ccXipiptheta188MC = new TCanvas("ccXipiptheta188MC", "ccXipiptheta188MC", 800, 600);
+	TH2I * Xipiptheta188MC = (TH2I*)file3MC->Get("pi_pTheta_Measured");	
+	TH2I * Xipiptheta188MC_acc = (TH2I*)file3MC->Get("pi_pTheta_Measured_acc");
+	TH2I *Xipiptheta188MC_accsub = (TH2I *) Xipiptheta188MC->Clone("Xipiptheta188MC_accsub");
+	Xipiptheta188MC_accsub->Add(Xipiptheta188MC_acc,-0.5);
+        Xipiptheta188MC_accsub->Draw("colz");
+	sprintf(Xipiptheta188MCname, "Xipiptheta_MC_2018-08_ANAver02.png");
+	ccXipiptheta188MC->Print(Xipiptheta188MCname);
+
+	char Xipptheta188MCname[100];
+	TCanvas *ccXipptheta188MC = new TCanvas("ccXipptheta188MC", "ccXipptheta188MC", 800, 600);
+	TH2I * Xipptheta188MC = (TH2I*)file3MC->Get("p_pTheta_Measured");	
+	TH2I * Xipptheta188MC_acc = (TH2I*)file3MC->Get("p_pTheta_Measured_acc");
+	TH2I *Xipptheta188MC_accsub = (TH2I *) Xipptheta188MC->Clone("Xipptheta188MC_accsub");
+	Xipptheta188MC_accsub->Add(Xipptheta188MC_acc,-0.5);
+        Xipptheta188MC_accsub->Draw("colz");
+	sprintf(Xipptheta188MCname, "Xipptheta_MC_2018-08_ANAver02.png");
+	ccXipptheta188MC->Print(Xipptheta188MCname);
+
+	char XiKptheta188MCKinFitname[100];
+	TCanvas *ccXiKptheta188MCKinFit = new TCanvas("ccXiKptheta188MCKinFit", "ccXiKptheta188MCKinFit", 800, 600);
+	TH2I * XiKptheta188MCKinFit = (TH2I*)file3MC->Get("K_pTheta_KinFit");	
+	TH2I * XiKptheta188MCKinFit_acc = (TH2I*)file3MC->Get("K_pTheta_KinFit_acc");
+	TH2I *XiKptheta188MCKinFit_accsub = (TH2I *) XiKptheta188MCKinFit->Clone("XiKptheta188MCKinFit_accsub");
+	XiKptheta188MCKinFit_accsub->Add(XiKptheta188MCKinFit_acc,-0.5);
+        XiKptheta188MCKinFit_accsub->Draw("colz");
+	sprintf(XiKptheta188MCKinFitname, "XiKpthetaKinFit_MC_2018-08_ANAver02.png");
+	ccXiKptheta188MCKinFit->Print(XiKptheta188MCKinFitname);
+
+	char Xipiptheta188MCKinFitname[100];
+	TCanvas *ccXipiptheta188MCKinFit = new TCanvas("ccXipiptheta188MCKinFit", "ccXipiptheta188MCKinFit", 800, 600);
+	TH2I * Xipiptheta188MCKinFit = (TH2I*)file3MC->Get("pi_pTheta_KinFit");	
+	TH2I * Xipiptheta188MCKinFit_acc = (TH2I*)file3MC->Get("pi_pTheta_KinFit_acc");
+	TH2I *Xipiptheta188MCKinFit_accsub = (TH2I *) Xipiptheta188MCKinFit->Clone("Xipiptheta188MCKinFit_accsub");
+	Xipiptheta188MCKinFit_accsub->Add(Xipiptheta188MCKinFit_acc,-0.5);
+        Xipiptheta188MCKinFit_accsub->Draw("colz");
+	sprintf(Xipiptheta188MCKinFitname, "XipipthetaKinFit_MC_2018-08_ANAver02.png");
+	ccXipiptheta188MCKinFit->Print(Xipiptheta188MCKinFitname);
+
+	char Xipptheta188MCKinFitname[100];
+	TCanvas *ccXipptheta188MCKinFit = new TCanvas("ccXipptheta188MCKinFit", "ccXipptheta188MCKinFit", 800, 600);
+	TH2I * Xipptheta188MCKinFit = (TH2I*)file3MC->Get("p_pTheta_KinFit");	
+	TH2I * Xipptheta188MCKinFit_acc = (TH2I*)file3MC->Get("p_pTheta_KinFit_acc");
+	TH2I *Xipptheta188MCKinFit_accsub = (TH2I *) Xipptheta188MCKinFit->Clone("Xipptheta188MCKinFit_accsub");
+	Xipptheta188MCKinFit_accsub->Add(Xipptheta188MCKinFit_acc,-0.5);
+        Xipptheta188MCKinFit_accsub->Draw("colz");
+	sprintf(Xipptheta188MCKinFitname, "XippthetaKinFit_MC_2018-08_ANAver02.png");
+	ccXipptheta188MCKinFit->Print(Xipptheta188MCKinFitname);
+
 	char XiMassMeasured17name[100];
 	TCanvas *ccXiMassMeasured17 = new TCanvas("ccXiMassMeasured17", "ccXiMassMeasured17", 800, 600);
 	TH1I * XiMassMeasured17 = (TH1I*)file1->Get("XiMass");	
