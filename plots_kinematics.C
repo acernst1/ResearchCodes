@@ -796,9 +796,9 @@ void plots_kinematics() {
 	CLMC171->SetLineColor(kBlue);
 	CLMC181->SetLineColor(kRed);
 	CLMC188->SetLineColor(kGreen);
-	CLMC171->Scale(1/norm201701);  
-	CLMC181->Scale(1/norm201801);  
-	CLMC188->Scale(1/norm201808);  	
+	CLMC171->Scale(norm201801/norm201701);  
+	CLMC181->Scale(norm201801/norm201801);  
+	CLMC188->Scale(norm201801/norm201808);  	
 	CLMC171->Draw();
 	CLMC181->Draw("same");
 	CLMC188->Draw("same");
