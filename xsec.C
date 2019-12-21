@@ -47,14 +47,14 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
     double flux_err=0.0;
     double tagged=1.0;
     double tagged_err=0.0;
-    double xsec_val[numBins];
-    double xsec_err[numBins];
-    double efficiency[numBins];
-    double eff_err[numBins];
-    double efficiency_count[numBins];
-    double eff_count_err[numBins];
-    double xsec_count_val[numBins];
-    double xsec_count_err[numBins];
+    double xsec_val[numEBins];
+    double xsec_err[numEBins];
+    double efficiency[numEBins];
+    double eff_err[numEBins];
+    double efficiency_count[numEBins];
+    double eff_count_err[numEBins];
+    double xsec_count_val[numEBins];
+    double xsec_count_err[numEBins];
   
     TFile* datafile = TFile::Open(dataFilePath);
     TFile* fluxfile = TFile::Open(fluxFilePath);
@@ -96,8 +96,8 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
 
  
     TCanvas * xsec_canvas = new TCanvas("xsec_canvas", "xsec_canvas",800,600);
-    TH1F * xsec = new TH1F("xsec", "Cross Section; E_{#gamma}; #sigma_{total} (nb)",numBins,minVal,maxVal); 
-    TH1F * xsec_count = new TH1F("xsec_count", "Cross Section; E_{#gamma}; #sigma_{total} (nb)",numBins,minVal,maxVal); 
+    TH1F * xsec = new TH1F("xsec", "Cross Section; E_{#gamma}; #sigma_{total} (nb)",numEBins,minEval,maxEval); 
+    TH1F * xsec_count = new TH1F("xsec_count", "Cross Section; E_{#gamma}; #sigma_{total} (nb)",numEBins,minEval,maxEval); 
     xsec->SetMarkerColor(kRed);
     xsec->SetMarkerStyle(21);
     xsec_count->SetMarkerColor(kBlue);
@@ -105,8 +105,8 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
     xsec->SetLabelSize(0.035,"xy");
     xsec->SetLabelOffset(0.001,"xy");
 
-    TH1F * eff = new TH1F("eff", "Efficiency; E_{#gamma}; Efficiency (%)",numBins,minVal,maxVal);
-    TH1F * eff_count = new TH1F("eff_count", "Efficiency; E_{#gamma}; #Efficiency (%)",numBins,minVal,maxVal);
+    TH1F * eff = new TH1F("eff", "Efficiency; E_{#gamma}; Efficiency (%)",numEBins,minEval,maxEval);
+    TH1F * eff_count = new TH1F("eff_count", "Efficiency; E_{#gamma}; #Efficiency (%)",numEBins,minEval,maxEval);
     TCanvas * eff_canvas = new TCanvas("eff_canvas", "eff_canvas",800,600);
     eff->SetMarkerColor(kRed);
     eff->SetMarkerStyle(21);
@@ -116,11 +116,11 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
     eff->SetLabelOffset(0.001,"xy");
     eff->GetYaxis()->SetRangeUser(0,3);
 
-    for(int i=0; i<numBins; i++)
+    for(int i=0; i<numEBins; i++)
 	{
-	double delta=(maxVal- minVal)/float(numBins);
-	double Emin = delta * i + (minVal);
-	double Emax = delta * i + (minVal);
+	double delta=(maxEval- minEval)/float(numEBins);
+	double Emin = delta * i + (minEval);
+	double Emax = delta * i + (minEval);
 	int buffer = Emin*10;
 	cout << "~~~~~~~E~ " << i << " " << Emin << " " << Emax << " " << buffer << endl;
         flux=getbincontent(FluxH,i+1);
@@ -296,19 +296,19 @@ for(int ith=13; ith<23; ith++)
 xsec_gluex->Draw("PE1");
 //xsec_gluex_count->Draw("same");
 axsec_canvas->Update();
-const Int_t NumBins=24;
-Double_t g12xsec[NumBins] =  {0.256, 1.145, 2.981, 4.927, 5.63, 7.296, 8.47, 8.872, 10.796, 11.017, 10.583, 10.132, 9.729, 11.614, 11.553, 10.133, 10.413, 11.179, 11.478, 8.48, 8.14, 10.004,9.855, 10.513};
-Double_t g12xsec_err[NumBins] = {0.300, 0.300, 0.521, 0.408, 0.630, 0.881, 0.708, 0.616, 0.621, 0.677, 0.752, 0.797, 0.925, 0.918, 1.103, 1.091, 1.164, 1.068, 1.269, 1.299, 1.020, 1.761, 1.273, 4.630};
-TH1F * xsec_clas = new TH1F("xsec_clas", "xsec_clas",NumBins,2.625,5.4); 
+const Int_t numEBins=24;
+Double_t g12xsec[numEBins] =  {0.256, 1.145, 2.981, 4.927, 5.63, 7.296, 8.47, 8.872, 10.796, 11.017, 10.583, 10.132, 9.729, 11.614, 11.553, 10.133, 10.413, 11.179, 11.478, 8.48, 8.14, 10.004,9.855, 10.513};
+Double_t g12xsec_err[numEBins] = {0.300, 0.300, 0.521, 0.408, 0.630, 0.881, 0.708, 0.616, 0.621, 0.677, 0.752, 0.797, 0.925, 0.918, 1.103, 1.091, 1.164, 1.068, 1.269, 1.299, 1.020, 1.761, 1.273, 4.630};
+TH1F * xsec_clas = new TH1F("xsec_clas", "xsec_clas",numEBins,2.625,5.4); 
 xsec_clas->SetMarkerColor(kOrange);
 xsec_clas->SetMarkerStyle(21);
-for(int jth=0; jth<NumBins; jth++)
+for(int jth=0; jth<numEBins; jth++)
 {
 	xsec_clas->SetBinContent(jth+1,g12xsec[jth]);
 	xsec_clas->SetBinError(jth+1,g12xsec_err[jth]);
 }
-Double_t g12energy[NumBins] =  { };
-Double_t deltaE[NumBins] = { };
+Double_t g12energy[numEBins] =  { };
+Double_t deltaE[numEBins] = { };
 xsec_clas->Draw("same,PE1");
 auto legend = new TLegend(0.7,0.7,0.9,0.9);
 legend->AddEntry(xsec_gluex,"GlueX");
