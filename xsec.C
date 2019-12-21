@@ -90,8 +90,8 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
     double tmax = maxtval;
     int tbinmin = ThrownHtemp->GetYaxis()->FindBin(tmin);
     int tbinmax = ThrownHtemp->GetYaxis()->FindBin(tmax) -1.;
-    TH1F * ThrownH = (TH1F *) ThrownHtemp->ProjectionY("ThrownH",tbinmin,tbinmax);
-    ThrownH->Draw("colz");
+    TH1F * ThrownH = (TH1F *) ThrownHtemp->ProjectionX("ThrownH",tbinmin,tbinmax);
+    ThrownH->Draw();
     sprintf(thrown_numbers_macro_name,"thrown_numbers_%s.C",version);
     sprintf(thrown_numbers_plot_name, "xsec_thrown_%s.png",version);
     ThrownH->SaveAs(thrown_numbers_macro_name);
