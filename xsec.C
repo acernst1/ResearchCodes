@@ -65,10 +65,9 @@ void xsec(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TStrin
     
 
     TCanvas * flux_canvas = new TCanvas("flux_canvas", "flux_canvas",800,600);
-    TH1F*  FluxH= (TH1F*) fluxfile->Get("tagged_flux");
-    FluxH->GetXaxis()->SetRangeUser(minEval,maxEval);
-    FluxH->Rebin(FluxH->GetNbinsX()/numEBins);
-    FluxH->Draw(); 
+    TH1F*  FluxHtemp= (TH1F*) fluxfile->Get("tagged_flux");
+    TH1F* FluxH = new TH1F("FluxH","FluxH",numEbins,minEval,maxEval);
+    FluxH->Draw("FluxHtemp>>FluxH"); 
     char flux_macro_name[100];
     sprintf(flux_macro_name,"flux_numbers_%s.C",version);
     FluxH->SaveAs(flux_macro_name);
