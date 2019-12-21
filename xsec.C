@@ -25,6 +25,9 @@ char signal_numbers[100];
 char mcsignal_numbers[100];
 char xsecplot[100];
 char xsecplotC[100];
+char thrown_numbers_macro_name[100];
+char thrown_numbers_plot_name[100];
+
 double minEval=6.4; 
 double maxEval=11.4; 
 int numEBins=10;
