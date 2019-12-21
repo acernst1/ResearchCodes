@@ -777,7 +777,7 @@ void plots_kinematics() {
 	ChiSq171->SetLineColor(kBlue);
 	ChiSq181->SetLineColor(kRed);
 	ChiSq188->SetLineColor(kGreen);	
-	ChiSq171->GetYaxis()->SetRangeUser(0,25000);
+	ChiSq171->GetYaxis()->SetRangeUser(0,50000);
 	ChiSq171->Draw();
 	ChiSq181->Draw("same");
 	ChiSq188->Draw("same");
