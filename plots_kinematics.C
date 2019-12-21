@@ -815,7 +815,9 @@ void plots_kinematics() {
 	ChiSqMC171->SetLineColor(kBlue);
 	ChiSqMC181->SetLineColor(kRed);
 	ChiSqMC188->SetLineColor(kGreen);	
-	ChiSqMC171->Scale(1/norm201801);
+	ChiSqMC171->Scale(norm201801/norm201701);
+	ChiSqMC181->Scale(norm201801/norm201801); 
+	ChiSqMC188->Scale(norm201801/norm201808); 
 	ChiSqMC171->GetYaxis()->SetRangeUser(0,40000);
 	ChiSqMC171->Draw();
 	ChiSqMC181->Draw("same");
@@ -876,7 +878,9 @@ void plots_kinematics() {
 	t171MC->RebinX(5);
 	t181MC->RebinX(5);
 	t188MC->RebinX(5);
-	t171MC->Scale(1/norm201801);
+	t171MC->Scale(norm201801/norm201701); 
+	t181MC->Scale(norm201801/norm201801); 
+	t188MC->Scale(norm201801/norm201808); 
 	t171MC->SetLineColor(kBlue);
 	t181MC->SetLineColor(kRed);
 	t188MC->SetLineColor(kGreen);	
