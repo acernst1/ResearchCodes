@@ -790,11 +790,15 @@ void plots_kinematics() {
 	TH1I * CLMC171 = (TH1I*)file1MC->Get("Hist_KinFitResults/ConfidenceLevel");	
 	TH1I * CLMC181 = (TH1I*)file2MC->Get("Hist_KinFitResults/ConfidenceLevel");	
 	TH1I * CLMC188 = (TH1I*)file3MC->Get("Hist_KinFitResults/ConfidenceLevel");	
+	double norm201701 = CLMC171->GetEntries();
 	double norm201801 = CLMC181->GetEntries();
+	double norm201808 = CLMC188->GetEntries();
 	CLMC171->SetLineColor(kBlue);
 	CLMC181->SetLineColor(kRed);
 	CLMC188->SetLineColor(kGreen);
-	CLMC171->Scale(norm201801);  	
+	CLMC171->Scale(1/norm201701);  
+	CLMC181->Scale(1/norm201801);  
+	CLMC188->Scale(1/norm201808);  	
 	CLMC171->Draw();
 	CLMC181->Draw("same");
 	CLMC188->Draw("same");
@@ -811,7 +815,7 @@ void plots_kinematics() {
 	ChiSqMC171->SetLineColor(kBlue);
 	ChiSqMC181->SetLineColor(kRed);
 	ChiSqMC188->SetLineColor(kGreen);	
-	ChiSqMC171->Scale(norm201801);
+	ChiSqMC171->Scale(1/norm201801);
 	ChiSqMC171->GetYaxis()->SetRangeUser(0,40000);
 	ChiSqMC171->Draw();
 	ChiSqMC181->Draw("same");
@@ -872,7 +876,7 @@ void plots_kinematics() {
 	t171MC->RebinX(5);
 	t181MC->RebinX(5);
 	t188MC->RebinX(5);
-	t171MC->Scale(norm201801);
+	t171MC->Scale(1/norm201801);
 	t171MC->SetLineColor(kBlue);
 	t181MC->SetLineColor(kRed);
 	t188MC->SetLineColor(kGreen);	
