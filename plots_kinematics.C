@@ -3,7 +3,7 @@ void plots_kinematics() {
 	TFile *file1 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2017-01_ANAver20_347runs_dec20.root");
 	TFile *file2 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2018-01_ANAver03_543runs_dec20.root");
 	TFile *file3 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2018-08_ANAver02_449runs_dec20.root");
-	TFile *file4 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatche_allbatches_2018-08.root");
+	TFile *file4 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2018-08.root");
 	TFile *file1MC = TFile::Open("/cache/halld/home/acernst/MC/2017-01_ANAver20/kpkpxim__B4_M23_2017-01_ANAver20_dec20.root");
 	TFile *file2MC = TFile::Open("/cache/halld/home/acernst/MC/2018-01_ANAver03/kpkpxim__B4_M23_2018-01_ANAver03_dec20.root");
 	TFile *file3MC = TFile::Open("/cache/halld/home/acernst/MC/2018-08_ANAver02/kpkpxim__B4_M23_2018-08_ANAver02_dec20.root");
