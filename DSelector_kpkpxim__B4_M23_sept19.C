@@ -64,6 +64,8 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_BeamBunch = new TH1I("BeamBunch", ";Beam Bunch", 400, -20.0, 20.0);
 	dHist_ChiSq = new TH1I("ChiSq", "ChiSq", 200, 0.0, 100.0);
 	dHist_ChiSqXi = new TH2I("ChiSqXi", "ChiSq",100,0.0,100.0,400,1.1,1.5);
+	dHist_ChiSqXi_KinFit = new TH2I("ChiSqXi_KinFit", "ChiSq",100,0.0,50.0,400,1.1,1.5);
+	dHist_ChiSqXi_KinFit_acc = new TH2I("ChiSqXi_KinFit_acc", "ChiSq",100,0.0,50.0,400,1.1,1.5);
 	dHist_XiMass_Measured=new TH1I("XiMass","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
 	dHist_XiMass_KinFit=new TH1I("XiMass_KinFit","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_XiMass_Measured_nan=new TH1I("XiMass_nan","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
@@ -553,10 +555,12 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 					if(fabs(locDeltaT) < 2.004) {	
 					dHist_XiMass_Measured_nan->Fill(locXiP4_Measured.M());
 					dHist_XiMass_KinFit_nan->Fill(locXiP4_KinFit.M());
+					dHist_ChiSqXi_KinFit->Fill(locChiSqNdf, locXiP4_KinFit.M());
 					}
 					else { 
 					dHist_XiMass_Measured_nan_acc->Fill(locXiP4_Measured.M());
 					dHist_XiMass_KinFit_nan_acc->Fill(locXiP4_KinFit.M());
+					dHist_ChiSqXi_KinFit_acc->Fill(locChiSqNdf, locXiP4_KinFit.M());
 					
 					}
 				}

@@ -67,6 +67,8 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		TH1I* dHist_BeamBunch;
 		TH1I* dHist_ChiSq;
 		TH2I* dHist_ChiSqXi;
+		TH2I* dHist_ChiSqXi_KinFit;
+		TH2I* dHist_ChiSqXi_KinFit_acc;
 		TH1I* dHist_XiMass_Measured;	
 		TH1I* dHist_XiMass_KinFit;
 		TH1I* dHist_XiMass_Measured_nan;	
