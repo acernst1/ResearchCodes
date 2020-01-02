@@ -284,7 +284,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 		sprintf(mccanvas,"Xi_canvas_mc_%03d_%03d",Ebuffer,tbuffer);
         	sprintf(mcplot,"diffxsec_mcfit_%s_%03d_%02dbins_%03d_%03d.png",version,binning,numEBins,Ebuffer,tbuffer);
        
-		if(XiMassKinFit_Ebin_tbin_accsub->GetEntries < 20){
+		if(XiMassKinFit_Ebin_tbin_accsub->GetEntries() < 20){
 			sig_events = 0.0;
 			sig_events_err = 0.0;
 			sig_mass = 0.0;
