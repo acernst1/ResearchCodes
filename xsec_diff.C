@@ -72,7 +72,12 @@ double tagged_err=0.0;
 double canvas_margins = 1e-50;
 double deltat;
 double deltaE;
-
+double_t sig_events;
+double_t sig_events_err;
+double_t sig_mass;
+double_t sig_mass_err;
+double_t sig_width;
+double_t sig_width_err;
 double getbincontent(TH1F* hist, int bin) {  return hist->GetBinContent(bin);}
 double getbinerror(TH1F* AccH, int bin){  return AccH->GetBinError(bin);}
 
@@ -279,31 +284,41 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 		sprintf(mccanvas,"Xi_canvas_mc_%03d_%03d",Ebuffer,tbuffer);
         	sprintf(mcplot,"diffxsec_mcfit_%s_%03d_%02dbins_%03d_%03d.png",version,binning,numEBins,Ebuffer,tbuffer);
        
-		RooWorkspace* w = new RooWorkspace(workspace);
-        	TCanvas * Xi_canvas = new TCanvas(canvas, canvas,800,600);
-        	RooRealVar mass("mass", "mass", minmass, maxmass);
-        	RooDataHist *data = new RooDataHist("data", "Dataset of mass", mass, XiMassKinFit_Ebin_tbin_accsub);
-        	XiMassKinFit_Ebin_tbin_accsub->Print();
-        	w->import(RooArgSet(mass));
-        	w->factory("Chebychev::bkgd(mass,{c1[2.20,-1.e4,1.e4],c2[-1.557,-1.e4,1.e4]})");
-        	w->factory("Gaussian::gaus(mass,mean[1.32,1.31,1.33],sigma[0.005,0.001,0.01])");
-        	w->factory("SUM::model(nbkgd[150,0,1e5]*bkgd, nsig[20,0,1e3]*gaus)");
-        	w->pdf("model")->fitTo(*data,RooFit::Range(minfitmass,maxmass),RooFit::Minos(1));
-        	RooPlot* massframe = mass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
-        	massframe->SetXTitle("#Lambda#pi^{-} mass");
-        	data->plotOn(massframe) ;
-        	w->pdf("model")->paramOn(massframe);
-        	w->pdf("model")->plotOn(massframe);
-        	w->pdf("gaus")->plotOn(massframe, RooFit::LineStyle(kDotted),
- 		RooFit::Normalization(w->var("nsig")->getVal(), RooAbsReal::NumEvent));
-        	w->pdf("bkgd")->plotOn(massframe, RooFit::LineStyle(kDotted),
-  			RooFit::Normalization(w->var("nbkgd")->getVal(), RooAbsReal::NumEvent));
-		double_t sig_events = w->var("nsig")->getVal();
-		double_t sig_events_err = w->var("nsig")->getError();
-		double_t sig_mass = w->var("mean")->getVal();
-		double_t sig_mass_err = w->var("mean")->getError();
-		double_t sig_width = w->var("sigma")->getVal();
-		double_t sig_width_err = w->var("sigma")->getError();
+		if(XiMassKinFit_Ebin_tbin_accsub->GetEntries < 20){
+			sig_events = 0.0;
+			sig_events_err = 0.0;
+			sig_mass = 0.0;
+			sig_mass_err = 0.0;
+			sig_width =  0.0;
+			sig_width_err =  0.0;
+		}
+		else{
+			RooWorkspace* w = new RooWorkspace(workspace);
+        		TCanvas * Xi_canvas = new TCanvas(canvas, canvas,800,600);
+        		RooRealVar mass("mass", "mass", minmass, maxmass);
+        		RooDataHist *data = new RooDataHist("data", "Dataset of mass", mass, XiMassKinFit_Ebin_tbin_accsub);
+        		XiMassKinFit_Ebin_tbin_accsub->Print();
+        		w->import(RooArgSet(mass));
+        		w->factory("Chebychev::bkgd(mass,{c1[2.20,-1.e4,1.e4],c2[-1.557,-1.e4,1.e4]})");
+        		w->factory("Gaussian::gaus(mass,mean[1.32,1.31,1.33],sigma[0.005,0.001,0.01])");
+        		w->factory("SUM::model(nbkgd[150,0,1e5]*bkgd, nsig[20,0,1e3]*gaus)");
+        		w->pdf("model")->fitTo(*data,RooFit::Range(minfitmass,maxmass),RooFit::Minos(1));
+        		RooPlot* massframe = mass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
+        		massframe->SetXTitle("#Lambda#pi^{-} mass");
+        		data->plotOn(massframe) ;
+        		w->pdf("model")->paramOn(massframe);
+        		w->pdf("model")->plotOn(massframe);
+        		w->pdf("gaus")->plotOn(massframe, RooFit::LineStyle(kDotted),
+ 				RooFit::Normalization(w->var("nsig")->getVal(), RooAbsReal::NumEvent));
+        		w->pdf("bkgd")->plotOn(massframe, RooFit::LineStyle(kDotted),
+  				RooFit::Normalization(w->var("nbkgd")->getVal(), RooAbsReal::NumEvent));
+			sig_events = w->var("nsig")->getVal();
+			sig_events_err = w->var("nsig")->getError();
+			sig_mass = w->var("mean")->getVal();
+			sig_mass_err = w->var("mean")->getError();
+			sig_width = w->var("sigma")->getVal();
+			sig_width_err = w->var("sigma")->getError();
+		}
 		sig_val[iE+1][it+1] = sig_events;
 		sig_err[iE+1][it+1] = sig_events_err;
 		cout << "~~~~~~~sig~" << iE << "~" << it << " " << sig_events << " " << sig_events_err << endl; 
@@ -337,7 +352,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 		mc_val[iE+1][it+1] = mc_sig_events;
 		mc_err[iE+1][it+1] = mc_sig_events_err;
 		cout << "~~~~~~~MC~" << iE << "~" << it << " " << mc_sig_events << " " << mc_sig_events_err << endl; 
-		double mc_max_y = mc_sig_events *0.3;
+		double mc_max_y = mc_sig_events *0.5;
 		mcmassframe->SetMaximum(mc_max_y);
         	mcmassframe->Draw();
 	     	Xi_mc_canvas->Print(mcplot);
@@ -379,7 +394,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 		XSec[iE+1]->SetBinError(it+1,xsec_err[iE+1][it+1]);
 	}
 	sigyields_canvas->cd(iE+1);
-	SignalYields[iE+1]->GetYaxis()->SetRangeUser(0,650);
+	SignalYields[iE+1]->GetYaxis()->SetRangeUser(0,300);
 	SignalYields[iE+1]->Draw("pe1");
 	sprintf(signalyieldshist,"SignalYields_%s_%03d_%02dbins.png",version,binning,numEBins);
 	sprintf(signatyieldsmacro,"SignalYields_%s_%03d_%02dbins.C",version,binning,numEBins);
