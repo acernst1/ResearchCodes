@@ -115,9 +115,9 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     TH1F*  FluxH= (TH1F*) fluxfile->Get("tagged_flux");
     FluxH->Rebin(FluxH->GetNbinsX()/numEBins);
     FluxH->Draw(); 
-    sprintf(flux_macro_name,"flux_numbers_%s.C",version);
+    sprintf(flux_macro_name,"flux_numbers_%s_%s.C",version,binning);
     FluxH->SaveAs(flux_macro_name);
-    sprintf(flux_plot_name,"xsec_flux_%s.png",version);
+    sprintf(flux_plot_name,"xsec_flux_%s_%s.png",version,binning);
     flux_canvas->Print(flux_plot_name);
 
     TFile* thrownfile = TFile::Open(thrownFilePath1);
@@ -129,8 +129,8 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     ThrownH->RebinX(ThrownH->GetNbinsX()/numEBins);    
     ThrownH->RebinY(ThrownH->GetNbinsY()/numtBins);
     ThrownH->Draw("colz");
-    sprintf(thrown_numbers_macro_name,"thrown_numbers_%s.C",version);
-    sprintf(thrown_numbers_plot_name, "xsec_thrown_%s.png",version);
+    sprintf(thrown_numbers_macro_name,"thrown_numbers_%s_%s.C",version,binning);
+    sprintf(thrown_numbers_plot_name, "xsec_thrown_%s_%s.png",version,binning);
     ThrownH->SaveAs(thrown_numbers_macro_name);
     thrown_canvas->Print(thrown_numbers_plot_name);
 
@@ -273,11 +273,11 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 
 		sprintf(workspace,"w%03d_%03d",Ebuffer,tbuffer);
         	sprintf(canvas,"Xi_canvas_%03d_%03d",Ebuffer,tbuffer);
-        	sprintf(plot,"diffxsec_sigfit_%s_%03d_%03d.png",version, Ebuffer,tbuffer);
+        	sprintf(plot,"diffxsec_sigfit_%s_%s_%03d_%03d.png",version,binning,Ebuffer,tbuffer);
        
 		 sprintf(mcworkspace,"wmc%03d_%03d",Ebuffer,tbuffer);
 		sprintf(mccanvas,"Xi_canvas_mc_%03d_%03d",Ebuffer,tbuffer);
-        	sprintf(mcplot,"diffxsec_mcfit_%s_%03d_%03d.png",version, Ebuffer,tbuffer);
+        	sprintf(mcplot,"diffxsec_mcfit_%s_%s_%03d_%03d.png",version,binning,Ebuffer,tbuffer);
        
 		RooWorkspace* w = new RooWorkspace(workspace);
         	TCanvas * Xi_canvas = new TCanvas(canvas, canvas,800,600);
@@ -381,56 +381,56 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	sigyields_canvas->cd(iE+1);
 	SignalYields[iE+1]->GetYaxis()->SetRangeUser(0,650);
 	SignalYields[iE+1]->Draw("pe1");
-	sprintf(signalyieldshist,"SignalYields_%s.png",version);
-	sprintf(signatyieldsmacro,"SignalYields_%s.C",version);
+	sprintf(signalyieldshist,"SignalYields_%s_%s.png",version,binning);
+	sprintf(signatyieldsmacro,"SignalYields_%s_%s.C",version,binning);
 	sigyields_canvas->Print(signalyieldshist);
 	sigyields_canvas->SaveAs(signatyieldsmacro);
 
 	sigmass_canvas->cd(iE+1);
 	SignalMass[iE+1]->GetYaxis()->SetRangeUser(1.30,1.35);
 	SignalMass[iE+1]->Draw("pe1");
-	sprintf(signalmasshist,"SignalMass_%s.png",version);
-	sprintf(signalmassmacro,"SignalMass_%s.C",version);
+	sprintf(signalmasshist,"SignalMass_%s_%s.png",version,binning);
+	sprintf(signalmassmacro,"SignalMass_%s_%s.C",version,binning);
 	sigmass_canvas->Print(signalmasshist);
 	sigmass_canvas->SaveAs(signalmassmacro);
 
 	sigwidth_canvas->cd(iE+1);
 	SignalWidth[iE+1]->GetYaxis()->SetRangeUser(0.001,0.01);
 	SignalWidth[iE+1]->Draw("pe1");
-	sprintf(signalwidthhist,"SignalWidth_%s.png",version);
-	sprintf(signalwidthmacro,"SignalWidth_%s.C",version);
+	sprintf(signalwidthhist,"SignalWidth_%s_%s.png",version,binning);
+	sprintf(signalwidthmacro,"SignalWidth_%s_%s.C",version,binning);
 	sigwidth_canvas->Print(signalwidthhist);
 	sigwidth_canvas->SaveAs(signalwidthmacro);
 
 	mcyields_canvas->cd(iE+1);
 	MCYields[iE+1]->GetYaxis()->SetRangeUser(0,1750);
 	MCYields[iE+1]->Draw("pe1");
-	sprintf(mcyieldshist,"MCyields_%s.png",version);
-	sprintf(mcyieldsmacro,"MCyields_%s.C",version);
+	sprintf(mcyieldshist,"MCyields_%s_%s.png",version,binning);
+	sprintf(mcyieldsmacro,"MCyields_%s_%s.C",version,binning);
 	mcyields_canvas->Print(mcyieldshist);
 	mcyields_canvas->SaveAs(mcyieldsmacro);
 
 	mcmass_canvas->cd(iE+1);
 	MCMass[iE+1]->GetYaxis()->SetRangeUser(1.30,1.35);
 	MCMass[iE+1]->Draw("pe1");
-	sprintf(mcmasshist,"MCMass_%s.png",version);
-	sprintf(mcmassmacro,"MCMass_%s.C",version);
+	sprintf(mcmasshist,"MCMass_%s_%s.png",version,binning);
+	sprintf(mcmassmacro,"MCMass_%s_%s.C",version,binning);
 	mcmass_canvas->Print(mcmasshist);
 	mcmass_canvas->SaveAs(mcmassmacro);
 
 	mcwidth_canvas->cd(iE+1);
 	MCWidth[iE+1]->GetYaxis()->SetRangeUser(0.001,0.01);
 	MCWidth[iE+1]->Draw("pe1");
-	sprintf(mcwidthhist,"MCwidth_%s.png",version);
-	sprintf(mcwidthmacro,"MCwidth_%s.C",version);
+	sprintf(mcwidthhist,"MCwidth_%s_%s.png",version,binning);
+	sprintf(mcwidthmacro,"MCwidth_%s_%s.C",version,binning);
 	mcwidth_canvas->Print(mcwidthhist);
 	mcwidth_canvas->SaveAs(mcwidthmacro);
 
 	eff_canvas->cd(iE+1);
 	Eff[iE+1]->GetYaxis()->SetRangeUser(0,0.25);
 	Eff[iE+1]->Draw("pe1");
-	sprintf(effhist,"Eff_%s.png",version);
-	sprintf(effmacro,"Eff_%s.C",version);
+	sprintf(effhist,"Eff_%s_%s.png",version,binning);
+	sprintf(effmacro,"Eff_%s_%s.C",version,binning);
 	eff_canvas->Print(effhist);
 	eff_canvas->SaveAs(effmacro);
 
@@ -438,8 +438,8 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	XSec[iE+1]->GetYaxis()->SetRangeUser(0,10);
 	XSec[iE+1]->Draw("pe1");
 	gPad->SetLogy();
-	sprintf(diffxsechist,"Diffxsec_%s.png",version);
-	sprintf(diffxsecmacro,"Diffxsec_%s.C",version);
+	sprintf(diffxsechist,"Diffxsec_%s_%s.png",version,binning);
+	sprintf(diffxsecmacro,"Diffxsec_%s_%s.C",version,binning);
 	xsec_canvas->Print(diffxsechist);
 	xsec_canvas->SaveAs(diffxsecmacro);
    }
