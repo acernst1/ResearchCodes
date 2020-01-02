@@ -318,14 +318,15 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 			sig_mass_err = w->var("mean")->getError();
 			sig_width = w->var("sigma")->getVal();
 			sig_width_err = w->var("sigma")->getError();
+			double max_y = sig_events*0.3;
+			massframe->SetMaximum(max_y);
+        		massframe->Draw();
+	     		Xi_canvas->Print(plot);
 		}
 		sig_val[iE+1][it+1] = sig_events;
 		sig_err[iE+1][it+1] = sig_events_err;
 		cout << "~~~~~~~sig~" << iE << "~" << it << " " << sig_events << " " << sig_events_err << endl; 
-		double max_y = sig_events*0.3;
-		massframe->SetMaximum(max_y);
-        	massframe->Draw();
-	     	Xi_canvas->Print(plot);
+
 
        		RooWorkspace* wmc = new RooWorkspace(mcworkspace);
         	TCanvas * Xi_mc_canvas = new TCanvas(mccanvas, mccanvas,800,600);
