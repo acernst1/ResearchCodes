@@ -248,7 +248,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 
 	xsec_canvas->cd(iE+1);
 	sprintf(xsec_EBin_name,"xsec_%03d",Ebuffer);
-    	XSec[iE+1] = new TH1F(xsec_EBin_name, "; -t (GeV^2); #sigma (nb)",numtBins,mintval,maxtval); 
+    	XSec[iE+1] = new TH1F(xsec_EBin_name, "; -t (GeV^2); d#sigma/dt (nb)",numtBins,mintval,maxtval); 
 	XSec[iE+1]->SetTitle(EBin_Title);
     	XSec[iE+1]->SetMarkerColor(kRed);
     	XSec[iE+1]->SetMarkerStyle(21);
