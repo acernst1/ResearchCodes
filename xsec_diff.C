@@ -62,9 +62,6 @@ char diffxsecmacro[100];
 double mintval = 0.0;
 double maxtval = 5.0;
 const int numtBins=10; 
-double minEval=6.3; 
-double maxEval=minEval + 5.0; 
-const int numEBins=10;
 double minmass=1.2; 
 double minfitmass=1.27;
 double maxmass=1.5; 
@@ -72,41 +69,44 @@ const int nummassBins=80;
 double constant = 1.22e-9; // constant in nb
 double tagged=1.0;
 double tagged_err=0.0;
-double_t sig_val[numEBins+1][numtBins+1];
-double_t sig_err[numEBins+1][numtBins+1];
-double_t mc_val[numEBins+1][numtBins+1];
-double_t mc_err[numEBins+1][numtBins+1];
-double_t thrown_val[numEBins+1][numtBins+1];
-double_t thrown_err[numEBins+1][numtBins+1];
-double_t flux_val[numEBins+1];
-double_t flux_err[numEBins+1];
-double_t eff_val[numEBins+1][numtBins+1];
-double_t eff_err[numEBins+1][numtBins+1];
-double_t xsec_val[numEBins+1][numtBins+1];
-double_t xsec_err[numEBins+1][numtBins+1];
 double canvas_margins = 1e-50;
 double deltat;
 double deltaE;
-TH1F * SignalYields[numEBins+1];
-TH1F * SignalMass[numEBins+1];
-TH1F * SignalWidth[numEBins+1];
-TH1F * MCMass[numEBins+1];
-TH1F * MCWidth[numEBins+1];
-TH1F * MCYields[numEBins+1];
-TH1F *Eff[numEBins+1];
-TH1F * ThrownYields[numEBins+1];
-TH1F * XSec[numEBins+1];
 
 double getbincontent(TH1F* hist, int bin) {  return hist->GetBinContent(bin);}
 double getbinerror(TH1F* AccH, int bin){  return AccH->GetBinError(bin);}
 
-void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString mcFilePath, TString thrownFilePath1,const char version[17], const char binning[10])
+void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString mcFilePath, TString thrownFilePath1,const char version[17], double minEval, const int numEBins)
 {
+    int binning = minEval*10;	
+    double maxEval=minEval + 5.0; 
+    double_t sig_val[numEBins+1][numtBins+1];
+    double_t sig_err[numEBins+1][numtBins+1];
+    double_t mc_val[numEBins+1][numtBins+1];
+    double_t mc_err[numEBins+1][numtBins+1];
+    double_t thrown_val[numEBins+1][numtBins+1];
+    double_t thrown_err[numEBins+1][numtBins+1];
+    double_t flux_val[numEBins+1];
+    double_t flux_err[numEBins+1];
+    double_t eff_val[numEBins+1][numtBins+1];
+    double_t eff_err[numEBins+1][numtBins+1];
+    double_t xsec_val[numEBins+1][numtBins+1];
+    double_t xsec_err[numEBins+1][numtBins+1];
+    TH1F * SignalYields[numEBins+1];
+    TH1F * SignalMass[numEBins+1];
+    TH1F * SignalWidth[numEBins+1];    
+    TH1F * MCMass[numEBins+1];
+    TH1F * MCWidth[numEBins+1];
+    TH1F * MCYields[numEBins+1];
+    TH1F *Eff[numEBins+1];
+    TH1F * ThrownYields[numEBins+1];
+    TH1F * XSec[numEBins+1];
+
     gStyle->SetOptStat(0);
     deltat = (maxtval - mintval) / float(numtBins) ;
     deltaE = (maxEval - minEval) / float(numEBins) ;
 
-    sprintf(fluxFilePath,"%s_%s.root",fluxFilePathtemp,binning);		
+    sprintf(fluxFilePath,"%s_%03d.root",fluxFilePathtemp,binning);		
     TFile* datafile = TFile::Open(dataFilePath);
     TFile* fluxfile = TFile::Open(fluxFilePath);
     TFile* mcfile = TFile::Open(mcFilePath);
@@ -115,22 +115,22 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     TH1F*  FluxH= (TH1F*) fluxfile->Get("tagged_flux");
     FluxH->Rebin(FluxH->GetNbinsX()/numEBins);
     FluxH->Draw(); 
-    sprintf(flux_macro_name,"flux_numbers_%s_%s.C",version,binning);
+    sprintf(flux_macro_name,"flux_numbers_%s_%03d_%02dbins.C",version,binning,numEBins);
     FluxH->SaveAs(flux_macro_name);
-    sprintf(flux_plot_name,"xsec_flux_%s_%s.png",version,binning);
+    sprintf(flux_plot_name,"xsec_flux_%s_%03d_%02dbins.png",version,binning,numEBins);
     flux_canvas->Print(flux_plot_name);
 
     TFile* thrownfile = TFile::Open(thrownFilePath1);
     TCanvas * thrown_canvas = new TCanvas("thrown_canvas", "thrown_canvas",800,600);
     thrown_canvas->cd();
     thrownfile->cd(); 
-    sprintf(thrownhistname,"Egamma_t_%s",binning);
+    sprintf(thrownhistname,"Egamma_t_%03d",binning);
     TH2F*  ThrownH= (TH2F*) thrownfile->Get(thrownhistname);
     ThrownH->RebinX(ThrownH->GetNbinsX()/numEBins);    
     ThrownH->RebinY(ThrownH->GetNbinsY()/numtBins);
     ThrownH->Draw("colz");
-    sprintf(thrown_numbers_macro_name,"thrown_numbers_%s_%s.C",version,binning);
-    sprintf(thrown_numbers_plot_name, "xsec_thrown_%s_%s.png",version,binning);
+    sprintf(thrown_numbers_macro_name,"thrown_numbers_%s_%03d_%02dbins.C",version,binning,numEBins);
+    sprintf(thrown_numbers_plot_name, "xsec_thrown_%s_%03d_%02dbins.png",version,binning,numEBins);
     ThrownH->SaveAs(thrown_numbers_macro_name);
     thrown_canvas->Print(thrown_numbers_plot_name);
 
@@ -158,8 +158,8 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     TCanvas * xsec_canvas = new TCanvas("xsec_canvas", "xsec_canvas",1200,900);
     xsec_canvas->Divide(4,3,canvas_margins,canvas_margins);
 
-   sprintf(XiMasshistname,"Xi_Egamma_t_%s",binning);	
-   sprintf(XiMasshistnameacc,"Xi_Egamma_t_%s_acc",binning);	
+   sprintf(XiMasshistname,"Xi_Egamma_t_%03d",binning);	
+   sprintf(XiMasshistnameacc,"Xi_Egamma_t_%03d_acc",binning);	
    TH3F * XiMassKinFit_Egamma_t = (TH3F*)datafile->Get(XiMasshistname);
    TH3F * XiMassKinFit_Egamma_t_acc = (TH3F*)datafile->Get(XiMasshistnameacc);
    TH3F * XiMassKinFit_Egamma_t_accsub = (TH3F *) XiMassKinFit_Egamma_t->Clone("XiMassKinFit_Egamma_t_accsub");
@@ -273,11 +273,11 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 
 		sprintf(workspace,"w%03d_%03d",Ebuffer,tbuffer);
         	sprintf(canvas,"Xi_canvas_%03d_%03d",Ebuffer,tbuffer);
-        	sprintf(plot,"diffxsec_sigfit_%s_%s_%03d_%03d.png",version,binning,Ebuffer,tbuffer);
+        	sprintf(plot,"diffxsec_sigfit_%s_%03d_%02dbins_%03d_%03d.png",version,binning,numEBins,Ebuffer,tbuffer);
        
 		 sprintf(mcworkspace,"wmc%03d_%03d",Ebuffer,tbuffer);
 		sprintf(mccanvas,"Xi_canvas_mc_%03d_%03d",Ebuffer,tbuffer);
-        	sprintf(mcplot,"diffxsec_mcfit_%s_%s_%03d_%03d.png",version,binning,Ebuffer,tbuffer);
+        	sprintf(mcplot,"diffxsec_mcfit_%s_%03d_%02dbins_%03d_%03d.png",version,binning,numEBins,Ebuffer,tbuffer);
        
 		RooWorkspace* w = new RooWorkspace(workspace);
         	TCanvas * Xi_canvas = new TCanvas(canvas, canvas,800,600);
@@ -381,56 +381,56 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	sigyields_canvas->cd(iE+1);
 	SignalYields[iE+1]->GetYaxis()->SetRangeUser(0,650);
 	SignalYields[iE+1]->Draw("pe1");
-	sprintf(signalyieldshist,"SignalYields_%s_%s.png",version,binning);
-	sprintf(signatyieldsmacro,"SignalYields_%s_%s.C",version,binning);
+	sprintf(signalyieldshist,"SignalYields_%s_%03d_%02dbins.png",version,binning,numEBins);
+	sprintf(signatyieldsmacro,"SignalYields_%s_%03d_%02dbins.C",version,binning,numEBins);
 	sigyields_canvas->Print(signalyieldshist);
 	sigyields_canvas->SaveAs(signatyieldsmacro);
 
 	sigmass_canvas->cd(iE+1);
 	SignalMass[iE+1]->GetYaxis()->SetRangeUser(1.30,1.35);
 	SignalMass[iE+1]->Draw("pe1");
-	sprintf(signalmasshist,"SignalMass_%s_%s.png",version,binning);
-	sprintf(signalmassmacro,"SignalMass_%s_%s.C",version,binning);
+	sprintf(signalmasshist,"SignalMass_%s_%03d_%02dbins.png",version,binning,numEBins);
+	sprintf(signalmassmacro,"SignalMass_%s_%03d_%02dbins.C",version,binning,numEBins);
 	sigmass_canvas->Print(signalmasshist);
 	sigmass_canvas->SaveAs(signalmassmacro);
 
 	sigwidth_canvas->cd(iE+1);
 	SignalWidth[iE+1]->GetYaxis()->SetRangeUser(0.001,0.01);
 	SignalWidth[iE+1]->Draw("pe1");
-	sprintf(signalwidthhist,"SignalWidth_%s_%s.png",version,binning);
-	sprintf(signalwidthmacro,"SignalWidth_%s_%s.C",version,binning);
+	sprintf(signalwidthhist,"SignalWidth_%s_%03d_%02dbins.png",version,binning,numEBins);
+	sprintf(signalwidthmacro,"SignalWidth_%s_%03d_%02dbins.C",version,binning,numEBins);
 	sigwidth_canvas->Print(signalwidthhist);
 	sigwidth_canvas->SaveAs(signalwidthmacro);
 
 	mcyields_canvas->cd(iE+1);
 	MCYields[iE+1]->GetYaxis()->SetRangeUser(0,1750);
 	MCYields[iE+1]->Draw("pe1");
-	sprintf(mcyieldshist,"MCyields_%s_%s.png",version,binning);
-	sprintf(mcyieldsmacro,"MCyields_%s_%s.C",version,binning);
+	sprintf(mcyieldshist,"MCyields_%s_%03d_%02dbins.png",version,binning,numEBins);
+	sprintf(mcyieldsmacro,"MCyields_%s_%03d_%02dbins.C",version,binning,numEBins);
 	mcyields_canvas->Print(mcyieldshist);
 	mcyields_canvas->SaveAs(mcyieldsmacro);
 
 	mcmass_canvas->cd(iE+1);
 	MCMass[iE+1]->GetYaxis()->SetRangeUser(1.30,1.35);
 	MCMass[iE+1]->Draw("pe1");
-	sprintf(mcmasshist,"MCMass_%s_%s.png",version,binning);
-	sprintf(mcmassmacro,"MCMass_%s_%s.C",version,binning);
+	sprintf(mcmasshist,"MCMass_%s_%03d_%02dbins.png",version,binning,numEBins);
+	sprintf(mcmassmacro,"MCMass_%s_%03d_%02dbins.C",version,binning,numEBins);
 	mcmass_canvas->Print(mcmasshist);
 	mcmass_canvas->SaveAs(mcmassmacro);
 
 	mcwidth_canvas->cd(iE+1);
 	MCWidth[iE+1]->GetYaxis()->SetRangeUser(0.001,0.01);
 	MCWidth[iE+1]->Draw("pe1");
-	sprintf(mcwidthhist,"MCwidth_%s_%s.png",version,binning);
-	sprintf(mcwidthmacro,"MCwidth_%s_%s.C",version,binning);
+	sprintf(mcwidthhist,"MCwidth_%s_%03d_%02dbins.png",version,binning,numEBins);
+	sprintf(mcwidthmacro,"MCwidth_%s_%03d_%02dbins.C",version,binning,numEBins);
 	mcwidth_canvas->Print(mcwidthhist);
 	mcwidth_canvas->SaveAs(mcwidthmacro);
 
 	eff_canvas->cd(iE+1);
 	Eff[iE+1]->GetYaxis()->SetRangeUser(0,0.25);
 	Eff[iE+1]->Draw("pe1");
-	sprintf(effhist,"Eff_%s_%s.png",version,binning);
-	sprintf(effmacro,"Eff_%s_%s.C",version,binning);
+	sprintf(effhist,"Eff_%s_%03d_%02dbins.png",version,binning,numEBins);
+	sprintf(effmacro,"Eff_%s_%03d_%02dbins.C",version,binning,numEBins);
 	eff_canvas->Print(effhist);
 	eff_canvas->SaveAs(effmacro);
 
@@ -438,8 +438,8 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	XSec[iE+1]->GetYaxis()->SetRangeUser(0,10);
 	XSec[iE+1]->Draw("pe1");
 	gPad->SetLogy();
-	sprintf(diffxsechist,"Diffxsec_%s_%s.png",version,binning);
-	sprintf(diffxsecmacro,"Diffxsec_%s_%s.C",version,binning);
+	sprintf(diffxsechist,"Diffxsec_%s_%03d_%02dbins.png",version,binning,numEBins);
+	sprintf(diffxsecmacro,"Diffxsec_%s_%03d_%02dbins.C",version,binning,numEBins);
 	xsec_canvas->Print(diffxsechist);
 	xsec_canvas->SaveAs(diffxsecmacro);
    }
