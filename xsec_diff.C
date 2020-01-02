@@ -98,7 +98,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     TH1F * MCMass[numEBins+1];
     TH1F * MCWidth[numEBins+1];
     TH1F * MCYields[numEBins+1];
-    TH1F *Eff[numEBins+1];
+    TH1F * Eff[numEBins+1];
     TH1F * ThrownYields[numEBins+1];
     TH1F * XSec[numEBins+1];
 
@@ -113,7 +113,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 
     TCanvas * flux_canvas = new TCanvas("flux_canvas", "flux_canvas",800,600);
     TH1F*  FluxH= (TH1F*) fluxfile->Get("tagged_flux");
-    FluxH->Rebin(FluxH->GetNbinsX()/numEBins);
+    FluxH->Rebin(deltaE/FluxH->GetBinWidth(1));
     FluxH->Draw(); 
     sprintf(flux_macro_name,"flux_numbers_%s_%03d_%02dbins.C",version,binning,numEBins);
     FluxH->SaveAs(flux_macro_name);
@@ -126,8 +126,8 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     thrownfile->cd(); 
     sprintf(thrownhistname,"Egamma_t_%03d",binning);
     TH2F*  ThrownH= (TH2F*) thrownfile->Get(thrownhistname);
-    ThrownH->RebinX(ThrownH->GetNbinsX()/numEBins);    
-    ThrownH->RebinY(ThrownH->GetNbinsY()/numtBins);
+    ThrownH->RebinX(deltaE/ThrownH->GetXaxis()->GetBinWidth(1));    
+    ThrownH->RebinY(deltat/ThrownH->GetYaxis()->GetBinWidth(1));
     ThrownH->Draw("colz");
     sprintf(thrown_numbers_macro_name,"thrown_numbers_%s_%03d_%02dbins.C",version,binning,numEBins);
     sprintf(thrown_numbers_plot_name, "xsec_thrown_%s_%03d_%02dbins.png",version,binning,numEBins);
