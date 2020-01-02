@@ -45,7 +45,7 @@ char XiMasshistname[100];
 char XiMasshistnameacc[100];
 double mintval = 0.0;
 double maxtval = 5.0;
-int numtBins=10; 
+const int numtBins=10; 
 double minEval=6.3; 
 double maxEval=11.9; 
 const int numEBins=10;
@@ -56,7 +56,7 @@ const int nummassBins=80;
 double constant = 1.22e-9; // constant in nb
 double tagged=1.0;
 double tagged_err=0.0;
-double_t * sig_val[numEBins+1][numtBins+1];
+double * sig_val[numEBins+1][numtBins+1];
 double * sig_err[numEBins+1][numtBins+1];
 double * mc_val[numEBins+1][numtBins+1];
 double * mc_err[numEBins+1][numtBins+1];
