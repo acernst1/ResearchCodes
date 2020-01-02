@@ -43,6 +43,22 @@ char fluxFilePath[100];
 char thrownhistname[100];
 char XiMasshistname[100];
 char XiMasshistnameacc[100];
+char signalyieldshist[100];
+char signatyieldsmacro[100];
+char signalmasshist[100];
+char signalmassmacro[100];
+char signalwidthhist[100];
+char signalwidthmacro[100];
+char mcyieldshist[100];
+char mcyieldsmacro[100];
+char mcmasshist[100];
+char mcmassmacro[100];
+char mcwidthhist[100];
+char mcwidthmacro[100];
+char effhist[100];
+char effmacro[100];
+char diffxsechist[100];
+char diffxsecmacro[100];
 double mintval = 0.0;
 double maxtval = 5.0;
 const int numtBins=10; 
@@ -365,50 +381,66 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	sigyields_canvas->cd(iE+1);
 	SignalYields[iE+1]->GetYaxis()->SetRangeUser(0,650);
 	SignalYields[iE+1]->Draw("pe1");
-	sigyields_canvas->Print("SignalYields_test.png");
-	sigyields_canvas->SaveAs("SignalYields_test.C");
+	sprintf(signalyieldshist,"SignalYields_%s.png",version);
+	sprintf(signatyieldsmacro,"SignalYields_%s.C",version);
+	sigyields_canvas->Print(signalyieldshist);
+	sigyields_canvas->SaveAs(signatyieldsmacro);
 
 	sigmass_canvas->cd(iE+1);
 	SignalMass[iE+1]->GetYaxis()->SetRangeUser(1.30,1.35);
 	SignalMass[iE+1]->Draw("pe1");
-	sigmass_canvas->Print("SignalMass_test.png");
-	sigmass_canvas->SaveAs("SignalMass_test.C");
+	sprintf(signalmasshist,"SignalMass_%s.png",version);
+	sprintf(signalmassmacro,"SignalMass_%s.C",version);
+	sigmass_canvas->Print(signalmasshist);
+	sigmass_canvas->SaveAs(signalmassmacro);
 
 	sigwidth_canvas->cd(iE+1);
 	SignalWidth[iE+1]->GetYaxis()->SetRangeUser(0.001,0.01);
 	SignalWidth[iE+1]->Draw("pe1");
-	sigwidth_canvas->Print("SignalWidth_test.png");
-	sigwidth_canvas->SaveAs("SignalWidth_test.C");
+	sprintf(signalwidthhist,"SignalWidth_%s.png",version);
+	sprintf(signalwidthmacro,"SignalWidth_%s.C",version);
+	sigwidth_canvas->Print(signalwidthhist);
+	sigwidth_canvas->SaveAs(signalwidthmacro);
 
 	mcyields_canvas->cd(iE+1);
 	MCYields[iE+1]->GetYaxis()->SetRangeUser(0,1750);
 	MCYields[iE+1]->Draw("pe1");
-	mcyields_canvas->Print("MCYields_test.png");
-	mcyields_canvas->SaveAs("MCYields_test.C");
+	sprintf(mcyieldshist,"MCyields_%s.png",version);
+	sprintf(mcyieldsmacro,"MCyields_%s.C",version);
+	mcyields_canvas->Print(mcyieldshist);
+	mcyields_canvas->SaveAs(mcyieldsmacro);
 
 	mcmass_canvas->cd(iE+1);
 	MCMass[iE+1]->GetYaxis()->SetRangeUser(1.30,1.35);
 	MCMass[iE+1]->Draw("pe1");
-	mcmass_canvas->Print("MCMass_test.png");
-	mcmass_canvas->SaveAs("MCMass_test.C");
+	sprintf(mcmasshist,"MCMass_%s.png",version);
+	sprintf(mcmassmacro,"MCMass_%s.C",version);
+	mcmass_canvas->Print(mcmasshist);
+	mcmass_canvas->SaveAs(mcmassmacro);
 
 	mcwidth_canvas->cd(iE+1);
 	MCWidth[iE+1]->GetYaxis()->SetRangeUser(0.001,0.01);
 	MCWidth[iE+1]->Draw("pe1");
-	mcwidth_canvas->Print("MCWidth_test.png");
-	mcwidth_canvas->SaveAs("MCWidth_test.C");
+	sprintf(mcwidthhist,"MCwidth_%s.png",version);
+	sprintf(mcwidthmacro,"MCwidth_%s.C",version);
+	mcwidth_canvas->Print(mcwidthhist);
+	mcwidth_canvas->SaveAs(mcwidthmacro);
 
 	eff_canvas->cd(iE+1);
 	Eff[iE+1]->GetYaxis()->SetRangeUser(0,0.25);
 	Eff[iE+1]->Draw("pe1");
-	eff_canvas->Print("Eff_test.png");
-	eff_canvas->SaveAs("Eff_test.C");
+	sprintf(effhist,"Eff_%s.png",version);
+	sprintf(effmacro,"Eff_%s.C",version);
+	eff_canvas->Print(effhist);
+	eff_canvas->SaveAs(effmacro);
 
 	xsec_canvas->cd(iE+1);
 	XSec[iE+1]->GetYaxis()->SetRangeUser(0,10);
 	XSec[iE+1]->Draw("pe1");
-	xsec_canvas->Print("XSec_test.png");
-	xsec_canvas->SaveAs("XSec_test.C");
+	sprintf(diffxsechist,"Diffxsec_%s.png",version);
+	sprintf(diffxsecmacro,"Diffxsec_%s.C",version);
+	xsec_canvas->Print(diffxsechist);
+	xsec_canvas->SaveAs(diffxsecmacro);
    }
 
 for(int iEbin=0; iEbin<numEBins; iEbin++){
