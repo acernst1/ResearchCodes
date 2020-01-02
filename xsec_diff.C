@@ -39,11 +39,15 @@ char mcwidth_EBin_name[100];
 char EBin_Title[100];
 char mcyields_EBin_name[100];
 char eff_EBin_name[100];
+char fluxFilePath[100];
+char thrownhistname[100];
+char XiMasshistname[100];
+char XiMasshistnameacc[100];
 double mintval = 0.0;
-double maxtval = 10.0;
+double maxtval = 5.0;
 int numtBins=10; 
-double minEval=6.4; 
-double maxEval=11.4; 
+double minEval=6.3; 
+double maxEval=11.9; 
 int numEBins=10;
 double minmass=1.2; 
 double minfitmass=1.27;
@@ -80,19 +84,19 @@ TH1F * XSec[numEBins+1];
 double getbincontent(TH1F* hist, int bin) {  return hist->GetBinContent(bin);}
 double getbinerror(TH1F* AccH, int bin){  return AccH->GetBinError(bin);}
 
-void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TString thrownFilePath1,const char version[17])
+void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString mcFilePath, TString thrownFilePath1,const char version[17], const char binning[10])
 {
     gStyle->SetOptStat(0);
     deltat = (maxtval - mintval) / float(numtBins) ;
     deltaE = (maxEval - minEval) / float(numEBins) ;
 
+    sprintf(fluxFilePath,"%s_%s.root",fluxFilePathtemp,binning);		
     TFile* datafile = TFile::Open(dataFilePath);
     TFile* fluxfile = TFile::Open(fluxFilePath);
     TFile* mcfile = TFile::Open(mcFilePath);
 
     TCanvas * flux_canvas = new TCanvas("flux_canvas", "flux_canvas",800,600);
     TH1F*  FluxH= (TH1F*) fluxfile->Get("tagged_flux");
-    FluxH->GetXaxis()->SetRangeUser(minEval,maxEval);
     FluxH->Rebin(FluxH->GetNbinsX()/numEBins);
     FluxH->Draw(); 
     sprintf(flux_macro_name,"flux_numbers_%s.C",version);
@@ -104,9 +108,8 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
     TCanvas * thrown_canvas = new TCanvas("thrown_canvas", "thrown_canvas",800,600);
     thrown_canvas->cd();
     thrownfile->cd(); 
-    TH2F*  ThrownH= (TH2F*) thrownfile->Get("Egamma_t");
-    ThrownH->GetXaxis()->SetRangeUser(minEval,maxEval);	
-    ThrownH->GetYaxis()->SetRangeUser(mintval,maxtval);
+    sprintf(thrownhistname,"Egamma_t_%s",binning);
+    TH2F*  ThrownH= (TH2F*) thrownfile->Get(thrownhistname);
     ThrownH->RebinX(ThrownH->GetNbinsX()/numEBins);    
     ThrownH->RebinY(ThrownH->GetNbinsY()/numtBins);
     ThrownH->Draw("colz");
@@ -139,13 +142,15 @@ void xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, T
     TCanvas * xsec_canvas = new TCanvas("xsec_canvas", "xsec_canvas",1200,900);
     xsec_canvas->Divide(4,3,canvas_margins,canvas_margins);
 
-   TH3F * XiMassKinFit_Egamma_t = (TH3F*)datafile->Get("Xi_Egamma_t");
-   TH3F * XiMassKinFit_Egamma_t_acc = (TH3F*)datafile->Get("Xi_Egamma_t_acc");
+   sprintf(XiMasshistname,"Xi_Egamma_t_%s",binning);	
+   sprintf(XiMasshistnameacc,"Xi_Egamma_t_%s_acc",binning);	
+   TH3F * XiMassKinFit_Egamma_t = (TH3F*)datafile->Get(XiMasshistname);
+   TH3F * XiMassKinFit_Egamma_t_acc = (TH3F*)datafile->Get(XiMasshistnameacc);
    TH3F * XiMassKinFit_Egamma_t_accsub = (TH3F *) XiMassKinFit_Egamma_t->Clone("XiMassKinFit_Egamma_t_accsub");
    XiMassKinFit_Egamma_t_accsub->Add(XiMassKinFit_Egamma_t_acc,-0.5);
 
-   TH3F * MC_XiMassKinFit_Egamma_t = (TH3F*)mcfile->Get("Xi_Egamma_t");
-   TH3F * MC_XiMassKinFit_Egamma_t_acc = (TH3F*)mcfile->Get("Xi_Egamma_t_acc");
+   TH3F * MC_XiMassKinFit_Egamma_t = (TH3F*)mcfile->Get(XiMasshistname);
+   TH3F * MC_XiMassKinFit_Egamma_t_acc = (TH3F*)mcfile->Get(XiMasshistnameacc);
    TH3F * MC_XiMassKinFit_Egamma_t_accsub = (TH3F *) MC_XiMassKinFit_Egamma_t->Clone("MC_XiMassKinFit_Egamma_t_accsub");
    MC_XiMassKinFit_Egamma_t_accsub->Add(MC_XiMassKinFit_Egamma_t_acc,-0.5);
 
