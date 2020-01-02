@@ -437,6 +437,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	xsec_canvas->cd(iE+1);
 	XSec[iE+1]->GetYaxis()->SetRangeUser(0,10);
 	XSec[iE+1]->Draw("pe1");
+	gPad->SetLogy();
 	sprintf(diffxsechist,"Diffxsec_%s.png",version);
 	sprintf(diffxsecmacro,"Diffxsec_%s.C",version);
 	xsec_canvas->Print(diffxsechist);
