@@ -109,15 +109,15 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	dHist_Xi_Egamma_t = new TH3F("Xi_Egamma_t",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,100, 0.0, 5.0);
 	dHist_Xi_Egamma_t_acc = new TH3F("Xi_Egamma_t_acc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,100, 0.0, 5.0);
 	dHist_Xi_Egamma_t_wacc = new TH3F("Xi_Egamma_t_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,180, 3.0, 12.0,100, 0.0, 5.0);
-	dHist_Xi_Egamma_t_063 = new TH3F("Xi_Egamma_t_063",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,112,6.3,11.9,100, 0.0, 5.0);
-	dHist_Xi_Egamma_t_063_acc = new TH3F("Xi_Egamma_t_063_acc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,112,6.3,11.9,100, 0.0, 5.0);
-	dHist_Xi_Egamma_t_063_wacc = new TH3F("Xi_Egamma_t_063_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,112,6.3,11.9,100, 0.0, 5.0);
-	dHist_Xi_Egamma_t_064 = new TH3F("Xi_Egamma_t_064",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,112,6.4,12.0,100, 0.0, 5.0);
-	dHist_Xi_Egamma_t_064_acc = new TH3F("Xi_Egamma_t_064_acc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,112,6.4,12.0,100, 0.0, 5.0);
-	dHist_Xi_Egamma_t_064_wacc = new TH3F("Xi_Egamma_t_064_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,112,6.4,12.0,100, 0.0, 5.0);
-	dHist_Xi_Egamma_t_065 = new TH3F("Xi_Egamma_t_065",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,112,6.5,12.1,100, 0.0, 5.0);
-	dHist_Xi_Egamma_t_065_acc = new TH3F("Xi_Egamma_t_065_acc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,112,6.5,12.1,100, 0.0, 5.0);
-	dHist_Xi_Egamma_t_065_wacc = new TH3F("Xi_Egamma_t_065_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,112,6.5,12.1,100, 0.0, 5.0);
+	dHist_Xi_Egamma_t_063 = new TH3F("Xi_Egamma_t_063",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,100,6.3,11.3,100, 0.0, 5.0);
+	dHist_Xi_Egamma_t_063_acc = new TH3F("Xi_Egamma_t_063_acc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,100,6.3,11.3,100, 0.0, 5.0);
+	dHist_Xi_Egamma_t_063_wacc = new TH3F("Xi_Egamma_t_063_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,100,6.3,11.3,100, 0.0, 5.0);
+	dHist_Xi_Egamma_t_064 = new TH3F("Xi_Egamma_t_064",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,100,6.4,11.4,100, 0.0, 5.0);
+	dHist_Xi_Egamma_t_064_acc = new TH3F("Xi_Egamma_t_064_acc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,100,6.4,11.4,100, 0.0, 5.0);
+	dHist_Xi_Egamma_t_064_wacc = new TH3F("Xi_Egamma_t_064_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,100,6.4,11.4,100, 0.0, 5.0);
+	dHist_Xi_Egamma_t_065 = new TH3F("Xi_Egamma_t_065",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,100,6.5,11.5,100, 0.0, 5.0);
+	dHist_Xi_Egamma_t_065_acc = new TH3F("Xi_Egamma_t_065_acc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,100,6.5,11.5,100, 0.0, 5.0);
+	dHist_Xi_Egamma_t_065_wacc = new TH3F("Xi_Egamma_t_065_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,100,6.5,11.5,100, 0.0, 5.0);
 
 	dHist_XiMass024 =new TH1I("XiMass024",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
 	dHist_XiMass029 =new TH1I("XiMass029",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
