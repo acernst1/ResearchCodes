@@ -389,7 +389,12 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 		Eff[iE+1]->SetBinError(it+1,eff_err[iE+1][it+1]);
 
 		xsec_val[iE+1][it+1] = (sig_val[iE+1][it+1])/(constant * deltat * flux_val[iE+1] * mc_val[iE+1][it+1] /thrown_val[iE+1][it+1]);
+		if(sig_val[iE+1][it+1] == 0.0){
+			xsec_err[iE+1][it+1] = 0.0
+		}
+		else {
 		xsec_err[iE+1][it+1] = xsec_val[iE+1][it+1]*sqrt(pow(sig_err[iE+1][it+1]/sig_val[iE+1][it+1],2)+pow(flux_err[iE+1]/flux_val[iE+1],2)+pow(mc_err[iE+1][it+1]/mc_val[iE+1][it+1],2)+pow(thrown_err[iE+1][it+1]/thrown_val[iE+1][it+1],2));
+		}
 		cout << "~~~~~~~xsec~" << iE << "~" << it << " " << xsec_val[iE+1][it+1] << " " << xsec_err[iE+1][it+1] << endl;
 		XSec[iE+1]->SetBinContent(it+1,xsec_val[iE+1][it+1]);
 		XSec[iE+1]->SetBinError(it+1,xsec_err[iE+1][it+1]);
