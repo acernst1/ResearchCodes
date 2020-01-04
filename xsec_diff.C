@@ -66,6 +66,8 @@ double minmass=1.2;
 double minfitmass=1.27;
 double maxmass=1.5; 
 const int nummassBins=80;
+int columns = 4;
+int rows;
 double constant = 1.22e-9; // constant in nb
 double tagged=1.0;
 double tagged_err=0.0;
@@ -140,28 +142,28 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     thrown_canvas->Print(thrown_numbers_plot_name);
 
     TCanvas * sigyields_canvas = new TCanvas("sigyields_canvas", "sigyields_canvas",1200,900);
-    sigyields_canvas->Divide(4,3,canvas_margins,canvas_margins);
-
     TCanvas * sigmass_canvas = new TCanvas("sigmass_canvas", "sigmass_canvas",1200,900);
-    sigmass_canvas->Divide(4,3,canvas_margins,canvas_margins);
-
     TCanvas * sigwidth_canvas = new TCanvas("sigwidth_canvas", "sigwidth_canvas",1200,900);
-    sigwidth_canvas->Divide(4,3,canvas_margins,canvas_margins);
-
     TCanvas * mcyields_canvas = new TCanvas("mcyields_canvas", "mcyields_canvas",1200,900);
-    mcyields_canvas->Divide(4,3,canvas_margins,canvas_margins);
-
     TCanvas * mcmass_canvas = new TCanvas("mcmass_canvas", "mcmass_canvas",1200,900);
-    mcmass_canvas->Divide(4,3,canvas_margins,canvas_margins);
-
     TCanvas * mcwidth_canvas = new TCanvas("mcwidth_canvas", "mcwidth_canvas",1200,900);
-    mcwidth_canvas->Divide(4,3,canvas_margins,canvas_margins);
-
     TCanvas * eff_canvas = new TCanvas("eff_canvas", "eff_canvas",1200,900);
-    eff_canvas->Divide(4,3,canvas_margins,canvas_margins);
-
     TCanvas * xsec_canvas = new TCanvas("xsec_canvas", "xsec_canvas",1200,900);
-    xsec_canvas->Divide(4,3,canvas_margins,canvas_margins);
+
+    if (numEBins % columns == 0) {
+	rows = numEBins/columns;
+    }
+    else {
+	rows = numEBins/columns + 1;
+    }	
+    sigyields_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
+    sigmass_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
+    sigwidth_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
+    mcyields_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
+    mcmass_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
+    mcwidth_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
+    eff_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
+    xsec_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
 
    sprintf(XiMasshistname,"Xi_Egamma_t_%03d",binning);	
    sprintf(XiMasshistnameacc,"Xi_Egamma_t_%03d_acc",binning);	
