@@ -132,24 +132,24 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     TCanvas * diffxsec_canvas = new TCanvas("diffxsec_canvas", "diffxsec_canvas",1200,900);
     
 //Output file names independent of energy bin and t bin
-    sprintf(flux_macro_name,"diffxsec_flux_numbers_%s_%03d_%02dbins.C",version,binning,numEBins);
-    sprintf(flux_plot_name,"diffxsec_flux_%s_%03d_%02dbins.png",version,binning,numEBins);
-sprintf(thrown_numbers_macro_name,"diffxsec_thrown_numbers_%s_%03d_%02dbins.C",version,binning,numEBins);
-    sprintf(thrown_numbers_plot_name, "diffxsec_thrown_%s_%03d_%02dbins.png",version,binning,numEBins);
-    sprintf(signalyieldshist,"SignalYields_%s_%03d_%02dbins.png",version,binning,numEBins);
-    sprintf(signatyieldsmacro,"SignalYields_%s_%03d_%02dbins.C",version,binning,numEBins);
-    sprintf(signalmasshist,"SignalMass_%s_%03d_%02dbins.png",version,binning,numEBins);
-    sprintf(signalmassmacro,"SignalMass_%s_%03d_%02dbins.C",version,binning,numEBins);
-    sprintf(signalwidthhist,"SignalWidth_%s_%03d_%02dbins.png",version,binning,numEBins);
-    sprintf(signalwidthmacro,"SignalWidth_%s_%03d_%02dbins.C",version,binning,numEBins);
-    sprintf(mcyieldshist,"MCyields_%s_%03d_%02dbins.png",version,binning,numEBins);
-    sprintf(mcyieldsmacro,"MCyields_%s_%03d_%02dbins.C",version,binning,numEBins);
-    sprintf(mcmasshist,"MCMass_%s_%03d_%02dbins.png",version,binning,numEBins);
-    sprintf(mcmassmacro,"MCMass_%s_%03d_%02dbins.C",version,binning,numEBins);
-    sprintf(mcwidthhist,"MCwidth_%s_%03d_%02dbins.png",version,binning,numEBins);
-    sprintf(mcwidthmacro,"MCwidth_%s_%03d_%02dbins.C",version,binning,numEBins);
-    sprintf(effhist,"Eff_%s_%03d_%02dbins.png",version,binning,numEBins);
-    sprintf(effmacro,"Eff_%s_%03d_%02dbins.C",version,binning,numEBins);
+    sprintf(flux_macro_name,"Diffxsec_flux_numbers_%s_%03d_%02dbins.C",version,binning,numEBins);
+    sprintf(flux_plot_name,"Diffxsec_flux_%s_%03d_%02dbins.png",version,binning,numEBins);
+    sprintf(thrown_numbers_macro_name,"Diffxsec_thrown_numbers_%s_%03d_%02dbins.C",version,binning, numEBins);
+    sprintf(thrown_numbers_plot_name,"Diffxsec_thrown_%s_%03d_%02dbins.png",version,binning, numEBins);
+    sprintf(signalyieldshist,"Diffxsec_SignalYields_%s_%03d_%02dbins.png",version,binning,numEBins);
+    sprintf(signatyieldsmacro,"Diffxsec_SignalYields_%s_%03d_%02dbins.C",version,binning,numEBins);
+    sprintf(signalmasshist,"Diffxsec_SignalMass_%s_%03d_%02dbins.png",version,binning,numEBins);
+    sprintf(signalmassmacro,"Diffxsec_SignalMass_%s_%03d_%02dbins.C",version,binning,numEBins);
+    sprintf(signalwidthhist,"Diffxsec_SignalWidth_%s_%03d_%02dbins.png",version,binning,numEBins);
+    sprintf(signalwidthmacro,"Diffxsec_SignalWidth_%s_%03d_%02dbins.C",version,binning,numEBins);
+    sprintf(mcyieldshist,"Diffxsec_MCyields_%s_%03d_%02dbins.png",version,binning,numEBins);
+    sprintf(mcyieldsmacro,"Diffxsec_MCyields_%s_%03d_%02dbins.C",version,binning,numEBins);
+    sprintf(mcmasshist,"Diffxsec_MCMass_%s_%03d_%02dbins.png",version,binning,numEBins);
+    sprintf(mcmassmacro,"Diffxsec_MCMass_%s_%03d_%02dbins.C",version,binning,numEBins);
+    sprintf(mcwidthhist,"Diffxsec_MCwidth_%s_%03d_%02dbins.png",version,binning,numEBins);
+    sprintf(mcwidthmacro,"Diffxsec_MCwidth_%s_%03d_%02dbins.C",version,binning,numEBins);
+    sprintf(effhist,"Diffxsec_Eff_%s_%03d_%02dbins.png",version,binning,numEBins);
+    sprintf(effmacro,"Diffxsec_Eff_%s_%03d_%02dbins.C",version,binning,numEBins);
     sprintf(diffxsechist,"Diffxsec_%s_%03d_%02dbins.png",version,binning,numEBins);
     sprintf(diffxsecmacro,"Diffxsec_%s_%03d_%02dbins.C",version,binning,numEBins);
 
@@ -308,8 +308,8 @@ sprintf(thrown_numbers_macro_name,"diffxsec_thrown_numbers_%s_%03d_%02dbins.C",v
 		sprintf(mcworkspace,"wmc%03d_%03d",Ebuffer,tbuffer);
 	
 	//t dependent output file names
-sprintf(diffxsec_xiplot,"diffxsec_sigfit_%s_%03d_%02dbins_%03d_%03d.png",version,binning,numEBins,Ebuffer,tbuffer);
-sprintf(diffxsec_mcplot,"diffxsec_mcfit_%s_%03d_%02dbins_%03d_%03d.png",version,binning,numEBins,Ebuffer,tbuffer);
+		sprintf(diffxsec_xiplot,"Diffxsec_sigfit_%s_%03d_%02dbins_%03d_%03d.png",version, binning,numEBins,Ebuffer,tbuffer);
+		sprintf(diffxsec_mcplot,"Diffxsec_mcfit_%s_%03d_%02dbins_%03d_%03d.png",version, binning,numEBins,Ebuffer,tbuffer);
 
 	//Preparing signal for fit, projecting within t range
 		int tbinmin = XiMassKinFit_Ebin_t_accsub->GetXaxis()->FindBin(tmin);
@@ -449,7 +449,7 @@ sprintf(diffxsec_mcplot,"diffxsec_mcfit_%s_%03d_%02dbins_%03d_%03d.png",version,
 		diffxsec_err[iE+1][it+1] = diffxsec_val[iE+1][it+1]*sqrt(pow(sig_err[iE+1][it+1]/sig_val[iE+1][it+1],2)+pow(flux_err[iE+1]/flux_val[iE+1],2)+pow(mc_err[iE+1][it+1]/mc_val[iE+1][it+1],2)+pow(thrown_err[iE+1][it+1]/thrown_val[iE+1][it+1],2));
 		} //end signal diff xsec error loop
 
-	//Output final differential cross section values and errors	
+	//Add final differential cross section values and errors to histograms	
 		cout << "~~~~~~~diffxsec~" << iE << "~" << it << " " << diffxsec_val[iE+1][it+1] << " " << diffxsec_err[iE+1][it+1] << endl;
 		DiffXSec[iE+1]->SetBinContent(it+1,diffxsec_val[iE+1][it+1]);
 		DiffXSec[iE+1]->SetBinError(it+1,diffxsec_err[iE+1][it+1]);
