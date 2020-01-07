@@ -173,12 +173,8 @@ sprintf(thrown_numbers_macro_name,"diffxsec_thrown_numbers_%s_%03d_%02dbins.C",v
     thrown_canvas->Print(thrown_numbers_plot_name);
 
 //Set up the grid structure of histograms
-    if (numEBins % columns == 0) {
-	rows = numEBins/columns;
-    }
-    else {
-	rows = numEBins/columns + 1;
-    }	
+    if (numEBins % columns == 0) { rows = numEBins/columns; }
+    else { rows = numEBins/columns + 1; }	
 
 //Divide the canvases into the grids for histograms
     sigyields_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
@@ -337,7 +333,7 @@ sprintf(diffxsec_mcplot,"diffxsec_mcfit_%s_%03d_%02dbins_%03d_%03d.png",version,
 			sig_mass_err = 0.0;
 			sig_width =  0.0;
 			sig_width_err =  0.0;
-		}
+		} //end not enough signal loop
 		else{
 	//Set up and perform signal fit	
 			Xi_canvas->cd()
@@ -369,7 +365,8 @@ sprintf(diffxsec_mcplot,"diffxsec_mcfit_%s_%03d_%02dbins_%03d_%03d.png",version,
 			massframe->SetMaximum(max_y);
         		massframe->Draw();
 	     		Xi_canvas->Print(diffxsec_xiplot);
-		}
+		} //end enough signal loop
+
 	//Add signal value and error to to an array
 		sig_val[iE+1][it+1] = sig_events;
 		sig_err[iE+1][it+1] = sig_events_err;
@@ -446,17 +443,17 @@ sprintf(diffxsec_mcplot,"diffxsec_mcfit_%s_%03d_%02dbins_%03d_%03d.png",version,
 		if(sig_val[iE+1][it+1] == 0.0){ 
 		//Set the differential cross section error to zero if there wasn't enough signal to fit. This prevents NaNs.
 			diffxsec_err[iE+1][it+1] = 0.0
-		}
+		} //end no-signal diff xsec error loop
 		else {
 		//Calculate error normally
 		diffxsec_err[iE+1][it+1] = diffxsec_val[iE+1][it+1]*sqrt(pow(sig_err[iE+1][it+1]/sig_val[iE+1][it+1],2)+pow(flux_err[iE+1]/flux_val[iE+1],2)+pow(mc_err[iE+1][it+1]/mc_val[iE+1][it+1],2)+pow(thrown_err[iE+1][it+1]/thrown_val[iE+1][it+1],2));
-		}
+		} //end signal diff xsec error loop
 
 	//Output final differential cross section values and errors	
 		cout << "~~~~~~~diffxsec~" << iE << "~" << it << " " << diffxsec_val[iE+1][it+1] << " " << diffxsec_err[iE+1][it+1] << endl;
 		DiffXSec[iE+1]->SetBinContent(it+1,diffxsec_val[iE+1][it+1]);
 		DiffXSec[iE+1]->SetBinError(it+1,diffxsec_err[iE+1][it+1]);
-	}
+	} //end t loop
 
     //Draw and save histograms
 	sigyields_canvas->cd(iE+1);
@@ -507,7 +504,8 @@ sprintf(diffxsec_mcplot,"diffxsec_mcfit_%s_%03d_%02dbins_%03d_%03d.png",version,
 	diffxsec_canvas->SetLogy();
 	diffxsec_canvas->Print(diffxsechist);
 	diffxsec_canvas->SaveAs(diffxsecmacro);
-   }
+   } //end E loop
+
 //Print out all values at end of running
 for(int iEbin=0; iEbin<numEBins; iEbin++){
 	cout << "Energy: " << deltaE * (iEbin) + (minEval) << " - " << deltaE * (iEbin+1) + (minEval) << endl; 
@@ -519,8 +517,8 @@ for(int iEbin=0; iEbin<numEBins; iEbin++){
 	cout << "     " << "     " << "Flux Yields: " << flux_val[iEbin+1] << " +/- " << flux_err[iEbin+1] << endl;
 	cout << "     " << "     " << "Efficiency: " << eff_val[iEbin+1][itbin+1] << " +/- " << eff_err[iEbin+1][itbin+1] << endl;
 	cout << "     " << "     " << "DiffXSec: " << diffxsec_val[iEbin+1][itbin+1] << " +/- " << diffxsec_err[iEbin+1][itbin+1] << endl;
-	}
-}
+	} //end print t loop 
+} //end print E macro
 
 /*
 //clas results, Goetz thesis Table D.1
@@ -580,7 +578,7 @@ sprintf(xsec_wclas_plot_name,"xsec_wclas_%s.png",version);
 adiffxsec_canvas->Print(xsec_wclas_plot_name);
 
 */
-}
+} //end macro
 //xsec_gluex->SetName("Xi- Cross Section");
 //axsec->SetTitle("#Xi^{-} Cross Section; E_{#gamma} (GeV); #sigma (nb)");
 //adiffxsec_canvas->Print("test_axsec.png");
