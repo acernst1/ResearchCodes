@@ -75,6 +75,7 @@ char ebineffhist[100];
 char ebineffmacro[100];
 char xsechist[100];
 char xsecmacro[100];
+char pad[100];
 double mintval = 0.0;
 double maxtval = 5.0;
 const int numtBins=10; 
@@ -229,8 +230,12 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     mcmass_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
     mcwidth_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
     eff_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
-    diffxsec_canvas->SetLogy();
     diffxsec_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
+    for(int padnumber=1; padnumber<numEBins+1; padnumber++){
+    	sprintf(pad,"diffxsec_pad_%02d",padnumber);
+    	TPad * pad = diffxsec_canvas->cd(padnumber);
+    	pad->SetLogy();	
+    }
 
 //Perform accidental subtraction for signal histogram
    sprintf(XiMasshistname,"Xi_Egamma_t_%03d",binning);	
