@@ -184,6 +184,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     mcmass_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
     mcwidth_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
     eff_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
+    diffxsec_canvas->SetLogy();
     diffxsec_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
 
 //Perform accidental subtraction for signal histogram
@@ -501,7 +502,6 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	diffxsec_canvas->cd(iE+1);
 	DiffXSec[iE+1]->GetYaxis()->SetRangeUser(0,10);
 	DiffXSec[iE+1]->Draw("pe1");
-	diffxsec_canvas->SetLogy();
 	diffxsec_canvas->Print(diffxsechist);
 	diffxsec_canvas->SaveAs(diffxsecmacro);
    } //end E loop
