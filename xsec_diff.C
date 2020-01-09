@@ -233,7 +233,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     diffxsec_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
     for(int padnumber=1; padnumber<numEBins+1; padnumber++){
     	sprintf(pad,"diffxsec_pad_%02d",padnumber);
-    	TPad * pad = diffxsec_canvas->cd(padnumber);
+    	TPad * pad = (TPad *) diffxsec_canvas->cd(padnumber);
     	pad->SetLogy();	
     }
 
