@@ -550,7 +550,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	eff_canvas->SaveAs(effmacro);
 
 	diffxsec_canvas->cd(iE+1);
-	DiffXSec[iE+1]->GetYaxis()->SetRangeUser(0,10);
+	DiffXSec[iE+1]->GetYaxis()->SetRangeUser(0.0001,10);
 	DiffXSec[iE+1]->Draw("pe1");
 	diffxsec_canvas->Print(diffxsechist);
 	diffxsec_canvas->SaveAs(diffxsecmacro);
