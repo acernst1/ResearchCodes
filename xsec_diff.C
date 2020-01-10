@@ -411,14 +411,9 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	} //end not enough signal loop for total cross section
 	else{    //Set up and perform signal fit for total cross section
 		sprintf(xsec_xiplot,"Xsec_sigfit_%s_%03d_%02dbins_%03d.png",version, binning,numEBins,Ebuffer);
-		sprintf(xsec_mcplot,"Xsec_mcfit_%s_%03d_%02dbins_%03d.png",version, binning,numEBins,Ebuffer);	
 		sprintf(xsec_workspace,"w%03d",Ebuffer);
-		sprintf(mc_xsec_workspace,"wmc%03d",Ebuffer);
         	sprintf(xsec_xicanvas,"Xi_canvas_%03d",Ebuffer);
-		sprintf(xsec_mccanvas,"Xi_canvas_mc_%03d",Ebuffer);
        		TCanvas * Xsec_Xi_canvas = new TCanvas(xsec_xicanvas, xsec_xicanvas,800,600);
-        	TCanvas * Xsec_Xi_mc_canvas = new TCanvas(xsec_mccanvas, xsec_mccanvas,800,600);
-		Xsec_Xi_canvas->cd();
 		RooWorkspace* xsecw = new RooWorkspace(xsec_workspace);
         	RooRealVar xsecmass("xsecmass", "xsecmass", minmass, maxmass);
         	RooDataHist *xsecdata = new RooDataHist("xsecdata", "Dataset of mass", xsecmass, XiMassKinFit_Ebin_accsub);
@@ -454,6 +449,40 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	xsec_sig_val[iE+1] = xsec_sig_events;
 	xsec_sig_err[iE+1] = xsec_sig_events_err;
 	cout << "~~~~~~~sigxsec~" << iE << "~ " << xsec_sig_events << " " << xsec_sig_events_err << endl; 
+
+    //MC fit for total cross section XXXXXX
+	sprintf(xsec_mcplot,"Xsec_mcfit_%s_%03d_%02dbins_%03d.png",version, binning,numEBins,Ebuffer);	
+	sprintf(mc_xsec_workspace,"wmc%03d",Ebuffer);
+	sprintf(xsec_mccanvas,"Xi_canvas_mc_%03d",Ebuffer);
+        TCanvas * Xsec_Xi_mc_canvas = new TCanvas(xsec_mccanvas, xsec_mccanvas,800,600);
+     	RooWorkspace* xsecwmc = new RooWorkspace(mc_xsec_workspace);
+        RooRealVar xsecmcmass("xsecmcmass", "xsecmcmass", minmass, maxmass);
+        RooDataHist *xsecmc = new RooDataHist("xsecmc", "MC of mass", xsecmcmass, MC_XiMassKinFit_Ebin_accsub );
+        MC_XiMassKinFit_Ebin_accsub->Print();
+        xsecwmc->import(RooArgSet(xsecmcmass));
+        xsecwmc->factory("Gaussian::xsecgausmc(xsecmcmass,meanmc[1.32,1.31,1.33],sigmamc[0.005,0.001,0.01])");
+        xsecwmc->factory("SUM::xsecmcmodel(nsigmc[50,0,1e6]*xsecgausmc)");
+        xsecwmc->pdf("xsecmcmodel")->fitTo(*xsecmc,RooFit::Range(1.305,1.35),RooFit::Minos(1));
+        RooPlot* xsecmcmassframe = xsecmcmass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
+        xsecmcmassframe->SetXTitle("#Lambda#pi^{-} mass");
+        xsecmc->plotOn(xsecmcmassframe) ;
+        xsecwmc->pdf("xsecmcmodel")->paramOn(xsecmcmassframe);
+       	 xsecwmc->pdf("xsecmcmodel")->plotOn(xsecmcmassframe);
+        xsecwmc->pdf("xsecgausmc")->plotOn(xsecmcmassframe, RooFit::LineStyle(kDotted),
+ 		RooFit::Normalization(xsecwmc->var("nsigmc")->getVal(), RooAbsReal::NumEvent));
+        double_t xsec_mc_sig_events = xsecwmc->var("nsigmc")->getVal();
+	double_t xsec_mc_sig_events_err = xsecwmc->var("nsigmc")->getError();
+	double_t xsec_mc_mass = xsecwmc->var("meanmc")->getVal();
+	double_t xsec_mc_mass_err = xsecwmc->var("meanmc")->getError();
+	double_t xsec_mc_width = xsecwmc->var("sigmamc")->getVal();
+	double_t xsec_mc_width_err = xsecwmc->var("sigmamc")->getError();
+	xsec_mc_val[iE+1] = xsec_mc_sig_events;
+	xsec_mc_err[iE+1] = xsec_mc_sig_events_err;
+	cout << "~~~~~~~MCxsec~" << iE << "~ " << xsec_mc_sig_events << " " << xsec_mc_sig_events_err << endl; 
+	double xsec_mc_max_y = xsec_mc_sig_events *0.5;
+	xsecmcmassframe->SetMaximum(xsec_mc_max_y);
+        xsecmcmassframe->Draw();
+	Xsec_Xi_mc_canvas->Print(xsec_mcplot);
 
     //Main t loop
 	for(int it =0; it<numtBins; it++){
