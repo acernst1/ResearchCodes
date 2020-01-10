@@ -450,7 +450,10 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 		esigfit_canvas->cd(iE+1);
         	xsecmassframe->Draw();
 	} //end enough signal loop for total cross section
-
+    //Save signal fit yields and error for total cross section
+	xsec_sig_val[iE+1] = xsec_sig_events;
+	xsec_sig_err[iE+1] = xsec_sig_events_err;
+	cout << "~~~~~~~sigxsec~" << iE << "~ " << xsec_sig_events << " " << xsec_sig_events_err << endl; 
 
     //Main t loop
 	for(int it =0; it<numtBins; it++){
