@@ -36,6 +36,7 @@ char thrownmacro[100];
 char thrownhist[100];
 char diffxsec_EBin_name[100];
 char sigyields_EBin_name[100];
+char esigfit_EBin_name[100];
 char sigmass_EBin_name[100];
 char sigwidth_EBin_name[100];
 char mcmass_EBin_name[100];
@@ -67,6 +68,8 @@ char ethrownmacro[100];
 char ethrownhist[100];
 char esignalyieldshist[100];
 char esignatyieldsmacro[100];
+char esignalfithist[100];
+char esignalfitmacro[100];
 char esignalmasshist[100];
 char esignalmassmacro[100];
 char esignalwidthhist[100];
@@ -135,6 +138,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     double_t eff_err[numEBins+1][numtBins+1];
     double_t diffxsec_val[numEBins+1][numtBins+1];
     double_t diffxsec_err[numEBins+1][numtBins+1];
+    TH1F * SignalFits[numEBins+1];
     TH1F * SignalYields[numEBins+1];
     TH1F * SignalMass[numEBins+1];
     TH1F * SignalWidth[numEBins+1];    
@@ -175,6 +179,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     TCanvas * emcmass_canvas = new TCanvas("emcmass_canvas", "emcmass_canvas",800,600);
     TCanvas * emcwidth_canvas = new TCanvas("emcwidth_canvas", "emcwidth_canvas",800,600);
     TCanvas * ebineff_canvas = new TCanvas("ebineff_canvas", "ebineff_canvas",800,600);
+    TCanvas * esigfit_canvas = new TCanvas("esigfit_canvas", "esigfit_canvas",800,600);
     TCanvas * xsec_canvas = new TCanvas("xsec_canvas", "xsec_canvas",800,600);
     
 //Output file names independent of energy bin and t bin
@@ -202,6 +207,8 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     sprintf(ethrownhist,"Xsec_thrown_%s_%03d_%02dbins.png",version,binning, numEBins);
     sprintf(esignalyieldshist,"Xsec_SignalYields_%s_%03d_%02dbins.png",version,binning,numEBins);
     sprintf(esignatyieldsmacro,"Xsec_SignalYields_%s_%03d_%02dbins.C",version,binning,numEBins);
+    sprintf(esignalfithist,"Xsec_SignalFits_%s_%03d_%02dbins.png",version,binning,numEBins);
+    sprintf(esignalfitmacro,"Xsec_SignalFits_%s_%03d_%02dbins.C",version,binning,numEBins);
     sprintf(esignalmasshist,"Xsec_SignalMass_%s_%03d_%02dbins.png",version,binning,numEBins);
     sprintf(esignalmassmacro,"Xsec_SignalMass_%s_%03d_%02dbins.C",version,binning,numEBins);
     sprintf(esignalwidthhist,"Xsec_SignalWidth_%s_%03d_%02dbins.png",version,binning,numEBins);
@@ -247,6 +254,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     else { rows = numEBins/columns + 1; }	
 
 //Divide the canvases into the grids for histograms
+    esigfit_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
     sigyields_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
     sigmass_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
     sigwidth_canvas->Divide(columns,rows,canvas_margins,canvas_margins);
@@ -283,10 +291,14 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	int Ebuffer = Emin*10;
 
     //Initialize histograms on the divided canvases
+	esigfit_canvas->cd(iE+1);	
+	sprintf(esigfit_EBin_name,"sigfit_%03d",Ebuffer);
+ 	sprintf(EBin_Title,"%3.1f <= E_{#gamma} < %3.1f",Emin,Emax);
+	SignalFits[iE+1]->SetTitle(EBin_Title);
+
 	sigyields_canvas->cd(iE+1);	
 	sprintf(sigyields_EBin_name,"sigyields_%03d",Ebuffer);
     	SignalYields[iE+1] = new TH1F(sigyields_EBin_name, "; -t (GeV^2); Yields",numtBins,mintval,maxtval); 
-	sprintf(EBin_Title,"%3.1f <= E_{#gamma} < %3.1f",Emin,Emax);
 	SignalYields[iE+1]->SetTitle(EBin_Title);
     	SignalYields[iE+1]->SetMarkerColor(kRed);
     	SignalYields[iE+1]->SetMarkerStyle(21);
@@ -435,6 +447,8 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 		xsecmassframe->SetMaximum(max_xsec_y);
         	xsecmassframe->Draw();
 	     	Xsec_Xi_canvas->Print(xsec_xiplot);
+		esigfit_canvas->cd(iE+1);
+        	xsecmassframe->Draw();
 	} //end enough signal loop for total cross section
 
 
@@ -601,6 +615,10 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	} //end t loop
 
     //Draw and save histograms
+	esigfit_canvas->cd(iE+1);
+	esigfit_canvas->Print(esignalfithist);
+	esigfit_canvas->SaveAs(esignalfitmacro);
+
 	sigyields_canvas->cd(iE+1);
 	SignalYields[iE+1]->GetYaxis()->SetRangeUser(0,300);
 	SignalYields[iE+1]->Draw("pe1");
