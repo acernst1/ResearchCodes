@@ -11,12 +11,18 @@ char plotname[100];
 char accplotname[100];
 char accsubplotname[100];
 char workspace[100];
+char xsec_workspace[100];
 char bin[100];
 char diffxsec_xiplot[100];
+char xsec_xiplot[100];
 char xicanvas[100];
+char xsec_xicanvas[100];
 char mcworkspace[100];
+char mc_xsec_workspace[100];
 char diffxsec_mcplot[100];
+char xsec_mcplot[100];
 char mccanvas[100];
+char xsec_mccanvas[100];
 char mcplotname[100];
 char mcaccplotname[100];
 char mcaccsubplotname[100];
@@ -97,6 +103,12 @@ double_t sig_mass;
 double_t sig_mass_err;
 double_t sig_width;
 double_t sig_width_err;
+double_t xsec_sig_events;
+double_t xsec_sig_events_err;
+double_t xsec_sig_mass;
+double_t xsec_sig_mass_err;
+double_t xsec_sig_width;
+double_t xsec_sig_width_err;
 double getbincontent(TH1F* hist, int bin) {  return hist->GetBinContent(bin);}
 double getbinerror(TH1F* AccH, int bin){  return AccH->GetBinError(bin);}
 
@@ -368,11 +380,63 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	XiMassKinFit_Egamma_t_accsub->GetZaxis()->SetRange(1,XiMassKinFit_Egamma_t_accsub->GetZaxis()->FindBin(maxtval)-1);	
 	XiMassKinFit_Egamma_t_accsub->GetYaxis()->SetRange(Ebinmin,Ebinmax);
 	TH1F * XiMassKinFit_Ebin_accsub = (TH1F *) XiMassKinFit_Egamma_t_accsub->Project3D("x");
+	XiMassKinFit_Ebin_accsub->Rebin(XiMassKinFit_Ebin_accsub->GetNbinsX()/nummassBins);
+
 
     //Create a histogram of mc for this particular energy bin	
 	MC_XiMassKinFit_Egamma_t_accsub->GetZaxis()->SetRange(1,MC_XiMassKinFit_Egamma_t_accsub->GetZaxis()->FindBin(maxtval)-1);	
 	MC_XiMassKinFit_Egamma_t_accsub->GetYaxis()->SetRange(Ebinmin,Ebinmax);
 	TH1F * MC_XiMassKinFit_Ebin_accsub = (TH1F *) MC_XiMassKinFit_Egamma_t_accsub->Project3D("x");
+
+    //Only perform signal fit for total cross section if there are at least 20 entries in the whole histogram
+	if(XiMassKinFit_Ebin_accsub->GetEntries() < 20){
+		xsec_sig_events = 0.0;
+		xsec_sig_events_err = 0.0;
+		xsec_sig_mass = 0.0;
+		xsec_sig_mass_err = 0.0;
+		xsec_sig_width =  0.0;
+		xsec_sig_width_err =  0.0;
+	} //end not enough signal loop for total cross section
+	else{    //Set up and perform signal fit for total cross section
+		sprintf(xsec_xiplot,"Xsec_sigfit_%s_%03d_%02dbins_%03d.png",version, binning,numEBins,Ebuffer);
+		sprintf(xsec_mcplot,"Xsec_mcfit_%s_%03d_%02dbins_%03d.png",version, binning,numEBins,Ebuffer);	
+		sprintf(xsec_workspace,"w%03d",Ebuffer);
+		sprintf(mc_xsec_workspace,"wmc%03d",Ebuffer);
+        	sprintf(xsec_xicanvas,"Xi_canvas_%03d",Ebuffer);
+		sprintf(xsec_mccanvas,"Xi_canvas_mc_%03d",Ebuffer);
+       		TCanvas * Xsec_Xi_canvas = new TCanvas(xsec_xicanvas, xsec_xicanvas,800,600);
+        	TCanvas * Xsec_Xi_mc_canvas = new TCanvas(xsec_mccanvas, xsec_mccanvas,800,600);
+		Xsec_Xi_canvas->cd();
+		RooWorkspace* xsecw = new RooWorkspace(xsec_workspace);
+        	RooRealVar xsecmass("xsecmass", "xsecmass", minmass, maxmass);
+        	RooDataHist *xsecdata = new RooDataHist("xsecdata", "Dataset of mass", xsecmass, XiMassKinFit_Ebin_accsub);
+        	XiMassKinFit_Ebin_accsub->Print();
+        	xsecw->import(RooArgSet(xsecmass));
+        	xsecw->factory("Chebychev::xsecbkgd(xsecmass,{c1t[2.20,-1.e4,1.e4],c2t[-1.557,-1.e4,1.e4]})");
+        	xsecw->factory("Gaussian::xsecgaus(xsecmass,mean[1.32,1.31,1.33],sigma[0.005,0.001,0.01])");
+        	xsecw->factory("SUM::xsecmodel(nbkgd[150,0,1e5]*bkgd, nsig[20,0,1e3]*xsecgaus)");
+        	xsecw->pdf("xsecmodel")->fitTo(*xsecdata,RooFit::Range(minfitmass,maxmass),RooFit::Minos(1));
+        	RooPlot* xsecmassframe = xsecmass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
+        	xsecmassframe->SetXTitle("#Lambda#pi^{-} mass");
+        	xsecdata->plotOn(xsecmassframe) ;
+        	xsecw->pdf("xsecmodel")->paramOn(xsecmassframe);
+        	xsecw->pdf("xsecmodel")->plotOn(xsecmassframe);
+        	xsecw->pdf("xsecgaus")->plotOn(xsecmassframe, RooFit::LineStyle(kDotted),
+ 			RooFit::Normalization(xsecw->var("nsig")->getVal(), RooAbsReal::NumEvent));
+        	xsecw->pdf("xsecbkgd")->plotOn(xsecmassframe, RooFit::LineStyle(kDotted),
+  			RooFit::Normalization(xsecw->var("nbkgd")->getVal(), RooAbsReal::NumEvent));
+		xsec_sig_events = xsecw->var("nsig")->getVal();
+		xsec_sig_events_err = xsecw->var("nsig")->getError();
+		xsec_sig_mass = xsecw->var("mean")->getVal();
+		xsec_sig_mass_err = xsecw->var("mean")->getError();
+		xsec_sig_width = xsecw->var("sigma")->getVal();
+		xsec_sig_width_err = xsecw->var("sigma")->getError();
+		double max_xsec_y = sig_events*0.3;
+		xsecmassframe->SetMaximum(max_xsec_y);
+        	xsecmassframe->Draw();
+	     	Xsec_Xi_canvas->Print(xsec_xiplot);
+	} //end enough signal loop for total cross section
+
 
     //Main t loop
 	for(int it =0; it<numtBins; it++){
