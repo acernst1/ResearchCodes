@@ -703,16 +703,24 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 //Print out all values at end of running
 for(int iEbin=0; iEbin<numEBins; iEbin++){
 	cout << "Energy: " << deltaE * (iEbin) + (minEval) << " - " << deltaE * (iEbin+1) + (minEval) << endl; 
+	cout << "\t" << "-t:  " 		<< mintval << " - " << maxtval << endl; 
+	cout << "\t" << "Signal Yields: " 	<< xsec_sig_val[iEbin+1] 	<< " +/- " 	<< xsec_sig_err[iEbin+1] 	<< endl;
+	cout << "\t" << "MC Yields: " 		<< xsec_mc_val[iEbin+1] 	<< " +/- " 	<< xsec_mc_err[iEbin+1] 	<< endl;
+	cout << "\t" << "Thrown Yields: " 	<< xsec_thrown_val[iEbin+1] 	<< " +/- " 	<< xsec_thrown_err[iEbin+1] 	<< endl;
+	cout << "\t" << "Flux Yields: " 	<< flux_val[iEbin+1] 		<< " +/- " 	<< flux_err[iEbin+1] 		<< endl;
+	cout << "\t" << "Efficiency: " 		<< xsec_eff_val[iEbin+1] 	<< " +/- " 	<< xsec_eff_err[iEbin+1] 	<< endl;
+	cout << "\t" << "DiffXSec: " 		<< xsec_val[iEbin+1] 		<< " +/- " 	<< xsec_err[iEbin+1] 		<< endl;
 	for(int itbin=0; itbin<numtBins; itbin++){	
-	cout << "     " << "-t: " << deltat * itbin + mintval << " - " << deltat * (itbin+1) + mintval << endl; 
-	cout << "     " << "     " << "Signal Yields: " << sig_val[iEbin+1][itbin+1] << " +/- " << sig_err[iEbin+1][itbin+1] << endl;
-	cout << "     " << "     " << "MC Yields: " << mc_val[iEbin+1][itbin+1] << " +/- " << mc_err[iEbin+1][itbin+1] << endl;
-	cout << "     " << "     " << "Thrown Yields: " << thrown_val[iEbin+1][itbin+1] << " +/- " << thrown_err[iEbin+1][itbin+1] << endl;
-	cout << "     " << "     " << "Flux Yields: " << flux_val[iEbin+1] << " +/- " << flux_err[iEbin+1] << endl;
-	cout << "     " << "     " << "Efficiency: " << eff_val[iEbin+1][itbin+1] << " +/- " << eff_err[iEbin+1][itbin+1] << endl;
-	cout << "     " << "     " << "DiffXSec: " << diffxsec_val[iEbin+1][itbin+1] << " +/- " << diffxsec_err[iEbin+1][itbin+1] << endl;
+	cout << "\t" << "-t: " << deltat * itbin + mintval << " - " << deltat * (itbin+1) + mintval << endl; 
+	cout << "\t" << "\t" << "Signal Yields: " << sig_val[iEbin+1][itbin+1] 	<< " +/- " 	<< sig_err[iEbin+1][itbin+1] 	<< endl;
+	cout << "\t" << "\t" << "MC Yields: " 	<< mc_val[iEbin+1][itbin+1] 	<< " +/- " 	<< mc_err[iEbin+1][itbin+1] 	<< endl;
+	cout << "\t" << "\t" << "Thrown Yields: " << thrown_val[iEbin+1][itbin+1] << " +/- " 	<< thrown_err[iEbin+1][itbin+1] << endl;
+	cout << "\t" << "\t" << "Flux Yields: " << flux_val[iEbin+1] 		<< " +/- " 	<< flux_err[iEbin+1] 		<< endl;
+	cout << "\t" << "\t" << "Efficiency: " 	<< eff_val[iEbin+1][itbin+1] 	<< " +/- " 	<< eff_err[iEbin+1][itbin+1] 	<< endl;
+	cout << "\t" << "\t" << "DiffXSec: " 	<< diffxsec_val[iEbin+1][itbin+1] 	<< " +/- " 	<< diffxsec_err[iEbin+1][itbin+1] << endl;
 	} //end print t loop 
-} //end print E macro
+} //end print E loop
+} //end macro
 
 /*
 //clas results, Goetz thesis Table D.1
@@ -772,7 +780,7 @@ sprintf(xsec_wclas_plot_name,"xsec_wclas_%s.png",version);
 adiffxsec_canvas->Print(xsec_wclas_plot_name);
 
 */
-} //end macro
+
 //xsec_gluex->SetName("Xi- Cross Section");
 //axsec->SetTitle("#Xi^{-} Cross Section; E_{#gamma} (GeV); #sigma (nb)");
 //adiffxsec_canvas->Print("test_axsec.png");
