@@ -530,6 +530,17 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
         xsecmcmassframe->Draw();
 	Xsec_Xi_mc_canvas->Print(xsec_mcplot);
 
+   // Save MC information to histograms binned in beam energy
+   	emcsigyields_canvas->cd();	
+    	MCYields_Ebin->SetBinContent(iE+1,xsec_mc_sig_events);
+    	MCYields_Ebin->SetBinError(iE+1,xsec_mc_sig_events_err);
+    	emcsigmass_canvas->cd();
+    	MCMass_Ebin->SetBinContent(iE+1,xsec_mc_mass); 
+    	MCMass_Ebin->SetBinError(iE+1,xsec_mc_mass_err);
+    	emcsigwidth_canvas->cd();
+    	MCWidth_Ebin->SetBinContent(iE+1,xsec_mc_width);
+    	MCWidth_Ebin->SetBinError(iE+1,xsec_mc_width_err);
+
     //Main t loop
 	for(int it =0; it<numtBins; it++){
 	//Initialize other things
