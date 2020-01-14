@@ -258,7 +258,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     TH1F *  FluxH= (TH1F *) fluxfile->Get("tagged_flux");
     FluxH->Rebin(deltaE/FluxH->GetBinWidth(1));
     FluxH->Draw(); 
-    FluxH->SaveAs(fluxmacro);
+    flux_canvas->SaveAs(fluxmacro);
     flux_canvas->Print(fluxhist);
 
 //Create and save thrown histograms for diff xsec and total xsec
@@ -269,12 +269,12 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     ThrownH->RebinX(deltaE/ThrownH->GetXaxis()->GetBinWidth(1));    
     ThrownH->RebinY(deltat/ThrownH->GetYaxis()->GetBinWidth(1));
     ThrownH->Draw("colz");
-    ThrownH->SaveAs(thrownmacro);
+    thrown_canvas->SaveAs(thrownmacro);
     thrown_canvas->Print(thrownhist);
     ethrown_canvas->cd()
     TH1F * ThrownH_Ebin = (TH1F *) ThrownH->ProjectionX("ThrownH_Ebin",1,ThrownH->GetYaxis()->FindBin(maxtval)-1);
     ThrownH_Ebin->Draw();
-    ThrownH_Ebin->SaveAs(ethrownmacro);
+    ethrown_canvas->SaveAs(ethrownmacro);
     ethrown_canvas->Print(ethrownhist);
     
 //Set up the grid structure of histograms
@@ -686,7 +686,18 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 		DiffXSec[iE+1]->SetBinError(it+1,diffxsec_err[iE+1][it+1]);
 	} //end t loop
 
-    //Draw and save histograms
+    //Calculate efficiencies and total cross section in terms of only energy binning
+	xsec_eff_val[iE+1] = xsec_mc_val[iE+1]/xsec_thrown_val[iE+1];
+	xsec_eff_err[iE+1] = xsec_eff_val[iE+1] * sqrt(pow(xsec_mc_err[iE+1]/xsec_mc_val[iE+1],2)+pow(xsec_thrown_err[iE+1]/xsec_thrown_val[iE+1],2));
+	cout << "~~~~~~~Effxsec~" << iE << "~" << xsec_eff_val[iE+1] << " " << xsec_eff_err[iE+1] << endl;
+	Eff_Ebin->SetBinContent(iE+1,xsec_eff_val[iE+1];
+	Eff_Ebin->SetBinError(iE+1,xsec_eff_err[iE+1]);
+	xsec_val[iE+1] = (xsec_sig_val[iE+1]/(constant * flux_val[iE+1] * xsec_mc_val[iE+1]/xsec_thrown_val[iE+1]);
+	xsec_err[iE+1] = xsec_val[iE+1]*sqrt(pow(xsec_sig_err[iE+1]/xsec_sig_val[iE+1],2)+pow(flux_err[iE+1]/flux_val[iE+1],2)+pow(xsec_mc_err[iE+1]/xsec_mc_val[iE+1],2)+pow(xsec_thrown_err[iE+1]/xsec_thrown_val[iE+1],2));
+	XSec_Ebin->SetBinContent(iE+1,xsec_val[iE+1];
+	XSec_Ebin->SetBinError(iE+1,xsec_err[iE+1]);
+
+    //Draw and save histograms that depend on energy bin
 	esigfit_canvas->cd(iE+1);
 	esigfit_canvas->Print(esignalfithist);
 	esigfit_canvas->SaveAs(esignalfitmacro);
@@ -746,6 +757,20 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
    } //end E loop
 
 //Save all the total cross section histograms
+    ethrownyields_canvas->cd();
+    ThrownYields_Ebin->Draw("pe1");
+    ethrownyields_canvas->Print(ethrownyieldshist);
+    ethrownyields_canvas->SaveAs(ethrownyieldsmacro);
+
+    ebineff_canvas->cd();
+    Eff_Ebin->Draw("pe1");
+    ebineff_canvas->Print(ebineffhist);
+    ebineff_canvas->SaveAs(ebineffmacro);
+
+    xsec_canvas->cd();
+    XSec_Ebin->Draw("pe1");
+    xsec_canvas->Print(xsechist);
+    xsec_canvas->SaveAs(xsecmacro);
 
 //Print out all values at end of running
 for(int iEbin=0; iEbin<numEBins; iEbin++){
