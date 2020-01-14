@@ -486,6 +486,15 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	xsec_sig_val[iE+1] = xsec_sig_events;
 	xsec_sig_err[iE+1] = xsec_sig_events_err;
 	cout << "~~~~~~~sigxsec~" << iE << "~ " << xsec_sig_events << " " << xsec_sig_events_err << endl; 
+   	esigyields_canvas->cd();	
+    	SignalYields_Ebin->SetBinContent(iE+1,xsec_sig_events);
+    	SignalYields_Ebin->SetBinError(iE+1,xsec_sig_events_err);
+    	esigmass_canvas->cd();
+    	SignalMass_Ebin->SetBinContent(iE+1,xsec_sig_mass); 
+    	SignalMass_Ebin->SetBinError(iE+1,xsec_sig_mass_err);
+    	esigwidth_canvas->cd();
+    	SignalWidth_Ebin->SetBinContent(iE+1,xsec_sig_width);
+    	SignalWidth_Ebin->SetBinError(iE+1,xsec_sig_width_err);
 
     //MC fit for total cross section 
 	sprintf(xsec_mcplot,"Xsec_mcfit_%s_%03d_%02dbins_%03d.png",version, binning,numEBins,Ebuffer);	
