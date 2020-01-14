@@ -687,13 +687,19 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	} //end t loop
 
     //Calculate efficiencies and total cross section in terms of only energy binning
+	if(xsec_sig_val[iE+1] == 0){ // Set to zero if fit wasn't performed to prevent NaNs.
+	    xsec_err[iE+1] = 0.0;
+	}
+	else{ //Calculate normally
+	    xsec_err[iE+1] = xsec_val[iE+1]*sqrt(pow(xsec_sig_err[iE+1]/xsec_sig_val[iE+1],2)+pow(flux_err[iE+1]/flux_val[iE+1],2)+pow(xsec_mc_err[iE+1]/xsec_mc_val[iE+1],2)+pow(xsec_thrown_err[iE+1]/xsec_thrown_val[iE+1],2));
+	}
 	xsec_eff_val[iE+1] = xsec_mc_val[iE+1]/xsec_thrown_val[iE+1];
 	xsec_eff_err[iE+1] = xsec_eff_val[iE+1] * sqrt(pow(xsec_mc_err[iE+1]/xsec_mc_val[iE+1],2)+pow(xsec_thrown_err[iE+1]/xsec_thrown_val[iE+1],2));
 	cout << "~~~~~~~Effxsec~" << iE << "~" << xsec_eff_val[iE+1] << " " << xsec_eff_err[iE+1] << endl;
 	Eff_Ebin->SetBinContent(iE+1,xsec_eff_val[iE+1];
 	Eff_Ebin->SetBinError(iE+1,xsec_eff_err[iE+1]);
 	xsec_val[iE+1] = (xsec_sig_val[iE+1]/(constant * flux_val[iE+1] * xsec_mc_val[iE+1]/xsec_thrown_val[iE+1]);
-	xsec_err[iE+1] = xsec_val[iE+1]*sqrt(pow(xsec_sig_err[iE+1]/xsec_sig_val[iE+1],2)+pow(flux_err[iE+1]/flux_val[iE+1],2)+pow(xsec_mc_err[iE+1]/xsec_mc_val[iE+1],2)+pow(xsec_thrown_err[iE+1]/xsec_thrown_val[iE+1],2));
+	cout << "~~~~~~~Xsec~" << iE << "~" << xsec_val[iE+1] << " " << xsec_err[iE+1] << endl;
 	XSec_Ebin->SetBinContent(iE+1,xsec_val[iE+1];
 	XSec_Ebin->SetBinError(iE+1,xsec_err[iE+1]);
 
