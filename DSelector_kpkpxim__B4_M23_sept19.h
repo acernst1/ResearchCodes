@@ -109,6 +109,7 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		TH2F* dHist_Xi_Egamma_wacc;
 		TH2F* dHist_Xi_t;
 		TH2F* dHist_Xi_t_acc;
+		TH2F* dHist_Xi_t_wacc;
 		TH3F* dHist_Xi_Egamma_t;
 		TH3F* dHist_Xi_Egamma_t_acc;
 		TH3F* dHist_Xi_Egamma_t_wacc;

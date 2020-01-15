@@ -610,17 +610,16 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 						TLorentzVector locKPlusP4_decay;
 						for(UInt_t loc_particlei = 0; loc_particlei < Get_NumThrown(); ++loc_particlei)
 						{
-		dThrownWrapper->Set_ArrayIndex(loc_particlei);
-		Particle_t locPID = dThrownWrapper->Get_PID();
-		TLorentzVector locThrownP4 = dThrownWrapper->Get_P4();
+							dThrownWrapper->Set_ArrayIndex(loc_particlei);
+							Particle_t locPID = dThrownWrapper->Get_PID();
+							TLorentzVector locThrownP4 = dThrownWrapper->Get_P4();
 						if(locPID == 11) {
 							if(loc_particlei==0) { locKPlusP4_t = locThrownP4; }
 							if(loc_particlei==1) { locKPlusP4_decay = locThrownP4; }
 							}
 						}
-					TLorentzVector locKPlusP4_t = dThrownWrapper->Get_P4();
-					double t_Truth= (locBeamP4 - locKPlusP4_t).M2();
-					dHist_Xi_t_Truth->Fill(locXiP4_KinFit.M(),-1.*t_Truth)
+						double t_Truth= (locBeamP4 - locKPlusP4_t).M2();
+						dHist_Xi_t_Truth->Fill(locXiP4_KinFit.M(),-1.*t_Truth);
 					}	
 				}
 				else { 
