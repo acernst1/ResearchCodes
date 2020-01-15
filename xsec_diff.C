@@ -271,7 +271,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     ThrownH->Draw("colz");
     thrown_canvas->SaveAs(thrownmacro);
     thrown_canvas->Print(thrownhist);
-    ethrown_canvas->cd()
+    ethrown_canvas->cd();
     TH1F * ThrownH_Ebin = (TH1F *) ThrownH->ProjectionX("ThrownH_Ebin",1,ThrownH->GetYaxis()->FindBin(maxtval)-1);
     ThrownH_Ebin->Draw();
     ethrown_canvas->SaveAs(ethrownmacro);
