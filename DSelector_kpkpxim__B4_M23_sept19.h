@@ -120,7 +120,8 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		TH3F* dHist_Xi_Egamma_t_064_wacc;
 		TH3F* dHist_Xi_Egamma_t_065;
 		TH3F* dHist_Xi_Egamma_t_065_acc;
-		TH3F* dHist_Xi_Egamma_t_065_wacc;		
+		TH3F* dHist_Xi_Egamma_t_065_wacc;
+		TH2F* dHist_Xi_t_Truth;		
 		TH1I* dHist_XiMass024;
 		TH1I* dHist_XiMass029;
 		TH1I* dHist_XiMass034;
