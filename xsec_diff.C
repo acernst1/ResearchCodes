@@ -788,6 +788,36 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     ethrownyields_canvas->Print(ethrownyieldshist);
     ethrownyields_canvas->SaveAs(ethrownyieldsmacro);
 
+    esigyields_canvas->cd();
+    SignalYields_Ebin->Draw("pe1");
+    esigyields_canvas->Print(esignalyieldshist);
+    esigyields_canvas->SaveAs(esignalyieldsmacro);
+
+    emcyields_canvas->cd();
+    MCYields_Ebin->Draw("pe1");
+    emcyields_canvas->Print(emcyieldshist);
+    emcyields_canvas->SaveAs(emcyieldsmacro);
+
+    esigmass_canvas->cd();
+    SignalMass_Ebin->Draw("pe1");
+    esigmass_canvas->Print(esignalmasshist);
+    esigmass_canvas->SaveAs(esignalmassmacro);
+
+    emcmass_canvas->cd();
+    MCMass_Ebin->Draw("pe1");
+    emcmass_canvas->Print(emcmasshist);
+    emcmass_canvas->SaveAs(emcmassmacro);
+
+    esigwidth_canvas->cd();
+    SignalWidth_Ebin->Draw("pe1");
+    esigwidth_canvas->Print(esignalwidthhist);
+    esigwidth_canvas->SaveAs(esignalwidthmacro);
+
+    emcwidth_canvas->cd();
+    MCWidth_Ebin->Draw("pe1");
+    emcwidth_canvas->Print(emcwidthhist);
+    emcwidth_canvas->SaveAs(emcwidthmacro);
+
     ebineff_canvas->cd();
     Eff_Ebin->Draw("pe1");
     ebineff_canvas->Print(ebineffhist);
