@@ -27,28 +27,113 @@ void plot_tslopes() {
 	TFile * throwntslope35 = TFile::Open("/cache/halld/home/acernst/MC/2018-08_ANAver02/tslope_tests/thrown_kpkpxim__B4_M23_genr8_2018-08_ANAver02_tslope35.root");
 	TFile * throwntslope40 = TFile::Open("/cache/halld/home/acernst/MC/2018-08_ANAver02/tslope_tests/thrown_kpkpxim__B4_M23_genr8_2018-08_ANAver02_tslope40.root");
 
-	char tdistname[100];
-	TCanvas *cctdist = new TCanvas("cctdist", "cctdist", 800, 600);
+//2017-01 data
+	TH2F * XiMassKinFit_Egamma_t171 = (TH2F*)data201701->Get("Xi_t");
+	TH2F * XiMassKinFit_Egamma_t171_acc = (TH2F*)data201701->Get("Xi_t_acc");
+	TH2F * XiMassKinFit_Egamma_t171_accsub = (TH2F *) XiMassKinFit_Egamma_t171->Clone("XiMassKinFit_Egamma_t171_accsub");
+	XiMassKinFit_Egamma_t171_accsub->Add(XiMassKinFit_Egamma_t171_acc,-0.5);
+	TH1F * t171 = (TH1F *)XiMassKinFit_Egamma_t171_accsub->ProjectionY("t171",XiMassKinFit_Egamma_t171_accsub->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t171_accsub->GetXaxis()->FindBin(1.34));
+//2018-01 data
+	TH2F * XiMassKinFit_Egamma_t181 = (TH2F*)data201801->Get("Xi_t");
+	TH2F * XiMassKinFit_Egamma_t181_acc = (TH2F*)data201801->Get("Xi_t_acc");
+	TH2F * XiMassKinFit_Egamma_t181_accsub = (TH2F *) XiMassKinFit_Egamma_t181->Clone("XiMassKinFit_Egamma_t181_accsub");
+	XiMassKinFit_Egamma_t181_accsub->Add(XiMassKinFit_Egamma_t181_acc,-0.5);
+	TH1F * t181 = (TH1F *)XiMassKinFit_Egamma_t181_accsub->ProjectionY("t181",XiMassKinFit_Egamma_t181_accsub->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t181_accsub->GetXaxis()->FindBin(1.34));
+//2018-08 data
 	TH2F * XiMassKinFit_Egamma_t188 = (TH2F*)data201808->Get("Xi_t");
 	TH2F * XiMassKinFit_Egamma_t188_acc = (TH2F*)data201808->Get("Xi_t_acc");
 	TH2F * XiMassKinFit_Egamma_t188_accsub = (TH2F *) XiMassKinFit_Egamma_t188->Clone("XiMassKinFit_Egamma_t188_accsub");
 	XiMassKinFit_Egamma_t188_accsub->Add(XiMassKinFit_Egamma_t188_acc,-0.5);
 	TH1F * t188 = (TH1F *)XiMassKinFit_Egamma_t188_accsub->ProjectionY("t188",XiMassKinFit_Egamma_t188_accsub->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t188_accsub->GetXaxis()->FindBin(1.34));
-
+//reconstructed MC tests for 2018-08
 	TH2F * XiMassKinFit_Egamma_t14MC = (TH2F*)filetslope14->Get("Xi_t");
-	TH1F * t14MC = (TH1F *)XiMassKinFit_Egamma_t188MC_accsub->ProjectionY("t4MC",XiMassKinFit_Egamma_t14MC->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t14MC->GetXaxis()->FindBin(1.34));
+	TH1F * t14MC = (TH1F *)XiMassKinFit_Egamma_t14MC->ProjectionY("t14MC",XiMassKinFit_Egamma_t14MC->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t14MC->GetXaxis()->FindBin(1.34));
+	TH2F * XiMassKinFit_Egamma_t15MC = (TH2F*)filetslope15->Get("Xi_t");
+	TH1F * t15MC = (TH1F *)XiMassKinFit_Egamma_t15MC->ProjectionY("t15MC",XiMassKinFit_Egamma_t15MC->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t15MC->GetXaxis()->FindBin(1.34));
+
+	TH2F * XiMassKinFit_Egamma_t16MC = (TH2F*)filetslope16->Get("Xi_t");
+	TH1F * t16MC = (TH1F *)XiMassKinFit_Egamma_t16MC->ProjectionY("t16MC",XiMassKinFit_Egamma_t16MC->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t16MC->GetXaxis()->FindBin(1.34));
+	TH2F * XiMassKinFit_Egamma_t17MC = (TH2F*)filetslope17->Get("Xi_t");
+	TH1F * t17MC = (TH1F *)XiMassKinFit_Egamma_t17MC->ProjectionY("t17MC",XiMassKinFit_Egamma_t17MC->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t17MC->GetXaxis()->FindBin(1.34));
+	TH2F * XiMassKinFit_Egamma_t18MC = (TH2F*)filetslope18->Get("Xi_t");
+	TH1F * t18MC = (TH1F *)XiMassKinFit_Egamma_t18MC->ProjectionY("t18MC",XiMassKinFit_Egamma_t18MC->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t18MC->GetXaxis()->FindBin(1.34));
+	TH2F * XiMassKinFit_Egamma_t19MC = (TH2F*)filetslope19->Get("Xi_t");
+	TH1F * t19MC = (TH1F *)XiMassKinFit_Egamma_t19MC->ProjectionY("t19MC",XiMassKinFit_Egamma_t19MC->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t19MC->GetXaxis()->FindBin(1.34));
+	TH2F * XiMassKinFit_Egamma_t20MC = (TH2F*)filetslope20->Get("Xi_t");
+	TH1F * t20MC = (TH1F *)XiMassKinFit_Egamma_t20MC->ProjectionY("t20MC",XiMassKinFit_Egamma_t20MC->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t20MC->GetXaxis()->FindBin(1.34));
+	TH2F * XiMassKinFit_Egamma_t25MC = (TH2F*)filetslope25->Get("Xi_t");
+	TH1F * t25MC = (TH1F *)XiMassKinFit_Egamma_t25MC->ProjectionY("t25MC",XiMassKinFit_Egamma_t25MC->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t25MC->GetXaxis()->FindBin(1.34));
+	TH2F * XiMassKinFit_Egamma_t30MC = (TH2F*)filetslope30->Get("Xi_t");
+	TH1F * t30MC = (TH1F *)XiMassKinFit_Egamma_t30MC->ProjectionY("t30MC",XiMassKinFit_Egamma_t30MC->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t30MC->GetXaxis()->FindBin(1.34));
+	TH2F * XiMassKinFit_Egamma_t35MC = (TH2F*)filetslope35->Get("Xi_t");
+	TH1F * t35MC = (TH1F *)XiMassKinFit_Egamma_t35MC->ProjectionY("t35MC",XiMassKinFit_Egamma_t35MC->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t35MC->GetXaxis()->FindBin(1.34));
+	TH2F * XiMassKinFit_Egamma_t40MC = (TH2F*)filetslope40->Get("Xi_t");
+	TH1F * t40MC = (TH1F *)XiMassKinFit_Egamma_t40MC->ProjectionY("t40MC",XiMassKinFit_Egamma_t40MC->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t40MC->GetXaxis()->FindBin(1.34));
+//MC Truth tslope tests for 2018-08
  	TH2F * XiMassKinFit_Egamma_t14MC_Truth = (TH2F*)filetslope14->Get("Xi_t_Truth");
 	TH1F * t14MC_Truth = (TH1F *)XiMassKinFit_Egamma_t14MC_Truth->ProjectionY("t14MC_Truth",XiMassKinFit_Egamma_t14MC_Truth->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t14MC_Truth->GetXaxis()->FindBin(1.34));
-	t14MC->RebinX(5);
-	t14MC->SetLineColor(kBlue);
-	t14MC->SetTitle("");
-	t14MC->GetYaxis()->SetTitle("Combos");
-	t14MC->Draw();
-	auto legend_datamc = new TLegend(0.70,0.8,0.98,0.93);
-	legend_datamc->AddEntry(t188,"2018-08_ANAver02 data","lep");
-	legend_datamc->AddEntry(t14MC,"MC tslope = 1.4","lep");
-	legend_datamc->Draw();
-	sprintf(tdistname,"tdist_2018-08_varyingtslopes.png",);
-	cct188dist->Print(tdistname);
+ 	TH2F * XiMassKinFit_Egamma_t15MC_Truth = (TH2F*)filetslope15->Get("Xi_t_Truth");
+	TH1F * t15MC_Truth = (TH1F *)XiMassKinFit_Egamma_t15MC_Truth->ProjectionY("t15MC_Truth",XiMassKinFit_Egamma_t15MC_Truth->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t15MC_Truth->GetXaxis()->FindBin(1.34));
+ 	TH2F * XiMassKinFit_Egamma_t16MC_Truth = (TH2F*)filetslope16->Get("Xi_t_Truth");
+	TH1F * t16MC_Truth = (TH1F *)XiMassKinFit_Egamma_t16MC_Truth->ProjectionY("t16MC_Truth",XiMassKinFit_Egamma_t16MC_Truth->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t16MC_Truth->GetXaxis()->FindBin(1.34));
+ 	TH2F * XiMassKinFit_Egamma_t17MC_Truth = (TH2F*)filetslope17->Get("Xi_t_Truth");
+	TH1F * t17MC_Truth = (TH1F *)XiMassKinFit_Egamma_t17MC_Truth->ProjectionY("t17MC_Truth",XiMassKinFit_Egamma_t17MC_Truth->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t17MC_Truth->GetXaxis()->FindBin(1.34));
+ 	TH2F * XiMassKinFit_Egamma_t18MC_Truth = (TH2F*)filetslope18->Get("Xi_t_Truth");
+	TH1F * t18MC_Truth = (TH1F *)XiMassKinFit_Egamma_t18MC_Truth->ProjectionY("t18MC_Truth",XiMassKinFit_Egamma_t18MC_Truth->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t18MC_Truth->GetXaxis()->FindBin(1.34));
+ 	TH2F * XiMassKinFit_Egamma_t19MC_Truth = (TH2F*)filetslope19->Get("Xi_t_Truth");
+	TH1F * t19MC_Truth = (TH1F *)XiMassKinFit_Egamma_t19MC_Truth->ProjectionY("t19MC_Truth",XiMassKinFit_Egamma_t19MC_Truth->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t19MC_Truth->GetXaxis()->FindBin(1.34));
+ 	TH2F * XiMassKinFit_Egamma_t20MC_Truth = (TH2F*)filetslope20->Get("Xi_t_Truth");
+	TH1F * t20MC_Truth = (TH1F *)XiMassKinFit_Egamma_t20MC_Truth->ProjectionY("t20MC_Truth",XiMassKinFit_Egamma_t20MC_Truth->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t20MC_Truth->GetXaxis()->FindBin(1.34));
+ 	TH2F * XiMassKinFit_Egamma_t25MC_Truth = (TH2F*)filetslope25->Get("Xi_t_Truth");
+	TH1F * t25MC_Truth = (TH1F *)XiMassKinFit_Egamma_t25MC_Truth->ProjectionY("t25MC_Truth",XiMassKinFit_Egamma_t25MC_Truth->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t25MC_Truth->GetXaxis()->FindBin(1.34));
+ 	TH2F * XiMassKinFit_Egamma_t30MC_Truth = (TH2F*)filetslope30->Get("Xi_t_Truth");
+	TH1F * t30MC_Truth = (TH1F *)XiMassKinFit_Egamma_t30MC_Truth->ProjectionY("t30MC_Truth",XiMassKinFit_Egamma_t30MC_Truth->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t30MC_Truth->GetXaxis()->FindBin(1.34));
+ 	TH2F * XiMassKinFit_Egamma_t35MC_Truth = (TH2F*)filetslope35->Get("Xi_t_Truth");
+	TH1F * t35MC_Truth = (TH1F *)XiMassKinFit_Egamma_t35MC_Truth->ProjectionY("t35MC_Truth",XiMassKinFit_Egamma_t35MC_Truth->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t35MC_Truth->GetXaxis()->FindBin(1.34));
+ 	TH2F * XiMassKinFit_Egamma_t40MC_Truth = (TH2F*)filetslope40->Get("Xi_t_Truth");
+	TH1F * t40MC_Truth = (TH1F *)XiMassKinFit_Egamma_t40MC_Truth->ProjectionY("t40MC_Truth",XiMassKinFit_Egamma_t40MC_Truth->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t40MC_Truth->GetXaxis()->FindBin(1.34));
+
+//legends
+	auto legend_datasets = new TLegend(0.70,0.8,0.98,0.93);
+	legend_datasets->AddEntry(t171,"2017-01_ANAver20 data","lep");
+	legend_datasets->AddEntry(t181,"2018-01_ANAver03 data","lep");
+	legend_datasets->AddEntry(t188,"2018-08_ANAver02 data","lep");
+	auto legend_MCtests = new TLegend(0.70,0.8,0.98,0.93);
+	legend_MCtests->AddEntry(t188,"2018-08_ANAver02 data","lep");
+	legend_MCtests->AddEntry(t14MC,"MC tslope = 1.4","lep");
+	legend_MCtests->AddEntry(t15MC,"MC tslope = 1.5","lep");
+	legend_MCtests->AddEntry(t16MC,"MC tslope = 1.6","lep");
+	legend_MCtests->AddEntry(t17MC,"MC tslope = 1.7","lep");
+	legend_MCtests->AddEntry(t18MC,"MC tslope = 1.8","lep");
+	legend_MCtests->AddEntry(t19MC,"MC tslope = 1.9","lep");
+	legend_MCtests->AddEntry(t20MC,"MC tslope = 2.0","lep");
+	legend_MCtests->AddEntry(t25MC,"MC tslope = 2.5","lep");
+	legend_MCtests->AddEntry(t30MC,"MC tslope = 3.0","lep");
+	legend_MCtests->AddEntry(t35MC,"MC tslope = 3.5","lep");
+	legend_MCtests->AddEntry(t40MC,"MC tslope = 4.0","lep");
+
+	TCanvas *cctdistdata = new TCanvas("cctdistdata", "cctdistdata", 800, 600);
+	t171->SetLineColor(kGreen);
+	t181->SetLineColor(kRed);
+	t188->SetLineColor(kBlue);
+	t171->SetTitle("");
+	t171->GetYaxis()->SetTitle("Combos");
+	t171->Draw("pe1");
+	t181->Draw("pe1 same");
+	t188->Draw("pe1 same");
+	legend_datasets->Draw();
+	cctdistdata->Print("tdist_datasets.png");
+
+	TCanvas *cctdistMC = new TCanvas("cctdistMC", "cctdistMC", 800, 600);
+	t188->SetLineColor(kBlue);
+	t188->SetTitle("");
+	t188->GetYaxis()->SetTitle("Combos");
+	t188->Draw("pe1");
+	t14MC->SetLineColor("kRed");
+	t14MC->Draw("pe1 same");
+
+	legend_MCtests->Draw();
+	cctdistMC->Print("tdist_MCtlopestests.png");
+
 
 }
