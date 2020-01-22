@@ -97,7 +97,7 @@ void plot_tslopes() {
 	legend_datasets->AddEntry(t171,"2017-01_ANAver20 data","lep");
 	legend_datasets->AddEntry(t181,"2018-01_ANAver03 data","lep");
 	legend_datasets->AddEntry(t188,"2018-08_ANAver02 data","lep");
-	auto legend_MCtests = new TLegend(0.70,0.8,0.98,0.93);
+	auto legend_MCtests = new TLegend(0.60,0.8,0.98,0.98);
 	legend_MCtests->AddEntry(t188,"2018-08_ANAver02 data","lep");
 	legend_MCtests->AddEntry(t14MC,"MC tslope = 1.4","lep");
 	legend_MCtests->AddEntry(t15MC,"MC tslope = 1.5","lep");
@@ -138,12 +138,11 @@ void plot_tslopes() {
 	t188->SetLineColor(kBlue);
 	t188->SetMarkerColor(kBlue);
 	t188->SetMarkerStyle(21);
+	t188->RebinX(5);
 	double norm188 = t188->GetMaximum();
 	t188->SetTitle("");
 	t188->GetYaxis()->SetTitle("Combos");
-	t188->RebinX(5);
 	t188->Draw("pe1");
-
 	t14MC->SetLineColor(kRed);
 	t14MC->SetMarkerColor(kRed);
 	t14MC->SetMarkerStyle(21);
@@ -157,7 +156,32 @@ void plot_tslopes() {
 	t14MC_Truth->RebinX(5);
 	t14MC_Truth->Scale(norm188/norm14);
 	t14MC_Truth->Draw("pe1 same");
-
+	t15MC->SetLineColor(kRed+2);
+	t15MC->SetMarkerColor(kRed+2);
+	t15MC->SetMarkerStyle(21);
+	t15MC->RebinX(5);
+	double norm15 = t15MC->GetMaximum();
+	t15MC->Scale(norm188/norm15);
+	t15MC->Draw("pe1 same");
+	t15MC_Truth->SetLineColor(kRed+2);
+	t15MC_Truth->SetMarkerColor(kRed+2);
+	t15MC_Truth->SetMarkerStyle(24);
+	t15MC_Truth->RebinX(5);
+	t15MC_Truth->Scale(norm188/norm15);
+	t15MC_Truth->Draw("pe1 same");
+	t16MC->SetLineColor(kPink);
+	t16MC->SetMarkerColor(kPink);
+	t16MC->SetMarkerStyle(21);
+	t16MC->RebinX(5);
+	double norm16 = t16MC->GetMaximum();
+	t16MC->Scale(norm188/norm16);
+	t16MC->Draw("pe1 same");
+	t16MC_Truth->SetLineColor(kPink);
+	t16MC_Truth->SetMarkerColor(kPink);
+	t16MC_Truth->SetMarkerStyle(24);
+	t16MC_Truth->RebinX(5);
+	t16MC_Truth->Scale(norm188/norm16);
+	t16MC_Truth->Draw("pe1 same");
 	legend_MCtests->Draw();
 	cctdistMC->Print("tdist_MCtlopestests.png");
 
