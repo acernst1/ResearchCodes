@@ -111,6 +111,10 @@ void plot_tslopes() {
 	legend_MCtests->AddEntry(t35MC,"MC tslope = 3.5","lep");
 	legend_MCtests->AddEntry(t40MC,"MC tslope = 4.0","lep");
 
+//No statistics box on histogram 
+	gStyle->SetOptStat(0000);
+
+//Data t distributions
 	TCanvas *cctdistdata = new TCanvas("cctdistdata", "cctdistdata", 800, 600);	
 	t171->SetLineColor(kGreen);
 	t181->SetLineColor(kRed);
@@ -137,17 +141,20 @@ void plot_tslopes() {
 	double norm188 = t188->GetMaximum();
 	t188->SetTitle("");
 	t188->GetYaxis()->SetTitle("Combos");
+	t188->RebinX(5);
 	t188->Draw("pe1");
 
 	t14MC->SetLineColor(kRed);
 	t14MC->SetMarkerColor(kRed);
 	t14MC->SetMarkerStyle(21);
+	t14MC->RebinX(5);
 	double norm14 = t14MC->GetMaximum();
 	t14MC->Scale(norm188/norm14);
 	t14MC->Draw("pe1 same");
 	t14MC_Truth->SetLineColor(kRed);
 	t14MC_Truth->SetMarkerColor(kRed);
 	t14MC_Truth->SetMarkerStyle(24);
+	t14MC_Truth->RebinX(5);
 	t14MC_Truth->Scale(norm188/norm14);
 	t14MC_Truth->Draw("pe1 same");
 
