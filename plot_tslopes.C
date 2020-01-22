@@ -50,7 +50,6 @@ void plot_tslopes() {
 	TH1F * t14MC = (TH1F *)XiMassKinFit_Egamma_t14MC->ProjectionY("t14MC",XiMassKinFit_Egamma_t14MC->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t14MC->GetXaxis()->FindBin(1.34));
 	TH2F * XiMassKinFit_Egamma_t15MC = (TH2F*)filetslope15->Get("Xi_t");
 	TH1F * t15MC = (TH1F *)XiMassKinFit_Egamma_t15MC->ProjectionY("t15MC",XiMassKinFit_Egamma_t15MC->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t15MC->GetXaxis()->FindBin(1.34));
-
 	TH2F * XiMassKinFit_Egamma_t16MC = (TH2F*)filetslope16->Get("Xi_t");
 	TH1F * t16MC = (TH1F *)XiMassKinFit_Egamma_t16MC->ProjectionY("t16MC",XiMassKinFit_Egamma_t16MC->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t16MC->GetXaxis()->FindBin(1.34));
 	TH2F * XiMassKinFit_Egamma_t17MC = (TH2F*)filetslope17->Get("Xi_t");
@@ -112,12 +111,19 @@ void plot_tslopes() {
 	legend_MCtests->AddEntry(t35MC,"MC tslope = 3.5","lep");
 	legend_MCtests->AddEntry(t40MC,"MC tslope = 4.0","lep");
 
-	TCanvas *cctdistdata = new TCanvas("cctdistdata", "cctdistdata", 800, 600);
+	TCanvas *cctdistdata = new TCanvas("cctdistdata", "cctdistdata", 800, 600);	
 	t171->SetLineColor(kGreen);
 	t181->SetLineColor(kRed);
 	t188->SetLineColor(kBlue);
+	t171->SetMarkerColor(kGreen);
+	t181->SetMarkerColor(kRed);
+	t188->SetMarkerColor(kBlue);
+	t171->SetMarkerStyle(21);
+	t181->SetMarkerStyle(21);
+	t188->SetMarkerStyle(21);
 	t171->SetTitle("");
 	t171->GetYaxis()->SetTitle("Combos");
+	t171->GetYaxis()->SetRangeUser(0,t181->GetMaximum()+100);
 	t171->Draw("pe1");
 	t181->Draw("pe1 same");
 	t188->Draw("pe1 same");
@@ -126,11 +132,24 @@ void plot_tslopes() {
 
 	TCanvas *cctdistMC = new TCanvas("cctdistMC", "cctdistMC", 800, 600);
 	t188->SetLineColor(kBlue);
+	t188->SetMarkerColor(kBlue);
+	t188->SetMarkerStyle(21);
+	double norm188 = t188->GetMaximum();
 	t188->SetTitle("");
 	t188->GetYaxis()->SetTitle("Combos");
 	t188->Draw("pe1");
-	t14MC->SetLineColor("kRed");
+
+	t14MC->SetLineColor(kRed);
+	t14MC->SetMarkerColor(kRed);
+	t14MC->SetMarkerStyle(21);
+	double norm14 = t14MC->GetMaximum();
+	t14MC->Scale(norm188/norm14);
 	t14MC->Draw("pe1 same");
+	t14MC_Truth->SetLineColor(kRed);
+	t14MC_Truth->SetMarkerColor(kRed);
+	t14MC_Truth->SetMarkerStyle(24);
+	t14MC_Truth->Scale(norm188/norm14);
+	t14MC_Truth->Draw("pe1 same");
 
 	legend_MCtests->Draw();
 	cctdistMC->Print("tdist_MCtlopestests.png");
