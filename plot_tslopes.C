@@ -137,7 +137,7 @@ void plot_tslopes() {
 	TCanvas *cctdistMC = new TCanvas("cctdistMC", "cctdistMC", 800, 600);
 	t188->SetLineColor(kBlue);
 	t188->SetMarkerColor(kBlue);
-	t188->SetMarkerStyle(21);
+	t188->SetMarkerStyle(20);
 	t188->RebinX(6);
 	double norm188 = t188->GetMaximum();
 	t188->SetTitle("");
@@ -145,7 +145,7 @@ void plot_tslopes() {
 	t188->GetYaxis()->SetRangeUser(0,t188->GetMaximum()+100);
 	t188->Draw("p");
 
-	t14MC->SetLineColor(kRed);
+	t14MC->SetLineColor(kWhite);
 	t14MC->SetMarkerColor(kRed);
 	t14MC->SetMarkerStyle(21);
 	t14MC->RebinX(6);
@@ -160,7 +160,7 @@ void plot_tslopes() {
 	t14MC_Truth->Scale(norm188/norm14);
 	t14MC_Truth->Draw("pe1 same");
 */	
-	t15MC->SetLineColor(kRed+2);
+	t15MC->SetLineColor(kWhite);
 	t15MC->SetMarkerColor(kRed+2);
 	t15MC->SetMarkerStyle(21);
 	t15MC->RebinX(6);
@@ -174,7 +174,7 @@ void plot_tslopes() {
 	t15MC_Truth->Scale(norm188/norm15);
 	//t15MC_Truth->Draw("pe1 same");
 */
-	t16MC->SetLineColor(kPink);
+	t16MC->SetLineColor(kWhite);
 	t16MC->SetMarkerColor(kPink);
 	t16MC->SetMarkerStyle(21);
 	t16MC->RebinX(6);
@@ -188,7 +188,7 @@ void plot_tslopes() {
 	t16MC_Truth->Scale(norm188/norm16);
 	t16MC_Truth->Draw("p same");
 */
-	t17MC->SetLineColor(kPink+2);
+	t17MC->SetLineColor(kWhite);
 	t17MC->SetMarkerColor(kPink+2);
 	t17MC->SetMarkerStyle(21);
 	t17MC->RebinX(6);
@@ -196,7 +196,7 @@ void plot_tslopes() {
 	t17MC->Scale(norm188/norm17);
 	t17MC->Draw("p same");
 
-	t18MC->SetLineColor(kMagenta);
+	t18MC->SetLineColor(kWhite);
 	t18MC->SetMarkerColor(kMagenta);
 	t18MC->SetMarkerStyle(21);
 	t18MC->RebinX(6);
@@ -204,7 +204,7 @@ void plot_tslopes() {
 	t18MC->Scale(norm188/norm18);
 	t18MC->Draw("p same");
 
-	t19MC->SetLineColor(kMagenta+2);
+	t19MC->SetLineColor(kWhite);
 	t19MC->SetMarkerColor(kMagenta+2);
 	t19MC->SetMarkerStyle(21);
 	t19MC->RebinX(6);
@@ -212,7 +212,7 @@ void plot_tslopes() {
 	t19MC->Scale(norm188/norm19);
 	t19MC->Draw("p same");
 
-	t20MC->SetLineColor(kViolet);
+	t20MC->SetLineColor(kWhite);
 	t20MC->SetMarkerColor(kViolet);
 	t20MC->SetMarkerStyle(21);
 	t20MC->RebinX(6);
@@ -220,7 +220,7 @@ void plot_tslopes() {
 	t20MC->Scale(norm188/norm20);
 	t20MC->Draw("p same");
 
-	t25MC->SetLineColor(kViolet+2);
+	t25MC->SetLineColor(kWhite);
 	t25MC->SetMarkerColor(kViolet+2);
 	t25MC->SetMarkerStyle(21);
 	t25MC->RebinX(6);
@@ -228,7 +228,7 @@ void plot_tslopes() {
 	t25MC->Scale(norm188/norm25);
 	t25MC->Draw("p same");
 
-	t30MC->SetLineColor(kBlue+2);
+	t30MC->SetLineColor(kWhite);
 	t30MC->SetMarkerColor(kBlue+2);
 	t30MC->SetMarkerStyle(21);
 	t30MC->RebinX(6);
@@ -236,7 +236,7 @@ void plot_tslopes() {
 	t30MC->Scale(norm188/norm30);
 	t30MC->Draw("p same");
 
-	t35MC->SetLineColor(kCyan);
+	t35MC->SetLineColor(kWhite);
 	t35MC->SetMarkerColor(kCyan);
 	t35MC->SetMarkerStyle(21);
 	t35MC->RebinX(6);
@@ -244,7 +244,7 @@ void plot_tslopes() {
 	t35MC->Scale(norm188/norm35);
 	t35MC->Draw("p same");
 
-	t40MC->SetLineColor(kCyan+2);
+	t40MC->SetLineColor(kWhite);
 	t40MC->SetMarkerColor(kCyan+2);
 	t40MC->SetMarkerStyle(21);
 	t40MC->RebinX(6);
