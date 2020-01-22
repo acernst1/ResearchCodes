@@ -377,7 +377,7 @@ void plot_tslopes() {
 	cctdistMC_Truth->Print("tdist_MCTruthtlopestests.png");
 
 //Thrown MC distributions
-	TCanvas *cctdistMC_Truth = new TCanvas("cctdistMC_Truth", "cctdistMC_Truth", 800, 600);
+	TCanvas *cctdistMC_Thrown = new TCanvas("cctdistMC_Thrown", "cctdistMC_Thrown", 800, 600);
 	t188->SetLineColor(kBlue);
 	t188->SetMarkerColor(kBlue);
 	t188->SetMarkerStyle(20);
