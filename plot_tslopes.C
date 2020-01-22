@@ -256,7 +256,6 @@ void plot_tslopes() {
 	t188->SetLineColor(kBlue);
 	t188->SetMarkerColor(kBlue);
 	t188->SetMarkerStyle(20);
-	t188->RebinX(6);
 	t188->SetTitle("");
 	t188->GetYaxis()->SetTitle("Combos");
 	t188->GetYaxis()->SetRangeUser(0,t188->GetMaximum()+100);
