@@ -134,7 +134,7 @@ void plot_tslopes() {
 	t188->SetMarkerColor(kBlue);
 	t188->SetMarkerStyle(20);
 	t188->RebinX(6);
-	double norm188 = t188->GetMaximum();
+	double norm188 = t188->Integral(1,100);
 	t188->SetTitle("");
 	t188->GetYaxis()->SetTitle("Combos");
 	t188->GetYaxis()->SetRangeUser(0,t188->GetMaximum()+100);
@@ -144,7 +144,7 @@ void plot_tslopes() {
 	t14MC->SetMarkerColor(kRed);
 	t14MC->SetMarkerStyle(21);
 	t14MC->RebinX(6);
-	double norm14 = t14MC->GetMaximum();
+	double norm14 = t14MC->Integral(1,100);
 	t14MC->Scale(norm188/norm14);
 	t14MC->Draw("p hist same");
 /*
@@ -159,7 +159,7 @@ void plot_tslopes() {
 	t15MC->SetMarkerColor(kRed+2);
 	t15MC->SetMarkerStyle(21);
 	t15MC->RebinX(6);
-	double norm15 = t15MC->GetMaximum();
+	double norm15 = t15MC->Integral(1,100);
 	t15MC->Scale(norm188/norm15);
 	t15MC->Draw("p hist same");
 /*	t15MC_Truth->SetLineColor(kRed+2);
@@ -173,7 +173,7 @@ void plot_tslopes() {
 	t16MC->SetMarkerColor(kPink);
 	t16MC->SetMarkerStyle(21);
 	t16MC->RebinX(6);
-	double norm16 = t16MC->GetMaximum();
+	double norm16 = t16MC->Integral(1,100);
 	t16MC->Scale(norm188/norm16);
 	t16MC->Draw("p hist same");
 /*	t16MC_Truth->SetLineColor(kPink);
@@ -187,7 +187,7 @@ void plot_tslopes() {
 	t17MC->SetMarkerColor(kPink+2);
 	t17MC->SetMarkerStyle(21);
 	t17MC->RebinX(6);
-	double norm17 = t17MC->GetMaximum();
+	double norm17 = t17MC->Integral(1,100);
 	t17MC->Scale(norm188/norm17);
 	t17MC->Draw("p hist same");
 
@@ -195,7 +195,7 @@ void plot_tslopes() {
 	t18MC->SetMarkerColor(kMagenta);
 	t18MC->SetMarkerStyle(21);
 	t18MC->RebinX(6);
-	double norm18 = t18MC->GetMaximum();
+	double norm18 = t18MC->Integral(1,100);
 	t18MC->Scale(norm188/norm18);
 	t18MC->Draw("p hist same");
 
@@ -203,7 +203,7 @@ void plot_tslopes() {
 	t19MC->SetMarkerColor(kMagenta+2);
 	t19MC->SetMarkerStyle(21);
 	t19MC->RebinX(6);
-	double norm19 = t19MC->GetMaximum();
+	double norm19 = t19MC->Integral(1,100);
 	t19MC->Scale(norm188/norm19);
 	t19MC->Draw("p hist same");
 
@@ -211,7 +211,7 @@ void plot_tslopes() {
 	t20MC->SetMarkerColor(kViolet);
 	t20MC->SetMarkerStyle(21);
 	t20MC->RebinX(6);
-	double norm20 = t20MC->GetMaximum();
+	double norm20 = t20MC->Integral(1,100);
 	t20MC->Scale(norm188/norm20);
 	t20MC->Draw("p hist same");
 
@@ -219,7 +219,7 @@ void plot_tslopes() {
 	t25MC->SetMarkerColor(kViolet+2);
 	t25MC->SetMarkerStyle(21);
 	t25MC->RebinX(6);
-	double norm25 = t25MC->GetMaximum();
+	double norm25 = t25MC->Integral(1,100);
 	t25MC->Scale(norm188/norm25);
 	t25MC->Draw("p hist same");
 
@@ -227,7 +227,7 @@ void plot_tslopes() {
 	t30MC->SetMarkerColor(kBlue+2);
 	t30MC->SetMarkerStyle(21);
 	t30MC->RebinX(6);
-	double norm30 = t30MC->GetMaximum();
+	double norm30 = t30MC->Integral(1,100);
 	t30MC->Scale(norm188/norm30);
 	t30MC->Draw("p hist same");
 
@@ -235,7 +235,7 @@ void plot_tslopes() {
 	t35MC->SetMarkerColor(kCyan);
 	t35MC->SetMarkerStyle(21);
 	t35MC->RebinX(6);
-	double norm35 = t35MC->GetMaximum();
+	double norm35 = t35MC->Integral(1,100);
 	t35MC->Scale(norm188/norm35);
 	t35MC->Draw("p hist same");
 
@@ -243,7 +243,7 @@ void plot_tslopes() {
 	t40MC->SetMarkerColor(kCyan+2);
 	t40MC->SetMarkerStyle(21);
 	t40MC->RebinX(6);
-	double norm40 = t40MC->GetMaximum();
+	double norm40 = t40MC->Integral(1,100);
 	t40MC->Scale(norm188/norm40);
 	t40MC->Draw("p hist same");
 
