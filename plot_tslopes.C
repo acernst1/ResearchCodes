@@ -142,7 +142,7 @@ void plot_tslopes() {
 	double norm188 = t188->GetMaximum();
 	t188->SetTitle("");
 	t188->GetYaxis()->SetTitle("Combos");
-	t188->GetYaxis()->SetRangeUser(0,t188->GetMaximum()+100))
+	t188->GetYaxis()->SetRangeUser(0,t188->GetMaximum()+100);
 	t188->Draw();
 
 	t14MC->SetLineColor(kRed);
