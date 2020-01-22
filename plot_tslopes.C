@@ -92,6 +92,30 @@ void plot_tslopes() {
  	TH2F * XiMassKinFit_Egamma_t40MC_Truth = (TH2F*)filetslope40->Get("Xi_t_Truth");
 	TH1F * t40MC_Truth = (TH1F *)XiMassKinFit_Egamma_t40MC_Truth->ProjectionY("t40MC_Truth",XiMassKinFit_Egamma_t40MC_Truth->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t40MC_Truth->GetXaxis()->FindBin(1.34));
 
+//MC Thrown tslope tests for 2018-08
+ 	TH2F * Egamma_t14MC_Thrown = (TH2F*)throwntslope14->Get("Egamma_t");
+	TH1F * t14MC_Thrown = (TH1F *)Egamma_t14MC_Thrown->ProjectionY("t14MC_Thrown",Egamma_t14MC_Thrown->GetXaxis()->FindBin(6.3),Egamma_t14MC_Thrown->GetXaxis()->FindBin(11.9));
+ 	TH2F * Egamma_t15MC_Thrown = (TH2F*)throwntslope15->Get("Egamma_t");
+	TH1F * t15MC_Thrown = (TH1F *)Egamma_t15MC_Thrown->ProjectionY("t15MC_Thrown",Egamma_t15MC_Thrown->GetXaxis()->FindBin(6.3),Egamma_t15MC_Thrown->GetXaxis()->FindBin(11.9));
+ 	TH2F * Egamma_t16MC_Thrown = (TH2F*)throwntslope16->Get("Egamma_t");
+	TH1F * t16MC_Thrown = (TH1F *)Egamma_t16MC_Thrown->ProjectionY("t16MC_Thrown",Egamma_t16MC_Thrown->GetXaxis()->FindBin(6.3),Egamma_t16MC_Thrown->GetXaxis()->FindBin(11.9));
+ 	TH2F * Egamma_t17MC_Thrown = (TH2F*)throwntslope17->Get("Egamma_t");
+	TH1F * t17MC_Thrown = (TH1F *)Egamma_t17MC_Thrown->ProjectionY("t17MC_Thrown",Egamma_t17MC_Thrown->GetXaxis()->FindBin(6.3),Egamma_t17MC_Thrown->GetXaxis()->FindBin(11.9));
+ 	TH2F * Egamma_t18MC_Thrown = (TH2F*)throwntslope18->Get("Egamma_t");
+	TH1F * t18MC_Thrown = (TH1F *)Egamma_t18MC_Thrown->ProjectionY("t18MC_Thrown",Egamma_t18MC_Thrown->GetXaxis()->FindBin(6.3),Egamma_t18MC_Thrown->GetXaxis()->FindBin(11.9));
+ 	TH2F * Egamma_t19MC_Thrown = (TH2F*)throwntslope19->Get("Egamma_t");
+	TH1F * t19MC_Thrown = (TH1F *)Egamma_t19MC_Thrown->ProjectionY("t19MC_Thrown",Egamma_t19MC_Thrown->GetXaxis()->FindBin(6.3),Egamma_t19MC_Thrown->GetXaxis()->FindBin(11.9));
+ 	TH2F * Egamma_t20MC_Thrown = (TH2F*)throwntslope20->Get("Egamma_t");
+	TH1F * t20MC_Thrown = (TH1F *)Egamma_t20MC_Thrown->ProjectionY("t20MC_Thrown",Egamma_t20MC_Thrown->GetXaxis()->FindBin(6.3),Egamma_t20MC_Thrown->GetXaxis()->FindBin(11.9));
+ 	TH2F * Egamma_t25MC_Thrown = (TH2F*)throwntslope25->Get("Egamma_t");
+	TH1F * t25MC_Thrown = (TH1F *)Egamma_t25MC_Thrown->ProjectionY("t25MC_Thrown",Egamma_t25MC_Thrown->GetXaxis()->FindBin(6.3),Egamma_t25MC_Thrown->GetXaxis()->FindBin(11.9));
+ 	TH2F * Egamma_t30MC_Thrown = (TH2F*)throwntslope30->Get("Egamma_t");
+	TH1F * t30MC_Thrown = (TH1F *)Egamma_t30MC_Thrown->ProjectionY("t30MC_Thrown",Egamma_t30MC_Thrown->GetXaxis()->FindBin(6.3),Egamma_t30MC_Thrown->GetXaxis()->FindBin(11.9));
+ 	TH2F * Egamma_t35MC_Thrown = (TH2F*)throwntslope35->Get("Egamma_t");
+	TH1F * t35MC_Thrown = (TH1F *)Egamma_t35MC_Thrown->ProjectionY("t35MC_Thrown",Egamma_t35MC_Thrown->GetXaxis()->FindBin(6.3),Egamma_t35MC_Thrown->GetXaxis()->FindBin(11.9));
+ 	TH2F * Egamma_t40MC_Thrown = (TH2F*)throwntslope40->Get("Egamma_t");
+	TH1F * t40MC_Thrown = (TH1F *)Egamma_t40MC_Thrown->ProjectionY("t40MC_Thrown",Egamma_t40MC_Thrown->GetXaxis()->FindBin(6.3),Egamma_t40MC_Thrown->GetXaxis()->FindBin(11.9));
+
 //legends
 	auto legend_datasets = new TLegend(0.70,0.8,0.98,0.93);
 	legend_datasets->AddEntry(t171,"2017-01_ANAver20 data","lep");
@@ -251,7 +275,7 @@ void plot_tslopes() {
 	legend_MCtests->Draw();
 	cctdistMC->Print("tdist_MCtlopestests.png");
 
-//Thrown MC distributions
+//Truth MC distributions
 	TCanvas *cctdistMC_Truth = new TCanvas("cctdistMC_Truth", "cctdistMC_Truth", 800, 600);
 	t188->SetLineColor(kBlue);
 	t188->SetMarkerColor(kBlue);
@@ -351,6 +375,107 @@ void plot_tslopes() {
 
 	legend_MCtests->Draw();
 	cctdistMC_Truth->Print("tdist_MCTruthtlopestests.png");
+
+//Thrown MC distributions
+	TCanvas *cctdistMC_Truth = new TCanvas("cctdistMC_Truth", "cctdistMC_Truth", 800, 600);
+	t188->SetLineColor(kBlue);
+	t188->SetMarkerColor(kBlue);
+	t188->SetMarkerStyle(20);
+	t188->SetTitle("");
+	t188->GetYaxis()->SetTitle("Combos");
+	t188->GetYaxis()->SetRangeUser(0,t188->GetMaximum()+100);
+	t188->Draw("p");
+
+	t14MC_Thrown->SetLineColor(kRed);
+	t14MC_Thrown->SetMarkerColor(kRed);
+	t14MC_Thrown->SetMarkerStyle(21);
+	t14MC_Thrown->RebinX(6);
+	double norm14_Thrown = t14MC_Thrown->Integral(1,100);
+	t14MC_Thrown->Scale(norm188/norm14_Thrown);
+	t14MC_Thrown->Draw("p hist same");
+	
+	t15MC_Thrown->SetLineColor(kRed+2);
+	t15MC_Thrown->SetMarkerColor(kRed+2);
+	t15MC_Thrown->SetMarkerStyle(21);
+	t15MC_Thrown->RebinX(6);
+	double norm15_Thrown = t15MC_Thrown->Integral(1,100);
+	t15MC_Thrown->Scale(norm188/norm15_Thrown);
+	t15MC_Thrown->Draw("p hist same");
+
+	t16MC_Thrown->SetLineColor(kPink);
+	t16MC_Thrown->SetMarkerColor(kPink);
+	t16MC_Thrown->SetMarkerStyle(21);
+	t16MC_Thrown->RebinX(6);
+	double norm16_Thrown = t16MC_Thrown->Integral(1,100);
+	t16MC_Thrown->Scale(norm188/norm16_Thrown);
+	t16MC_Thrown->Draw("p hist same");
+
+	t17MC_Thrown->SetLineColor(kPink+2);
+	t17MC_Thrown->SetMarkerColor(kPink+2);
+	t17MC_Thrown->SetMarkerStyle(21);
+	t17MC_Thrown->RebinX(6);
+	double norm17_Thrown = t17MC_Thrown->Integral(1,100);
+	t17MC_Thrown->Scale(norm188/norm17_Thrown);
+	t17MC_Thrown->Draw("p hist same");
+
+	t18MC_Thrown->SetLineColor(kMagenta);
+	t18MC_Thrown->SetMarkerColor(kMagenta);
+	t18MC_Thrown->SetMarkerStyle(21);
+	t18MC_Thrown->RebinX(6);
+	double norm18_Thrown = t18MC_Thrown->Integral(1,100);
+	t18MC_Thrown->Scale(norm188/norm18_Thrown);
+	t18MC_Thrown->Draw("p hist same");
+
+	t19MC_Thrown->SetLineColor(kMagenta+2);
+	t19MC_Thrown->SetMarkerColor(kMagenta+2);
+	t19MC_Thrown->SetMarkerStyle(21);
+	t19MC_Thrown->RebinX(6);
+	double norm19_Thrown = t19MC_Thrown->Integral(1,100);
+	t19MC_Thrown->Scale(norm188/norm19_Thrown);
+	t19MC_Thrown->Draw("p hist same");
+
+	t20MC_Thrown->SetLineColor(kViolet);
+	t20MC_Thrown->SetMarkerColor(kViolet);
+	t20MC_Thrown->SetMarkerStyle(21);
+	t20MC_Thrown->RebinX(6);
+	double norm20_Thrown = t20MC_Thrown->Integral(1,100);
+	t20MC_Thrown->Scale(norm188/norm20_Thrown);
+	t20MC_Thrown->Draw("p hist same");
+
+	t25MC_Thrown->SetLineColor(kViolet+2);
+	t25MC_Thrown->SetMarkerColor(kViolet+2);
+	t25MC_Thrown->SetMarkerStyle(21);
+	t25MC_Thrown->RebinX(6);
+	double norm25_Thrown = t25MC_Thrown->Integral(1,100);
+	t25MC_Thrown->Scale(norm188/norm25_Thrown);
+	t25MC_Thrown->Draw("p hist same");
+
+	t30MC_Thrown->SetLineColor(kBlue+2);
+	t30MC_Thrown->SetMarkerColor(kBlue+2);
+	t30MC_Thrown->SetMarkerStyle(21);
+	t30MC_Thrown->RebinX(6);
+	double norm30_Thrown = t30MC_Thrown->Integral(1,100);
+	t30MC_Thrown->Scale(norm188/norm30_Thrown);
+	t30MC_Thrown->Draw("p hist same");
+
+	t35MC_Thrown->SetLineColor(kCyan);
+	t35MC_Thrown->SetMarkerColor(kCyan);
+	t35MC_Thrown->SetMarkerStyle(21);
+	t35MC_Thrown->RebinX(6);
+	double norm35_Thrown = t35MC_Thrown->Integral(1,100);
+	t35MC_Thrown->Scale(norm188/norm35_Thrown);
+	t35MC_Thrown->Draw("p hist same");
+
+	t40MC_Thrown->SetLineColor(kCyan+2);
+	t40MC_Thrown->SetMarkerColor(kCyan+2);
+	t40MC_Thrown->SetMarkerStyle(21);
+	t40MC_Thrown->RebinX(6);
+	double norm40_Thrown = t40MC_Thrown->Integral(1,100);
+	t40MC_Thrown->Scale(norm188/norm40_Thrown);
+	t40MC_Thrown->Draw("p hist same");
+
+	legend_MCtests->Draw();
+	cctdistMC_Thrown->Print("tdist_MCThrowntlopestests.png");
 
 
 }
