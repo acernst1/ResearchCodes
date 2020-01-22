@@ -129,6 +129,7 @@ void plot_tslopes() {
 	legend_datasets->Draw();
 	cctdistdata->Print("tdist_datasets.png");
 
+//Reconstructed MC distributions
 	TCanvas *cctdistMC = new TCanvas("cctdistMC", "cctdistMC", 800, 600);
 	t188->SetLineColor(kBlue);
 	t188->SetMarkerColor(kBlue);
@@ -249,6 +250,108 @@ void plot_tslopes() {
 
 	legend_MCtests->Draw();
 	cctdistMC->Print("tdist_MCtlopestests.png");
+
+//Thrown MC distributions
+	TCanvas *cctdistMC_Truth = new TCanvas("cctdistMC_Truth", "cctdistMC_Truth", 800, 600);
+	t188->SetLineColor(kBlue);
+	t188->SetMarkerColor(kBlue);
+	t188->SetMarkerStyle(20);
+	t188->RebinX(6);
+	t188->SetTitle("");
+	t188->GetYaxis()->SetTitle("Combos");
+	t188->GetYaxis()->SetRangeUser(0,t188->GetMaximum()+100);
+	t188->Draw("p");
+
+	t14MC_Truth->SetLineColor(kRed);
+	t14MC_Truth->SetMarkerColor(kRed);
+	t14MC_Truth->SetMarkerStyle(21);
+	t14MC_Truth->RebinX(6);
+	double norm14_Truth = t14MC_Truth->Integral(1,100);
+	t14MC_Truth->Scale(norm188/norm14_Truth);
+	t14MC_Truth->Draw("p hist same");
+	
+	t15MC_Truth->SetLineColor(kRed+2);
+	t15MC_Truth->SetMarkerColor(kRed+2);
+	t15MC_Truth->SetMarkerStyle(21);
+	t15MC_Truth->RebinX(6);
+	double norm15_Truth = t15MC_Truth->Integral(1,100);
+	t15MC_Truth->Scale(norm188/norm15_Truth);
+	t15MC_Truth->Draw("p hist same");
+
+	t16MC_Truth->SetLineColor(kPink);
+	t16MC_Truth->SetMarkerColor(kPink);
+	t16MC_Truth->SetMarkerStyle(21);
+	t16MC_Truth->RebinX(6);
+	double norm16_Truth = t16MC_Truth->Integral(1,100);
+	t16MC_Truth->Scale(norm188/norm16_Truth);
+	t16MC_Truth->Draw("p hist same");
+
+	t17MC_Truth->SetLineColor(kPink+2);
+	t17MC_Truth->SetMarkerColor(kPink+2);
+	t17MC_Truth->SetMarkerStyle(21);
+	t17MC_Truth->RebinX(6);
+	double norm17_Truth = t17MC_Truth->Integral(1,100);
+	t17MC_Truth->Scale(norm188/norm17_Truth);
+	t17MC_Truth->Draw("p hist same");
+
+	t18MC_Truth->SetLineColor(kMagenta);
+	t18MC_Truth->SetMarkerColor(kMagenta);
+	t18MC_Truth->SetMarkerStyle(21);
+	t18MC_Truth->RebinX(6);
+	double norm18_Truth = t18MC_Truth->Integral(1,100);
+	t18MC_Truth->Scale(norm188/norm18_Truth);
+	t18MC_Truth->Draw("p hist same");
+
+	t19MC_Truth->SetLineColor(kMagenta+2);
+	t19MC_Truth->SetMarkerColor(kMagenta+2);
+	t19MC_Truth->SetMarkerStyle(21);
+	t19MC_Truth->RebinX(6);
+	double norm19_Truth = t19MC_Truth->Integral(1,100);
+	t19MC_Truth->Scale(norm188/norm19_Truth);
+	t19MC_Truth->Draw("p hist same");
+
+	t20MC_Truth->SetLineColor(kViolet);
+	t20MC_Truth->SetMarkerColor(kViolet);
+	t20MC_Truth->SetMarkerStyle(21);
+	t20MC_Truth->RebinX(6);
+	double norm20_Truth = t20MC_Truth->Integral(1,100);
+	t20MC_Truth->Scale(norm188/norm20_Truth);
+	t20MC_Truth->Draw("p hist same");
+
+	t25MC_Truth->SetLineColor(kViolet+2);
+	t25MC_Truth->SetMarkerColor(kViolet+2);
+	t25MC_Truth->SetMarkerStyle(21);
+	t25MC_Truth->RebinX(6);
+	double norm25_Truth = t25MC_Truth->Integral(1,100);
+	t25MC_Truth->Scale(norm188/norm25_Truth);
+	t25MC_Truth->Draw("p hist same");
+
+	t30MC_Truth->SetLineColor(kBlue+2);
+	t30MC_Truth->SetMarkerColor(kBlue+2);
+	t30MC_Truth->SetMarkerStyle(21);
+	t30MC_Truth->RebinX(6);
+	double norm30_Truth = t30MC_Truth->Integral(1,100);
+	t30MC_Truth->Scale(norm188/norm30_Truth);
+	t30MC_Truth->Draw("p hist same");
+
+	t35MC_Truth->SetLineColor(kCyan);
+	t35MC_Truth->SetMarkerColor(kCyan);
+	t35MC_Truth->SetMarkerStyle(21);
+	t35MC_Truth->RebinX(6);
+	double norm35_Truth = t35MC_Truth->Integral(1,100);
+	t35MC_Truth->Scale(norm188/norm35_Truth);
+	t35MC_Truth->Draw("p hist same");
+
+	t40MC_Truth->SetLineColor(kCyan+2);
+	t40MC_Truth->SetMarkerColor(kCyan+2);
+	t40MC_Truth->SetMarkerStyle(21);
+	t40MC_Truth->RebinX(6);
+	double norm40_Truth = t40MC_Truth->Integral(1,100);
+	t40MC_Truth->Scale(norm188/norm40_Truth);
+	t40MC_Truth->Draw("p hist same");
+
+	legend_MCtests->Draw();
+	cctdistMC_Truth->Print("tdist_MCTruthtlopestests.png");
 
 
 }
