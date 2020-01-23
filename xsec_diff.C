@@ -61,6 +61,10 @@ char mcmasshist[100];
 char mcmassmacro[100];
 char mcwidthhist[100];
 char mcwidthmacro[100];
+char thrownyieldshist[100];
+char ethrownyieldshist[100];
+char thrownyieldsmacro[100];
+char ethrownyieldsmacro[100];
 char effhist[100];
 char effmacro[100];
 char diffxsechist[100];
@@ -188,24 +192,24 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     TCanvas * diffxsec_canvas = new TCanvas("diffxsec_canvas", "diffxsec_canvas",1200,900);
     TCanvas * ethrown_canvas = new TCanvas("ethrown_canvas", "ethrown_canvas",800,600);
     TCanvas * ethrownyields_canvas = new TCanvas("ethrownyields_canvas", "ethrownyields_canvas",800,600);
-    TH1F * ThrownYields_Ebin = new TH1F("ThrownYields_Ebin", ";E_{#gamma}; Thrown Yields (Events)",numEBins,minEval,maxEval);
+    ThrownYields_Ebin = new TH1F("ThrownYields_Ebin", ";E_{#gamma}; Thrown Yields (Events)",numEBins,minEval,maxEval);
     TCanvas * esigyields_canvas = new TCanvas("esigyields_canvas", "esigyields_canvas",800,600);
-    TH1F * SignalYields_Ebin = new TH1F("SignalYields_Ebin", ";E_{#gamma}; Signal Yields (Events)",numEBins,minEval,maxEval);
+    SignalYields_Ebin = new TH1F("SignalYields_Ebin", ";E_{#gamma}; Signal Yields (Events)",numEBins,minEval,maxEval);
     TCanvas * esigmass_canvas = new TCanvas("esigmass_canvas", "esigmass_canvas",800,600);
-    TH1F * SignalMass_Ebin = new TH1F("SignalMass_Ebin", ";E_{#gamma}; Signal Mass (GeV)",numEBins,minEval,maxEval);
+    SignalMass_Ebin = new TH1F("SignalMass_Ebin", ";E_{#gamma}; Signal Mass (GeV)",numEBins,minEval,maxEval);
     TCanvas * esigwidth_canvas = new TCanvas("esigwidth_canvas", "esigwidth_canvas",800,600);
-    TH1F * SignalWidth_Ebin = new TH1F("SignalWidth_Ebin", ";E_{#gamma}; Signal Width (GeV)",numEBins,minEval,maxEval);
+    SignalWidth_Ebin = new TH1F("SignalWidth_Ebin", ";E_{#gamma}; Signal Width (GeV)",numEBins,minEval,maxEval);
     TCanvas * emcyields_canvas = new TCanvas("emcyields_canvas", "emcyields_canvas",800,600);
-    TH1F * MCYields_Ebin = new TH1F("MCYields_Ebin", ";E_{#gamma}; MC Yields (Events)",numEBins,minEval,maxEval);
+    MCYields_Ebin = new TH1F("MCYields_Ebin", ";E_{#gamma}; MC Yields (Events)",numEBins,minEval,maxEval);
     TCanvas * emcmass_canvas = new TCanvas("emcmass_canvas", "emcmass_canvas",800,600);
-    TH1F * MCMass_Ebin = new TH1F("MCMass_Ebin", ";E_{#gamma}; MC Mass (GeV)",numEBins,minEval,maxEval);
+    MCMass_Ebin = new TH1F("MCMass_Ebin", ";E_{#gamma}; MC Mass (GeV)",numEBins,minEval,maxEval);
     TCanvas * emcwidth_canvas = new TCanvas("emcwidth_canvas", "emcwidth_canvas",800,600);
-    TH1F * MCWidth_Ebin = new TH1F("MCWidth_Ebin", ";E_{#gamma}; MC Width (GeV)",numEBins,minEval,maxEval);
+    MCWidth_Ebin = new TH1F("MCWidth_Ebin", ";E_{#gamma}; MC Width (GeV)",numEBins,minEval,maxEval);
     TCanvas * ebineff_canvas = new TCanvas("ebineff_canvas", "ebineff_canvas",800,600);
-    TH1F * Eff_Ebin = new TH1F("Eff_Ebin", ";E_{#gamma}; Efficiency (%)",numEBins,minEval,maxEval);
+    Eff_Ebin = new TH1F("Eff_Ebin", ";E_{#gamma}; Efficiency (%)",numEBins,minEval,maxEval);
     TCanvas * esigfit_canvas = new TCanvas("esigfit_canvas", "esigfit_canvas",800,600);
     TCanvas * xsec_canvas = new TCanvas("xsec_canvas", "xsec_canvas",800,600);
-    TH1F * XSec_Ebin = new TH1F("XSec_Ebin", "Cross Section;E_{#gamma}; #sigma_{total} (nb)",numEBins,minEval,maxEval);
+    XSec_Ebin = new TH1F("XSec_Ebin", "Cross Section;E_{#gamma}; #sigma_{total} (nb)",numEBins,minEval,maxEval);
     
 //Output file names independent of energy bin and t bin
     sprintf(fluxmacro,"Xsec_flux_numbers_%s_%03d_%02dbins.C",version,binning,numEBins);
@@ -531,13 +535,13 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	Xsec_Xi_mc_canvas->Print(xsec_mcplot);
 
    // Save MC information to histograms binned in beam energy
-   	emcsigyields_canvas->cd();	
+   	emcyields_canvas->cd();	
     	MCYields_Ebin->SetBinContent(iE+1,xsec_mc_sig_events);
     	MCYields_Ebin->SetBinError(iE+1,xsec_mc_sig_events_err);
-    	emcsigmass_canvas->cd();
+    	emcmass_canvas->cd();
     	MCMass_Ebin->SetBinContent(iE+1,xsec_mc_mass); 
     	MCMass_Ebin->SetBinError(iE+1,xsec_mc_mass_err);
-    	emcsigwidth_canvas->cd();
+    	emcwidth_canvas->cd();
     	MCWidth_Ebin->SetBinContent(iE+1,xsec_mc_width);
     	MCWidth_Ebin->SetBinError(iE+1,xsec_mc_width_err);
 
@@ -716,11 +720,11 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	xsec_eff_val[iE+1] = xsec_mc_val[iE+1]/xsec_thrown_val[iE+1];
 	xsec_eff_err[iE+1] = xsec_eff_val[iE+1] * sqrt(pow(xsec_mc_err[iE+1]/xsec_mc_val[iE+1],2)+pow(xsec_thrown_err[iE+1]/xsec_thrown_val[iE+1],2));
 	cout << "~~~~~~~Effxsec~" << iE << "~" << xsec_eff_val[iE+1] << " " << xsec_eff_err[iE+1] << endl;
-	Eff_Ebin->SetBinContent(iE+1,xsec_eff_val[iE+1];
+	Eff_Ebin->SetBinContent(iE+1,xsec_eff_val[iE+1]);
 	Eff_Ebin->SetBinError(iE+1,xsec_eff_err[iE+1]);
-	xsec_val[iE+1] = (xsec_sig_val[iE+1]/(constant * flux_val[iE+1] * xsec_mc_val[iE+1]/xsec_thrown_val[iE+1]);
+	xsec_val[iE+1] = (xsec_sig_val[iE+1])/(constant * flux_val[iE+1] * xsec_mc_val[iE+1]/xsec_thrown_val[iE+1]);
 	cout << "~~~~~~~Xsec~" << iE << "~" << xsec_val[iE+1] << " " << xsec_err[iE+1] << endl;
-	XSec_Ebin->SetBinContent(iE+1,xsec_val[iE+1];
+	XSec_Ebin->SetBinContent(iE+1,xsec_val[iE+1]);
 	XSec_Ebin->SetBinError(iE+1,xsec_err[iE+1]);
 
     //Draw and save histograms that depend on energy bin
