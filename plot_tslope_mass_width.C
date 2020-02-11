@@ -6,15 +6,61 @@
 
 char filename[500];
 char thrownfilename[500];
+char MClegendentry[100];
 
 void plot_tslope_mass_width(){
 int trials[][3] = {{0,18,6},{0,18,8},{0,18,10},{0,20,2},{0,20,4},{0,20,6},{0,20,8},{0,20,10},{0,22,2},{0,22,4},{0,22,6},{0,22,8},{0,22,10},{0,24,2},{0,24,4},{0,24,6},{0,24,8},{0,24,10},{0,26,2},{0,26,4},{0,26,6},{0,26,8},{0,26,10},{0,28,2},{0,28,4},{0,28,6},{0,28,8},{0,28,10},{7,18,2},{7,18,4},{7,18,6},{7,18,8},{7,18,10},{7,20,2},{7,20,4},{7,20,6},{7,20,8},{7,20,10},{7,22,2},{7,22,4},{7,22,6},{7,22,8},{7,22,10},{7,24,2},{7,24,4},{7,24,6},{7,24,8},{7,24,10},{7,26,2},{7,26,4},{7,26,6},{7,26,8},{7,26,10},{7,28,2},{7,28,4},{7,28,6},{7,28,8},{7,28,10},{14,18,2},{14,18,4},{14,18,6},{14,18,8},{14,18,10},{14,20,2},{14,20,4},{14,20,6},{14,20,8},{14,20,10},{14,22,2},{14,22,4},{14,22,6},{14,22,8},{14,22,10},{21,18,2},{35,28,8},{35,28,10}};
+TFile * data201701 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2017-01_ANAver20_347runs_jan02.root");
+TFile * data201801 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2018-01_ANAver03_543runs_jan02.root");
+TFile * data201808 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2018-08_ANAver02_449runs_jan02.root");
 
+//2017-01 data
+	TH2F * XiMassKinFit_Egamma_t171 = (TH2F*)data201701->Get("Xi_t");
+	TH2F * XiMassKinFit_Egamma_t171_acc = (TH2F*)data201701->Get("Xi_t_acc");
+	TH2F * XiMassKinFit_Egamma_t171_accsub = (TH2F *) XiMassKinFit_Egamma_t171->Clone("XiMassKinFit_Egamma_t171_accsub");
+	XiMassKinFit_Egamma_t171_accsub->Add(XiMassKinFit_Egamma_t171_acc,-0.5);
+	TH1F * t171 = (TH1F *)XiMassKinFit_Egamma_t171_accsub->ProjectionY("t171",XiMassKinFit_Egamma_t171_accsub->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t171_accsub->GetXaxis()->FindBin(1.34));
+//2018-01 data
+	TH2F * XiMassKinFit_Egamma_t181 = (TH2F*)data201801->Get("Xi_t");
+	TH2F * XiMassKinFit_Egamma_t181_acc = (TH2F*)data201801->Get("Xi_t_acc");
+	TH2F * XiMassKinFit_Egamma_t181_accsub = (TH2F *) XiMassKinFit_Egamma_t181->Clone("XiMassKinFit_Egamma_t181_accsub");
+	XiMassKinFit_Egamma_t181_accsub->Add(XiMassKinFit_Egamma_t181_acc,-0.5);
+	TH1F * t181 = (TH1F *)XiMassKinFit_Egamma_t181_accsub->ProjectionY("t181",XiMassKinFit_Egamma_t181_accsub->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t181_accsub->GetXaxis()->FindBin(1.34));
+//2018-08 data
+	TH2F * XiMassKinFit_Egamma_t188 = (TH2F*)data201808->Get("Xi_t");
+	TH2F * XiMassKinFit_Egamma_t188_acc = (TH2F*)data201808->Get("Xi_t_acc");
+	TH2F * XiMassKinFit_Egamma_t188_accsub = (TH2F *) XiMassKinFit_Egamma_t188->Clone("XiMassKinFit_Egamma_t188_accsub");
+	XiMassKinFit_Egamma_t188_accsub->Add(XiMassKinFit_Egamma_t188_acc,-0.5);
+	TH1F * t188 = (TH1F *)XiMassKinFit_Egamma_t188_accsub->ProjectionY("t188",XiMassKinFit_Egamma_t188_accsub->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t188_accsub->GetXaxis()->FindBin(1.34));
+//legends
+	auto legend_datasets = new TLegend(0.70,0.8,0.98,0.93);
+	legend_datasets->AddEntry(t171,"2017-01_ANAver20 data","lep");
+	legend_datasets->AddEntry(t181,"2018-01_ANAver03 data","lep");
+	legend_datasets->AddEntry(t188,"2018-08_ANAver02 data","lep");
+	auto legend_MCtests = new TLegend(0.50,0.6,0.98,0.98);
+	legend_MCtests->SetNColumns(2);
 
 for( int i=0; i< sizeof(trials)/sizeof(trials[0]);i++){
+	//Opening MC files
 	sprintf(filename, "/cache/halld/home/acernst/MC/2018-08_ANAver02/tslope_tests/temp/kpkpxim__B4_M23_genr8_kpkpxim_2018-08_ANAver02_tslope%02d_mass%02d_width%02d.root",trials[i][0],trials[i][1],trials[i][2]);	
 	sprintf(thrownfilename, "/cache/halld/home/acernst/MC/2018-08_ANAver02/tslope_tests/temp/thrown_kpkpxim__B4_M23_genr8_kpkpxim_2018-08_ANAver02_tslope%02d_mass%02d_width%02d.root",trials[i][0],trials[i][1],trials[i][2]);	
 	TFile * MCfile = TFile::Open(filename);
 	TFile * Thrownfile = TFile::Open(thrownfilename);
+	//reconstructed MC tests for 2018-08
+	TH2F * XiMassKinFit_Egamma = (TH2F*)MCfile->Get("Xi_t");
+	TH1F * tMC = (TH1F *)XiMassKinFit_Egamma->ProjectionY("tMC",XiMassKinFit_Egamma->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma->GetXaxis()->FindBin(1.34));
+	//MC Truth tslope tests for 2018-08
+ 	TH2F * XiMassKinFit_Egamma_Truth = (TH2F*)MCfile->Get("Xi_t_Truth");
+	TH1F * tMC_Truth = (TH1F *)XiMassKinFit_Egamma_Truth->ProjectionY("tMC_Truth",XiMassKinFit_Egamma_Truth->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_Truth->GetXaxis()->FindBin(1.34));
+	//MC Thrown tslope tests for 2018-08
+ 	TH2F * Egamma_tMC_Thrown = (TH2F*)Thrownfile->Get("Egamma_t");
+	TH1F * tMC_Thrown = (TH1F *)Egamma_tMC_Thrown->ProjectionY("tMC_Thrown",Egamma_tMC_Thrown->GetXaxis()->FindBin(6.3),Egamma_tMC_Thrown->GetXaxis()->FindBin(11.9));
+ 	//Add legend entry
+	double tslope = trials[i][0]/10.;
+	double Ymass = trials[i][1]/10.; 
+	double Ywidth = trials[i][2]/10.;
+	sprintf(MClegendentry,"MC t=%0.1f, Y=%0.1f+/-%0.1f",tslope,Ymass,Ywidth);
+	legend_MCtests->AddEntry(tMC,MClegendentry,"p");
+
 	}
 }
