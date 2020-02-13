@@ -8,12 +8,17 @@ char filename[500];
 char thrownfilename[500];
 char MClegendentry[100];
 char tMCname[100];
+char Trial_Title[100];
 double normMC;
+int color_mass;
+int color_tslope;
+int color_width;
+double canvas_margins = 1e-50;
 
 void plot_tslope_mass_width(){
 TH1F * tMC[200];
-int trials[][3] = {{0,18,6}, {0,18,8}, {0,18,10}, {0,20,2}, {0,20,4}, {0,20,6}, {0,20,8}, {0,20,10}, {0,22,2}, {0,22,4}, {0,22,6}, {0,22,8}, {0,22,10}, {0,24,2}, {0,24,4}, {0,24,6}, {0,24,8}, {0,24,10}, {0,26,2}, {0,26,4}, {0,26,6}, {0,26,8}, {0,26,10}, {0,28,2}, {0,28,4}, {0,28,6}, {0,28,8}, {0,28,10}, {7,18,2}, {7,18,4}, {7,18,6}, {7,18,8}, {7,18,10}, {7,20,2}, {7,20,4}, {7,20,6}, {7,20,8}, {7,20,10}, {7,22,2}, {7,22,4}, {7,22,6}, {7,22,8}, {7,22,10}, {7,24,2}, {7,24,4}, {7,24,6}, {7,24,8}, {7,24,10}, {7,26,2}, {7,26,4}, {7,26,6}, {7,26,8}, {7,26,10}, {7,28,2}, {7,28,4}, {7,28,6}, {7,28,8}, {7,28,10}, {14,18,2}, {14,18,4}, {14,18,6}, {14,18,8}, {14,18,10}, {14,20,2}, {14,20,4}, {14,20,6}, {14,20,8}, {14,20,10}, {14,22,2}, {14,22,4}, {14,22,6}, {14,22,8}, {14,22,10}, {14,24,2}, {14,24,4}, {14,24,6}, {14,24,8}, {14,24,10}, {14,26,2}, {14,26,4}, {14,26,6}, {14,26,8}, {14,26,10}, {14,28,2}, {14,28,4}, {14,28,6}, {21,18,2}, {35,28,8}, {35,28,10}};
-int colors[] =  {kRed-10, kRed-9, kRed-8, kRed-7, kRed-6, kRed-5,  kRed-4, kRed-3, kRed-2, kRed-1, kRed, kRed+1, kRed+2, kRed+3, kRed+4, kPink-9, kPink-8, kPink-7, kPink-6, kPink-5, kPink-4, kPink-3, kPink-2, kPink-1, kPink, kPink+1, kPink+2, kPink+3,kAzure-9, kAzure-8, kAzure-7, kAzure-6, kAzure-5, kAzure-4, kAzure-3, kAzure-2, kAzure-1, kAzure, kAzure+1, kAzure+2, kAzure+3, kAzure+4, kAzure+5, kAzure+6, kAzure+7, kAzure+8, kAzure+9, kAzure+10, kCyan+4, kCyan+3, kCyan+2, kCyan+1, kCyan, kCyan-1, kCyan-2, kCyan-3, kCyan-4, kCyan-5, kGreen+4, kGreen+3, kGreen+2, kGreen+1, kGreen,  kGreen-1, kGreen-2, kGreen-3, kGreen-4, kGreen-5, kGreen-6, kGreen-7, kGreen-8, kGreen-9, kGreen-10, kSpring-9, kSpring-8, kSpring-7, kSpring-6, kSpring-5, kSpring-4, kSpring-3, kSpring-2, kSpring-1, kSpring, kSpring+1, kSpring+2, kSpring+3, kSpring+4, kSpring+5, kBlue+2, kGray, kGray+2};
+int trials[][3] = {{0,18,4}, {0,18,6}, {0,18,8}, {0,18,10}, {0,20,2}, {0,20,4}, {0,20,6}, {0,20,8}, {0,20,10}, {0,22,2}, {0,22,4}, {0,22,6}, {0,22,8}, {0,22,10}, {0,24,2}, {0,24,4}, {0,24,6}, {0,24,8}, {0,24,10}, {0,26,2}, {0,26,4}, {0,26,6}, {0,26,8}, {0,26,10}, {0,28,2}, {0,28,4}, {0,28,6}, {0,28,8}, {0,28,10}, {7,18,2}, {7,18,4}, {7,18,6}, {7,18,8}, {7,18,10}, {7,20,2}, {7,20,4}, {7,20,6}, {7,20,8}, {7,20,10}, {7,22,2}, {7,22,4}, {7,22,6}, {7,22,8}, {7,22,10}, {7,24,2}, {7,24,4}, {7,24,6}, {7,24,8}, {7,24,10}, {7,26,2}, {7,26,4}, {7,26,6}, {7,26,8}, {7,26,10}, {7,28,2}, {7,28,4}, {7,28,6}, {7,28,8}, {7,28,10}, {14,18,2}, {14,18,4}, {14,18,6}, {14,18,8}, {14,18,10}, {14,20,2}, {14,20,4}, {14,20,6}, {14,20,8}, {14,20,10}, {14,22,2}, {14,22,4}, {14,22,6}, {14,22,8}, {14,22,10}, {14,24,2}, {14,24,4}, {14,24,6}, {14,24,8}, {14,24,10}, {14,26,2}, {14,26,4}, {14,26,6}, {14,26,8}, {14,26,10}, {14,28,2}, {14,28,4}, {14,28,6}, {14,28,8}, {14,28,10}, {21,18,2}, {21,18,4}, {21,18,6}, {21,18,8}, {21,18,10}, {21,20,2}, {21,20,4}, {21,20,6}, {21,20,8}, {21,20,10}, {21,22,2}, {21,22,4}, {21,22,6}, {21,22,8}, {21,22,10}, {21,24,2}, {21,24,4}, {21,24,6}, {21,24,8}, {21,24,10}, {21,26,2}, {21,26,4}, {21,26,6}, {21,26,8}, {21,26,10}, {21,28,2}, {21,28,4}, {21,28,6}, {21,28,8}, {21,28,10}, {28,18,2}, {28,18,4}, {28,18,6}, {28,18,8}, {28,18,10}, {28,20,2}, {28,20,4}, {28,20,6}, {28,20,8}, {28,20,10}, {28,22,2}, {28,22,4}, {28,22,6}, {28,22,8}, {28,22,10}, {28,24,2}, {28,24,4}, {28,24,6}, {28,24,8}, {28,24,10}, {28,26,2}, {28,26,4}, {28,26,6}, {28,26,8}, {28,26,10}, {28,28,2}, {28,28,4}, {28,28,6}, {28,28,8}, {28,28,10}, {35,18,2}, {35,18,4}, {35,18,6}, {35,18,8}, {35,18,10}, {35,20,2}, {35,20,4}, {35,20,6}, {35,20,8}, {35,20,10}, {35,22,2}, {35,22,4}, {35,22,6}, {35,22,8}, {35,22,10}, {35,24,2}, {35,24,4}, {35,24,6}, {35,24,8}, {35,24,10}, {35,26,2}, {35,26,4}, {35,26,6}, {35,26,8}, {35,26,10}, {35,28,2}, {35,28,4}, {35,28,6}, {35,28,8}, {35,28,10}};
+int colors[] =  { kRed, kViolet, kCyan, kGreen,  kSpring, kGray};
  
 TFile * data201701 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2017-01_ANAver20_347runs_jan02.root");
 TFile * data201801 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2018-01_ANAver03_543runs_jan02.root");
@@ -44,10 +49,15 @@ TFile * data201808 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23
 	legend_datasets->AddEntry(t181,"2018-01_ANAver03 data","lep");
 	legend_datasets->AddEntry(t188,"2018-08_ANAver02 data","lep");
 
-	auto legend_MCtests = new TLegend(0.50,0.6,0.98,0.98);
-	legend_MCtests->SetNColumns(2);
+	auto legend_MCtests_tslope = new TLegend(0.50,0.6,0.98,0.98);
+	legend_MCtests_tslope->SetNColumns(2);
+	auto legend_MCtests_mass = new TLegend(0.50,0.6,0.98,0.98);
+	legend_MCtests_mass->SetNColumns(2);
+	auto legend_MCtests_width = new TLegend(0.50,0.6,0.98,0.98);
+	legend_MCtests_width->SetNColumns(2);
+
 //No statistics box on histogram 
-	gStyle->SetOptStat(0000);
+	gStyle->SetOptStat(0);
  //Data t distributions
 	TCanvas *cctdistdata = new TCanvas("cctdistdata", "cctdistdata", 800, 600);	
 	t171->SetLineColor(kGreen);
@@ -68,11 +78,18 @@ TFile * data201808 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23
 	legend_datasets->Draw();
 	cctdistdata->Print("tdist_datasets.png"); 
 //Reconstructed MC distributions
-	TCanvas *cctdistMC = new TCanvas("cctdistMC", "cctdistMC", 800, 600);
-	t188->Draw("p hist");
-	double norm201808= t188->Integral(1,100);
-	norm201808 = norm201808*0.4;
-	t188->GetYaxis()->SetRangeUser(0,500);
+	TCanvas *cctdistMC = new TCanvas("cctdistMC", "cctdistMC", 1200, 900);
+	cctdistMC->Divide(4,3,canvas_margins,canvas_margins);
+	double norm201808= t188->GetMaximum();
+	norm201808 = norm201808;
+	t188->GetYaxis()->SetRangeUser(0,300);
+	for(int ploti188 = 0; ploti188 < 12; ploti188++){
+		cctdistMC->cd(ploti188+1);
+		t188->SetMarkerStyle(8);
+		t188->SetMarkerSize(0.75);
+		t188->Draw("p hist");
+	}
+
 
 for( int i=0; i< sizeof(trials)/sizeof(trials[0]);i++){
 	//Opening MC files
@@ -93,22 +110,76 @@ for( int i=0; i< sizeof(trials)/sizeof(trials[0]);i++){
 	TH1F * tMC_Thrown = (TH1F *)Egamma_tMC_Thrown->ProjectionY("tMC_Thrown",Egamma_tMC_Thrown->GetXaxis()->FindBin(6.3),Egamma_tMC_Thrown->GetXaxis()->FindBin(11.9));
  	//Add legend entry
 	cctdistMC->cd();
-	tMC[i]->SetLineColor(colors[i]);
-	tMC[i]->SetMarkerColor(colors[i]);
-	tMC[i]->SetMarkerStyle(21);
+	tMC[i]->SetMarkerStyle(8);
+	tMC[i]->SetMarkerSize(0.75);
 	tMC[i]->RebinX(5);
-	normMC = tMC[i]->Integral(1,100);
+	normMC = tMC[i]->GetMaximum();
 	tMC[i]->Scale(norm201808/normMC);
 	double tslope = trials[i][0]/10.;
 	double Ymass = trials[i][1]/10.; 
 	double Ywidth = trials[i][2]/10.;
 	//tMC[i]->Draw("p hist same");
-	if(trials[i][0] == 14 & trials[i][1] <= 20 & trials[i][2]  == 4 ){
-		tMC[i]->Draw("p hist same");
-		sprintf(MClegendentry,"MC t=%0.1f, Y=%0.1f+/-%0.1f",tslope,Ymass,Ywidth);
-		legend_MCtests->AddEntry(tMC[i],MClegendentry,"p");
-		}
-	}
-legend_MCtests->Draw();
-cctdistMC->Print("tdist_MCtlopestests_varyingtandY.png");
-}
+//loop to color based on Y* mass
+	if(trials[i][1] == 18){color_mass = 0;}
+	if(trials[i][1] == 20){color_mass = 1;}
+	if(trials[i][1] == 22){color_mass = 2;}
+	if(trials[i][1] == 24){color_mass = 3;}
+	if(trials[i][1] == 26){color_mass = 4;}
+	if(trials[i][1] == 28){color_mass = 5;}
+
+	if(trials[i][0] == 0){color_tslope = 0;}
+	if(trials[i][0] == 7){color_tslope = 1;}
+	if(trials[i][0] == 14){color_tslope = 2;}
+	if(trials[i][0] == 21){color_tslope = 3;}
+	if(trials[i][0] == 28){color_tslope = 4;}
+	if(trials[i][0] == 35){color_tslope = 5;}
+	
+	sprintf(Trial_Title, "M_{Y} = %0.1f, #Gamma_{Y} = %0.1f", Ymass, Ywidth);	
+
+	for(int ploti = 0; ploti < 12; ploti++){
+		if(ploti == 0 & trials[i][1] == 20 & trials[i][2] == 4){
+			cctdistMC->cd(ploti+1);
+			tMC[i]->SetMarkerColor(colors[color_tslope]);
+			tMC[i]->SetTitle(Trial_Title);
+			tMC[i]->Draw("p hist same");
+			sprintf(MClegendentry,"MC t=%0.1f",tslope);
+			legend_MCtests_tslope->AddEntry(tMC[i],MClegendentry,"p");
+			legend_MCtests_tslope->Draw();
+			}
+		if(ploti == 1 & trials[i][1] == 20 & trials[i][2] == 6){
+			cctdistMC->cd(ploti+1); tMC[i]->SetMarkerColor(colors[color_tslope]); tMC[i]->SetTitle(Trial_Title); tMC[i]->Draw("p hist same");	}
+		if(ploti == 2 & trials[i][1] == 20 & trials[i][2] == 8){
+			cctdistMC->cd(ploti+1); tMC[i]->SetMarkerColor(colors[color_tslope]); tMC[i]->SetTitle(Trial_Title); tMC[i]->Draw("p hist same");}
+		if(ploti == 3 & trials[i][1] == 20 & trials[i][2] == 10){
+			cctdistMC->cd(ploti+1); tMC[i]->SetMarkerColor(colors[color_tslope]);tMC[i]->SetTitle(Trial_Title); tMC[i]->Draw("p hist same");}
+		if(ploti == 4 & trials[i][1] == 24 & trials[i][2] == 4){
+			cctdistMC->cd(ploti+1); tMC[i]->SetMarkerColor(colors[color_tslope]); tMC[i]->SetTitle(Trial_Title); tMC[i]->Draw("p hist same");}
+		if(ploti == 5 & trials[i][1] == 24 & trials[i][2] == 6){
+			cctdistMC->cd(ploti+1); tMC[i]->SetMarkerColor(colors[color_tslope]); tMC[i]->SetTitle(Trial_Title); tMC[i]->Draw("p hist same");	}
+		if(ploti == 6 & trials[i][1] == 24 & trials[i][2] == 8){
+			cctdistMC->cd(ploti+1); tMC[i]->SetMarkerColor(colors[color_tslope]); tMC[i]->SetTitle(Trial_Title); tMC[i]->Draw("p hist same");}
+		if(ploti == 7 & trials[i][1] == 24 & trials[i][2] == 10){
+			cctdistMC->cd(ploti+1); tMC[i]->SetMarkerColor(colors[color_tslope]); tMC[i]->SetTitle(Trial_Title); tMC[i]->Draw("p hist same");}	
+		if(ploti == 8 & trials[i][1] == 28 & trials[i][2] == 4){
+			cctdistMC->cd(ploti+1); tMC[i]->SetMarkerColor(colors[color_tslope]); tMC[i]->SetTitle(Trial_Title); tMC[i]->Draw("p hist same");}
+		if(ploti == 9 & trials[i][1] == 28 & trials[i][2] == 6){
+			cctdistMC->cd(ploti+1); tMC[i]->SetMarkerColor(colors[color_tslope]); tMC[i]->SetTitle(Trial_Title); tMC[i]->Draw("p hist same");}
+		if(ploti == 10 & trials[i][1] == 28 & trials[i][2] == 8){
+			cctdistMC->cd(ploti+1); tMC[i]->SetMarkerColor(colors[color_tslope]); tMC[i]->SetTitle(Trial_Title); tMC[i]->Draw("p hist same");}
+		if(ploti == 11 & trials[i][1] == 28 & trials[i][2] == 10){
+			cctdistMC->cd(ploti+1); tMC[i]->SetMarkerColor(colors[color_tslope]); tMC[i]->SetTitle(Trial_Title); tMC[i]->Draw("p hist same");}				
+		} // end ploti for loop
+	} //end i for loop
+cctdistMC->Print("tdist_MCtslopestests_varyingt.png");
+} // end main fuction
+
+
+
+
+
+
+
+
+
+
+
