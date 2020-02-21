@@ -91,7 +91,7 @@ char xsechist[100];
 char xsecmacro[100];
 char pad[100];
 double mintval = 0.0;
-double maxtval = 5.0;
+double maxtval = 2.0;
 const int numtBins=10; 
 double minmass=1.2; 
 double minfitmass=1.27;
@@ -280,7 +280,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     ThrownH_Ebin->Draw();
     ethrown_canvas->SaveAs(ethrownmacro);
     ethrown_canvas->Print(ethrownhist);
-    
+
 //Set up the grid structure of histograms
     if (numEBins % columns == 0) { rows = numEBins/columns; }
     else { rows = numEBins/columns + 1; }	
@@ -303,7 +303,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 
 //Perform accidental subtraction for signal histogram
    sprintf(XiMasshistname,"Xi_Egamma_t_%03d",binning);	
-   sprintf(XiMasshistnameacc,"Xi_Egamma_t_%03d_acc",binning);	
+   sprintf(XiMasshistnameacc,"Xi_Egamma_t_%03d_wacc",binning);	
    TH3F * XiMassKinFit_Egamma_t = (TH3F*)datafile->Get(XiMasshistname);
    TH3F * XiMassKinFit_Egamma_t_acc = (TH3F*)datafile->Get(XiMasshistnameacc);
    TH3F * XiMassKinFit_Egamma_t_accsub = (TH3F *) XiMassKinFit_Egamma_t->Clone("XiMassKinFit_Egamma_t_accsub");
@@ -325,7 +325,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	esigfit_canvas->cd(iE+1);	
 	sprintf(esigfit_EBin_name,"sigfit_%03d",Ebuffer);
  	sprintf(EBin_Title,"%3.1f <= E_{#gamma} < %3.1f",Emin,Emax);
-	SignalFits[iE+1]->SetTitle(EBin_Title);
+	//SignalFits[iE+1]->SetTitle(EBin_Title);
 
 	thrownyields_canvas->cd(iE+1);
 	sprintf(thrownyields_EBin_name,"thrownyields_%03d",Ebuffer);
@@ -462,7 +462,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
         	xsecw->import(RooArgSet(xsecmass));
         	xsecw->factory("Chebychev::xsecbkgd(xsecmass,{c1t[2.20,-1.e4,1.e4],c2t[-1.557,-1.e4,1.e4]})");
         	xsecw->factory("Gaussian::xsecgaus(xsecmass,mean[1.32,1.31,1.33],sigma[0.005,0.001,0.01])");
-        	xsecw->factory("SUM::xsecmodel(nbkgd[150,0,1e5]*bkgd, nsig[20,0,1e3]*xsecgaus)");
+        	xsecw->factory("SUM::xsecmodel(nbkgd[150,0,1e5]*xsecbkgd, nsig[20,0,1e3]*xsecgaus)");
         	xsecw->pdf("xsecmodel")->fitTo(*xsecdata,RooFit::Range(minfitmass,maxmass),RooFit::Minos(1));
         	RooPlot* xsecmassframe = xsecmass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
         	xsecmassframe->SetXTitle("#Lambda#pi^{-} mass");
