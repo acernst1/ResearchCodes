@@ -1,12 +1,14 @@
-void plots_kinematics(TString dataFilePath201701, TString mcFilePath201701, const char version201701[17], TString dataFilePath201801, TString mcFilePath201801, const char version201801[17], TString dataFilePath201808, TString mcFilePath201808, const char version201808[17]) {
-
-	TFile * data201701 = TFile::Open(dataFilePath201701);
-	TFile * data201801 = TFile::Open(dataFilePath201801);
-	TFile * data201808 = TFile::Open(dataFilePath201808);
-	TFile * mc201701 = TFile::Open(mcFilePath201701);
-	TFile * mc201801 = TFile::Open(mcFilePath201801);
-	TFile * mc201808 = TFile::Open(mcFilePath201808);
-	TFile * file4 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2018-08.root");
+void plots_kinematics() {
+	char version201808[100] = "2018-08_ANAver02_newMC";
+	char version201801[100] = "2018-01_ANAver03_newMC";
+	char version201701[100] = "2017-01_ANAver20_newMC";
+	TFile * data201701 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2017-01_ANAver20_347runs_jan02.root");
+	TFile * data201801 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2018-01_ANAver03_543runs_jan02.root");
+	TFile * data201808 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2018-08_ANAver02_449runs_jan02.root");
+	TFile * mc201701 = TFile::Open("/cache/halld/home/acernst/MC/2017-01_ANAver20/newtslope/kpkpxim__B4_M23_genr8_kpkpxim_2017-01_ANAver20_newMC.root");
+	//TFile * mc201801 = TFile::Open(mcFilePath201801);
+	TFile * mc201808 = TFile::Open("/cache/halld/home/acernst/MC/2018-08_ANAver02/newtslope/kpkpxim__B4_M23_genr8_kpkpxim_2018-08_ANAver02_newMC.root");
+	//TFile * file4 = TFile::Open("/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_2018-08.root");
 
 	gStyle->SetOptStat(0000);
 
@@ -321,7 +323,7 @@ void plots_kinematics(TString dataFilePath201701, TString mcFilePath201701, cons
         Xipptheta171MCKinFit_accsub->Draw("colz");
 	sprintf(Xipptheta171MCKinFitname, "XippthetaKinFit_MC_%s.png",version201701);
 	ccXipptheta171MCKinFit->Print(Xipptheta171MCKinFitname);
-
+/*
 	char XiKptheta181MCname[100];
 	TCanvas *ccXiKptheta181MC = new TCanvas("ccXiKptheta181MC", "ccXiKptheta181MC", 800, 600);
 	TH2I * XiKptheta181MC = (TH2I*)mc201801->Get("K_pTheta_Measured");	
@@ -399,7 +401,7 @@ void plots_kinematics(TString dataFilePath201701, TString mcFilePath201701, cons
         Xipptheta181MCKinFit_accsub->Draw("colz");
 	sprintf(Xipptheta181MCKinFitname, "XippthetaKinFit_MC_%s.png",version201801);
 	ccXipptheta181MCKinFit->Print(Xipptheta181MCKinFitname);
-
+*/
 	char XiKptheta188MCname[100];
 	TCanvas *ccXiKptheta188MC = new TCanvas("ccXiKptheta188MC", "ccXiKptheta188MC", 800, 600);
 	TH2I * XiKptheta188MC = (TH2I*)mc201808->Get("K_pTheta_Measured");	
@@ -546,27 +548,27 @@ void plots_kinematics(TString dataFilePath201701, TString mcFilePath201701, cons
 	TH1I *XiMassMeasured188_accsub = (TH1I *) XiMassMeasured188->Clone("XiMassMeasured188_accsub");
 	XiMassMeasured188_accsub->Add(XiMassMeasured188_acc,-0.5);
 	XiMassMeasured188_accsub->RebinX(5);
-	TH1I * XiMassMeasured188_nan = (TH1I*)file4->Get("XiMass");	
-	TH1I * XiMassMeasured188_nan_acc = (TH1I*)file4->Get("XiMass_acc");
-	TH1I *XiMass188Measured_nan_accsub = (TH1I *) XiMassMeasured188_nan->Clone("XiMass188Measured_nan_accsub");
-	XiMass188Measured_nan_accsub->Add(XiMassMeasured188_nan_acc,-0.5);
-	XiMass188Measured_nan_accsub->RebinX(5);
+	//TH1I * XiMassMeasured188_nan = (TH1I*)file4->Get("XiMass");	
+	//TH1I * XiMassMeasured188_nan_acc = (TH1I*)file4->Get("XiMass_acc");
+	//TH1I *XiMass188Measured_nan_accsub = (TH1I *) XiMassMeasured188_nan->Clone("XiMass188Measured_nan_accsub");
+	//XiMass188Measured_nan_accsub->Add(XiMassMeasured188_nan_acc,-0.5);
+	//XiMass188Measured_nan_accsub->RebinX(5);
 	TH1I * XiMass188KinFit = (TH1I*)data201808->Get("XiMass_KinFit");
 	TH1I * XiMass188KinFit_acc = (TH1I*)data201808->Get("XiMass_KinFit_acc");
 	TH1I *XiMass188KinFit_accsub = (TH1I *) XiMass188KinFit->Clone("XiMass188KinFit_accsub");
 	XiMass188KinFit_accsub->Add(XiMass188KinFit_acc,-0.5);
 	XiMass188KinFit_accsub->RebinX(5);
 	XiMassMeasured188_accsub->SetLineColor(kRed);
-	XiMass188Measured_nan_accsub->SetLineColor(kGreen);
+	//XiMass188Measured_nan_accsub->SetLineColor(kGreen);
 	XiMassMeasured188_accsub->GetYaxis()->SetRangeUser(0,3750);
 	XiMassMeasured188_accsub->SetTitle(" ");
 	XiMassMeasured188_accsub->GetXaxis()->SetTitle("#Lambda#pi^{-} Invariant Mass (GeV)");
 	XiMassMeasured188_accsub->GetYaxis()->SetTitle("Combos");
         XiMassMeasured188_accsub->Draw("");
         XiMass188KinFit_accsub->Draw("same");
-	XiMass188Measured_nan_accsub->Draw("same");
+	//XiMass188Measured_nan_accsub->Draw("same");
 	auto legend_nonan = new TLegend(0.70,0.8,0.98,0.93);
-	legend_nonan->AddEntry(XiMass188Measured_nan_accsub,"Measured P4 - NaN","l");
+	//legend_nonan->AddEntry(XiMass188Measured_nan_accsub,"Measured P4 - NaN","l");
 	legend_nonan->AddEntry(XiMassMeasured17_accsub,"Measured P4 - no NaN","l");
 	legend_nonan->AddEntry(XiMass17KinFit_accsub,"KinFit P4","l");
 	legend_nonan->Draw();
@@ -695,7 +697,7 @@ void plots_kinematics(TString dataFilePath201701, TString mcFilePath201701, cons
 	legend_vert->Draw();
 	sprintf(VertZname171MC, "VertZ_MC_%s.png",version201701);
 	ccVertZ171MC->Print(VertZname171MC);
-
+/*
 	char VertZname181MC[100];
 	TCanvas *ccVertZ181MC = new TCanvas("ccVertZ181MC", "ccVertZ181MC", 800, 600);
 	TH1I * ProdVertZ181MC = (TH1I*)mc201801->Get("ProdVert");	
@@ -722,7 +724,7 @@ void plots_kinematics(TString dataFilePath201701, TString mcFilePath201701, cons
 	legend_vert->Draw();
 	sprintf(VertZname181MC, "VertZ_MC_%s.png",version201801);
 	ccVertZ181MC->Print(VertZname181MC);
-
+*/
 	char VertZname188MC[100];
 	TCanvas *ccVertZ188MC = new TCanvas("ccVertZ188MC", "ccVertZ188MC", 800, 600);
 	TH1I * ProdVertZ188MC = (TH1I*)mc201808->Get("ProdVert");	
@@ -789,19 +791,19 @@ void plots_kinematics(TString dataFilePath201701, TString mcFilePath201701, cons
 	char CLMCname[100];
 	TCanvas *ccCLMC = new TCanvas("ccCLMC", "ccCLMC", 800, 600);
 	TH1I * CLMC171 = (TH1I*)mc201701->Get("Hist_KinFitResults/ConfidenceLevel");	
-	TH1I * CLMC181 = (TH1I*)mc201801->Get("Hist_KinFitResults/ConfidenceLevel");	
+	//TH1I * CLMC181 = (TH1I*)mc201801->Get("Hist_KinFitResults/ConfidenceLevel");	
 	TH1I * CLMC188 = (TH1I*)mc201808->Get("Hist_KinFitResults/ConfidenceLevel");	
 	double norm201701 = CLMC171->GetEntries();
-	double norm201801 = CLMC181->GetEntries();
+	//double norm201801 = CLMC181->GetEntries();
 	double norm201808 = CLMC188->GetEntries();
 	CLMC171->SetLineColor(kBlue);
-	CLMC181->SetLineColor(kRed);
+	//CLMC181->SetLineColor(kRed);
 	CLMC188->SetLineColor(kGreen);
-	CLMC171->Scale(norm201801/norm201701);  
-	CLMC181->Scale(norm201801/norm201801);  
-	CLMC188->Scale(norm201801/norm201808);  	
+	CLMC171->Scale(norm201808/norm201701);  
+	//CLMC181->Scale(norm201801/norm201801);  
+	CLMC188->Scale(norm201808/norm201808);  	
 	CLMC171->Draw();
-	CLMC181->Draw("same");
+	//CLMC181->Draw("same");
 	CLMC188->Draw("same");
 	legend_sets->Draw();
 	ccCLMC->SetLogy();
@@ -811,17 +813,17 @@ void plots_kinematics(TString dataFilePath201701, TString mcFilePath201701, cons
 	char ChiSqMCname[100];
 	TCanvas *ccChiSqMC = new TCanvas("ccChiSqMC", "ccChiSqMC", 800, 600);
 	TH1I * ChiSqMC171 = (TH1I*)mc201701->Get("Hist_KinFitResults/ChiSqPerDF");	
-	TH1I * ChiSqMC181 = (TH1I*)mc201801->Get("Hist_KinFitResults/ChiSqPerDF");	
+	//TH1I * ChiSqMC181 = (TH1I*)mc201801->Get("Hist_KinFitResults/ChiSqPerDF");	
 	TH1I * ChiSqMC188 = (TH1I*)mc201808->Get("Hist_KinFitResults/ChiSqPerDF");	
 	ChiSqMC171->SetLineColor(kBlue);
-	ChiSqMC181->SetLineColor(kRed);
+	//ChiSqMC181->SetLineColor(kRed);
 	ChiSqMC188->SetLineColor(kGreen);	
-	ChiSqMC171->Scale(norm201801/norm201701);
-	ChiSqMC181->Scale(norm201801/norm201801); 
-	ChiSqMC188->Scale(norm201801/norm201808); 
+	ChiSqMC171->Scale(norm201808/norm201701);
+	//ChiSqMC181->Scale(norm201801/norm201801); 
+	ChiSqMC188->Scale(norm201808/norm201808); 
 	ChiSqMC171->GetYaxis()->SetRangeUser(0,40000);
 	ChiSqMC171->Draw();
-	ChiSqMC181->Draw("same");
+	//ChiSqMC181->Draw("same");
 	ChiSqMC188->Draw("same");
 	legend_sets->Draw();
 	sprintf(ChiSqMCname, "ChiSqMC.png");
@@ -866,29 +868,29 @@ void plots_kinematics(TString dataFilePath201701, TString mcFilePath201701, cons
 	TH2F * XiMassKinFit_Egamma_t171MC_accsub = (TH2F *) XiMassKinFit_Egamma_t171MC->Clone("XiMassKinFit_Egamma_t171MC_accsub");
 	XiMassKinFit_Egamma_t171MC_accsub->Add(XiMassKinFit_Egamma_t171MC_acc,-0.5);
 	TH1F * t171MC = (TH1F *)XiMassKinFit_Egamma_t171MC_accsub->ProjectionY("t171MC",XiMassKinFit_Egamma_t171MC_accsub->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t171MC_accsub->GetXaxis()->FindBin(1.34));
- 	TH2F * XiMassKinFit_Egamma_t181MC = (TH2F*)mc201801->Get("Xi_t");
-	TH2F * XiMassKinFit_Egamma_t181MC_acc = (TH2F*)mc201801->Get("Xi_t_acc");
-	TH2F * XiMassKinFit_Egamma_t181MC_accsub = (TH2F *) XiMassKinFit_Egamma_t181MC->Clone("XiMassKinFit_Egamma_t181MC_accsub");
-	XiMassKinFit_Egamma_t181MC_accsub->Add(XiMassKinFit_Egamma_t181MC_acc,-0.5);
-	TH1F * t181MC = (TH1F *)XiMassKinFit_Egamma_t181MC_accsub->ProjectionY("t181MC",XiMassKinFit_Egamma_t181MC_accsub->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t181MC_accsub->GetXaxis()->FindBin(1.34));
+ 	//TH2F * XiMassKinFit_Egamma_t181MC = (TH2F*)mc201801->Get("Xi_t");
+	//TH2F * XiMassKinFit_Egamma_t181MC_acc = (TH2F*)mc201801->Get("Xi_t_acc");
+	//TH2F * XiMassKinFit_Egamma_t181MC_accsub = (TH2F *) XiMassKinFit_Egamma_t181MC->Clone("XiMassKinFit_Egamma_t181MC_accsub");
+	//XiMassKinFit_Egamma_t181MC_accsub->Add(XiMassKinFit_Egamma_t181MC_acc,-0.5);
+	//TH1F * t181MC = (TH1F *)XiMassKinFit_Egamma_t181MC_accsub->ProjectionY("t181MC",XiMassKinFit_Egamma_t181MC_accsub->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t181MC_accsub->GetXaxis()->FindBin(1.34));
  	TH2F * XiMassKinFit_Egamma_t188MC = (TH2F*)mc201808->Get("Xi_t");
 	TH2F * XiMassKinFit_Egamma_t188MC_acc = (TH2F*)mc201808->Get("Xi_t_acc");
 	TH2F * XiMassKinFit_Egamma_t188MC_accsub = (TH2F *) XiMassKinFit_Egamma_t188MC->Clone("XiMassKinFit_Egamma_t188MC_accsub");
 	XiMassKinFit_Egamma_t188MC_accsub->Add(XiMassKinFit_Egamma_t188MC_acc,-0.5);
 	TH1F * t188MC = (TH1F *)XiMassKinFit_Egamma_t188MC_accsub->ProjectionY("t188MC",XiMassKinFit_Egamma_t188MC_accsub->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t188MC_accsub->GetXaxis()->FindBin(1.34));
 	t171MC->RebinX(5);
-	t181MC->RebinX(5);
+	//t181MC->RebinX(5);
 	t188MC->RebinX(5);
-	t171MC->Scale(norm201801/norm201701); 
-	t181MC->Scale(norm201801/norm201801); 
-	t188MC->Scale(norm201801/norm201808); 
+	t171MC->Scale(norm201808/norm201701); 
+	//t181MC->Scale(norm201801/norm201801); 
+	t188MC->Scale(norm201808/norm201808); 
 	t171MC->SetLineColor(kBlue);
-	t181MC->SetLineColor(kRed);
+	//t181MC->SetLineColor(kRed);
 	t188MC->SetLineColor(kGreen);	
 	t171MC->SetTitle("");
 	t171MC->GetYaxis()->SetTitle("Combos");
 	t171MC->Draw();
-	t181MC->Draw("same");
+	//t181MC->Draw("same");
 	t188MC->Draw("same");
 	legend_sets->Draw();
 	sprintf(tdistMCname,"tdistMC.png");
