@@ -61,11 +61,15 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	//General Histograms
 	dHist_MissingMassSquared = new TH1I("MissingMassSquared", ";Missing Mass Squared (GeV/c^{2})^{2}", 600, -0.06, 0.06);
 	dHist_BeamEnergy = new TH1I("BeamEnergy", ";Beam Energy (GeV)", 600, 0.0, 12.0);
-	dHist_BeamBunch = new TH1I("BeamBunch", ";Beam Bunch", 400, -20.0, 20.0);
+	dHist_BeamBunch_Asym = new TH1I("BeamBunch_Asym", ";Beam Bunch", 400, -20.0, 20.0);
+	dHist_BeamBunch_Xi = new TH1I("BeamBunch_Xi", ";Beam Bunch", 400, -20.0, 20.0);
+	dHist_BeamBunch_Xi_acc = new TH1I("BeamBunch_Xi_acc", ";Beam Bunch", 400, -20.0, 20.0);
+	dHist_BeamBunch_Xi_wacc = new TH1I("BeamBunch_Xi_wacc", ";Beam Bunch", 400, -20.0, 20.0);
 	dHist_ChiSq = new TH1I("ChiSq", "ChiSq", 200, 0.0, 100.0);
 	dHist_ChiSqXi = new TH2I("ChiSqXi", "ChiSq",100,0.0,100.0,400,1.1,1.5);
 	dHist_ChiSqXi_KinFit = new TH2I("ChiSqXi_KinFit", "ChiSq",100,0.0,50.0,400,1.1,1.5);
 	dHist_ChiSqXi_KinFit_acc = new TH2I("ChiSqXi_KinFit_acc", "ChiSq",100,0.0,50.0,400,1.1,1.5);
+	dHist_ChiSqXi_KinFit_wacc = new TH2I("ChiSqXi_KinFit_wacc", "ChiSq",100,0.0,50.0,400,1.1,1.5);
 	dHist_XiMass_Measured=new TH1I("XiMass","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
 	dHist_XiMass_KinFit=new TH1I("XiMass_KinFit","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_XiMass_Measured_nan=new TH1I("XiMass_nan","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
@@ -520,8 +524,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		locUsedThisCombo_MissingMass[PiMinus].insert(locPiMinus1TrackID);
 		locUsedThisCombo_MissingMass[PiMinus].insert(locPiMinus2TrackID);
 		locUsedThisCombo_MissingMass[Proton].insert(locProtonTrackID);
-		if(locUsedSoFar_MissingMass.find(locUsedThisCombo_MissingMass) == locUsedSoFar_MissingMass.end())
-		{
+		if(locUsedSoFar_MissingMass.find(locUsedThisCombo_MissingMass) == locUsedSoFar_MissingMass.end()){
 			dHist_MissingMassSquared->Fill(locMissingMassSquared);
 			locUsedSoFar_MissingMass.insert(locUsedThisCombo_MissingMass);
 		}
@@ -548,8 +551,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		locUsedThisCombo_ChiSq[PiMinus].insert(locPiMinus1TrackID);
 		locUsedThisCombo_ChiSq[PiMinus].insert(locPiMinus2TrackID);
 		locUsedThisCombo_ChiSq[Proton].insert(locProtonTrackID);
-		if(locUsedSoFar_ChiSq.find(locUsedThisCombo_ChiSq) == locUsedSoFar_ChiSq.end())
-		{
+		if(locUsedSoFar_ChiSq.find(locUsedThisCombo_ChiSq) == locUsedSoFar_ChiSq.end()){
 			dHist_ChiSq->Fill(locChiSqNdf);
 			dHist_ChiSqXi->Fill(locChiSqNdf, locXiP4_Measured.M());
 			dHist_XiPath_preCL->Fill(locPathLengthXi);
@@ -564,25 +566,25 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 					dHist_XiMass_Measured_nan_acc->Fill(locXiP4_Measured.M());
 					dHist_XiMass_KinFit_nan_acc->Fill(locXiP4_KinFit.M());
 					dHist_ChiSqXi_KinFit_acc->Fill(locChiSqNdf, locXiP4_KinFit.M());
-					
+					dHist_ChiSqXi_KinFit_wacc->Fill(locChiSqNdf, locXiP4_KinFit.M(),scaling_factor);
 					}
 				}
 			}
 			//cerr << locNDF << endl;
 			locUsedSoFar_ChiSq.insert(locUsedThisCombo_ChiSq);
 		}
+
 		//E.g. ChiSq Cut
-		if((locChiSqNdf > 3.50 || isnan(locChiSqNdf))) //In the 2018-08 dataset, some events that failed the KinFit have been written out
-		{
-			dComboWrapper->Set_IsComboCut(true);
-			continue;
-		}
-		if(isnan(locChiSqNdf))
-		{
+		if(isnan(locChiSqNdf)){
 			*myfile << Get_RunNumber() << " " << Get_EventNumber() << " " << locXiP4_Measured.M() << " " << locXiP4_KinFit.M() << " " << locChiSqNdf << " " << dComboWrapper->Get_ConfidenceLevel_KinFit("") << " "<< locBeamP4.E() << " " << locDeltaT << endl;
 			*myfile << "       " << locKPlus1P4_Measured.P() << " " << locKPlus2P4_Measured.P() << " " << locProtonP4_Measured.P() << " " << locPiMinus1P4_Measured.P() << " " << locPiMinus2P4_Measured.P() << endl;
 			*myfile << "       " << locKPlus1P4.P() << " " << locKPlus2P4.P() << " " << locProtonP4.P() << " " << locPiMinus1P4.P() << " " << locPiMinus2P4.P() << endl;
 		}
+		if((locChiSqNdf > 3.50 || isnan(locChiSqNdf))){ //In the 2018-08 dataset, some events that failed the KinFit have been written out
+			dComboWrapper->Set_IsComboCut(true);
+			continue;
+		}
+
 		
 
 		//E.g.  PostCuts Hists 
@@ -592,9 +594,8 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		locUsedThisCombo_PostCuts[Proton].insert(locProtonTrackID);
 		if(locUsedSoFar_PostCuts.find(locUsedThisCombo_PostCuts) == locUsedSoFar_PostCuts.end()){
 			dHist_XiPath_postCL->Fill(locPathLengthXi);
-			if(fabs(locDeltaT) < 6.004) {	
+			if(fabs(locDeltaT) < 6.004) {
 				if(fabs(locDeltaT) < 2.004) {	
-					//*myfile << Get_RunNumber() << " " << Get_EventNumber() << " " << locXiP4_Measured.M() << " " << locXiP4_KinFit.M() << " " << locDeltaT << " " << locBeamP4.E() << " " << locChiSqNdf  << endl;
 					dHist_XiMass_Measured->Fill(locXiP4_Measured.M());
 					dHist_XiMass_KinFit->Fill(locXiP4_KinFit.M());
 					dHist_Xi_cosGJ->Fill(locXiP4_KinFit.M(),cosTheta_GJ);
@@ -608,14 +609,13 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 					if(dThrownBeam != NULL){
 						TLorentzVector locKPlusP4_t;
 						TLorentzVector locKPlusP4_decay;
-						for(UInt_t loc_particlei = 0; loc_particlei < Get_NumThrown(); ++loc_particlei)
-						{
+						for(UInt_t loc_particlei = 0; loc_particlei < Get_NumThrown(); ++loc_particlei)	{
 							dThrownWrapper->Set_ArrayIndex(loc_particlei);
 							Particle_t locPID = dThrownWrapper->Get_PID();
 							TLorentzVector locThrownP4 = dThrownWrapper->Get_P4();
-						if(locPID == 11) {
-							if(loc_particlei==0) { locKPlusP4_t = locThrownP4; }
-							if(loc_particlei==1) { locKPlusP4_decay = locThrownP4; }
+							if(locPID == 11) {
+								if(loc_particlei==0) { locKPlusP4_t = locThrownP4; }
+								if(loc_particlei==1) { locKPlusP4_decay = locThrownP4; }
 							}
 						}
 						double t_Truth= (locBeamP4 - locKPlusP4_t).M2();
@@ -633,7 +633,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 					dHist_Xi_Egamma_t_063_acc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),-1.*t);
 					dHist_Xi_Egamma_t_064_acc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),-1.*t);
 					dHist_Xi_Egamma_t_065_acc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),-1.*t);
-					//dHist_Xi_Egamma_wacc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),scaling_factor);
+					dHist_Xi_Egamma_wacc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),scaling_factor);
 					dHist_Xi_t_wacc->Fill(locXiP4_KinFit.M(),-1.*t,scaling_factor);
 					dHist_Xi_Egamma_t_wacc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),-1.*t,scaling_factor);
 					dHist_Xi_Egamma_t_063_wacc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),-1.*t,scaling_factor);
@@ -659,7 +659,9 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 					else {
 						dHist_XiMass_piTheta15to35_Measured_acc->Fill(locXiP4_Measured.M());
 						dHist_XiMass_piTheta15to35_KinFit_acc->Fill(locXiP4_KinFit.M());
-					}				if(fabs(locDeltaT) < 2.004) {
+					}
+				}				
+				if(fabs(locDeltaT) < 2.004) {
 					if(locBeamP4.E() >= 2.4 && locBeamP4.E() < 2.9)	{dHist_XiMass024->Fill(locXiP4_KinFit.M());}
 					if(locBeamP4.E() >= 2.9 && locBeamP4.E() < 3.4)	{dHist_XiMass029->Fill(locXiP4_KinFit.M());}
 					if(locBeamP4.E() >= 3.4 && locBeamP4.E() < 3.9)	{dHist_XiMass034->Fill(locXiP4_KinFit.M());}
@@ -700,7 +702,6 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 					if(locBeamP4.E() >= 10.4 && locBeamP4.E() < 10.9)	{dHist_XiMass104_acc->Fill(locXiP4_KinFit.M());}
 					if(locBeamP4.E() >= 10.9 && locBeamP4.E() < 11.4)	{dHist_XiMass109_acc->Fill(locXiP4_KinFit.M());}
 					if(locBeamP4.E() >= 11.4 && locBeamP4.E() < 11.9)	{dHist_XiMass114_acc->Fill(locXiP4_KinFit.M());}
-				}
 				}
 			locUsedSoFar_PostCuts.insert(locUsedThisCombo_PostCuts);
 			}
@@ -850,10 +851,11 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 							dHist_Klowp_pvstheta->Fill(locKPlusP4_lowp.Theta()*180./TMath::Pi(),locKPlusP4_lowp.P());
 							dHist_Khighp_pvstheta->Fill(locKPlusP4_highp.Theta()*180./TMath::Pi(),locKPlusP4_highp.P());
 							if (locBeamP4.E() >= 8.2 && locBeamP4.E() <= 8.8){ 
-								dHist_BeamBunch->Fill(locDeltaT);
+								dHist_BeamBunch_Asym->Fill(locDeltaT);
 								dHist_XiMass_KinFit_Selected->Fill(locXiP4_KinFit.M());	
 								dHist_phi_t->Fill(-1.*t, phi); 
 							}
+						}
 						else {
 							dHist_KlowpXim_acc->Fill(locIntermediate_KinFit.M());
 							dHist_Klowp_pvstheta_acc->Fill(locKPlusP4_lowp.Theta()*180./TMath::Pi(),locKPlusP4_lowp.P());
@@ -862,7 +864,6 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 								dHist_XiMass_KinFit_Selected_acc->Fill(locXiP4_KinFit.M());	
 								dHist_acc_phi_t_1->Fill(-1.*t, phi); 
 							} 
-						}
 						}
 					}
 				}
