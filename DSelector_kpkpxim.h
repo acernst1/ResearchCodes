@@ -1,5 +1,5 @@
-#ifndef DSelector_kpkpxim__B4_M23_sept19_h
-#define DSelector_kpkpxim__B4_M23_sept19_h
+#ifndef DSelector_kpkpxim_h
+#define DSelector_kpkpxim_h
 
 #include <iostream>
 #include <fstream>
@@ -15,12 +15,12 @@
 #include "TH2F.h"
 #include "TH3F.h"
 
-class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
+class DSelector_kpkpxim : public DSelector
 {
 	public:
 
-		DSelector_kpkpxim__B4_M23_sept19(TTree* locTree = NULL) : DSelector(locTree){}
-		virtual ~DSelector_kpkpxim__B4_M23_sept19(){}
+		DSelector_kpkpxim(TTree* locTree = NULL) : DSelector(locTree){}
+		virtual ~DSelector_kpkpxim(){}
 
 		void Init(TTree *tree);
 		Bool_t Process(Long64_t entry);
@@ -235,10 +235,10 @@ class DSelector_kpkpxim__B4_M23_sept19 : public DSelector
 		TH1I* dHist_XiMass_MM_kTheta15to35_KinFit_acc;
 		
 
-	ClassDef(DSelector_kpkpxim__B4_M23_sept19, 0);
+	ClassDef(DSelector_kpkpxim, 0);
 };
 
-void DSelector_kpkpxim__B4_M23_sept19::Get_ComboWrappers(void)
+void DSelector_kpkpxim::Get_ComboWrappers(void)
 {
 	//Step 0
 	dStep0Wrapper = dComboWrapper->Get_ParticleComboStep(0);
@@ -257,4 +257,4 @@ void DSelector_kpkpxim__B4_M23_sept19::Get_ComboWrappers(void)
 	dProtonWrapper = static_cast<DChargedTrackHypothesis*>(dStep2Wrapper->Get_FinalParticle(1));
 }
 
-#endif // DSelector_kpkpxim__B4_M23_sept19_h
+#endif // DSelector_kpkpxim_h

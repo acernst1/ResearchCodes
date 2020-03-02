@@ -1,6 +1,6 @@
-#include "DSelector_kpkpxim__B4_M23_sept19.h"
+#include "DSelector_kpkpxim.h"
 
-void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
+void DSelector_kpkpxim::Init(TTree *locTree)
 {
 	// USERS: IN THIS FUNCTION, ONLY MODIFY SECTIONS WITH A "USER" OR "EXAMPLE" LABEL. LEAVE THE REST ALONE.
 
@@ -9,7 +9,7 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	// Init() will be called many times when running on PROOF (once per file to be processed).
 
 	//USERS: SET OUTPUT FILE NAME //can be overriden by user in PROOF
-	dOutputFileName = "kpkpxim__B4_M23_sept19.root"; //"" for none
+	dOutputFileName = "kpkpxim.root"; //"" for none
 	dOutputTreeFileName = ""; //"" for none
 	dFlatTreeFileName = ""; //output flat tree (one combo per tree entry), "" for none
 	dFlatTreeName = ""; //if blank, default name will be chosen
@@ -256,7 +256,7 @@ void DSelector_kpkpxim__B4_M23_sept19::Init(TTree *locTree)
 	//dTreeInterface->Register_GetEntryBranch("Proton__P4"); //manually set the branches you want
 }
 
-Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
+Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 {
 	// The Process() function is called for each entry in the tree. The entry argument
 	// specifies which entry in the currently loaded tree is to be processed.
@@ -960,7 +960,7 @@ Bool_t DSelector_kpkpxim__B4_M23_sept19::Process(Long64_t locEntry)
 	return kTRUE;
 }
 
-void DSelector_kpkpxim__B4_M23_sept19::Finalize(void)
+void DSelector_kpkpxim::Finalize(void)
 {
 	//Save anything to output here that you do not want to be in the default DSelector output ROOT file.
 
