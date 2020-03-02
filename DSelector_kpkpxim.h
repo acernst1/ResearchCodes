@@ -64,7 +64,10 @@ class DSelector_kpkpxim : public DSelector
 		//General histograms
 		TH1I* dHist_MissingMassSquared;
 		TH1I* dHist_BeamEnergy;
-		TH1I* dHist_BeamBunch;
+		TH1I* dHist_BeamBunch_Asym;
+		TH1I* dHist_BeamBunch_Xi;
+		TH1I* dHist_BeamBunch_Xi_acc;
+		TH1I* dHist_BeamBunch_Xi_wacc;
 		TH1I* dHist_ChiSq;
 		TH2I* dHist_ChiSqXi;
 		TH2I* dHist_ChiSqXi_KinFit;
