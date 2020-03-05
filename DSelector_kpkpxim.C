@@ -125,6 +125,7 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	dHist_Xi_Egamma_t_065_wacc = new TH3F("Xi_Egamma_t_065_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,100,6.5,11.5,100, 0.0, 5.0);
 	dHist_Xi_t_Truth = new TH2F("Xi_t_Truth", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,100, 0.0, 5.0);
 
+
 	dHist_XiMass024 =new TH1I("XiMass024",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
 	dHist_XiMass029 =new TH1I("XiMass029",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
 	dHist_XiMass034 =new TH1I("XiMass034",";#Xi^{-} Invariant Mass (GeV/c^{2})", 40,1.1,1.5);
@@ -166,6 +167,7 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	
 	//For studying the intermediate hyperon
 	dHist_KlowpXim = new TH1I("KlowpXim",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
+	dHist_KlowpXim_Truth = new TH1I("KlowpXim_Truth",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
 	dHist_KlowpXim_acc = new TH1I("KlowpXim_acc",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
 	dHist_Klowp_pvstheta = new TH2I("Klowp_pvstheta", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 	dHist_Khighp_pvstheta = new TH2I("Khighp_pvstheta", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
@@ -511,6 +513,28 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		if(phi < -180.) phi = phi + 360.;
 		if (phi > 180.) phi = phi - 360.;
 
+		//Truth values
+		TLorentzVector locKPlusP4_t;
+		TLorentzVector locKPlusP4_decay;
+		TLorentzVector locXiTruth;
+		TLorentzVector locIntermediate_Truth;
+		if(dThrownBeam != NULL){
+			for(UInt_t loc_particlei = 0; loc_particlei < Get_NumThrown(); ++loc_particlei)	{
+				dThrownWrapper->Set_ArrayIndex(loc_particlei);
+				Particle_t locPID = dThrownWrapper->Get_PID();
+				TLorentzVector locThrownP4 = dThrownWrapper->Get_P4();
+				if(locPID == 11) {
+					if(loc_particlei==0) { locKPlusP4_t = locThrownP4; }
+					if(loc_particlei==1) { locKPlusP4_decay = locThrownP4; }
+				}
+				if(locPID == 23 ) { locXiTruth = locThrownP4;}
+			}
+			double t_Truth= (locBeamP4 - locKPlusP4_t).M2();
+			locIntermediate_Truth = locXiTruth + locKPlusP4_decay;
+		}
+
+		
+
 		//Scaling factor for accidental subtraction
 		double scaling_factor = dAnalysisUtilities.Get_AccidentalScalingFactor(locRunNumber, locBeamP4.E());
 		double scaling_factor_err = dAnalysisUtilities.Get_AccidentalScalingFactorError(locRunNumber, locBeamP4.E());
@@ -607,18 +631,6 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 					dHist_Xi_Egamma_t_065->Fill(locXiP4_KinFit.M(),locBeamP4.E(),-1.*t);
 					dHist_Xi_LambFlight->Fill(locXiP4_Measured.M(),locPathLengthSignificanceLamb);
 					if(dThrownBeam != NULL){
-						TLorentzVector locKPlusP4_t;
-						TLorentzVector locKPlusP4_decay;
-						for(UInt_t loc_particlei = 0; loc_particlei < Get_NumThrown(); ++loc_particlei)	{
-							dThrownWrapper->Set_ArrayIndex(loc_particlei);
-							Particle_t locPID = dThrownWrapper->Get_PID();
-							TLorentzVector locThrownP4 = dThrownWrapper->Get_P4();
-							if(locPID == 11) {
-								if(loc_particlei==0) { locKPlusP4_t = locThrownP4; }
-								if(loc_particlei==1) { locKPlusP4_decay = locThrownP4; }
-							}
-						}
-						double t_Truth= (locBeamP4 - locKPlusP4_t).M2();
 						dHist_Xi_t_Truth->Fill(locXiP4_KinFit.M(),-1.*t_Truth);
 					}	
 				}
@@ -848,6 +860,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 					if(fabs(locDeltaT) < 6.004) {	
 						if(fabs(locDeltaT) < 2.004) {
 							dHist_KlowpXim->Fill(locIntermediate_KinFit.M());
+							if(dThrownBeam != NULL){ dHist_KlowpXim_Truth->Fill(locIntermediate_Truth.M()); }
 							dHist_Klowp_pvstheta->Fill(locKPlusP4_lowp.Theta()*180./TMath::Pi(),locKPlusP4_lowp.P());
 							dHist_Khighp_pvstheta->Fill(locKPlusP4_highp.Theta()*180./TMath::Pi(),locKPlusP4_highp.P());
 							if (locBeamP4.E() >= 8.2 && locBeamP4.E() <= 8.8){ 
