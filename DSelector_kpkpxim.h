@@ -77,15 +77,15 @@ class DSelector_kpkpxim : public DSelector
 		TH1I* dHist_XiMass_KinFit;
 		TH1I* dHist_XiMass_Measured_nan;	
 		TH1I* dHist_XiMass_KinFit_nan;
-		TH1I* dHist_XiMass_Measured_acc;	
+		TH1I* dHist_XiMass_Measured_wacc;	
 		TH1I* dHist_XiMass_KinFit_acc;
 		TH1I* dHist_XiMass_KinFit_wacc;
-		TH1I* dHist_XiMass_Measured_nan_acc;	
-		TH1I* dHist_XiMass_KinFit_nan_acc;
+		TH1I* dHist_XiMass_Measured_nan_wacc;	
+		TH1I* dHist_XiMass_KinFit_nan_wacc;
 		TH1I* dHist_MMKK_Measured;
 		TH1I* dHist_MMKK_KinFit;	
 		TH2F* dHist_Xi_LambFlight;
-		TH2F* dHist_Xi_LambFlight_acc;
+		TH2F* dHist_Xi_LambFlight_wacc;
 
 		//Detached vertices check
 		TH1I* dHist_ProdVert_preCL;
@@ -111,14 +111,14 @@ class DSelector_kpkpxim : public DSelector
 
 		//Beam asymmetry plots
 		TH2I* dHist_phi_t;
-		TH2I* dHist_acc_phi_t_1;
-		TH2I* dHist_acc_phi_t_2;
-		TH2I* dHist_acc_phi_t_3;
-		TH2I* dHist_acc_phi_t_4;
+		TH2I* dHist_wacc_phi_t_1;
+		TH2I* dHist_wacc_phi_t_2;
+		TH2I* dHist_wacc_phi_t_3;
+		TH2I* dHist_wacc_phi_t_4;
 
 		//Spin Measurement
 		TH2I* dHist_Xi_cosGJ;
-		TH2I* dHist_Xi_cosGJ_acc;
+		TH2I* dHist_Xi_cosGJ_wacc;
 
 		//Cross section plots
 		TH2F* dHist_Xi_Egamma;
@@ -159,47 +159,47 @@ class DSelector_kpkpxim : public DSelector
 		TH1I* dHist_XiMass104;
 		TH1I* dHist_XiMass109;
 		TH1I* dHist_XiMass114;
-		TH1I* dHist_XiMass024_acc;
-		TH1I* dHist_XiMass029_acc;
-		TH1I* dHist_XiMass034_acc;
-		TH1I* dHist_XiMass039_acc;
-		TH1I* dHist_XiMass044_acc;
-		TH1I* dHist_XiMass049_acc;
-		TH1I* dHist_XiMass054_acc;
-		TH1I* dHist_XiMass059_acc;
-		TH1I* dHist_XiMass064_acc;
-		TH1I* dHist_XiMass069_acc;
-		TH1I* dHist_XiMass074_acc;
-		TH1I* dHist_XiMass079_acc;
-		TH1I* dHist_XiMass084_acc;
-		TH1I* dHist_XiMass089_acc;
-		TH1I* dHist_XiMass094_acc;
-		TH1I* dHist_XiMass099_acc;
-		TH1I* dHist_XiMass104_acc;
-		TH1I* dHist_XiMass109_acc;
-		TH1I* dHist_XiMass114_acc;
+		TH1I* dHist_XiMass024_wacc;
+		TH1I* dHist_XiMass029_wacc;
+		TH1I* dHist_XiMass034_wacc;
+		TH1I* dHist_XiMass039_wacc;
+		TH1I* dHist_XiMass044_wacc;
+		TH1I* dHist_XiMass049_wacc;
+		TH1I* dHist_XiMass054_wacc;
+		TH1I* dHist_XiMass059_wacc;
+		TH1I* dHist_XiMass064_wacc;
+		TH1I* dHist_XiMass069_wacc;
+		TH1I* dHist_XiMass074_wacc;
+		TH1I* dHist_XiMass079_wacc;
+		TH1I* dHist_XiMass084_wacc;
+		TH1I* dHist_XiMass089_wacc;
+		TH1I* dHist_XiMass094_wacc;
+		TH1I* dHist_XiMass099_wacc;
+		TH1I* dHist_XiMass104_wacc;
+		TH1I* dHist_XiMass109_wacc;
+		TH1I* dHist_XiMass114_wacc;
 		TH2F* dHist_Xi_t_064;
-		TH2F* dHist_Xi_t_064_acc;
+		TH2F* dHist_Xi_t_064_wacc;
 		TH2F* dHist_Xi_t_069;
-		TH2F* dHist_Xi_t_069_acc;
+		TH2F* dHist_Xi_t_069_wacc;
 		TH2F* dHist_Xi_t_074;
-		TH2F* dHist_Xi_t_074_acc;
+		TH2F* dHist_Xi_t_074_wacc;
 		TH2F* dHist_Xi_t_079;
-		TH2F* dHist_Xi_t_079_acc;
+		TH2F* dHist_Xi_t_079_wacc;
 		TH2F* dHist_Xi_t_084;
-		TH2F* dHist_Xi_t_084_acc;
+		TH2F* dHist_Xi_t_084_wacc;
 		TH2F* dHist_Xi_t_089;
-		TH2F* dHist_Xi_t_089_acc;
+		TH2F* dHist_Xi_t_089_wacc;
 		TH2F* dHist_Xi_t_094;
-		TH2F* dHist_Xi_t_094_acc;
+		TH2F* dHist_Xi_t_094_wacc;
 		TH2F* dHist_Xi_t_099;
-		TH2F* dHist_Xi_t_099_acc;
+		TH2F* dHist_Xi_t_099_wacc;
 		TH2F* dHist_Xi_t_104;
-		TH2F* dHist_Xi_t_104_acc;
+		TH2F* dHist_Xi_t_104_wacc;
 		TH2F* dHist_Xi_t_109;
-		TH2F* dHist_Xi_t_109_acc;
+		TH2F* dHist_Xi_t_109_wacc;
 		TH2F* dHist_Xi_t_114;
-		TH2F* dHist_Xi_t_114_acc;
+		TH2F* dHist_Xi_t_114_wacc;
 
 		//Intermediate hyperon
 		TH1I* dHist_KlowpXim;
@@ -208,7 +208,7 @@ class DSelector_kpkpxim : public DSelector
 		TH2I* dHist_Klowp_pvstheta;
 		TH2I* dHist_Khighp_pvstheta;
 		TH2I* dHist_Klowp_pvstheta_wacc;
-		TH2I* dHist_Khighp_pvstheta_acc;
+		TH2I* dHist_Khighp_pvstheta_wacc;
 
 		//Angular distributions
 		TH1I* dHist_XiMass_KinFit_Selected;
@@ -230,27 +230,27 @@ class DSelector_kpkpxim : public DSelector
 		TH1I* dHist_XiMass_MM_piTheta15to35_KinFit;
 		TH1I* dHist_XiMass_MM_kTheta15to35_Measured;
 		TH1I* dHist_XiMass_MM_kTheta15to35_KinFit;
-		TH1I* dHist_XiMass_KinFit_Selected_acc;	
-		TH1I* dHist_MMKK_Measured_acc;
-		TH1I* dHist_MMKK_KinFit_acc;
-		TH2I* dHist_K_pTheta_Measured_acc;
-		TH2I* dHist_p_pTheta_Measured_acc;
-		TH2I* dHist_p_pTheta_KinFit_acc;
-		TH2I* dHist_K_pTheta_KinFit_acc;
-		TH2I* dHist_K_ptTheta_Measured_acc;
-		TH2I* dHist_K_ptTheta_KinFit_acc;
-		TH1I* dHist_XiMass_kTheta15to35_Measured_acc;
-		TH1I* dHist_XiMass_kTheta15to35_KinFit_acc;
-		TH2I* dHist_pi_pTheta_Measured_acc;
-		TH2I* dHist_pi_pTheta_KinFit_acc;
-		TH2I* dHist_pi_ptTheta_Measured_acc;
-		TH2I* dHist_pi_ptTheta_KinFit_acc;
-		TH1I* dHist_XiMass_piTheta15to35_Measured_acc;
-		TH1I* dHist_XiMass_piTheta15to35_KinFit_acc;
-		TH1I* dHist_XiMass_MM_piTheta15to35_Measured_acc;
-		TH1I* dHist_XiMass_MM_piTheta15to35_KinFit_acc;
-		TH1I* dHist_XiMass_MM_kTheta15to35_Measured_acc;
-		TH1I* dHist_XiMass_MM_kTheta15to35_KinFit_acc;
+		TH1I* dHist_XiMass_KinFit_Selected_wacc;	
+		TH1I* dHist_MMKK_Measured_wacc;
+		TH1I* dHist_MMKK_KinFit_wacc;
+		TH2I* dHist_K_pTheta_Measured_wacc;
+		TH2I* dHist_p_pTheta_Measured_wacc;
+		TH2I* dHist_p_pTheta_KinFit_wacc;
+		TH2I* dHist_K_pTheta_KinFit_wacc;
+		TH2I* dHist_K_ptTheta_Measured_wacc;
+		TH2I* dHist_K_ptTheta_KinFit_wacc;
+		TH1I* dHist_XiMass_kTheta15to35_Measured_wacc;
+		TH1I* dHist_XiMass_kTheta15to35_KinFit_wacc;
+		TH2I* dHist_pi_pTheta_Measured_wacc;
+		TH2I* dHist_pi_pTheta_KinFit_wacc;
+		TH2I* dHist_pi_ptTheta_Measured_wacc;
+		TH2I* dHist_pi_ptTheta_KinFit_wacc;
+		TH1I* dHist_XiMass_piTheta15to35_Measured_wacc;
+		TH1I* dHist_XiMass_piTheta15to35_KinFit_wacc;
+		TH1I* dHist_XiMass_MM_piTheta15to35_Measured_wacc;
+		TH1I* dHist_XiMass_MM_piTheta15to35_KinFit_wacc;
+		TH1I* dHist_XiMass_MM_kTheta15to35_Measured_wacc;
+		TH1I* dHist_XiMass_MM_kTheta15to35_KinFit_wacc;
 		
 
 	ClassDef(DSelector_kpkpxim, 0);
