@@ -415,7 +415,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
         //BoostVector for CoM
     	TLorentzVector locCoMP4=locBeamP4 + dTargetP4;
 	    TVector3 boostCoM=locCoMP4.BoostVector();
-       //Boost in CoM
+       	//Boost in CoM
 	    TLorentzVector locBeamP4_CM=locBeamP4;
 	    TLorentzVector locKPlus1P4_CM=locKPlus1P4;
 	    TLorentzVector locKPlus2P4_CM=locKPlus2P4;
@@ -428,29 +428,29 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		locXiP4_CM.Boost(-boostCoM);
 		locPiMinus1P4_CM.Boost(-boostCoM);
 		locDecayingLambdaP4_CM.Boost(-boostCoM);
-	//BoostVector for GJ
+		//BoostVector for GJ
 		TVector3 boostGJ =locXiP4_CM.BoostVector();
-	//Boost in GJ
-	        TLorentzVector locBeamP4_GJ=locBeamP4_CM;
-	        TLorentzVector locKPlus1P4_GJ=locKPlus1P4_CM;
-	        TLorentzVector locKPlus2P4_GJ=locKPlus2P4_CM;
+		//Boost in GJ
+	    TLorentzVector locBeamP4_GJ=locBeamP4_CM;
+	    TLorentzVector locKPlus1P4_GJ=locKPlus1P4_CM;
+	    TLorentzVector locKPlus2P4_GJ=locKPlus2P4_CM;
 		TLorentzVector locXiP4_GJ = locXiP4_CM;
-	        TLorentzVector locPiMinus1P4_GJ=locPiMinus1P4_CM;
-	        TLorentzVector locDecayingLambdaP4_GJ =  locDecayingLambdaP4_CM;
+	    TLorentzVector locPiMinus1P4_GJ=locPiMinus1P4_CM;
+	    TLorentzVector locDecayingLambdaP4_GJ =  locDecayingLambdaP4_CM;
 		locBeamP4_GJ.Boost(-boostGJ);
 		locKPlus1P4_GJ.Boost(-boostGJ);
 		locKPlus2P4_GJ.Boost(-boostGJ);
 		locXiP4_GJ.Boost(-boostGJ);
 		locPiMinus1P4_GJ.Boost(-boostGJ);
 		locDecayingLambdaP4_GJ.Boost(-boostGJ);
-	//GJ Frame
+		//GJ Frame
 		TVector3 z_GJ;
 		z_GJ.SetXYZ(locBeamP4_GJ.X(),locBeamP4_GJ.Y(),locBeamP4_GJ.Z());
 		TVector3 z_hat_GJ=z_GJ.Unit();
 		TVector3 y_GJ=locBeamP4_CM.Vect().Cross(locXiP4_CM.Vect());
 		TVector3 y_hat_GJ=y_GJ.Unit();
 		TVector3 x_hat_GJ=y_hat_GJ.Cross(z_hat_GJ);
-	//Definition of Angles
+		//Definition of Angles
 		TVector3 v_GJ(locPiMinus1P4_GJ.Vect()*x_hat_GJ,locPiMinus1P4_GJ.Vect()*y_hat_GJ,locPiMinus1P4_GJ.Vect()*z_hat_GJ);
 		double cosTheta_GJ = v_GJ.CosTheta();
 		double theta_GJ = v_GJ.Theta();
