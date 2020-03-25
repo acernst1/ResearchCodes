@@ -204,10 +204,10 @@ class DSelector_kpkpxim : public DSelector
 		//Intermediate hyperon
 		TH1I* dHist_KlowpXim;
 		TH1I* dHist_KlowpXim_Truth;
-		TH1I* dHist_KlowpXim_acc;
+		TH1I* dHist_KlowpXim_wacc;
 		TH2I* dHist_Klowp_pvstheta;
 		TH2I* dHist_Khighp_pvstheta;
-		TH2I* dHist_Klowp_pvstheta_acc;
+		TH2I* dHist_Klowp_pvstheta_wacc;
 		TH2I* dHist_Khighp_pvstheta_acc;
 
 		//Angular distributions

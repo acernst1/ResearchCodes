@@ -180,10 +180,10 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	//For studying the intermediate hyperon
 	dHist_KlowpXim = new TH1I("KlowpXim",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
 	dHist_KlowpXim_Truth = new TH1I("KlowpXim_Truth",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
-	dHist_KlowpXim_acc = new TH1I("KlowpXim_acc",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
+	dHist_KlowpXim_wacc = new TH1I("KlowpXim_wacc",";K_{plow}#Xi^{-} mass (GeV)", 240,1.7,2.9);
 	dHist_Klowp_pvstheta = new TH2I("Klowp_pvstheta", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 	dHist_Khighp_pvstheta = new TH2I("Khighp_pvstheta", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
-	dHist_Klowp_pvstheta_acc = new TH2I("Klowp_pvstheta_acc", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
+	dHist_Klowp_pvstheta_wacc = new TH2I("Klowp_pvstheta_wacc", "K^{+}_{p low}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 	dHist_Khighp_pvstheta_acc = new TH2I("Khighp_pvstheta_acc", "K^{+}_{p high}; #theta; p (GeV) ",28,0.0,140,40,0.0,10.0);
 
 	//angular distributions for every particle
@@ -615,15 +615,16 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 					dHist_LambVert_preCL_wacc->Fill(locDecayingLambX4.Z(),scaling_factor);
 				}
 		
-		}
+		} //end of uniqueness for gXi preChiSq
 
 		if(locUsedSoFar_gKhighXi.find(locUsedThisCombo_gKhighXi) == locUsedSoFar_gKhighXi.end()){
 		
-		}
+		} //end of uniqueness for gKhighXi preChiSq
+
 
 		if(locUsedSoFar_gKlowXi.find(locUsedThisCombo_gKlowXi) == locUsedSoFar_gKlowXi.end()){
 		
-		}
+		} //end of uniqueness for gKlowXi preChiSq
 
 		if(locUsedSoFar_gKKXi.find(locUsedThisCombo_gKKXi) == locUsedSoFar_gKKXi.end()){
 			dHist_MissingMassSquared->Fill(locMissingMassSquared);
@@ -651,7 +652,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 				*myfile << "       " << locKPlus1P4_Measured.P() << " " << locKPlus2P4_Measured.P() << " " << locProtonP4_Measured.P() << " " << locPiMinus1P4_Measured.P() << " " << locPiMinus2P4_Measured.P() << endl;
 				*myfile << "       " << locKPlus1P4.P() << " " << locKPlus2P4.P() << " " << locProtonP4.P() << " " << locPiMinus1P4.P() << " " << locPiMinus2P4.P() << endl;
 			}
-		}
+		} //end of uniqueness for gKKXi preChiSq
 
 		
 	//ChiSq Cut
@@ -772,7 +773,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 				} //end of else loop for OOT photons
 			} //end of 6.004 loop
 			locUsedSoFar_gXi.insert(locUsedThisCombo_gXi);
-		} //end of uniqueness for gXi
+		} //end of uniqueness for gXi postChiSq
 
 		if(locUsedSoFar_gKhighXi.find(locUsedThisCombo_gKhighXi) == locUsedSoFar_gKhighXi.end()){
 			if(fabs(locDeltaT) < 6.004) {
@@ -812,7 +813,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 				}
 			}
 			locUsedSoFar_gKhighXi.insert(locUsedThisCombo_gKhighXi);
-		} //end of uniqueness for gKhighXi
+		} //end of uniqueness for gKhighXi postChiSq
 
 		if(locUsedSoFar_gKlowXi.find(locUsedThisCombo_gKlowXi) == locUsedSoFar_gKlowXi.end()){
 			if(fabs(locDeltaT) < 6.004) {
@@ -823,13 +824,13 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 						dHist_Klowp_pvstheta->Fill(locKPlusP4_lowp.Theta()*180./TMath::Pi(),locKPlusP4_lowp.P());
 					}
 					else {
-						dHist_KlowpXim_acc->Fill(locIntermediate_KinFit.M());
-						dHist_Klowp_pvstheta_acc->Fill(locKPlusP4_lowp.Theta()*180./TMath::Pi(),locKPlusP4_lowp.P());
+						dHist_KlowpXim_wacc->Fill(locIntermediate_KinFit.M(),scaling_factor);
+						dHist_Klowp_pvstheta_wacc->Fill(locKPlusP4_lowp.Theta()*180./TMath::Pi(),locKPlusP4_lowp.P(),scaling_factor);
 					}
 				}	
 			}	
 			locUsedSoFar_gKlowXi.insert(locUsedThisCombo_gKlowXi);
-		} //end of uniqueness for gKlowXi
+		} //end of uniqueness for gKlowXi postChiSq
 
 		if(locUsedSoFar_gKKXi.find(locUsedThisCombo_gKKXi) == locUsedSoFar_gKKXi.end()){
 			if(fabs(locDeltaT) < 6.004) {
@@ -880,7 +881,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 				}
 			}				
 			locUsedSoFar_gKKXi.insert(locUsedThisCombo_gKKXi);
-		} //end of uniqueness for gKKXi	
+		} //end of uniqueness for gKKXi	postChiSq
 
 		if(locUsedSoFar_gKK.find(locUsedThisCombo_gKK) == locUsedSoFar_gKK.end()){
 			if(fabs(locDeltaT) < 6.004) {	
@@ -894,7 +895,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 				}
 			}				
 			locUsedSoFar_gKK.insert(locUsedThisCombo_gKK);
-		}	//end of uniqueness for gKK	
+		}	//end of uniqueness for gKK	postChiSq
 
 
 
