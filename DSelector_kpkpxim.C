@@ -85,13 +85,25 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	dHist_Xi_LambFlight_acc = new TH2F("Xi_LambFlight_acc", " ;#Lambda#pi^{-} mass (GeV); #sigma_{#Lambda}", 400, 1.1, 1.5,180, 0.0, 12.0);
 
 	//plots to check vertices
-	dHist_XiPath = new TH1I("XiPathLength", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
+	dHist_ProdVert_preCL = new TH1I("ProdVert_preCL", ";Production Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_XiVert_preCL = new TH1I("XiVert_preCL", ";#Xi^{-} Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_LambVert_preCL = new TH1I("LambVert_preCL", ";#Lambda Vertex Z (cm)", 600, -50.0, 200.0);
 	dHist_XiPath_preCL = new TH1I("XiPathLength_preCL", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
+	dHist_LambPath_preCL = new TH1I("LambPathLength_preCL", ";#Lambda Path Length (cm)", 600, 0.0, 15.0);
+	dHist_ProdVert_postCL = new TH1I("ProdVert_postCL", ";Production Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_XiVert_postCL = new TH1I("XiVert_postCL", ";#Xi^{-} Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_LambVert_postL = new TH1I("LambVert_postCL", ";#Lambda Vertex Z (cm)", 600, -50.0, 200.0);
 	dHist_XiPath_postCL = new TH1I("XiPathLength_postCL", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
-	dHist_ProdVert = new TH1I("ProdVert", ";Production Vertex Z (cm)", 600, -50.0, 200.0);
-	dHist_XiVert = new TH1I("XiVert", ";#Xi^{-} Vertex Z (cm)", 600, -50.0, 200.0);
-	dHist_LambVert = new TH1I("LambVert", ";#Lambda Vertex Z (cm)", 600, -50.0, 200.0);
-	dHist_LambPath = new TH1I("LambPathLength", ";#Lambda Path Length (cm)", 600, 0.0, 15.0);
+	dHist_ProdVert_preC_wacc = new TH1I("ProdVert_preCL_wacc", ";Production Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_XiVert_preCL_wacc = new TH1I("XiVert_preCL_wacc", ";#Xi^{-} Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_LambVert_preCL_wacc = new TH1I("LambVert_preCL_wacc", ";#Lambda Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_XiPath_preCL_wacc = new TH1I("XiPathLength_preCL_wacc", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
+	dHist_LambPath_preCL_wacc = new TH1I("LambPathLength_preCL_wacc", ";#Lambda Path Length (cm)", 600, 0.0, 15.0);
+	dHist_ProdVert_postCL_wacc = new TH1I("ProdVert_postCL_wacc", ";Production Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_XiVert_postCL_wacc = new TH1I("XiVert_postCL_wacc", ";#Xi^{-} Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_LambVert_postL_wacc = new TH1I("LambVert_postCL_wacc", ";#Lambda Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_XiPath_postCL_wacc = new TH1I("XiPathLength_postCL_wacc", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
+	dHist_LambPath_postCL_wacc = new TH1I("LambPathLength_postCL_wacc", ";#Lambda Path Length (cm)", 600, 0.0, 15.0);
 	
 	//plots for beam asymmetry
 	dHist_phi_t = new TH2I("phi_t", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 1000, 0.0, 5.0,180, -180., 180.);
@@ -587,12 +599,21 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 
 	//Pre-cut histograms
 		if(locUsedSoFar_gXi.find(locUsedThisCombo_gXi) == locUsedSoFar_gXi.end()){
-			dHist_XiPath->Fill(locPathLengthXi);
-			dHist_XiPath_preCL->Fill(locPathLengthXi);
-			dHist_LambPath->Fill(locPathLengthLamb);
-			dHist_ProdVert->Fill(locProdSpacetimeVertex.Z());
-			dHist_XiVert->Fill(locDecayingXiX4.Z());
-			dHist_LambVert->Fill(locDecayingLambX4.Z());
+			if(fabs(locDeltaT) < 6.004) {	
+				if(fabs(locDeltaT) < 2.004) {	
+					dHist_XiPath_preCL->Fill(locPathLengthXi);
+					dHist_LambPath_preCL->Fill(locPathLengthLamb);
+					dHist_ProdVert_preCL->Fill(locProdSpacetimeVertex.Z());
+					dHist_XiVert_preCL->Fill(locDecayingXiX4.Z());
+					dHist_LambVert_preCL->Fill(locDecayingLambX4.Z());
+				}
+				else {
+					dHist_XiPath_preCL_wacc->Fill(locPathLengthXi,scaling_factor);
+					dHist_LambPath_preCL_wacc->Fill(locPathLengthLamb,scaling_factor);
+					dHist_ProdVert_preCL_wacc->Fill(locProdSpacetimeVertex.Z(),scaling_factor);
+					dHist_XiVert_preCL_wacc->Fill(locDecayingXiX4.Z(),scaling_factor);
+					dHist_LambVert_preCL_wacc->Fill(locDecayingLambX4.Z(),scaling_factor);
+				}
 		
 		}
 
@@ -645,10 +666,13 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 
 	//Post-cut histograms
 		if(locUsedSoFar_gXi.find(locUsedThisCombo_gXi) == locUsedSoFar_gXi.end()){
-			dHist_XiPath_postCL->Fill(locPathLengthXi);
-			locUsedSoFar_gXi.insert(locUsedThisCombo_gXi);
 			if(fabs(locDeltaT) < 6.004) {
 				if(fabs(locDeltaT) < 2.004) {	
+					dHist_XiPath_postCL->Fill(locPathLengthXi);
+					dHist_LambPath_postCL->Fill(locPathLengthLamb);
+					dHist_ProdVert_postCL->Fill(locProdSpacetimeVertex.Z());
+					dHist_XiVert_postCL->Fill(locDecayingXiX4.Z());
+					dHist_LambVert_postCL->Fill(locDecayingLambX4.Z());
 					dHist_XiMass_Measured->Fill(locXiP4_Measured.M());
 					dHist_XiMass_KinFit->Fill(locXiP4_KinFit.M());
 					dHist_Xi_cosGJ->Fill(locXiP4_KinFit.M(),cosTheta_GJ);
@@ -695,6 +719,11 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 					}		
 				}
 				else { 
+					dHist_XiPath_postCL_wacc->Fill(locPathLengthXi,scaling_factor);
+					dHist_LambPath_postCL_wacc->Fill(locPathLengthLamb,scaling_factor);
+					dHist_ProdVert_postCL_wacc->Fill(locProdSpacetimeVertex.Z(),scaling_factor);
+					dHist_XiVert_postCL_wacc->Fill(locDecayingXiX4.Z(),scaling_factor);
+					dHist_LambVert_postCL_wacc->Fill(locDecayingLambX4.Z(),scaling_factor);
 					dHist_XiMass_Measured_acc->Fill(locXiP4_Measured.M());
 					dHist_XiMass_KinFit_acc->Fill(locXiP4_KinFit.M());
 					dHist_XiMass_KinFit_wacc->Fill(locXiP4_KinFit.M(),scaling_factor);
@@ -742,6 +771,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 					}
 				} //end of else loop for OOT photons
 			} //end of 6.004 loop
+			locUsedSoFar_gXi.insert(locUsedThisCombo_gXi);
 		} //end of uniqueness for gXi
 
 		if(locUsedSoFar_gKhighXi.find(locUsedThisCombo_gKhighXi) == locUsedSoFar_gKhighXi.end()){

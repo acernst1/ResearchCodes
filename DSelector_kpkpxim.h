@@ -88,13 +88,26 @@ class DSelector_kpkpxim : public DSelector
 		TH2F* dHist_Xi_LambFlight_acc;
 
 		//Detached vertices check
-		TH1I* dHist_XiPath;
+		TH1I* dHist_ProdVert_preCL;
+		TH1I* dHist_XiVert_preCL;
+		TH1I* dHist_LambVert_preCL;
 		TH1I* dHist_XiPath_preCL;
+		TH1I* dHist_LambPath_preCL;
+		TH1I* dHist_ProdVert_preCL_wacc;
+		TH1I* dHist_XiVert_preCL_wacc;
+		TH1I* dHist_LambVert_preCL_wacc;
+		TH1I* dHist_XiPath_preCL_wacc;
+		TH1I* dHist_LambPath_preCL_wacc;
+		TH1I* dHist_ProdVert_postCL;
+		TH1I* dHist_XiVert_postCL;
+		TH1I* dHist_LambVert_postCL;
 		TH1I* dHist_XiPath_postCL;
-		TH1I* dHist_ProdVert;
-		TH1I* dHist_XiVert;
-		TH1I* dHist_LambVert;
-		TH1I* dHist_LambPath;
+		TH1I* dHist_LambPath_postCL;
+		TH1I* dHist_ProdVert_postCL_wacc;
+		TH1I* dHist_XiVert_postCL_wacc;
+		TH1I* dHist_LambVert_postCL_wacc;
+		TH1I* dHist_XiPath_postCL_wacc;
+		TH1I* dHist_LambPath_postCL_wacc;
 
 		//Beam asymmetry plots
 		TH2I* dHist_phi_t;
