@@ -25,7 +25,7 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	Get_ComboWrappers();
 	dPreviousRunNumber = 0;
 
-	/*********************************** EXAMPLE USER INITIALIZATION: ANALYSIS ACTIONS **********************************/
+/*********************************** EXAMPLE USER INITIALIZATION: ANALYSIS ACTIONS **********************************/
 
 	//ANALYSIS ACTIONS: //Executed in order if added to dAnalysisActions
 	//false/true below: use measured/kinfit data
@@ -56,7 +56,7 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	//If you create any actions that you want to run manually (i.e. don't add to dAnalysisActions), be sure to initialize them here as well
 	Initialize_Actions();
 
-	/******************************** USER INITIALIZATION: STAND-ALONE HISTOGRAMS *******************************/
+/******************************** USER INITIALIZATION: STAND-ALONE HISTOGRAMS *******************************/
 
 	//General Histograms
 	dHist_MissingMassSquared = new TH1I("MissingMassSquared", ";Missing Mass Squared (GeV/c^{2})^{2}", 600, -0.06, 0.06);
@@ -223,7 +223,7 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 		*myfile << "       " << "locKPlus1P4_Measured.P() " << "locKPlus2P4_Measured.P() " << "locProtonP4_Measured.P() " << "locPiMinus1P4_Measured.P() " << "locPiMinus2P4_Measured.P()" << endl;
 		*myfile << "       " << "locKPlus1P4.P() " << "locKPlus2P4.P() " << "locProtonP4.P() " << "locPiMinus1P4.P() " << "locPiMinus2P4.P()" << endl;
 
-	/************************** EXAMPLE USER INITIALIZATION: CUSTOM OUTPUT BRANCHES - MAIN TREE *************************/
+/************************** EXAMPLE USER INITIALIZATION: CUSTOM OUTPUT BRANCHES - MAIN TREE *************************/
 
 	//EXAMPLE MAIN TREE CUSTOM BRANCHES (OUTPUT ROOT FILE NAME MUST FIRST BE GIVEN!!!! (ABOVE: TOP)):
 	//The type for the branch must be included in the brackets
@@ -237,7 +237,7 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	dTreeInterface->Create_Branch_ClonesArray<TLorentzVector>("my_p4_array");
 	*/
 
-	/************************** EXAMPLE USER INITIALIZATION: CUSTOM OUTPUT BRANCHES - FLAT TREE *************************/
+/************************** EXAMPLE USER INITIALIZATION: CUSTOM OUTPUT BRANCHES - FLAT TREE *************************/
 
 	//EXAMPLE FLAT TREE CUSTOM BRANCHES (OUTPUT ROOT FILE NAME MUST FIRST BE GIVEN!!!! (ABOVE: TOP)):
 	//The type for the branch must be included in the brackets
@@ -250,7 +250,7 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	dFlatTreeInterface->Create_Branch_ClonesArray<TLorentzVector>("flat_my_p4_array");
 	*/
 
-	/************************************* ADVANCED EXAMPLE: CHOOSE BRANCHES TO READ ************************************/
+/************************************* ADVANCED EXAMPLE: CHOOSE BRANCHES TO READ ************************************/
 
 	//TO SAVE PROCESSING TIME
 		//If you know you don't need all of the branches/data, but just a subset of it, you can speed things up
@@ -280,7 +280,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 	//cout << "RUN " << Get_RunNumber() << ", EVENT " << Get_EventNumber() << endl;
 	//TLorentzVector locProductionX4 = Get_X4_Production();
 
-	/******************************************** GET POLARIZATION ORIENTATION ******************************************/
+/******************************************** GET POLARIZATION ORIENTATION ******************************************/
 
 	//Only if the run number changes
 	//RCDB environment must be setup in order for this to work! (Will return false otherwise)
@@ -291,7 +291,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		dPreviousRunNumber = locRunNumber;
 	}
 
-	/********************************************* SETUP UNIQUENESS TRACKING ********************************************/
+/********************************************* SETUP UNIQUENESS TRACKING ********************************************/
 
 	//ANALYSIS ACTIONS: Reset uniqueness tracking for each action
 	//For any actions that you are executing manually, be sure to call Reset_NewEvent() on them here
@@ -320,7 +320,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 	set<map<Particle_t,set<Int_t>>>locUsedSoFar_gKlowXi;
 	set<map<Particle_t,set<Int_t>>>locUsedSoFar_gKKXi;
 
-	/**************************************** EXAMPLE: FILL CUSTOM OUTPUT BRANCHES **************************************/
+/**************************************** EXAMPLE: FILL CUSTOM OUTPUT BRANCHES **************************************/
 
 	/*
 	Int_t locMyInt = 7;
@@ -333,7 +333,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		dTreeInterface->Fill_Fundamental<Int_t>("my_int_array", 3*loc_i, loc_i); //2nd argument = value, 3rd = array index
 	*/
 
-	/************************************************* LOOP OVER COMBOS *************************************************/
+/************************************************* LOOP OVER COMBOS *************************************************/
 
 	//Loop over combos
 	for(UInt_t loc_i = 0; loc_i < Get_NumCombos(); ++loc_i)
@@ -345,7 +345,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		if(dComboWrapper->Get_IsComboCut()) // Is false when tree originally created
 			continue; // Combo has been cut previously
 
-		/********************************************** GET PARTICLE INDICES *********************************************/
+	/********************************************** GET PARTICLE INDICES *********************************************/
 
 		//Used for tracking uniqueness when filling histograms, and for determining unused particles
 
@@ -361,7 +361,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		Int_t locPiMinus2TrackID = dPiMinus2Wrapper->Get_TrackID();
 		Int_t locProtonTrackID = dProtonWrapper->Get_TrackID();
 
-		/*********************************************** GET FOUR-MOMENTUM **********************************************/
+	/*********************************************** GET FOUR-MOMENTUM **********************************************/
 
 		// Get P4's: //is kinfit if kinfit performed, else is measured
 		//dTargetP4 is target p4
@@ -387,7 +387,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		TLorentzVector locPiMinus2P4_Measured = dPiMinus2Wrapper->Get_P4_Measured();
 		TLorentzVector locProtonP4_Measured = dProtonWrapper->Get_P4_Measured();
 
-		/********************************************* COMBINE FOUR-MOMENTUM ********************************************/
+	/********************************************* COMBINE FOUR-MOMENTUM ********************************************/
 
 		// Combine 4-vectors
 		TLorentzVector locMissingP4_Measured = locBeamP4_Measured + dTargetP4;
@@ -456,7 +456,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		double theta_GJ = v_GJ.Theta();
 		double phi_GJ = v_GJ.Phi()*180./TMath::Pi();
 
-		/******************************************** EXECUTE ANALYSIS ACTIONS *******************************************/
+	/******************************************** EXECUTE ANALYSIS ACTIONS *******************************************/
 
 		// Loop through the analysis actions, executing them in order for the active particle combo
 		if(!Execute_Actions()) //if the active combo fails a cut, IsComboCutFlag automatically set
@@ -465,7 +465,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		//if you manually execute any actions, and it fails a cut, be sure to call:
 			//dComboWrapper->Set_IsComboCut(true);
 
-		/**************************************** EXAMPLE: FILL CUSTOM OUTPUT BRANCHES **************************************/
+	/**************************************** EXAMPLE: FILL CUSTOM OUTPUT BRANCHES **************************************/
 
 		/*
 		TLorentzVector locMyComboP4(8.0, 7.0, 6.0, 5.0);
@@ -476,7 +476,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		dTreeInterface->Fill_TObject<TLorentzVector>("my_p4_array", locMyComboP4, loc_i);
 		*/
 
-		/**************************************** EXAMPLE: HISTOGRAM BEAM ENERGY *****************************************/
+	/**************************************** EXAMPLE: HISTOGRAM BEAM ENERGY *****************************************/
 
 		//Histogram beam energy (if haven't already)
 		if(locUsedSoFar_BeamEnergy.find(locBeamID) == locUsedSoFar_BeamEnergy.end())
@@ -485,7 +485,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 			locUsedSoFar_BeamEnergy.insert(locBeamID);
 		}
 
-		/************************************ USER DEFINED HISTOGRAMS************************************/
+	/************************************ USER DEFINED HISTOGRAMS************************************/
 
 	//Definitions for filling histograms
 		//Missing Mass squared
@@ -869,7 +869,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 
 
 
-	/****************************************** FILL FLAT TREE (IF DESIRED) ******************************************/
+/****************************************** FILL FLAT TREE (IF DESIRED) ******************************************/
 
 		/*
 		//FILL ANY CUSTOM BRANCHES FIRST!!
