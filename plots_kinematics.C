@@ -8,7 +8,9 @@ void plots_kinematics() {
 	TFile * mc201701 = TFile::Open("~/2020xsec_workfest/kpkpxim__B4_M23_genr8_2017_01_ANAver20_mar25.root");
 	TFile * mc201801 = TFile::Open("~/2020xsec_workfest/kpkpxim__B4_M23_genr8_2018_01_ANAver03_mar25.root");
 	TFile * mc201808 = TFile::Open("~/2020xsec_workfest/kpkpxim__B4_M23_genr8_2018_08_ANAver02_mar25.root");
-
+	
+	TFile *outputfile = new TFile("output_plots_kinematics.root","RECREATE");
+	
 	gStyle->SetOptStat(0000);
 
 	char XiKptheta17name[100];
@@ -483,47 +485,47 @@ void plots_kinematics() {
 
 	TH1F * Kp171 = (TH1F *)XiKptheta17_accsub->ProjectionY("Kp171",1,XiKptheta17_accsub->GetXaxis()->FindBin(140));
 	TH1F * Kp181 = (TH1F *)XiKptheta181_accsub->ProjectionY("Kp181",1,XiKptheta181_accsub->GetXaxis()->FindBin(140));
-	TH1F * Kp188 = (TH1F *)XiKptheta188_accsub->ProjectionY("Kp181",1,XiKptheta188_accsub->GetXaxis()->FindBin(140));
+	TH1F * Kp188 = (TH1F *)XiKptheta188_accsub->ProjectionY("Kp188",1,XiKptheta188_accsub->GetXaxis()->FindBin(140));
 	TH1F * Kp171MC = (TH1F *)XiKptheta171MC_accsub->ProjectionY("Kp171MC",1,XiKptheta171MC_accsub->GetXaxis()->FindBin(140));
 	TH1F * Kp181MC = (TH1F *)XiKptheta181MC_accsub->ProjectionY("Kp181MC",1,XiKptheta181MC_accsub->GetXaxis()->FindBin(140));
-	TH1F * Kp188MC = (TH1F *)XiKptheta188MC_accsub->ProjectionY("Kp181MC",1,XiKptheta188MC_accsub->GetXaxis()->FindBin(140));
+	TH1F * Kp188MC = (TH1F *)XiKptheta188MC_accsub->ProjectionY("Kp188MC",1,XiKptheta188MC_accsub->GetXaxis()->FindBin(140));
 	TH1F * Ktheta171 = (TH1F *)XiKptheta17_accsub->ProjectionX("Ktheta171",1,XiKptheta17_accsub->GetYaxis()->FindBin(10.));
 	TH1F * Ktheta181 = (TH1F *)XiKptheta181_accsub->ProjectionX("Ktheta181",1,XiKptheta181_accsub->GetYaxis()->FindBin(10));
-	TH1F * Ktheta188 = (TH1F *)XiKptheta188_accsub->ProjectionX("Ktheta181",1,XiKptheta188_accsub->GetYaxis()->FindBin(10));
+	TH1F * Ktheta188 = (TH1F *)XiKptheta188_accsub->ProjectionX("Ktheta188",1,XiKptheta188_accsub->GetYaxis()->FindBin(10));
 	TH1F * Ktheta171MC = (TH1F *)XiKptheta171MC_accsub->ProjectionX("Ktheta171MC",1,XiKptheta171MC_accsub->GetYaxis()->FindBin(10));
 	TH1F * Ktheta181MC = (TH1F *)XiKptheta181MC_accsub->ProjectionX("Ktheta181MC",1,XiKptheta181MC_accsub->GetYaxis()->FindBin(10));
-	TH1F * Ktheta188MC = (TH1F *)XiKptheta188MC_accsub->ProjectionX("Ktheta181MC",1,XiKptheta188MC_accsub->GetYaxis()->FindBin(10));
+	TH1F * Ktheta188MC = (TH1F *)XiKptheta188MC_accsub->ProjectionX("Ktheta188MC",1,XiKptheta188MC_accsub->GetYaxis()->FindBin(10));
 
 	TH1F * Pp171 = (TH1F *)Xipptheta17_accsub->ProjectionY("Pp171",1,Xipptheta17_accsub->GetXaxis()->FindBin(140));
 	TH1F * Pp181 = (TH1F *)Xipptheta181_accsub->ProjectionY("Pp181",1,Xipptheta181_accsub->GetXaxis()->FindBin(140));
-	TH1F * Pp188 = (TH1F *)Xipptheta188_accsub->ProjectionY("Pp181",1,Xipptheta188_accsub->GetXaxis()->FindBin(140));
+	TH1F * Pp188 = (TH1F *)Xipptheta188_accsub->ProjectionY("Pp188",1,Xipptheta188_accsub->GetXaxis()->FindBin(140));
 	TH1F * Pp171MC = (TH1F *)Xipptheta171MC_accsub->ProjectionY("Pp171MC",1,Xipptheta171MC_accsub->GetXaxis()->FindBin(140));
 	TH1F * Pp181MC = (TH1F *)Xipptheta181MC_accsub->ProjectionY("Pp181MC",1,Xipptheta181MC_accsub->GetXaxis()->FindBin(140));
-	TH1F * Pp188MC = (TH1F *)Xipptheta188MC_accsub->ProjectionY("Pp181MC",1,Xipptheta188MC_accsub->GetXaxis()->FindBin(140));
+	TH1F * Pp188MC = (TH1F *)Xipptheta188MC_accsub->ProjectionY("Pp188MC",1,Xipptheta188MC_accsub->GetXaxis()->FindBin(140));
 	TH1F * Ptheta171 = (TH1F *)Xipptheta17_accsub->ProjectionX("Ptheta171",1,Xipptheta17_accsub->GetYaxis()->FindBin(10.));
 	TH1F * Ptheta181 = (TH1F *)Xipptheta181_accsub->ProjectionX("Ptheta181",1,Xipptheta181_accsub->GetYaxis()->FindBin(10));
-	TH1F * Ptheta188 = (TH1F *)Xipptheta188_accsub->ProjectionX("Ptheta181",1,Xipptheta188_accsub->GetYaxis()->FindBin(10));
+	TH1F * Ptheta188 = (TH1F *)Xipptheta188_accsub->ProjectionX("Ptheta188",1,Xipptheta188_accsub->GetYaxis()->FindBin(10));
 	TH1F * Ptheta171MC = (TH1F *)Xipptheta171MC_accsub->ProjectionX("Ptheta171MC",1,Xipptheta171MC_accsub->GetYaxis()->FindBin(10));
 	TH1F * Ptheta181MC = (TH1F *)Xipptheta181MC_accsub->ProjectionX("Ptheta181MC",1,Xipptheta181MC_accsub->GetYaxis()->FindBin(10));
-	TH1F * Ptheta188MC = (TH1F *)Xipptheta188MC_accsub->ProjectionX("Ptheta181MC",1,Xipptheta188MC_accsub->GetYaxis()->FindBin(10));
+	TH1F * Ptheta188MC = (TH1F *)Xipptheta188MC_accsub->ProjectionX("Ptheta188MC",1,Xipptheta188MC_accsub->GetYaxis()->FindBin(10));
 
 	TH1F * pip171 = (TH1F *)Xipiptheta17_accsub->ProjectionY("pip171",1,Xipiptheta17_accsub->GetXaxis()->FindBin(140));
 	TH1F * pip181 = (TH1F *)Xipiptheta181_accsub->ProjectionY("pip181",1,Xipiptheta181_accsub->GetXaxis()->FindBin(140));
-	TH1F * pip188 = (TH1F *)Xipiptheta188_accsub->ProjectionY("pip181",1,Xipiptheta188_accsub->GetXaxis()->FindBin(140));
+	TH1F * pip188 = (TH1F *)Xipiptheta188_accsub->ProjectionY("pip188",1,Xipiptheta188_accsub->GetXaxis()->FindBin(140));
 	TH1F * pip171MC = (TH1F *)Xipiptheta171MC_accsub->ProjectionY("pip171MC",1,Xipiptheta171MC_accsub->GetXaxis()->FindBin(140));
 	TH1F * pip181MC = (TH1F *)Xipiptheta181MC_accsub->ProjectionY("pip181MC",1,Xipiptheta181MC_accsub->GetXaxis()->FindBin(140));
-	TH1F * pip188MC = (TH1F *)Xipiptheta188MC_accsub->ProjectionY("pip181MC",1,Xipiptheta188MC_accsub->GetXaxis()->FindBin(140));
-	TH1F * pitheta171 = (TH1F *)Xipiptheta17_accsub->ProjectionX("Ptheta171",1,Xipiptheta17_accsub->GetYaxis()->FindBin(10.));
-	TH1F * pitheta181 = (TH1F *)Xipiptheta181_accsub->ProjectionX("Ptheta181",1,Xipiptheta181_accsub->GetYaxis()->FindBin(10));
-	TH1F * pitheta188 = (TH1F *)Xipiptheta188_accsub->ProjectionX("Ptheta181",1,Xipiptheta188_accsub->GetYaxis()->FindBin(10));
-	TH1F * pitheta171MC = (TH1F *)Xipiptheta171MC_accsub->ProjectionX("Ptheta171MC",1,Xipiptheta171MC_accsub->GetYaxis()->FindBin(10));
-	TH1F * pitheta181MC = (TH1F *)Xipiptheta181MC_accsub->ProjectionX("Ptheta181MC",1,Xipiptheta181MC_accsub->GetYaxis()->FindBin(10));
-	TH1F * pitheta188MC = (TH1F *)Xipiptheta188MC_accsub->ProjectionX("Ptheta181MC",1,Xipiptheta188MC_accsub->GetYaxis()->FindBin(10));
+	TH1F * pip188MC = (TH1F *)Xipiptheta188MC_accsub->ProjectionY("pip188MC",1,Xipiptheta188MC_accsub->GetXaxis()->FindBin(140));
+	TH1F * pitheta171 = (TH1F *)Xipiptheta17_accsub->ProjectionX("pitheta171",1,Xipiptheta17_accsub->GetYaxis()->FindBin(10.));
+	TH1F * pitheta181 = (TH1F *)Xipiptheta181_accsub->ProjectionX("pitheta181",1,Xipiptheta181_accsub->GetYaxis()->FindBin(10));
+	TH1F * pitheta188 = (TH1F *)Xipiptheta188_accsub->ProjectionX("pitheta188",1,Xipiptheta188_accsub->GetYaxis()->FindBin(10));
+	TH1F * pitheta171MC = (TH1F *)Xipiptheta171MC_accsub->ProjectionX("pitheta171MC",1,Xipiptheta171MC_accsub->GetYaxis()->FindBin(10));
+	TH1F * pitheta181MC = (TH1F *)Xipiptheta181MC_accsub->ProjectionX("pitheta181MC",1,Xipiptheta181MC_accsub->GetYaxis()->FindBin(10));
+	TH1F * pitheta188MC = (TH1F *)Xipiptheta188MC_accsub->ProjectionX("pitheta188MC",1,Xipiptheta188MC_accsub->GetYaxis()->FindBin(10));
 
 	TCanvas *ccXiKpMeasured = new TCanvas("ccXiKpMeasured", "ccXiKpMeasured", 800, 600);
-	Kp171->SetLineColor(kGreen); Kp171->Draw(); 
+	Kp188->SetLineColor(kBlue); Kp188->Draw();
+	Kp171->SetLineColor(kGreen); Kp171->Draw("same"); 
 	Kp181->SetLineColor(kRed); Kp181->Draw("same");
-	Kp188->SetLineColor(kBlue); Kp188->Draw("same");
 	auto legend_sets = new TLegend(0.70,0.8,0.98,0.93);
 	legend_sets->AddEntry(Kp171,"2017-01 ANAver20","l");
 	legend_sets->AddEntry(Kp181,"2018-01 ANAver03","l");
@@ -531,74 +533,74 @@ void plots_kinematics() {
 	legend_sets->Draw();	
 	ccXiKpMeasured->Print("kp.png");
 	TCanvas *ccXiKpMeasuredMC = new TCanvas("ccXiKpMeasuredMC", "ccXiKpMeasuredMC", 800, 600);
-	Kp171MC->SetLineColor(kGreen); Kp171MC->Draw("same");
-	Kp181MC->SetLineColor(kRed); Kp181MC->Draw("same");
+	Kp171MC->SetLineColor(kGreen); Kp171MC->Draw();
 	Kp188MC->SetLineColor(kBlue); Kp188MC->Draw("same");
+	Kp181MC->SetLineColor(kRed); Kp181MC->Draw("same");
 	legend_sets->Draw();
 	ccXiKpMeasuredMC->Print("kpMC.png");
 
 	TCanvas *ccXiKthetaMeasured = new TCanvas("ccXiKthetaMeasured", "ccXiKthetaMeasured", 800, 600);
-	Ktheta171->SetLineColor(kGreen); Ktheta171->Draw(); 
+	Ktheta188->SetLineColor(kBlue); Ktheta188->Draw();
+	Ktheta171->SetLineColor(kGreen); Ktheta171->Draw("same"); 
 	Ktheta181->SetLineColor(kRed); Ktheta181->Draw("same");
-	Ktheta188->SetLineColor(kBlue); Ktheta188->Draw("same");
 	legend_sets->Draw();
 	ccXiKthetaMeasured->Print("ktheta.png");
 	TCanvas *ccXiKthetaMeasuredMC = new TCanvas("ccXiKthetaMeasuredMC", "ccXiKthetaMeasuredMC", 800, 600);
-	Ktheta171MC->SetLineColor(kGreen); Ktheta171MC->Draw("");
-	Ktheta181MC->SetLineColor(kRed); Ktheta181MC->Draw("same");
+	Ktheta171MC->SetLineColor(kGreen); Ktheta171MC->Draw();
 	Ktheta188MC->SetLineColor(kBlue); Ktheta188MC->Draw("same");
+	Ktheta181MC->SetLineColor(kRed); Ktheta181MC->Draw("same");
 	legend_sets->Draw();
 	ccXiKthetaMeasuredMC->Print("kthetaMC.png");
 
 	TCanvas *ccXiPpMeasured = new TCanvas("ccXiPpMeasured", "ccXiPpMeasured", 800, 600);
-	Pp171->SetLineColor(kGreen); Pp171->Draw(); 
+	Pp188->SetLineColor(kBlue); Pp188->Draw();
+	Pp171->SetLineColor(kGreen); Pp171->Draw("same"); 
 	Pp181->SetLineColor(kRed); Pp181->Draw("same");
-	Pp188->SetLineColor(kBlue); Pp188->Draw("same");
 	legend_sets->Draw();	
 	ccXiPpMeasured->Print("Pp.png");
 	TCanvas *ccXiPpMeasuredMC = new TCanvas("ccXiPpMeasuredMC", "ccXiPpMeasuredMC", 800, 600);
-	Pp171MC->SetLineColor(kGreen); Pp171MC->Draw("same");
-	Pp181MC->SetLineColor(kRed); Pp181MC->Draw("same");
+	Pp171MC->SetLineColor(kGreen); Pp171MC->Draw();
 	Pp188MC->SetLineColor(kBlue); Pp188MC->Draw("same");
+	Pp181MC->SetLineColor(kRed); Pp181MC->Draw("same");
 	legend_sets->Draw();
 	ccXiPpMeasuredMC->Print("PpMC.png");
 
 	TCanvas *ccXiPthetaMeasured = new TCanvas("ccXiPthetaMeasured", "ccXiPthetaMeasured", 800, 600);
-	Ptheta171->SetLineColor(kGreen); Ptheta171->Draw(); 
+	Ptheta188->SetLineColor(kBlue); Ptheta188->Draw();
+	Ptheta171->SetLineColor(kGreen); Ptheta171->Draw("same"); 
 	Ptheta181->SetLineColor(kRed); Ptheta181->Draw("same");
-	Ptheta188->SetLineColor(kBlue); Ptheta188->Draw("same");
 	legend_sets->Draw();
 	ccXiPthetaMeasured->Print("Ptheta.png");
 	TCanvas *ccXiPthetaMeasuredMC = new TCanvas("ccXiPthetaMeasuredMC", "ccXiPthetaMeasuredMC", 800, 600);
-	Ptheta171MC->SetLineColor(kGreen); Ptheta171MC->Draw("");
-	Ptheta181MC->SetLineColor(kRed); Ptheta181MC->Draw("same");
+	Ptheta171MC->SetLineColor(kGreen); Ptheta171MC->Draw();
 	Ptheta188MC->SetLineColor(kBlue); Ptheta188MC->Draw("same");
+	Ptheta181MC->SetLineColor(kRed); Ptheta181MC->Draw("same");
 	legend_sets->Draw();
 	ccXiPthetaMeasuredMC->Print("PthetaMC.png");
 
 	TCanvas *ccXipipMeasured = new TCanvas("ccXipipMeasured", "ccXipipMeasured", 800, 600);
-	pip171->SetLineColor(kGreen); pip171->Draw(); 
+	pip188->SetLineColor(kBlue); pip188->Draw();
+	pip171->SetLineColor(kGreen); pip171->Draw("same"); 
 	pip181->SetLineColor(kRed); pip181->Draw("same");
-	pip188->SetLineColor(kBlue); pip188->Draw("same");
 	legend_sets->Draw();	
 	ccXipipMeasured->Print("pip.png");
 	TCanvas *ccXipipMeasuredMC = new TCanvas("ccXipipMeasuredMC", "ccXipipMeasuredMC", 800, 600);
-	pip171MC->SetLineColor(kGreen); pip171MC->Draw("same");
-	pip181MC->SetLineColor(kRed); pip181MC->Draw("same");
+	pip171MC->SetLineColor(kGreen); pip171MC->Draw();
 	pip188MC->SetLineColor(kBlue); pip188MC->Draw("same");
+	pip181MC->SetLineColor(kRed); pip181MC->Draw("same");
 	legend_sets->Draw();
 	ccXipipMeasuredMC->Print("pipMC.png");
 
 	TCanvas *ccXipithetaMeasured = new TCanvas("ccXipithetaMeasured", "ccXipithetaMeasured", 800, 600);
-	pitheta171->SetLineColor(kGreen); pitheta171->Draw(); 
+	pitheta188->SetLineColor(kBlue); pitheta188->Draw();
+	pitheta171->SetLineColor(kGreen); pitheta171->Draw("same"); 
 	pitheta181->SetLineColor(kRed); pitheta181->Draw("same");
-	pitheta188->SetLineColor(kBlue); pitheta188->Draw("same");
 	legend_sets->Draw();
 	ccXipithetaMeasured->Print("pitheta.png");
 	TCanvas *ccXipithetaMeasuredMC = new TCanvas("ccXipithetaMeasuredMC", "ccXipithetaMeasuredMC", 800, 600);
-	pitheta171MC->SetLineColor(kGreen); pitheta171MC->Draw("");
-	pitheta181MC->SetLineColor(kRed); pitheta181MC->Draw("same");
+	pitheta171MC->SetLineColor(kGreen); pitheta171MC->Draw();
 	pitheta188MC->SetLineColor(kBlue); pitheta188MC->Draw("same");
+	pitheta181MC->SetLineColor(kRed); pitheta181MC->Draw("same");
 	legend_sets->Draw();
 	ccXipithetaMeasuredMC->Print("pithetaMC.png");
 
@@ -1482,6 +1484,7 @@ void plots_kinematics() {
 	ccprotXzM18->Print(protXznameM18);
 
 */
+	outputfile->Write();
 	return;	
 	
 }
