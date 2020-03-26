@@ -94,6 +94,7 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	dHist_XiVert_postCL = new TH1I("XiVert_postCL", ";#Xi^{-} Vertex Z (cm)", 600, -50.0, 200.0);
 	dHist_LambVert_postCL = new TH1I("LambVert_postCL", ";#Lambda Vertex Z (cm)", 600, -50.0, 200.0);
 	dHist_XiPath_postCL = new TH1I("XiPathLength_postCL", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
+	dHist_LambPath_postCL = new TH1I("LambPathLength_postCL", ";#Lambda Path Length (cm)", 600, 0.0, 15.0);
 	dHist_ProdVert_preCL_wacc = new TH1I("ProdVert_preCL_wacc", ";Production Vertex Z (cm)", 600, -50.0, 200.0);
 	dHist_XiVert_preCL_wacc = new TH1I("XiVert_preCL_wacc", ";#Xi^{-} Vertex Z (cm)", 600, -50.0, 200.0);
 	dHist_LambVert_preCL_wacc = new TH1I("LambVert_preCL_wacc", ";#Lambda Vertex Z (cm)", 600, -50.0, 200.0);
@@ -681,7 +682,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 	//Post-cut histograms
 		if(locUsedSoFar_gXi.find(locUsedThisCombo_gXi) == locUsedSoFar_gXi.end()){
 			if(fabs(locDeltaT) < 6.004) {
-/*				if(fabs(locDeltaT) < 2.004) {	
+				if(fabs(locDeltaT) < 2.004) {	
 					dHist_XiPath_postCL->Fill(locPathLengthXi);
 					dHist_LambPath_postCL->Fill(locPathLengthLamb);
 					dHist_ProdVert_postCL->Fill(locProdSpacetimeVertex.Z());
@@ -784,7 +785,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 						dHist_XiMass_piTheta15to35_KinFit_wacc->Fill(locXiP4_KinFit.M(),scaling_factor);
 					}
 				} //end of else loop for OOT photons
-*/			} //end of 6.004 loop
+			} //end of 6.004 loop
 			locUsedSoFar_gXi.insert(locUsedThisCombo_gXi);
 		} //end of uniqueness for gXi postChiSq
 
