@@ -73,6 +73,8 @@ class DSelector_kpkpxim : public DSelector
 		TH2I* dHist_ChiSqXi_KinFit;
 		TH2I* dHist_ChiSqXi_KinFit_acc;
 		TH2I* dHist_ChiSqXi_KinFit_wacc;
+		TH2I* dHist_ChiSqKp;
+		TH2I* dHist_ChiSqKp_wacc;
 		TH1I* dHist_XiMass_Measured;	
 		TH1I* dHist_XiMass_KinFit;
 		TH1I* dHist_XiMass_Measured_nan;	

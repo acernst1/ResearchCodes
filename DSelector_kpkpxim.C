@@ -65,11 +65,13 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	dHist_BeamBunch_Xi = new TH1I("BeamBunch_Xi", ";Beam Bunch", 400, -20.0, 20.0);
 	dHist_BeamBunch_Xi_acc = new TH1I("BeamBunch_Xi_acc", ";Beam Bunch", 400, -20.0, 20.0);
 	dHist_BeamBunch_Xi_wacc = new TH1I("BeamBunch_Xi_wacc", ";Beam Bunch", 400, -20.0, 20.0);
-	dHist_ChiSq = new TH1I("ChiSq", "ChiSq", 200, 0.0, 100.0);
-	dHist_ChiSqXi = new TH2I("ChiSqXi", "ChiSq",100,0.0,100.0,400,1.1,1.5);
-	dHist_ChiSqXi_KinFit = new TH2I("ChiSqXi_KinFit", "ChiSq",100,0.0,50.0,400,1.1,1.5);
-	dHist_ChiSqXi_KinFit_acc = new TH2I("ChiSqXi_KinFit_acc", "ChiSq",100,0.0,50.0,400,1.1,1.5);
-	dHist_ChiSqXi_KinFit_wacc = new TH2I("ChiSqXi_KinFit_wacc", "ChiSq",100,0.0,50.0,400,1.1,1.5);
+	dHist_ChiSq = new TH1I("ChiSq", ";X^{2}/NDF", 200, 0.0, 100.0);
+	dHist_ChiSqXi = new TH2I("ChiSqXi", " ;X^{2}/NDF; #Lambda#pi^{-} mass (GeV)",100,0.0,100.0,400,1.1,1.5);
+	dHist_ChiSqXi_KinFit = new TH2I("ChiSqXi_KinFit", ";X^{2}/NDF; #Lambda#pi^{-} mass (GeV)",100,0.0,50.0,400,1.1,1.5);
+	dHist_ChiSqXi_KinFit_acc = new TH2I("ChiSqXi_KinFit_acc", ";X^{2}/NDF;#Lambda#pi^{-} mass (GeV)",100,0.0,50.0,400,1.1,1.5);
+	dHist_ChiSqXi_KinFit_wacc = new TH2I("ChiSqXi_KinFit_wacc", ";X^{2}/NDF;#Lambda#pi^{-} mass (GeV)",100,0.0,50.0,400,1.1,1.5);
+	dHist_ChiSqKp = new TH2I("ChiSqKp", " ;X^{2}/NDF; p_{K}",100,0.0,100.0, 100,1.1,10.);
+	dHist_ChiSqKp_wacc = new TH2I("ChiSqKp_wacc", " ;X^{2}/NDF; p_{K}",100,0.0,100.0, 100,1.1,10.);
 	dHist_XiMass_Measured = new TH1I("XiMass","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
 	dHist_XiMass_KinFit = new TH1I("XiMass_KinFit","#Xi- Invariant Mass (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_XiMass_Measured_nan = new TH1I("XiMass_nan","#Xi- Invariant Mass (GeV/c^{2})", 400,1.1,1.5);
@@ -138,12 +140,12 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	dHist_Xi_Egamma_t_065 = new TH3F("Xi_Egamma_t_065",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,100,6.5,11.5,100, 0.0, 5.0);
 	dHist_Xi_Egamma_t_065_acc = new TH3F("Xi_Egamma_t_065_acc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,100,6.5,11.5,100, 0.0, 5.0);
 	dHist_Xi_Egamma_t_065_wacc = new TH3F("Xi_Egamma_t_065_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,100,6.5,11.5,100, 0.0, 5.0);
-	dHist_Xi_Egamma_ChiSq_063 = new TH3F("Xi_Egamma_ChiSq_063",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); ChiSqNDF",400, 1.1, 1.5,100,6.3,11.3,100, 0.0, 50.0);
-	dHist_Xi_Egamma_ChiSq_063_wacc = new TH3F("Xi_Egamma_ChiSq_063_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); ChiSqNDF",400, 1.1, 1.5,100,6.3,11.3,100, 0.0, 50.0);
-	dHist_Xi_Egamma_ChiSq_064 = new TH3F("Xi_Egamma_ChiSq_064",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); ChiSqNDF",400, 1.1, 1.5,100,6.4,11.4,100, 0.0, 50.0);
-	dHist_Xi_Egamma_ChiSq_064_wacc = new TH3F("Xi_Egamma_ChiSq_064_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); ChiSqNDF",400, 1.1, 1.5,100,6.4,11.4,100, 0.0, 50.0);
-	dHist_Xi_Egamma_ChiSq_065 = new TH3F("Xi_Egamma_ChiSq_065",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); ChiSqNDF",400, 1.1, 1.5,100,6.5,11.5,100, 0.0, 50.0);
-	dHist_Xi_Egamma_ChiSq_065_wacc = new TH3F("Xi_Egamma_ChiSq_065_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); ChiSqNDF",400, 1.1, 1.5,100,6.5,11.5,100, 0.0, 50.0);
+	dHist_Xi_Egamma_ChiSq_063 = new TH3F("Xi_Egamma_ChiSq_063",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); X^{2}/NDF",400, 1.1, 1.5,100,6.3,11.3,100, 0.0, 50.0);
+	dHist_Xi_Egamma_ChiSq_063_wacc = new TH3F("Xi_Egamma_ChiSq_063_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); X^{2}/NDF",400, 1.1, 1.5,100,6.3,11.3,100, 0.0, 50.0);
+	dHist_Xi_Egamma_ChiSq_064 = new TH3F("Xi_Egamma_ChiSq_064",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); X^{2}/NDFF",400, 1.1, 1.5,100,6.4,11.4,100, 0.0, 50.0);
+	dHist_Xi_Egamma_ChiSq_064_wacc = new TH3F("Xi_Egamma_ChiSq_064_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); X^{2}/NDF",400, 1.1, 1.5,100,6.4,11.4,100, 0.0, 50.0);
+	dHist_Xi_Egamma_ChiSq_065 = new TH3F("Xi_Egamma_ChiSq_065",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); X^{2}/NDF",400, 1.1, 1.5,100,6.5,11.5,100, 0.0, 50.0);
+	dHist_Xi_Egamma_ChiSq_065_wacc = new TH3F("Xi_Egamma_ChiSq_065_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); X^{2}/NDF",400, 1.1, 1.5,100,6.5,11.5,100, 0.0, 50.0);
 	dHist_Xi_t_Truth = new TH2F("Xi_t_Truth", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,100, 0.0, 5.0);
 
 
@@ -643,6 +645,8 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 				if(fabs(locDeltaT) < 2.004) {	
 					dHist_ChiSqXi->Fill(locChiSqNdf, locXiP4_Measured.M());
 					dHist_ChiSqXi_KinFit->Fill(locChiSqNdf, locXiP4_KinFit.M());
+					dHist_ChiSqKp->Fill(locChiSqNdf, locKPlus1P4.P());
+					dHist_ChiSqKp->Fill(locChiSqNdf, locKPlus2P4.P());
 					dHist_Xi_Egamma_ChiSq_063->Fill(locXiP4_KinFit.M(),locBeamP4.E(),locChiSqNdf);
 					dHist_Xi_Egamma_ChiSq_064->Fill(locXiP4_KinFit.M(),locBeamP4.E(),locChiSqNdf);
 					dHist_Xi_Egamma_ChiSq_065->Fill(locXiP4_KinFit.M(),locBeamP4.E(),locChiSqNdf);
@@ -654,6 +658,8 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 				else { 
 					dHist_ChiSqXi_KinFit_acc->Fill(locChiSqNdf, locXiP4_KinFit.M());
 					dHist_ChiSqXi_KinFit_wacc->Fill(locChiSqNdf, locXiP4_KinFit.M(),scaling_factor);
+					dHist_ChiSqKp_wacc->Fill(locChiSqNdf, locKPlus1P4.P(),scaling_factor);
+					dHist_ChiSqKp_wacc->Fill(locChiSqNdf, locKPlus2P4.P(),scaling_factor);
 					dHist_Xi_Egamma_ChiSq_063_wacc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),locChiSqNdf,scaling_factor);
 					dHist_Xi_Egamma_ChiSq_064_wacc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),locChiSqNdf,scaling_factor);
 					dHist_Xi_Egamma_ChiSq_065_wacc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),locChiSqNdf,scaling_factor);
