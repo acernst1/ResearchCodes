@@ -139,6 +139,12 @@ class DSelector_kpkpxim : public DSelector
 		TH3F* dHist_Xi_Egamma_t_065;
 		TH3F* dHist_Xi_Egamma_t_065_acc;
 		TH3F* dHist_Xi_Egamma_t_065_wacc;
+		TH3F* dHist_Xi_Egamma_ChiSq_063;
+		TH3F* dHist_Xi_Egamma_ChiSq_063_wacc;
+		TH3F* dHist_Xi_Egamma_ChiSq_064;
+		TH3F* dHist_Xi_Egamma_ChiSq_064_wacc;
+		TH3F* dHist_Xi_Egamma_ChiSq_065;
+		TH3F* dHist_Xi_Egamma_ChiSq_065_wacc;
 		TH2F* dHist_Xi_t_Truth;		
 		TH1I* dHist_XiMass024;
 		TH1I* dHist_XiMass029;

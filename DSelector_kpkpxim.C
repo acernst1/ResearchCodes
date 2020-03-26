@@ -92,16 +92,16 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	dHist_LambPath_preCL = new TH1I("LambPathLength_preCL", ";#Lambda Path Length (cm)", 600, 0.0, 15.0);
 	dHist_ProdVert_postCL = new TH1I("ProdVert_postCL", ";Production Vertex Z (cm)", 600, -50.0, 200.0);
 	dHist_XiVert_postCL = new TH1I("XiVert_postCL", ";#Xi^{-} Vertex Z (cm)", 600, -50.0, 200.0);
-	dHist_LambVert_postL = new TH1I("LambVert_postCL", ";#Lambda Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_LambVert_postCL = new TH1I("LambVert_postCL", ";#Lambda Vertex Z (cm)", 600, -50.0, 200.0);
 	dHist_XiPath_postCL = new TH1I("XiPathLength_postCL", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
-	dHist_ProdVert_preC_wacc = new TH1I("ProdVert_preCL_wacc", ";Production Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_ProdVert_preCL_wacc = new TH1I("ProdVert_preCL_wacc", ";Production Vertex Z (cm)", 600, -50.0, 200.0);
 	dHist_XiVert_preCL_wacc = new TH1I("XiVert_preCL_wacc", ";#Xi^{-} Vertex Z (cm)", 600, -50.0, 200.0);
 	dHist_LambVert_preCL_wacc = new TH1I("LambVert_preCL_wacc", ";#Lambda Vertex Z (cm)", 600, -50.0, 200.0);
 	dHist_XiPath_preCL_wacc = new TH1I("XiPathLength_preCL_wacc", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
 	dHist_LambPath_preCL_wacc = new TH1I("LambPathLength_preCL_wacc", ";#Lambda Path Length (cm)", 600, 0.0, 15.0);
 	dHist_ProdVert_postCL_wacc = new TH1I("ProdVert_postCL_wacc", ";Production Vertex Z (cm)", 600, -50.0, 200.0);
 	dHist_XiVert_postCL_wacc = new TH1I("XiVert_postCL_wacc", ";#Xi^{-} Vertex Z (cm)", 600, -50.0, 200.0);
-	dHist_LambVert_postL_wacc = new TH1I("LambVert_postCL_wacc", ";#Lambda Vertex Z (cm)", 600, -50.0, 200.0);
+	dHist_LambVert_postCL_wacc = new TH1I("LambVert_postCL_wacc", ";#Lambda Vertex Z (cm)", 600, -50.0, 200.0);
 	dHist_XiPath_postCL_wacc = new TH1I("XiPathLength_postCL_wacc", ";#Xi^{-} Path Length (cm)", 600, 0.0, 15.0);
 	dHist_LambPath_postCL_wacc = new TH1I("LambPathLength_postCL_wacc", ";#Lambda Path Length (cm)", 600, 0.0, 15.0);
 	
@@ -135,6 +135,12 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	dHist_Xi_Egamma_t_065 = new TH3F("Xi_Egamma_t_065",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,100,6.5,11.5,100, 0.0, 5.0);
 	dHist_Xi_Egamma_t_065_acc = new TH3F("Xi_Egamma_t_065_acc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,100,6.5,11.5,100, 0.0, 5.0);
 	dHist_Xi_Egamma_t_065_wacc = new TH3F("Xi_Egamma_t_065_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); -t (GeV/c)^{2}",400, 1.1, 1.5,100,6.5,11.5,100, 0.0, 5.0);
+	dHist_Xi_Egamma_ChiSq_063 = new TH3F("Xi_Egamma_ChiSq_063",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); ChiSqNDF",400, 1.1, 1.5,100,6.3,11.3,100, 0.0, 50.0);
+	dHist_Xi_Egamma_ChiSq_063_wacc = new TH3F("Xi_Egamma_ChiSq_063_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); ChiSqNDF",400, 1.1, 1.5,100,6.3,11.3,100, 0.0, 50.0);
+	dHist_Xi_Egamma_ChiSq_064 = new TH3F("Xi_Egamma_ChiSq_064",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); ChiSqNDF",400, 1.1, 1.5,100,6.4,11.4,100, 0.0, 50.0);
+	dHist_Xi_Egamma_ChiSq_064_wacc = new TH3F("Xi_Egamma_ChiSq_064_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); ChiSqNDF",400, 1.1, 1.5,100,6.4,11.4,100, 0.0, 50.0);
+	dHist_Xi_Egamma_ChiSq_065 = new TH3F("Xi_Egamma_ChiSq_065",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); ChiSqNDF",400, 1.1, 1.5,100,6.5,11.5,100, 0.0, 50.0);
+	dHist_Xi_Egamma_ChiSq_065_wacc = new TH3F("Xi_Egamma_ChiSq_065_wacc",";#Lambda#pi^{-} mass (GeV); E_{#gamma} (GeV); ChiSqNDF",400, 1.1, 1.5,100,6.5,11.5,100, 0.0, 50.0);
 	dHist_Xi_t_Truth = new TH2F("Xi_t_Truth", " ;#Lambda#pi^{-} mass (GeV); -t (GeV/c)^{2}", 400, 1.1, 1.5,100, 0.0, 5.0);
 
 
@@ -533,6 +539,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		TLorentzVector locIntermediate_KinFit = locKPlusP4_lowp + locXiP4_KinFit;
 		double t= (locBeamP4 - locKPlusP4_highp).M2();
 		double phi = locKPlusP4_highp.Phi()*180/TMath::Pi();
+		double t_Truth;
 		if(phi < -180.) phi = phi + 360.;
 		if (phi > 180.) phi = phi - 360.;
 
@@ -552,7 +559,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 				}
 				if(locPID == 23 ) { locXiTruth = locThrownP4;}
 			}
-			double t_Truth= (locBeamP4 - locKPlusP4_t).M2();
+			t_Truth= (locBeamP4 - locKPlusP4_t).M2();
 			locIntermediate_Truth = locXiTruth + locKPlusP4_decay;
 		}
 
@@ -614,7 +621,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 					dHist_XiVert_preCL_wacc->Fill(locDecayingXiX4.Z(),scaling_factor);
 					dHist_LambVert_preCL_wacc->Fill(locDecayingLambX4.Z(),scaling_factor);
 				}
-		
+			}
 		} //end of uniqueness for gXi preChiSq
 
 		if(locUsedSoFar_gKhighXi.find(locUsedThisCombo_gKhighXi) == locUsedSoFar_gKhighXi.end()){
@@ -633,6 +640,9 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 				if(fabs(locDeltaT) < 2.004) {	
 					dHist_ChiSqXi->Fill(locChiSqNdf, locXiP4_Measured.M());
 					dHist_ChiSqXi_KinFit->Fill(locChiSqNdf, locXiP4_KinFit.M());
+					dHist_Xi_Egamma_ChiSq_063->Fill(locXiP4_KinFit.M(),locBeamP4.E(),locChiSqNdf);
+					dHist_Xi_Egamma_ChiSq_064->Fill(locXiP4_KinFit.M(),locBeamP4.E(),locChiSqNdf);
+					dHist_Xi_Egamma_ChiSq_065->Fill(locXiP4_KinFit.M(),locBeamP4.E(),locChiSqNdf);
 					if(locChiSqNdf < 3.50){
 						dHist_XiMass_Measured_nan->Fill(locXiP4_Measured.M());
 						dHist_XiMass_KinFit_nan->Fill(locXiP4_KinFit.M());
@@ -641,6 +651,9 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 				else { 
 					dHist_ChiSqXi_KinFit_acc->Fill(locChiSqNdf, locXiP4_KinFit.M());
 					dHist_ChiSqXi_KinFit_wacc->Fill(locChiSqNdf, locXiP4_KinFit.M(),scaling_factor);
+					dHist_Xi_Egamma_ChiSq_063_wacc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),locChiSqNdf,scaling_factor);
+					dHist_Xi_Egamma_ChiSq_064_wacc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),locChiSqNdf,scaling_factor);
+					dHist_Xi_Egamma_ChiSq_065_wacc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),locChiSqNdf,scaling_factor);
 					if(locChiSqNdf < 3.50){
 						dHist_XiMass_Measured_nan_wacc->Fill(locXiP4_Measured.M(),scaling_factor);
 						dHist_XiMass_KinFit_nan_wacc->Fill(locXiP4_KinFit.M(),scaling_factor);
@@ -668,7 +681,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 	//Post-cut histograms
 		if(locUsedSoFar_gXi.find(locUsedThisCombo_gXi) == locUsedSoFar_gXi.end()){
 			if(fabs(locDeltaT) < 6.004) {
-				if(fabs(locDeltaT) < 2.004) {	
+/*				if(fabs(locDeltaT) < 2.004) {	
 					dHist_XiPath_postCL->Fill(locPathLengthXi);
 					dHist_LambPath_postCL->Fill(locPathLengthLamb);
 					dHist_ProdVert_postCL->Fill(locProdSpacetimeVertex.Z());
@@ -771,7 +784,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 						dHist_XiMass_piTheta15to35_KinFit_wacc->Fill(locXiP4_KinFit.M(),scaling_factor);
 					}
 				} //end of else loop for OOT photons
-			} //end of 6.004 loop
+*/			} //end of 6.004 loop
 			locUsedSoFar_gXi.insert(locUsedThisCombo_gXi);
 		} //end of uniqueness for gXi postChiSq
 
@@ -784,7 +797,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 					dHist_Xi_Egamma_t_064->Fill(locXiP4_KinFit.M(),locBeamP4.E(),-1.*t);
 					dHist_Xi_Egamma_t_065->Fill(locXiP4_KinFit.M(),locBeamP4.E(),-1.*t);
 					if(dThrownBeam != NULL){
-						dHist_Xi_t_Truth->Fill(locXiP4_KinFit.M(),-1.*t_Truth);
+						//dHist_Xi_t_Truth->Fill(locXiP4_KinFit.M(),-1.*t_Truth);
 					}
 					if(locXiP4_KinFit.M() >1.31 && locXiP4_KinFit.M() < 1.33){
 						dHist_Khighp_pvstheta->Fill(locKPlusP4_highp.Theta()*180./TMath::Pi(),locKPlusP4_highp.P());
@@ -807,7 +820,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 					if(locXiP4_KinFit.M() >1.31 && locXiP4_KinFit.M() < 1.33){	
 						dHist_Khighp_pvstheta_wacc->Fill(locKPlusP4_highp.Theta()*180./TMath::Pi(),locKPlusP4_highp.P(),scaling_factor);
 						if (locBeamP4.E() >= 8.2 && locBeamP4.E() <= 8.8){ 
-							dHist_acc_phi_t_1->Fill(-1.*t, phi); 
+							dHist_wacc_phi_t_1->Fill(-1.*t, phi); 
 						}
 					}	
 				}
