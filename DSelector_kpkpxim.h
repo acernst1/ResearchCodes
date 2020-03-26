@@ -222,6 +222,24 @@ class DSelector_kpkpxim : public DSelector
 
 		//Angular distributions
 		TH1I* dHist_XiMass_KinFit_Selected;
+		TH3I* dHist_K_pThetaPhi_Measured;
+		TH3I* dHist_p_pThetaPhi_Measured;
+		TH3I* dHist_pi_pThetaPhi_Measured;
+		TH3I* dHist_K_pThetaPhi_Measured_wacc;
+		TH3I* dHist_p_pThetaPhi_Measured_wacc;
+		TH3I* dHist_pi_pThetaPhi_Measured_wacc;					
+		TH2I* dHist_K_pEgamma_Measured;
+		TH2I* dHist_p_pEgamma_Measured;
+		TH2I* dHist_pi_pEgamma_Measured;
+		TH2I* dHist_K_pEgamma_Measured_wacc;
+		TH2I* dHist_p_pEgamma_Measured_wacc;
+		TH2I* dHist_pi_pEgamma_Measured_wacc;
+		TH2I* dHist_K_pt_Measured;
+		TH2I* dHist_p_pt_Measured;
+		TH2I* dHist_pi_pt_Measured;
+		TH2I* dHist_K_pt_Measured_wacc;
+		TH2I* dHist_p_pt_Measured_wacc;
+		TH2I* dHist_pi_pt_Measured_wacc;
 		TH2I* dHist_K_pTheta_Measured;
 		TH2I* dHist_p_pTheta_Measured;
 		TH2I* dHist_p_pTheta_KinFit;
