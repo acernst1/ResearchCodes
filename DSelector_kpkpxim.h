@@ -86,6 +86,8 @@ class DSelector_kpkpxim : public DSelector
 		TH1I* dHist_MMKK_KinFit;	
 		TH2F* dHist_Xi_LambFlight;
 		TH2F* dHist_Xi_LambFlight_wacc;
+		TH2F* dHist_Xi_XiFlight;
+		TH2F* dHist_Xi_XiFlight_wacc;
 
 		//Detached vertices check
 		TH1I* dHist_ProdVert_preCL;

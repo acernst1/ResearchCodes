@@ -83,6 +83,8 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	dHist_MMKK_KinFit = new TH1I("MMKK_KinFit","MM(K^{+}K^{+}) (GeV/c^{2},KinFit)", 400,1.1,1.5);
 	dHist_Xi_LambFlight = new TH2F("Xi_LambFlight", " ;#Lambda#pi^{-} mass (GeV); #sigma_{#Lambda}", 400, 1.1, 1.5,180, 0.0, 12.0);
 	dHist_Xi_LambFlight_wacc = new TH2F("Xi_LambFlight_wacc", " ;#Lambda#pi^{-} mass (GeV); #sigma_{#Lambda}", 400, 1.1, 1.5,180, 0.0, 12.0);
+	dHist_Xi_XiFlight = new TH2F("Xi_XiFlight", " ;#Lambda#pi^{-} mass (GeV); #sigma_{#Xi}", 400, 1.1, 1.5,180, 0.0, 12.0);
+	dHist_Xi_XiFlight_wacc = new TH2F("Xi_XiFlight_wacc", " ;#Lambda#pi^{-} mass (GeV); #sigma_{#Xi}", 400, 1.1, 1.5,180, 0.0, 12.0);
 
 	//plots to check vertices
 	dHist_ProdVert_preCL = new TH1I("ProdVert_preCL", ";Production Vertex Z (cm)", 600, -50.0, 200.0);
@@ -693,6 +695,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 					dHist_Xi_cosGJ->Fill(locXiP4_KinFit.M(),cosTheta_GJ);
 					dHist_Xi_Egamma->Fill(locXiP4_KinFit.M(),locBeamP4.E());
 					dHist_Xi_LambFlight->Fill(locXiP4_Measured.M(),locPathLengthSignificanceLamb);
+					dHist_Xi_XiFlight->Fill(locXiP4_Measured.M(),locPathLengthSignificanceXi);
 					if(locBeamP4.E() >= 2.4 && locBeamP4.E() < 2.9)	{dHist_XiMass024->Fill(locXiP4_KinFit.M());}
 					if(locBeamP4.E() >= 2.9 && locBeamP4.E() < 3.4)	{dHist_XiMass029->Fill(locXiP4_KinFit.M());}
 					if(locBeamP4.E() >= 3.4 && locBeamP4.E() < 3.9)	{dHist_XiMass034->Fill(locXiP4_KinFit.M());}
@@ -746,6 +749,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 					dHist_Xi_Egamma_acc->Fill(locXiP4_KinFit.M(),locBeamP4.E());
 					dHist_Xi_Egamma_wacc->Fill(locXiP4_KinFit.M(),locBeamP4.E(),scaling_factor);
 					dHist_Xi_LambFlight_wacc->Fill(locXiP4_Measured.M(),locPathLengthSignificanceLamb,scaling_factor);
+					dHist_Xi_XiFlight_wacc->Fill(locXiP4_Measured.M(),locPathLengthSignificanceXi,scaling_factor);
 					if(locBeamP4.E() >= 2.4 && locBeamP4.E() < 2.9)	{dHist_XiMass024_wacc->Fill(locXiP4_KinFit.M(),scaling_factor);}
 					if(locBeamP4.E() >= 2.9 && locBeamP4.E() < 3.4)	{dHist_XiMass029_wacc->Fill(locXiP4_KinFit.M(),scaling_factor);}
 					if(locBeamP4.E() >= 3.4 && locBeamP4.E() < 3.9)	{dHist_XiMass034_wacc->Fill(locXiP4_KinFit.M(),scaling_factor);}
