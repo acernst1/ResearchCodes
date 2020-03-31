@@ -73,6 +73,8 @@ class DSelector_kpkpxim : public DSelector
 		TH2I* dHist_ChiSqXi_KinFit;
 		TH2I* dHist_ChiSqXi_KinFit_acc;
 		TH2I* dHist_ChiSqXi_KinFit_wacc;
+		TH2I* dHist_ChiSqXi_KinFit_postCL;
+		TH2I* dHist_ChiSqXi_KinFit_postCL_wacc;
 		TH2I* dHist_ChiSqKp;
 		TH2I* dHist_ChiSqKp_wacc;
 		TH1I* dHist_XiMass_Measured;	
@@ -140,6 +142,8 @@ class DSelector_kpkpxim : public DSelector
 		TH3F* dHist_Xi_Egamma_t_064;
 		TH3F* dHist_Xi_Egamma_t_064_acc;
 		TH3F* dHist_Xi_Egamma_t_064_wacc;
+		TH3F* dHist_Xi_thrownEgamma_t_064;
+		TH3F* dHist_Xi_thrownEgamma_t_064_wacc;
 		TH3F* dHist_Xi_Egamma_t_065;
 		TH3F* dHist_Xi_Egamma_t_065_acc;
 		TH3F* dHist_Xi_Egamma_t_065_wacc;
