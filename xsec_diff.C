@@ -49,6 +49,8 @@ char fluxFilePath[100];
 char thrownhistname[100];
 char XiMasshistname[100];
 char XiMasshistnameacc[100];
+char MCXiMasshistname[100];
+char MCXiMasshistnameacc[100];
 char signalyieldshist[100];
 char signalyieldsmacro[100];
 char signalmasshist[100];
@@ -120,7 +122,7 @@ double_t xsec_sig_width_err;
 double getbincontent(TH1F * hist, int bin) {  return hist->GetBinContent(bin);}
 double getbinerror(TH1F * AccH, int bin){  return AccH->GetBinError(bin);}
 
-void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString mcFilePath, TString thrownFilePath,const char version[17], double minEval, const int numEBins)
+void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString mcFilePath, TString thrownFilePath,const char version[50], double minEval, const int numEBins)
 {
 //initialize things that depend on number of energy bins
     int binning = minEval*10;	
@@ -303,15 +305,17 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 
 //Perform accidental subtraction for signal histogram
    sprintf(XiMasshistname,"Xi_Egamma_t_%03d",binning);	
-   sprintf(XiMasshistnameacc,"Xi_Egamma_t_%03d_wacc",binning);	
+   sprintf(XiMasshistnameacc,"Xi_Egamma_t_%03d_acc",binning);	
    TH3F * XiMassKinFit_Egamma_t = (TH3F*)datafile->Get(XiMasshistname);
    TH3F * XiMassKinFit_Egamma_t_acc = (TH3F*)datafile->Get(XiMasshistnameacc);
    TH3F * XiMassKinFit_Egamma_t_accsub = (TH3F *) XiMassKinFit_Egamma_t->Clone("XiMassKinFit_Egamma_t_accsub");
    XiMassKinFit_Egamma_t_accsub->Add(XiMassKinFit_Egamma_t_acc,-0.5);
 
 //Perform accidental subtraction for mc histogram
-   TH3F * MC_XiMassKinFit_Egamma_t = (TH3F*)mcfile->Get(XiMasshistname);
-   TH3F * MC_XiMassKinFit_Egamma_t_acc = (TH3F*)mcfile->Get(XiMasshistnameacc);
+   sprintf(MCXiMasshistname,"Xi_Egamma_t_%03d",binning);	
+   sprintf(MCXiMasshistnameacc,"Xi_Egamma_t_%03d_acc",binning);	
+   TH3F * MC_XiMassKinFit_Egamma_t = (TH3F*)mcfile->Get(MCXiMasshistname);
+   TH3F * MC_XiMassKinFit_Egamma_t_acc = (TH3F*)mcfile->Get(MCXiMasshistnameacc);
    TH3F * MC_XiMassKinFit_Egamma_t_accsub = (TH3F *) MC_XiMassKinFit_Egamma_t->Clone("MC_XiMassKinFit_Egamma_t_accsub");
    MC_XiMassKinFit_Egamma_t_accsub->Add(MC_XiMassKinFit_Egamma_t_acc,-0.5);
 
@@ -453,26 +457,26 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	else{    //Set up and perform signal fit for total cross section
 		sprintf(xsec_xiplot,"Xsec_sigfit_%s_%03d_%02dbins_%03d.png",version, binning,numEBins,Ebuffer);
 		sprintf(xsec_workspace,"w%03d",Ebuffer);
-        	sprintf(xsec_xicanvas,"Xi_canvas_%03d",Ebuffer);
-       		TCanvas * Xsec_Xi_canvas = new TCanvas(xsec_xicanvas, xsec_xicanvas,800,600);
+        sprintf(xsec_xicanvas,"Xi_canvas_%03d",Ebuffer);
+       	TCanvas * Xsec_Xi_canvas = new TCanvas(xsec_xicanvas, xsec_xicanvas,800,600);
 		RooWorkspace* xsecw = new RooWorkspace(xsec_workspace);
-        	RooRealVar xsecmass("xsecmass", "xsecmass", minmass, maxmass);
-        	RooDataHist *xsecdata = new RooDataHist("xsecdata", "Dataset of mass", xsecmass, XiMassKinFit_Ebin_accsub);
-        	XiMassKinFit_Ebin_accsub->Print();
-        	xsecw->import(RooArgSet(xsecmass));
-        	xsecw->factory("Chebychev::xsecbkgd(xsecmass,{c1t[2.20,-1.e4,1.e4],c2t[-1.557,-1.e4,1.e4]})");
-        	xsecw->factory("Gaussian::xsecgaus(xsecmass,mean[1.32,1.31,1.33],sigma[0.005,0.001,0.01])");
-        	xsecw->factory("SUM::xsecmodel(nbkgd[150,0,1e5]*xsecbkgd, nsig[20,0,1e3]*xsecgaus)");
-        	xsecw->pdf("xsecmodel")->fitTo(*xsecdata,RooFit::Range(minfitmass,maxmass),RooFit::Minos(1));
-        	RooPlot* xsecmassframe = xsecmass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
-        	xsecmassframe->SetXTitle("#Lambda#pi^{-} mass");
-        	xsecdata->plotOn(xsecmassframe) ;
-        	xsecw->pdf("xsecmodel")->paramOn(xsecmassframe);
-        	xsecw->pdf("xsecmodel")->plotOn(xsecmassframe);
-        	xsecw->pdf("xsecgaus")->plotOn(xsecmassframe, RooFit::LineStyle(kDotted),
- 			RooFit::Normalization(xsecw->var("nsig")->getVal(), RooAbsReal::NumEvent));
-        	xsecw->pdf("xsecbkgd")->plotOn(xsecmassframe, RooFit::LineStyle(kDotted),
-  			RooFit::Normalization(xsecw->var("nbkgd")->getVal(), RooAbsReal::NumEvent));
+        RooRealVar xsecmass("xsecmass", "xsecmass", minmass, maxmass);
+        RooDataHist *xsecdata = new RooDataHist("xsecdata", "Dataset of mass", xsecmass, XiMassKinFit_Ebin_accsub);
+        XiMassKinFit_Ebin_accsub->Print();
+        xsecw->import(RooArgSet(xsecmass));
+        xsecw->factory("Chebychev::xsecbkgd(xsecmass,{c1t[2.20,-1.e4,1.e4],c2t[-1.557,-1.e4,1.e4]})");
+        xsecw->factory("Gaussian::xsecgaus(xsecmass,mean[1.32,1.31,1.33],sigma[0.005,0.001,0.01])");
+        xsecw->factory("SUM::xsecmodel(nbkgd[150,0,1e5]*xsecbkgd, nsig[20,0,1e4]*xsecgaus)");
+        xsecw->pdf("xsecmodel")->fitTo(*xsecdata,RooFit::Range(minfitmass,maxmass),RooFit::Minos(1));
+        RooPlot* xsecmassframe = xsecmass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
+        xsecmassframe->SetXTitle("#Lambda#pi^{-} mass");
+        xsecdata->plotOn(xsecmassframe) ;
+        xsecw->pdf("xsecmodel")->paramOn(xsecmassframe);
+        xsecw->pdf("xsecmodel")->plotOn(xsecmassframe);
+        xsecw->pdf("xsecgaus")->plotOn(xsecmassframe, RooFit::LineStyle(kDotted),
+ 		RooFit::Normalization(xsecw->var("nsig")->getVal(), RooAbsReal::NumEvent));
+        xsecw->pdf("xsecbkgd")->plotOn(xsecmassframe, RooFit::LineStyle(kDotted),
+  		RooFit::Normalization(xsecw->var("nbkgd")->getVal(), RooAbsReal::NumEvent));
 		xsec_sig_events = xsecw->var("nsig")->getVal();
 		xsec_sig_events_err = xsecw->var("nsig")->getError();
 		xsec_sig_mass = xsecw->var("mean")->getVal();
@@ -590,33 +594,34 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	//Set up and perform signal fit	
 			Xi_canvas->cd();
 			RooWorkspace* w = new RooWorkspace(workspace);
-        		RooRealVar mass("mass", "mass", minmass, maxmass);
-        		RooDataHist *data = new RooDataHist("data", "Dataset of mass", mass, XiMassKinFit_Ebin_tbin_accsub);
-        		XiMassKinFit_Ebin_tbin_accsub->Print();
-        		w->import(RooArgSet(mass));
-        		w->factory("Chebychev::bkgd(mass,{c1[2.20,-1.e4,1.e4],c2[-1.557,-1.e4,1.e4]})");
-        		w->factory("Gaussian::gaus(mass,mean[1.32,1.31,1.33],sigma[0.005,0.001,0.01])");
-        		w->factory("SUM::model(nbkgd[150,0,1e5]*bkgd, nsig[20,0,1e3]*gaus)");
-        		w->pdf("model")->fitTo(*data,RooFit::Range(minfitmass,maxmass),RooFit::Minos(1));
-        		RooPlot* massframe = mass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
-        		massframe->SetXTitle("#Lambda#pi^{-} mass");
-        		data->plotOn(massframe) ;
-        		w->pdf("model")->paramOn(massframe);
-        		w->pdf("model")->plotOn(massframe);
-        		w->pdf("gaus")->plotOn(massframe, RooFit::LineStyle(kDotted),
- 				RooFit::Normalization(w->var("nsig")->getVal(), RooAbsReal::NumEvent));
-        		w->pdf("bkgd")->plotOn(massframe, RooFit::LineStyle(kDotted),
-  				RooFit::Normalization(w->var("nbkgd")->getVal(), RooAbsReal::NumEvent));
+        	RooRealVar mass("mass", "mass", minmass, maxmass);
+        	RooDataHist *data = new RooDataHist("data", "Dataset of mass", mass, XiMassKinFit_Ebin_tbin_accsub);
+        	XiMassKinFit_Ebin_tbin_accsub->Print();
+        	w->import(RooArgSet(mass));
+        	w->factory("Chebychev::bkgd(mass,{c1[2.20,-1.e4,1.e4],c2[-1.557,-1.e4,1.e4]})");
+        	w->factory("Gaussian::gaus(mass,mean[1.32,1.31,1.33],sigma[0.005,0.001,0.01])");
+        	w->factory("SUM::model(nbkgd[150,0,1e5]*bkgd, nsig[20,0,1e3]*gaus)");
+        	w->pdf("model")->fitTo(*data,RooFit::Range(minfitmass,maxmass),RooFit::Minos(1));
+        	RooPlot* massframe = mass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
+        	massframe->SetXTitle("#Lambda#pi^{-} mass");
+        	data->plotOn(massframe) ;
+        	w->pdf("model")->paramOn(massframe);
+        	w->pdf("model")->plotOn(massframe);
+        	w->pdf("gaus")->plotOn(massframe, RooFit::LineStyle(kDotted),
+ 			RooFit::Normalization(w->var("nsig")->getVal(), RooAbsReal::NumEvent));
+        	w->pdf("bkgd")->plotOn(massframe, RooFit::LineStyle(kDotted),
+  			RooFit::Normalization(w->var("nbkgd")->getVal(), RooAbsReal::NumEvent));
 			sig_events = w->var("nsig")->getVal();
 			sig_events_err = w->var("nsig")->getError();
 			sig_mass = w->var("mean")->getVal();
 			sig_mass_err = w->var("mean")->getError();
 			sig_width = w->var("sigma")->getVal();
 			sig_width_err = w->var("sigma")->getError();
-			double max_y = sig_events*0.3;
+			double max_y = 500;
 			massframe->SetMaximum(max_y);
-        		massframe->Draw();
-	     		Xi_canvas->Print(diffxsec_xiplot);
+			massframe->SetMinimum(0.);
+        	massframe->Draw();
+	     	Xi_canvas->Print(diffxsec_xiplot);
 		} //end enough signal loop
 
 	//Add signal value and error to to an array
@@ -710,19 +715,20 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 		DiffXSec[iE+1]->SetBinError(it+1,diffxsec_err[iE+1][it+1]);
 	} //end t loop
 
-    //Calculate efficiencies and total cross section in terms of only energy binning
-	if(xsec_sig_val[iE+1] == 0){ // Set to zero if fit wasn't performed to prevent NaNs.
-	    xsec_err[iE+1] = 0.0;
-	}
-	else{ //Calculate normally
-	    xsec_err[iE+1] = xsec_val[iE+1]*sqrt(pow(xsec_sig_err[iE+1]/xsec_sig_val[iE+1],2)+pow(flux_err[iE+1]/flux_val[iE+1],2)+pow(xsec_mc_err[iE+1]/xsec_mc_val[iE+1],2)+pow(xsec_thrown_err[iE+1]/xsec_thrown_val[iE+1],2));
-	}
+
 	xsec_eff_val[iE+1] = xsec_mc_val[iE+1]/xsec_thrown_val[iE+1];
 	xsec_eff_err[iE+1] = xsec_eff_val[iE+1] * sqrt(pow(xsec_mc_err[iE+1]/xsec_mc_val[iE+1],2)+pow(xsec_thrown_err[iE+1]/xsec_thrown_val[iE+1],2));
 	cout << "~~~~~~~Effxsec~" << iE << "~" << xsec_eff_val[iE+1] << " " << xsec_eff_err[iE+1] << endl;
 	Eff_Ebin->SetBinContent(iE+1,xsec_eff_val[iE+1]);
 	Eff_Ebin->SetBinError(iE+1,xsec_eff_err[iE+1]);
 	xsec_val[iE+1] = (xsec_sig_val[iE+1])/(constant * flux_val[iE+1] * xsec_mc_val[iE+1]/xsec_thrown_val[iE+1]);
+    //Calculate efficiencies and total cross section in terms of only energy binning
+	if(xsec_sig_val[iE+1] != 0){ //Calculate normally
+	    xsec_err[iE+1] = xsec_val[iE+1]*sqrt(pow(xsec_sig_err[iE+1]/xsec_sig_val[iE+1],2)+pow(flux_err[iE+1]/flux_val[iE+1],2)+pow(xsec_mc_err[iE+1]/xsec_mc_val[iE+1],2)+pow(xsec_thrown_err[iE+1]/xsec_thrown_val[iE+1],2));
+	}
+	else{ 
+		xsec_err[iE+1] = 0.0; // Set to zero if fit wasn't performed to prevent NaNs.
+	}	
 	cout << "~~~~~~~Xsec~" << iE << "~" << xsec_val[iE+1] << " " << xsec_err[iE+1] << endl;
 	XSec_Ebin->SetBinContent(iE+1,xsec_val[iE+1]);
 	XSec_Ebin->SetBinError(iE+1,xsec_err[iE+1]);
@@ -828,6 +834,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
     ebineff_canvas->SaveAs(ebineffmacro);
 
     xsec_canvas->cd();
+    XSec_Ebin->GetYaxis()->SetRangeUser(0,15);
     XSec_Ebin->Draw("pe1");
     xsec_canvas->Print(xsechist);
     xsec_canvas->SaveAs(xsecmacro);
@@ -852,6 +859,9 @@ for(int iEbin=0; iEbin<numEBins; iEbin++){
 	cout << "\t" << "\t" << "DiffXSec: " 	<< diffxsec_val[iEbin+1][itbin+1] 	<< " +/- " 	<< diffxsec_err[iEbin+1][itbin+1] << endl;
 	} //end print t loop 
 } //end print E loop
+
+return;	
+
 } //end macro
 
 /*
