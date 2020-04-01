@@ -144,6 +144,10 @@ class DSelector_kpkpxim : public DSelector
 		TH3F* dHist_Xi_Egamma_t_064_wacc;
 		TH3F* dHist_Xi_thrownEgamma_t_064;
 		TH3F* dHist_Xi_thrownEgamma_t_064_wacc;
+		TH3F* dHist_Xi_Egamma_t_064_lowerTarget;
+		TH3F* dHist_Xi_Egamma_t_064_lowerTarget_wacc;
+		TH3F* dHist_Xi_Egamma_t_064_upperTarget;
+		TH3F* dHist_Xi_Egamma_t_064_upperTarget_wacc;
 		TH3F* dHist_Xi_Egamma_t_065;
 		TH3F* dHist_Xi_Egamma_t_065_acc;
 		TH3F* dHist_Xi_Egamma_t_065_wacc;
