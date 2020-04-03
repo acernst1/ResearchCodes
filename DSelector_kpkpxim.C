@@ -362,7 +362,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		//Multiple combos: Contain maps within a set (easier, faster to search)
 	set<map<Particle_t, set<Int_t> > > locUsedSoFar_MissingMass;
 
-	// Updated Uniquwnws tracking
+	// Updated Uniqueness tracking
 	set<map<Particle_t,set<Int_t>>>locUsedSoFar_gXi;
 	set<map<Particle_t,set<Int_t>>>locUsedSoFar_gKK;
 	set<map<Particle_t,set<Int_t>>>locUsedSoFar_gKhighXi;
