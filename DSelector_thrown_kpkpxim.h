@@ -33,6 +33,8 @@ class DSelector_thrown_kpkpxim : public DSelector
 		TH2F* dHist_Egamma_t_063;
 		TH2F* dHist_Egamma_t_064;
 		TH2F* dHist_Egamma_t_065;
+		TH2F* dHist_Egamma_t_064_upperTarget;
+		TH2F* dHist_Egamma_t_064_lowerTarget;
 		TH2F* dHist_KPlus1vsKPlus2_p;
 		TH2F* dHist_KPlus1vsKPlus2_theta;
 		TH2F* dHist_KPlus1_pTheta;

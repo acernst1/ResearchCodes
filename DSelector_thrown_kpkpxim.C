@@ -29,6 +29,8 @@ void DSelector_thrown_kpkpxim::Init(TTree *locTree)
 	dHist_Egamma_t = new TH2F("Egamma_t","; E_{#gamma} (GeV); -t (GeV/c)^{2}",180, 3.0, 11.4,100, 0.0, 5.0);
 	dHist_Egamma_t_063 = new TH2F("Egamma_t_063","; E_{#gamma} (GeV); -t (GeV/c)^{2}",100, 6.3, 11.3,100, 0.0, 5.0);
 	dHist_Egamma_t_064 = new TH2F("Egamma_t_064","; E_{#gamma} (GeV); -t (GeV/c)^{2}",100,6.4, 11.4,100, 0.0, 5.0);
+	dHist_Egamma_t_064_upperTarget = new TH2F("Egamma_t_064_upperTarget","; E_{#gamma} (GeV); -t (GeV/c)^{2}",100,6.4, 11.4,100, 0.0, 5.0);
+	dHist_Egamma_t_064_lowerTarget = new TH2F("Egamma_t_064_lowerTarget","; E_{#gamma} (GeV); -t (GeV/c)^{2}",100,6.4, 11.4,100, 0.0, 5.0);
 	dHist_Egamma_t_065 = new TH2F("Egamma_t_065","; E_{#gamma} (GeV); -t (GeV/c)^{2}",100,6.5,11.5,100, 0.0, 5.0);
 
 	dHist_KPlus1vsKPlus2_p = new TH2F("KPlus1vsKPlus2_p",";K^{+}_{1} p (GeV);K^{+}_{2} p (GeV)",200,0.0,10.0,200,0.0,10.0);
@@ -89,6 +91,8 @@ Bool_t DSelector_thrown_kpkpxim::Process(Long64_t locEntry)
 	if(dThrownBeam != NULL)
 		locBeamEnergyUsedForBinning = dThrownBeam->Get_P4().E();
 		TLorentzVector locBeamP4 = dThrownBeam->Get_P4();
+		TLorentzVector locProdSpacetimeVertex =dThrownBeam->Get_X4();//Get production vertex
+
 
 
 	TLorentzVector locKPlus1P4;
@@ -125,6 +129,12 @@ Bool_t DSelector_thrown_kpkpxim::Process(Long64_t locEntry)
 			dHist_Egamma_t_063->Fill(locBeamEnergyUsedForBinning,-1.*t);
 			dHist_Egamma_t_064->Fill(locBeamEnergyUsedForBinning,-1.*t);
 			dHist_Egamma_t_065->Fill(locBeamEnergyUsedForBinning,-1.*t);
+			if(locProdSpacetimeVertex.Z() > 50.0 && locProdSpacetimeVertex.Z() < 65.0){
+				dHist_Egamma_t_064_lowerTarget->Fill(locBeamEnergyUsedForBinning,-1.*t);
+			}
+			if(locProdSpacetimeVertex.Z() > 65.0 && locProdSpacetimeVertex.Z() < 80.0){
+				dHist_Egamma_t_064_upperTarget->Fill(locBeamEnergyUsedForBinning,-1.*t);
+			}
 		locUsedSoFar_thrown.insert(locUsedThisCombo_thrown);
 	}
 	
