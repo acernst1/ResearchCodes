@@ -270,7 +270,7 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 //Create and save thrown histograms for diff xsec and total xsec
 	thrown_canvas->cd();
 	thrownfile->cd(); 
-	sprintf(thrownhistname,"Egamma_t_%03d_lowerTarget",binning);
+	sprintf(thrownhistname,"Egamma_t_%03d",binning);
 	TH2F*  ThrownH= (TH2F*) thrownfile->Get(thrownhistname);
 	ThrownH->RebinX(deltaE/ThrownH->GetXaxis()->GetBinWidth(1));    
 	ThrownH->RebinY(deltat/ThrownH->GetYaxis()->GetBinWidth(1));
@@ -304,16 +304,16 @@ void xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString m
 	}
 
 //Perform accidental subtraction for signal histogram
-	sprintf(XiMasshistname,"Xi_Egamma_t_%03d_lowerTarget",binning);	
-	sprintf(XiMasshistnameacc,"Xi_Egamma_t_%03d__lowerTarget_wacc",binning);	
+	sprintf(XiMasshistname,"Xi_Egamma_t_%03d",binning);	
+	sprintf(XiMasshistnameacc,"Xi_Egamma_t_%03d_wacc",binning);	
 	TH3F * XiMassKinFit_Egamma_t = (TH3F*)datafile->Get(XiMasshistname);
 	TH3F * XiMassKinFit_Egamma_t_acc = (TH3F*)datafile->Get(XiMasshistnameacc);
 	TH3F * XiMassKinFit_Egamma_t_accsub = (TH3F *) XiMassKinFit_Egamma_t->Clone("XiMassKinFit_Egamma_t_accsub");
 	XiMassKinFit_Egamma_t_accsub->Add(XiMassKinFit_Egamma_t_acc,-0.5);
 
 //Perform accidental subtraction for mc histogram
-	sprintf(MCXiMasshistname,"Xi_Egamma_t_%03d_lowerTarget",binning);	
-	sprintf(MCXiMasshistnameacc,"Xi_Egamma_t_%03d_lowerTarget_wacc",binning);	
+	sprintf(MCXiMasshistname,"Xi_Egamma_t_%03d",binning);	
+	sprintf(MCXiMasshistnameacc,"Xi_Egamma_t_%03d_wacc",binning);	
 	TH3F * MC_XiMassKinFit_Egamma_t = (TH3F*)mcfile->Get(MCXiMasshistname);
 	TH3F * MC_XiMassKinFit_Egamma_t_acc = (TH3F*)mcfile->Get(MCXiMasshistnameacc);
 	TH3F * MC_XiMassKinFit_Egamma_t_accsub = (TH3F *) MC_XiMassKinFit_Egamma_t->Clone("MC_XiMassKinFit_Egamma_t_accsub");
