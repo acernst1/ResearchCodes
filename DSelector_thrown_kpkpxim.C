@@ -37,6 +37,7 @@ void DSelector_thrown_kpkpxim::Init(TTree *locTree)
 	dHist_KPlus1vsKPlus2_theta = new TH2F("KPlus1vsKPlus2_theta",";K^{+}_{1} #theta;K^{+}_{2} #theta",140,0.0,140.0,140,0.0,140.0);
 	dHist_KPlus1_pTheta = new TH2F("KPlus1_ptheta",";K^{+}_{1} #theta; K^{+}_{1} p (GeV);",140,0.0,140.0, 200,0.0,10.0);
 	dHist_KPlus2_pTheta = new TH2F("KPlus2_ptheta",";K^{+}_{2} #theta; K^{+}_{2} p (GeV);",140,0.0,140.0, 200,0.0,10.0);
+	dHist_prodvert = new TH1I("prodvert",";;",1000,0,100);
 
 
 	/************************************* ADVANCED EXAMPLE: CHOOSE BRANCHES TO READ ************************************/
@@ -129,6 +130,7 @@ Bool_t DSelector_thrown_kpkpxim::Process(Long64_t locEntry)
 			dHist_Egamma_t_063->Fill(locBeamEnergyUsedForBinning,-1.*t);
 			dHist_Egamma_t_064->Fill(locBeamEnergyUsedForBinning,-1.*t);
 			dHist_Egamma_t_065->Fill(locBeamEnergyUsedForBinning,-1.*t);
+			dHist_prodvert->Fill(locProdSpacetimeVertex.Z());
 			if(locProdSpacetimeVertex.Z() > 50.0 && locProdSpacetimeVertex.Z() < 65.0){
 				dHist_Egamma_t_064_lowerTarget->Fill(locBeamEnergyUsedForBinning,-1.*t);
 			}

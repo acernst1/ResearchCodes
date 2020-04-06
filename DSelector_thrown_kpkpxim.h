@@ -39,6 +39,7 @@ class DSelector_thrown_kpkpxim : public DSelector
 		TH2F* dHist_KPlus1vsKPlus2_theta;
 		TH2F* dHist_KPlus1_pTheta;
 		TH2F* dHist_KPlus2_pTheta;
+		TH1I* dHist_prodvert;
 
 	ClassDef(DSelector_thrown_kpkpxim, 0);
 };
