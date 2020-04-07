@@ -235,7 +235,13 @@ class DSelector_kpkpxim : public DSelector
 		TH3I* dHist_pi_pThetaPhi_Measured;
 		TH3I* dHist_K_pThetaPhi_Measured_wacc;
 		TH3I* dHist_p_pThetaPhi_Measured_wacc;
-		TH3I* dHist_pi_pThetaPhi_Measured_wacc;					
+		TH3I* dHist_pi_pThetaPhi_Measured_wacc;
+		TH2I* dHist_Khighp_phiTheta_CM_KinFit;
+		TH2I* dHist_Klowp_phiTheta_Ystar_KinFit;
+		TH2I* dHist_Khighp_phiTheta_CM_KinFit_wacc;
+		TH2I* dHist_Klowp_phiTheta_Ystar_KinFit_wacc;
+		TH2I* dHist_Khighp_phiTheta_CM_KinFit_Truth;
+		TH2I* dHist_Klowp_phiTheta_Ystar_KinFit_Truth;
 		TH2I* dHist_K_pEgamma_Measured;
 		TH2I* dHist_p_pEgamma_Measured;
 		TH2I* dHist_pi_pEgamma_Measured;
