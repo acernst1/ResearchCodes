@@ -505,6 +505,67 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		double theta_GJ = v_GJ.Theta();
 		double phi_GJ = v_GJ.Phi()*180./TMath::Pi();
 
+		//Kaon determination 
+		TLorentzVector locKPlusP4_lowp;
+		TLorentzVector locKPlusP4_highp;
+		TLorentzVector locKPlusP4_highp_CM;	
+		TLorentzVector locKPlusP4_lowp_CM;	
+		Int_t locKhighTrackID;
+		Int_t locKlowTrackID;	
+		if(locKPlus1P4.Theta() < 13*TMath::Pi()/180.) { 
+			locKPlusP4_highp = locKPlus1P4; 
+			locKPlusP4_lowp = locKPlus2P4;
+			locKhighTrackID = locKPlus1TrackID;
+			locKlowTrackID = locKPlus2TrackID;
+			locKPlusP4_highp_CM = locKPlus1P4_CM; 
+			locKPlusP4_lowp_CM = locKPlus2P4_CM;
+		}
+		else {
+			locKPlusP4_highp = locKPlus2P4; 
+			locKPlusP4_lowp = locKPlus1P4; 
+			locKhighTrackID = locKPlus2TrackID;
+			locKlowTrackID = locKPlus1TrackID;
+			locKPlusP4_highp_CM = locKPlus2P4_CM; 
+			locKPlusP4_lowp_CM = locKPlus1P4_CM; 
+		}
+		//Define intermediate hyperon and boost decay Kaon into rest frame of it
+		TLorentzVector locIntermediate_KinFit = locKPlusP4_lowp + locXiP4_KinFit;
+		TVector3 boostYstar=locIntermediate_KinFit.BoostVector();
+		TLorentzVector locKPlusP4_lowp_Ystar = locKPlusP4_lowp_CM;
+		locKPlusP4_lowp_Ystar.Boost(-boostYstar);
+		
+		//Truth values
+		TLorentzVector locKPlusP4_t_Truth;
+		TLorentzVector locKPlusP4_decay_Truth;
+		TLorentzVector locXiTruth;
+		TLorentzVector locIntermediate_Truth;
+		TLorentzVector locKPlusP4_t_CM_Truth;
+		TLorentzVector locKPlusP4_decay_CM_Truth;
+		TLorentzVector locKPlusP4_decay_Ystar_Truth;
+		TVector3 boostYstarTruth;
+		double t_Truth;
+		if(dThrownBeam != NULL){
+			for(UInt_t loc_particlei = 0; loc_particlei < Get_NumThrown(); ++loc_particlei)	{
+				dThrownWrapper->Set_ArrayIndex(loc_particlei);
+				Particle_t locPID = dThrownWrapper->Get_PID();
+				TLorentzVector locThrownP4 = dThrownWrapper->Get_P4();
+				if(locPID == 11) {
+					if(loc_particlei==0) { locKPlusP4_t_Truth = locThrownP4; }
+					if(loc_particlei==1) { locKPlusP4_decay_Truth = locThrownP4; }
+				}
+				if(locPID == 23 ) { locXiTruth = locThrownP4;}
+			}
+			t_Truth= (locBeamP4 - locKPlusP4_t_Truth).M2();
+			locIntermediate_Truth = locXiTruth + locKPlusP4_decay_Truth;
+			boostYstarTruth=locIntermediate_Truth.BoostVector();
+			locKPlusP4_t_CM_Truth = locKPlusP4_t_Truth;
+			locKPlusP4_decay_CM_Truth = locKPlusP4_decay_Truth;
+			locKPlusP4_t_CM_Truth.Boost(-boostCoM);
+			locKPlusP4_decay_CM_Truth.Boost(-boostCoM);
+			locKPlusP4_decay_Ystar_Truth = locKPlusP4_decay_CM_Truth;
+			locKPlusP4_decay_Ystar_Truth.Boost(-boostYstarTruth);
+		}
+
 	/******************************************** EXECUTE ANALYSIS ACTIONS *******************************************/
 
 		// Loop through the analysis actions, executing them in order for the active particle combo
@@ -550,27 +611,9 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		double locPropagatedRFTime = locRFTime + (locX4.Z() - dTargetCenterZ)/29.9792458;
 		double locDeltaT = locX4.T() - locPropagatedRFTime;
 
-		//Kaon Definitions and -t Mandelstam variable
-		TLorentzVector locKPlusP4_lowp;
-		TLorentzVector locKPlusP4_highp;	
-		Int_t locKhighTrackID;
-		Int_t locKlowTrackID;	
-		if(locKPlus1P4.Theta() < 13*TMath::Pi()/180.) { 
-			locKPlusP4_highp = locKPlus1P4; 
-			locKPlusP4_lowp = locKPlus2P4;
-			locKhighTrackID = locKPlus1TrackID;
-			locKlowTrackID = locKPlus2TrackID;
-		}
-		else {
-			locKPlusP4_highp = locKPlus2P4; 
-			locKPlusP4_lowp = locKPlus1P4; 
-			locKhighTrackID = locKPlus2TrackID;
-			locKlowTrackID = locKPlus1TrackID;
-		}
-		TLorentzVector locIntermediate_KinFit = locKPlusP4_lowp + locXiP4_KinFit;
+		//-t Mandelstam variable
 		double t= (locBeamP4 - locKPlusP4_highp).M2();
 		double phi = locKPlusP4_highp.Phi()*180/TMath::Pi();
-		double t_Truth;
 		if(phi < -180.) phi = phi + 360.;
 		if (phi > 180.) phi = phi - 360.;
 
@@ -589,28 +632,6 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		double phiPi2 = locPiMinus2P4_Measured.Phi()*180/TMath::Pi();
 		if(phiPi2 < -180.) phiPi2 = phiPi2 + 360.;
 		if (phiPi2 > 180.) phiPi2 = phiPi2 - 360.;
-
-		//Truth values
-		TLorentzVector locKPlusP4_t;
-		TLorentzVector locKPlusP4_decay;
-		TLorentzVector locXiTruth;
-		TLorentzVector locIntermediate_Truth;
-		if(dThrownBeam != NULL){
-			for(UInt_t loc_particlei = 0; loc_particlei < Get_NumThrown(); ++loc_particlei)	{
-				dThrownWrapper->Set_ArrayIndex(loc_particlei);
-				Particle_t locPID = dThrownWrapper->Get_PID();
-				TLorentzVector locThrownP4 = dThrownWrapper->Get_P4();
-				if(locPID == 11) {
-					if(loc_particlei==0) { locKPlusP4_t = locThrownP4; }
-					if(loc_particlei==1) { locKPlusP4_decay = locThrownP4; }
-				}
-				if(locPID == 23 ) { locXiTruth = locThrownP4;}
-			}
-			t_Truth= (locBeamP4 - locKPlusP4_t).M2();
-			locIntermediate_Truth = locXiTruth + locKPlusP4_decay;
-		}
-
-		
 
 		//Scaling factor for accidental subtraction
 		double scaling_factor = dAnalysisUtilities.Get_AccidentalScalingFactor(locRunNumber, locBeamP4.E());
