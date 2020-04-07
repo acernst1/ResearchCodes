@@ -542,9 +542,13 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		TLorentzVector locKPlusP4_t_CM_Truth;
 		TLorentzVector locKPlusP4_decay_CM_Truth;
 		TLorentzVector locKPlusP4_decay_Ystar_Truth;
+		TLorentzVector locCoMP4_Truth;
+		TVector3 boostCoMTruth;
 		TVector3 boostYstarTruth;
 		double t_Truth;
 		if(dThrownBeam != NULL){
+			locCoMP4_Truth = dThrownBeam->Get_P4() + dTargetP4;
+	    	boostCoMTruth = locCoMP4_Truth.BoostVector();
 			for(UInt_t loc_particlei = 0; loc_particlei < Get_NumThrown(); ++loc_particlei)	{
 				dThrownWrapper->Set_ArrayIndex(loc_particlei);
 				Particle_t locPID = dThrownWrapper->Get_PID();
@@ -555,13 +559,13 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 				}
 				if(locPID == 23 ) { locXiTruth = locThrownP4;}
 			}
-			t_Truth= (locBeamP4 - locKPlusP4_t_Truth).M2();
+			t_Truth= (dThrownBeam->Get_P4() - locKPlusP4_t_Truth).M2();
 			locIntermediate_Truth = locXiTruth + locKPlusP4_decay_Truth;
 			boostYstarTruth=locIntermediate_Truth.BoostVector();
 			locKPlusP4_t_CM_Truth = locKPlusP4_t_Truth;
 			locKPlusP4_decay_CM_Truth = locKPlusP4_decay_Truth;
-			locKPlusP4_t_CM_Truth.Boost(-boostCoM);
-			locKPlusP4_decay_CM_Truth.Boost(-boostCoM);
+			locKPlusP4_t_CM_Truth.Boost(-boostCoMTruth);
+			locKPlusP4_decay_CM_Truth.Boost(-boostCoMTruth);
 			locKPlusP4_decay_Ystar_Truth = locKPlusP4_decay_CM_Truth;
 			locKPlusP4_decay_Ystar_Truth.Boost(-boostYstarTruth);
 		}
