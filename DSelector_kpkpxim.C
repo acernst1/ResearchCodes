@@ -212,6 +212,8 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	dHist_K_pThetaPhi_Measured_wacc = new TH3I("K_pThetaPhi_Measured_wacc", "K^{+} ;Measured #Theta (deg.) ;Measured p (GeV);Measured #phi (deg)",28,0.0,140,40,0.0,10.0, 180,-180., 180.);
 	dHist_p_pThetaPhi_Measured_wacc = new TH3I("p_pThetaPhi_Measured_wacc", "p ;Measured #Theta (deg.) ;Measured p (GeV);Measured #phi (deg)",28,0.0,140,40,0.0,10.0, 180,-180., 180.);
 	dHist_pi_pThetaPhi_Measured_wacc = new TH3I("pi_pThetaPhi_Measured_wacc", "#pi^{-} ;Measured #Theta (deg.) ;Measured p (GeV);Measured #phi (deg)",28,0.0,140,40,0.0,10.0, 180,-180., 180.);
+	dHist_allK_phiTheta_CM_KinFit = new TH2I("allK_phiTheta_CM_KinFit", "K^{+}_{highp} ;KinFit #Theta (deg); KinFit #phi (deg)",28,0.0,140,180,-180,180.0);
+	dHist_allK_phiTheta_CM_KinFit_wacc = new TH2I("allK_phiTheta_CM_KinFit_wacc", "K^{+}_{highp} ;KinFit #Theta (deg); KinFit #phi (deg)",28,0.0,140,180,-180,180.0);
 	dHist_Khighp_phiTheta_CM_KinFit = new TH2I("Khighp_phiTheta_CM_KinFit", "K^{+}_{highp} ;KinFit #Theta (deg); KinFit #phi (deg)",28,0.0,140,180,-180,180.0);
 	dHist_Klowp_phiTheta_Ystar_KinFit = new TH2I("Klowp_phiTheta_Ystar_KinFit", "K^{+}_{lowp} ;KinFit #Theta (deg); KinFit #phi (deg)",28,0.0,140,180,-180,180.0);
 	dHist_Khighp_phiTheta_CM_KinFit_wacc = new TH2I("Khighp_phiTheta_CM_KinFit_wacc", "K^{+}_{highp} ;KinFit #Theta (deg); KinFit #phi (deg)",28,0.0,140,180,-180,180.0);
@@ -1007,6 +1009,8 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 						dHist_K_ptTheta_Measured->Fill(locKPlus2P4_Measured.Theta()*180./TMath::Pi(),locKPlus2P4_Measured.Pt());
 						dHist_K_ptTheta_KinFit->Fill(locKPlus1P4.Theta()*180./TMath::Pi(),locKPlus1P4.Pt());
 						dHist_K_ptTheta_KinFit->Fill(locKPlus2P4.Theta()*180./TMath::Pi(),locKPlus2P4.Pt());
+						dHist_allK_phiTheta_CM_KinFit->Fill(locKPlusP4_highp_CM.Theta()*180./TMath::Pi(),phiKhighp_CM);
+						dHist_allK_phiTheta_CM_KinFit->Fill(locKPlusP4_lowp_CM.Theta()*180./TMath::Pi(),phiKlowp_CM);
 						dHist_Khighp_phiTheta_CM_KinFit->Fill(locKPlusP4_highp_CM.Theta()*180./TMath::Pi(), phiKhighp_CM);
 						dHist_Klowp_phiTheta_Ystar_KinFit->Fill(locKPlusP4_lowp_Ystar.Theta()*180./TMath::Pi(),phiKlowp_Ystar);
 						if(dThrownBeam != NULL){
@@ -1027,6 +1031,8 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 				}	
 				else {
 					if(locXiP4_KinFit.M() >1.31 && locXiP4_KinFit.M() < 1.33){
+						dHist_allK_phiTheta_CM_KinFit_wacc->Fill(locKPlusP4_highp_CM.Theta()*180./TMath::Pi(),phiKhighp_CM,scaling_factor);
+						dHist_allK_phiTheta_CM_KinFit_wacc->Fill(locKPlusP4_lowp_CM.Theta()*180./TMath::Pi(),phiKlowp_CM,scaling_factor);
 						dHist_K_pThetaPhi_Measured_wacc->Fill(locKPlus1P4_Measured.Theta()*180./TMath::Pi(),locKPlus1P4_Measured.P(),phiK1,scaling_factor);
 						dHist_K_pThetaPhi_Measured_wacc->Fill(locKPlus2P4_Measured.Theta()*180./TMath::Pi(),locKPlus2P4_Measured.P(),phiK2,scaling_factor);
 						dHist_K_pEgamma_Measured_wacc->Fill(locBeamP4.E(), locKPlus1P4_Measured.P(),scaling_factor);
