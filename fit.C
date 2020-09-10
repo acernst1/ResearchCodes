@@ -2,9 +2,9 @@
 #include "RooPlot.h"
 {
   //using namespace RooFit;
-char batch[100]= "449runs_dec20";
+char batch[100]= "may2020";
 char runperiod[100]="2018-08";
-char version[100]="ANAver02";
+char version[100]="ANAver05LE";
 char plotversion[100]="accsub";
 char filename[100];
 char outputname[100];
@@ -13,13 +13,13 @@ char plotname[100];
 char plot[100];
 char accplotname[100];
 char accsubplotname[100];
-sprintf(filename,"/cache/halld/home/acernst/data/kpkpxim__B4_M23_allbatches_%s_%s_%s.root",runperiod,version,batch);
+sprintf(filename,"kpkpxim__M23_2018_08_LE_ANAver05_may11.root");
 sprintf(outputname,"datafit_kpkpxim_XiMass_KinFit_%s_%s_%s_%s.png",runperiod,version,batch,plotversion);
 sprintf(testoutputname,"prefit_kpkpxim_XiMass_KinFit_%s_%s_%s_%s.png",runperiod,version,batch, plotversion);
 sprintf(plotname,"XiMass%s_KinFit",plotversion);
 //sprintf(plot,"xsec_sigfit_%s.png",bin);
 sprintf(plotname,"XiMass_KinFit");
-sprintf(accplotname,"XiMass_KinFit_acc");
+sprintf(accplotname,"XiMass_KinFit_wacc");
 //sprintf(plotname,"XiMass069");
 //sprintf(accplotname,"XiMass069_acc");
 sprintf(accsubplotname,"XiMassKinFitsacc");
@@ -64,7 +64,7 @@ sprintf(accsubplotname,"XiMassKinFitsacc");
         w->factory("Gaussian::gaus(mass,mean[1.32,1.31,1.33],sigma[0.005,0.001,0.01])");
 
   // build model for data:  accidental shape + background + signals
-  w->factory("SUM::model(nbkgd[150,0,1e5]*bkgd, nsig[100,0,1e5]*gaus)");
+  w->factory("SUM::model(nbkgd[1500,0,1e5]*bkgd, nsig[1600,0,1e5]*gaus)");
 
   // do the fit
   //w->pdf("model")->fitTo(*data,RooFit::Extended(kTRUE),RooFit::Range(1.25,1.5),RooFit::Minos(1));

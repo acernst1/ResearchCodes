@@ -1,17 +1,267 @@
+#include <string>
+#include <sstream>
+char histname[100];
+Color_t color171 = kGreen;
+Color_t color181 = kRed;
+Color_t color188 = kBlue;
+int data = 0;
+int mc = 1;
+
+void setformatTH1F(TH1F * hist, Color_t color, int type) {  
+	if(type == 0 )	{ hist->SetMarkerStyle(20); }
+	if(type == 1 ) 	{ hist->SetMarkerStyle(25); }
+	hist->GetYaxis()->SetTitleOffset(1.3);
+	hist->SetMarkerSize(0.8);
+	hist->SetMarkerColor(color);
+	hist->SetLineColor(color);
+	hist->GetXaxis()->SetTitleSize(0.04);
+	hist->GetYaxis()->SetTitleSize(0.04);	
+}
+
+void setformatTH1I(TH1I * hist, Color_t color, int type) {  
+	if(type == 0 )	{ hist->SetMarkerStyle(20); } //data format
+	if(type == 1 ) 	{ hist->SetMarkerStyle(25); } //mc format
+	hist->GetYaxis()->SetTitleOffset(1.3);
+	hist->SetMarkerSize(0.8);
+	hist->SetMarkerColor(color);
+	hist->SetLineColor(color);	
+	hist->GetXaxis()->SetTitleSize(0.04);
+	hist->GetYaxis()->SetTitleSize(0.04);
+}
+
+void normalizeMC(TH1F * histdata, TH1F * histmc) {
+	double mcentries = histmc->GetEntries();
+	double dataentries = histdata->GetEntries();
+	double norm = dataentries/mcentries;
+	histmc->Scale(norm);  
+}
+
 void plots_kinematics() {
-	char version201808[100] = "2018-08_ANAver02_newMC";
-	char version201801[100] = "2018-01_ANAver03_newMC";
-	char version201701[100] = "2017-01_ANAver20_newMC";
-	TFile * data201701 = TFile::Open("~/2020xsec_workfest/kpkpxim__B4_M23_allbatches_2017-01_ANAver20_347runs_jan02.root");
-	TFile * data201801 = TFile::Open("~/2020xsec_workfest/kpkpxim__B4_M23_allbatches_2018-01_ANAver03_543runs_jan02.root");
-	TFile * data201808 = TFile::Open("~/2020xsec_workfest/kpkpxim__B4_M23_allbatches_2018-08_ANAver02_449runs_jan02.root");
-	TFile * mc201701 = TFile::Open("~/2020xsec_workfest/kpkpxim__B4_M23_genr8_2017_01_ANAver20_mar25.root");
-	TFile * mc201801 = TFile::Open("~/2020xsec_workfest/kpkpxim__B4_M23_genr8_2018_01_ANAver03_mar25.root");
-	TFile * mc201808 = TFile::Open("~/2020xsec_workfest/kpkpxim__B4_M23_genr8_2018_08_ANAver02_mar25.root");
+	char version[100] = "june2020";
+	char version201808[100] = "2018-08_ANAver02_june2020";
+	char version201801[100] = "2018-01_ANAver03_june2020";
+	char version201701[100] = "2017-01_ANAver20_june2020";
+	TFile * data201701 = TFile::Open("~/2020xsec_workfest/kpkpxim__B4_M23_allbatches_2017-01_june13.root");
+	TFile * data201801 = TFile::Open("~/2020xsec_workfest/kpkpxim__B4_M23_allbatches_2018-01_ANAver03_543runs_june12.root");
+	TFile * data201808 = TFile::Open("~/2020xsec_workfest/kpkpxim__B4_M23_allbatches_2018-08_ANAver02_449runs_june12.root");
+	TFile * mc201701 = TFile::Open("~/2020xsec_workfest/kpkpxim__B4_M23_genr8_2017_01_ANAver20_june13.root");
+	TFile * mc201801 = TFile::Open("~/2020xsec_workfest/kpkpxim__B4_M23_genr8_2018_01_ANAver03_june12.root");
+	TFile * mc201808 = TFile::Open("~/2020xsec_workfest/kpkpxim__B4_M23_genr8_2018_08_ANAver02_june12.root");
+	TFile * thrown201701 = TFile::Open("~/2020xsec_workfest/thrown_2017-01_ANAver20_june13.root");
+	TFile * thrown201801 = TFile::Open("~/2020xsec_workfest/thrown_2018-01_ANAver03_june13.root");
+	TFile * thrown201808 = TFile::Open("~/2020xsec_workfest/thrown_2018-08_ANAver02_june13.root");
 	
 	TFile *outputfile = new TFile("output_plots_kinematics.root","RECREATE");
 	
 	gStyle->SetOptStat(0000);
+
+
+	char beamacc17name[100];
+	TCanvas *ccbeamacc17 = new TCanvas("ccbeamacc17", "ccbeamacc17", 800, 600);
+	TH1I * beamacc17 = (TH1I*)data201701->Get("BeamBunch_Xi_acc");
+	TH1I * beamacc17_wacc = (TH1I*)data201701->Get("BeamBunch_Xi_wacc");
+	setformatTH1I(beamacc17,color171,data);
+	beamacc17->SetTitle("Beam #gamma");
+	beamacc17->GetXaxis()->SetTitle("#Delta t_{Beam-RF} (ns)");
+	beamacc17->GetYaxis()->SetRangeUser(0,1000);
+	beamacc17->GetXaxis()->SetTitleSize(0.04);
+	beamacc17->Draw("pe");
+	setformatTH1I(beamacc17_wacc,color171,data);
+	//beamacc17_wacc->Draw("pe,same");
+	auto legend_beambunch = new TLegend(0.80,0.85,0.98,0.93);
+	legend_beambunch->AddEntry(beamacc17,"Not weighted","lep");
+	legend_beambunch->AddEntry(beamacc17_wacc,"Weighted","lep");
+	//legend_beambunch->Draw();
+	sprintf(beamacc17name, "beambunches_%s_data.png",version201701);
+	ccbeamacc17->Print(beamacc17name);
+
+	char XiKlowpPhiThetaGJ17name[100];
+	TCanvas *ccXiKlowpPhiThetaGJ17 = new TCanvas("ccXiKlowpPhiThetaGJ17", "ccXiKlowpPhiThetaGJ17", 800, 600);
+	TH2I * XiKlowpPhiThetaGJ17 = (TH2I*)data201701->Get("Klowp_phiTheta_YstarGJ_KinFit");
+	TH2I * XiKlowpPhiThetaGJ17_wacc = (TH2I*)data201701->Get("Klowp_phiTheta_YstarGJ_KinFit_wacc");
+	TH2I * XiKlowpPhiThetaGJ17_waccsub = (TH2I *) XiKlowpPhiThetaGJ17->Clone("XiKlowpPhiThetaGJ17_waccsub");
+	XiKlowpPhiThetaGJ17_waccsub->Add(XiKlowpPhiThetaGJ17_wacc,-0.5);
+	XiKlowpPhiThetaGJ17_waccsub->SetTitle("K+_{decay}");
+	XiKlowpPhiThetaGJ17_waccsub->GetXaxis()->SetTitle("#theta_{GJ} (deg)");
+	XiKlowpPhiThetaGJ17_waccsub->GetYaxis()->SetTitle("#phi_{GJ} (deg)");
+	XiKlowpPhiThetaGJ17_waccsub->RebinY(4);
+	XiKlowpPhiThetaGJ17_waccsub->Draw("colz");
+	sprintf(XiKlowpPhiThetaGJ17name, "Xi_Klowp_phitheta_kinfit_GJframe_%s_data.png",version201701);
+	ccXiKlowpPhiThetaGJ17->Print(XiKlowpPhiThetaGJ17name);
+
+	char XiKlowpPhiThetaGJ17MCname[100];
+	TCanvas *ccXiKlowpPhiThetaGJ17MC = new TCanvas("ccXiKlowpPhiThetaGJ17MC", "ccXiKlowpPhiThetaGJ17MC", 800, 600);
+	TH2I * XiKlowpPhiThetaGJ17MC = (TH2I*)mc201701->Get("Klowp_phiTheta_YstarGJ_KinFit");
+	TH2I * XiKlowpPhiThetaGJ17MC_wacc = (TH2I*)mc201701->Get("Klowp_phiTheta_YstarGJ_KinFit_wacc");
+	TH2I * XiKlowpPhiThetaGJ17MC_waccsub = (TH2I *) XiKlowpPhiThetaGJ17MC->Clone("XiKlowpPhiThetaGJ17MC_waccsub");
+	XiKlowpPhiThetaGJ17MC_waccsub->Add(XiKlowpPhiThetaGJ17MC_wacc,-0.5);
+	XiKlowpPhiThetaGJ17MC_waccsub->SetTitle("K+_{decay}");
+	XiKlowpPhiThetaGJ17MC_waccsub->GetXaxis()->SetTitle("#theta_{GJ} (deg)");
+	XiKlowpPhiThetaGJ17MC_waccsub->GetYaxis()->SetTitle("#phi_{GJ} (deg)");
+	XiKlowpPhiThetaGJ17MC_waccsub->RebinY(4);
+	XiKlowpPhiThetaGJ17MC_waccsub->Draw("colz");
+	sprintf(XiKlowpPhiThetaGJ17MCname, "Xi_Klowp_phitheta_kinfit_GJframe_%s_MC.png",version201701);
+	ccXiKlowpPhiThetaGJ17MC->Print(XiKlowpPhiThetaGJ17MCname);
+
+	char XiKlowpPhiThetaGJ17MCThrownname[100];
+	TCanvas *ccXiKlowpPhiThetaGJ17MCThrown = new TCanvas("ccXiKlowpPhiThetaGJ17MCThrown", "ccXiKlowpPhiThetaGJ17MCThrown", 800, 600);
+	TH2I * XiKlowpPhiThetaGJ17MCThrown = (TH2I*)thrown201701->Get("Klowp_phiTheta_YstarGJ");
+	XiKlowpPhiThetaGJ17MCThrown->SetTitle("K+_{decay}");
+	XiKlowpPhiThetaGJ17MCThrown->GetXaxis()->SetTitle("#theta_{GJ} (deg)");
+	XiKlowpPhiThetaGJ17MCThrown->GetYaxis()->SetTitle("#phi_{GJ} (deg)");
+	XiKlowpPhiThetaGJ17MCThrown->GetZaxis()->SetRangeUser(0,5000);
+	XiKlowpPhiThetaGJ17MCThrown->RebinY(4);
+	XiKlowpPhiThetaGJ17MCThrown->Draw("colz");
+	sprintf(XiKlowpPhiThetaGJ17MCThrownname, "Xi_Klowp_phitheta_kinfit_GJframe_%s_thrown.png",version201701);
+	ccXiKlowpPhiThetaGJ17MCThrown->Print(XiKlowpPhiThetaGJ17MCThrownname);
+
+	char XiKlowpPhiThetaReconThrownGJ17MCname[100];
+	TCanvas *ccXiKlowpPhiThetaReconThrownGJ17MC = new TCanvas("ccXiKlowpPhiThetaReconThrownGJ17MC", "ccXiKlowpPhiThetaReconThrownGJ17MC", 800, 600);
+	TH2I * XiKlowpPhiThetaReconThrownGJ17MC = (TH2I*)mc201701->Get("Klowp_phiTheta_YstarGJ_reconthrown");
+	TH2I * XiKlowpPhiThetaReconThrownGJ17MC_wacc = (TH2I*)mc201701->Get("Klowp_phiTheta_YstarGJ_reconthrown_wacc");
+	TH2I * XiKlowpPhiThetaReconThrownGJ17MC_waccsub = (TH2I *) XiKlowpPhiThetaReconThrownGJ17MC->Clone("XiKlowpPhiThetaReconThrownGJ17MC_waccsub");
+	XiKlowpPhiThetaReconThrownGJ17MC_waccsub->Add(XiKlowpPhiThetaReconThrownGJ17MC_wacc,-0.5);
+	XiKlowpPhiThetaReconThrownGJ17MC_waccsub->SetTitle("K+_{decay}");
+	XiKlowpPhiThetaReconThrownGJ17MC_waccsub->GetXaxis()->SetTitle("#theta^{thrown}_{GJ} (deg)");
+	XiKlowpPhiThetaReconThrownGJ17MC_waccsub->GetYaxis()->SetTitle("#phi^{thrown}_{GJ} (deg)");
+	XiKlowpPhiThetaReconThrownGJ17MC_waccsub->RebinY(4);
+	XiKlowpPhiThetaReconThrownGJ17MC_waccsub->Draw("colz");
+	sprintf(XiKlowpPhiThetaReconThrownGJ17MCname, "Xi_Klowp_phitheta_GJframe_reconthrown_%s_MC.png",version201701);
+	ccXiKlowpPhiThetaReconThrownGJ17MC->Print(XiKlowpPhiThetaReconThrownGJ17MCname);
+
+	char XiKlowpdThetaReconThrownGJ17MCname[100];
+	TCanvas *ccXiKlowpdThetaReconThrownGJ17MC = new TCanvas("ccXiKlowpdThetaReconThrownGJ17MC", "ccXiKlowpdThetaReconThrownGJ17MC", 800, 600);
+	TH1I * XiKlowpdThetaReconThrownGJ17MC = (TH1I*)mc201701->Get("Klowp_dtheta_reconthrown");
+	TH1I * XiKlowpdThetaReconThrownGJ17MC_wacc = (TH1I*)mc201701->Get("Klowp_dtheta_reconthrown_wacc");
+	TH1I * XiKlowpdThetaReconThrownGJ17MC_waccsub = (TH1I *) XiKlowpdThetaReconThrownGJ17MC->Clone("XiKlowpdThetaReconThrownGJ17MC_waccsub");
+	XiKlowpdThetaReconThrownGJ17MC_waccsub->Add(XiKlowpdThetaReconThrownGJ17MC_wacc,-0.5);
+	XiKlowpdThetaReconThrownGJ17MC_waccsub->SetTitle("K+_{decay}");
+	XiKlowpdThetaReconThrownGJ17MC_waccsub->GetXaxis()->SetTitle("#theta^{thrown}_{GJ} - #theta^{recon}_{GJ} (deg)");
+	XiKlowpdThetaReconThrownGJ17MC_waccsub->GetYaxis()->SetTitle("Combos");
+	setformatTH1I(XiKlowpdThetaReconThrownGJ17MC_waccsub,color171,mc);
+	XiKlowpdThetaReconThrownGJ17MC_waccsub->Draw("pe");
+	sprintf(XiKlowpdThetaReconThrownGJ17MCname, "Xi_Klowp_dtheta_GJframe_reconthrown_%s_MC.png",version201701);
+	ccXiKlowpdThetaReconThrownGJ17MC->Print(XiKlowpdThetaReconThrownGJ17MCname);
+
+	char XiKlowpdPhiThetaReconThrown150GJ17MCname[100];
+	TCanvas *ccXiKlowpdPhiThetaReconThrown150GJ17MC = new TCanvas("ccXiKlowpdPhiThetaReconThrown150GJ17MC", "ccXiKlowpdPhiThetaReconThrown150GJ17MC", 800, 600);
+	TH2I * XiKlowpdPhiThetaReconThrown150GJ17MC = (TH2I*)mc201701->Get("Klowp_phiTheta_YstarGJ_thrown150to180");
+	TH2I * XiKlowpdPhiThetaReconThrown150GJ17MC_wacc = (TH2I*)mc201701->Get("Klowp_phiTheta_YstarGJ_thrown150to180_wacc");
+	TH2I * XiKlowpdPhiThetaReconThrown150GJ17MC_waccsub = (TH2I *) XiKlowpdPhiThetaReconThrown150GJ17MC->Clone("XiKlowpdPhiThetaReconThrown150GJ17MC_waccsub");
+	XiKlowpdPhiThetaReconThrown150GJ17MC_waccsub->Add(XiKlowpdPhiThetaReconThrown150GJ17MC_wacc,-0.5);
+	XiKlowpdPhiThetaReconThrown150GJ17MC_waccsub->SetTitle("K+_{decay} for #theta^{thrown}_{GJ} > 150deg");
+	XiKlowpdPhiThetaReconThrown150GJ17MC_waccsub->GetXaxis()->SetTitle("#theta^{recon}_{GJ} (deg)");
+	XiKlowpdPhiThetaReconThrown150GJ17MC_waccsub->GetYaxis()->SetTitle("#phi^{recon}_{GJ} (deg)");
+	XiKlowpdPhiThetaReconThrown150GJ17MC_waccsub->RebinY(4);
+	XiKlowpdPhiThetaReconThrown150GJ17MC_waccsub->Draw("colz");
+	sprintf(XiKlowpdPhiThetaReconThrown150GJ17MCname, "Xi_Klowp_phitheta_GJframe_reconthrown150_%s_MC.png",version201701);
+	ccXiKlowpdPhiThetaReconThrown150GJ17MC->Print(XiKlowpdPhiThetaReconThrown150GJ17MCname);
+
+
+	char XiallKPhiTheta17name[100];
+	TCanvas *ccXiallKPhiTheta17 = new TCanvas("ccXiallKPhiTheta17", "ccXiallKPhiTheta17", 800, 600);
+	TH2I * XiallKPhiTheta17 = (TH2I*)data201701->Get("allK_phiTheta_CM_KinFit");
+	TH2I * XiallKPhiTheta17_wacc = (TH2I*)data201701->Get("allK_phiTheta_CM_KinFit_wacc");
+	TH2I * XiallKPhiTheta17_waccsub = (TH2I *) XiallKPhiTheta17->Clone("allK_phiTheta_CM_KinFit_waccsub");
+	XiallKPhiTheta17_waccsub->Add(XiallKPhiTheta17_wacc,-0.5);
+	XiallKPhiTheta17_waccsub->SetTitle("K+");
+	XiallKPhiTheta17_waccsub->GetXaxis()->SetTitle("#theta_{CM} (deg)");
+	XiallKPhiTheta17_waccsub->GetYaxis()->SetTitle("#phi_{CM} (deg)");
+	XiallKPhiTheta17_waccsub->RebinX(2);
+	XiallKPhiTheta17_waccsub->RebinY(4);
+	XiallKPhiTheta17_waccsub->Draw("colz");
+	sprintf(XiallKPhiTheta17name, "Xi_allK_phitheta_kinfit_CMframe_%s_data.png",version201701);
+	ccXiallKPhiTheta17->Print(XiallKPhiTheta17name);
+
+	char XiKhighpPhiTheta17name[100];
+	TCanvas *ccXiKhighpPhiTheta17 = new TCanvas("ccXiKhighpPhiTheta17", "ccXiKhighpPhiTheta17", 800, 600);
+	TH2I * XiKhighpPhiTheta17 = (TH2I*)data201701->Get("Khighp_phiTheta_CM_KinFit");
+	TH2I * XiKhighpPhiTheta17_wacc = (TH2I*)data201701->Get("Khighp_phiTheta_CM_KinFit_wacc");
+	TH2I * XiKhighpPhiTheta17_waccsub = (TH2I *) XiKhighpPhiTheta17->Clone("Khighp_phiTheta_CM_KinFit_waccsub");
+	XiKhighpPhiTheta17_waccsub->Add(XiKhighpPhiTheta17_wacc,-0.5);
+	XiKhighpPhiTheta17_waccsub->SetTitle("K+_{t}");
+	XiKhighpPhiTheta17_waccsub->GetXaxis()->SetTitle("#theta_{CM} (deg)");
+	XiKhighpPhiTheta17_waccsub->GetYaxis()->SetTitle("#phi_{CM} (deg)");
+	XiKhighpPhiTheta17_waccsub->RebinX(2);
+	XiKhighpPhiTheta17_waccsub->RebinY(4);
+	XiKhighpPhiTheta17_waccsub->Draw("colz");
+	sprintf(XiKhighpPhiTheta17name, "Xi_Khighp_phitheta_kinfit_CMframe_%s_data.png",version201701);
+	ccXiKhighpPhiTheta17->Print(XiKhighpPhiTheta17name);
+
+	char XiKlowpPhiTheta17name[100];
+	TCanvas *ccXiKlowpPhiTheta17 = new TCanvas("ccXiKlowpPhiTheta17", "ccXiKlowpPhiTheta17", 800, 600);
+	TH2I * XiKlowpPhiTheta17 = (TH2I*)data201701->Get("Klowp_phiTheta_Ystar_KinFit");
+	TH2I * XiKlowpPhiTheta17_wacc = (TH2I*)data201701->Get("Klowp_phiTheta_Ystar_KinFit_wacc");
+	TH2I * XiKlowpPhiTheta17_waccsub = (TH2I *) XiKlowpPhiTheta17->Clone("Klowp_phiTheta_Ystar_KinFit_waccsub");
+	XiKlowpPhiTheta17_waccsub->Add(XiKlowpPhiTheta17_wacc,-0.5);
+	XiKlowpPhiTheta17_waccsub->SetTitle("K+_{decay} in Y^{*} rest frame");
+	XiKlowpPhiTheta17_waccsub->GetXaxis()->SetTitle("#theta (deg)");
+	XiKlowpPhiTheta17_waccsub->GetYaxis()->SetTitle("#phi (deg)");
+	XiKlowpPhiTheta17_waccsub->RebinX(2);
+	XiKlowpPhiTheta17_waccsub->RebinY(4);
+	XiKlowpPhiTheta17_waccsub->Draw("colz");
+	sprintf(XiKlowpPhiTheta17name, "Xi_Klowp_phitheta__kinfit_Ystarframe_%s_data.png",version201701);
+	ccXiKlowpPhiTheta17->Print(XiKlowpPhiTheta17name);
+
+	char XiallKPhiTheta17MCname[100];
+	TCanvas *ccXiallKPhiTheta17MC = new TCanvas("ccXiallKPhiTheta17MC", "ccXiallKPhiTheta17MC", 800, 600);
+	TH2I * XiallKPhiTheta17MC = (TH2I*)mc201701->Get("allK_phiTheta_CM_KinFit");
+	XiallKPhiTheta17MC->SetTitle("K+");
+	XiallKPhiTheta17MC->GetXaxis()->SetTitle("#theta (deg)");
+	XiallKPhiTheta17MC->GetYaxis()->SetTitle("#phi (deg)");
+	XiallKPhiTheta17MC->RebinX(2);
+	XiallKPhiTheta17MC->RebinY(4);
+	XiallKPhiTheta17MC->Draw("colz");
+	sprintf(XiallKPhiTheta17MCname, "Xi_allK_phitheta_kinfit_CMframe_%s_MC.png",version201701);
+	ccXiallKPhiTheta17MC->Print(XiallKPhiTheta17MCname);
+
+	char XiKlowpPhiTheta17MCname[100];
+	TCanvas *ccXiKlowpPhiTheta17MC = new TCanvas("ccXiKlowpPhiTheta17MC", "ccXiKlowpPhiTheta17MC", 800, 600);
+	TH2I * XiKlowpPhiTheta17MC = (TH2I*)mc201701->Get("Klowp_phiTheta_Ystar_KinFit");
+	XiKlowpPhiTheta17MC->SetTitle("K+_{decay} in Y^{*} rest frame");
+	XiKlowpPhiTheta17MC->GetXaxis()->SetTitle("#theta (deg)");
+	XiKlowpPhiTheta17MC->GetYaxis()->SetTitle("#phi (deg)");
+	XiKlowpPhiTheta17MC->RebinX(2);
+	XiKlowpPhiTheta17MC->RebinY(4);
+	XiKlowpPhiTheta17MC->Draw("colz");
+	sprintf(XiKlowpPhiTheta17MCname, "Xi_Klowp_phitheta_kinfit_Ystarframe_%s_MC.png",version201701);
+	ccXiKlowpPhiTheta17MC->Print(XiKlowpPhiTheta17MCname);
+
+	char XiKhighpPhiTheta17MCname[100];
+	TCanvas *ccXiKhighpPhiTheta17MC = new TCanvas("ccXiKhighpPhiTheta17MC", "ccXiKhighpPhiTheta17MC", 800, 600);
+	TH2I * XiKhighpPhiTheta17MC = (TH2I*)mc201701->Get("Khighp_phiTheta_CM_KinFit");
+	XiKhighpPhiTheta17MC->SetTitle("K+_{t} in CM frame");
+	XiKhighpPhiTheta17MC->GetXaxis()->SetTitle("#theta (deg)");
+	XiKhighpPhiTheta17MC->GetYaxis()->SetTitle("#phi (deg)");
+	XiKhighpPhiTheta17MC->RebinX(2);
+	XiKhighpPhiTheta17MC->RebinY(4);
+	XiKhighpPhiTheta17MC->Draw("colz");
+	sprintf(XiKhighpPhiTheta17MCname, "Xi_Khighp_phitheta_kinfit_CMframe_%s_MC.png",version201701);
+	ccXiKhighpPhiTheta17MC->Print(XiKhighpPhiTheta17MCname);
+	
+	char XiKlowpPhiTheta17MCTruthname[100];
+	TCanvas *ccXiKlowpPhiTheta17MCTruth = new TCanvas("ccXiKlowpPhiTheta17MCTruth", "ccXiKlowpPhiTheta17MCTruth", 800, 600);
+	TH2I * XiKlowpPhiTheta17MCTruth = (TH2I*)mc201701->Get("Klowp_phiTheta_Ystar_Truth");
+	XiKlowpPhiTheta17MCTruth->SetTitle("K+_{decay} in Y^{*} rest frame");
+	XiKlowpPhiTheta17MCTruth->GetXaxis()->SetTitle("#theta (deg)");
+	XiKlowpPhiTheta17MCTruth->GetYaxis()->SetTitle("#phi (deg)");
+	XiKlowpPhiTheta17MCTruth->RebinX(2);
+	XiKlowpPhiTheta17MCTruth->RebinY(4);
+	XiKlowpPhiTheta17MCTruth->Draw("colz");
+	sprintf(XiKlowpPhiTheta17MCTruthname, "Xi_Klowp_phitheta_kinfit_Ystarframe_%s_MCTruth.png",version201701);
+	ccXiKlowpPhiTheta17MCTruth->Print(XiKlowpPhiTheta17MCTruthname);
+
+	char XiKhighpPhiTheta17MCTruthname[100];
+	TCanvas *ccXiKhighpPhiTheta17MCTruth = new TCanvas("ccXiKhighpPhiTheta17MCTruth", "ccXiKhighpPhiTheta17MCTruth", 800, 600);
+	TH2I * XiKhighpPhiTheta17MCTruth = (TH2I*)mc201701->Get("Khighp_phiTheta_CM_Truth");
+	XiKhighpPhiTheta17MCTruth->SetTitle("K+_{t} in CM frame");
+	XiKhighpPhiTheta17MCTruth->GetXaxis()->SetTitle("#theta (deg)");
+	XiKhighpPhiTheta17MCTruth->GetYaxis()->SetTitle("#phi (deg)");
+	XiKhighpPhiTheta17MCTruth->RebinX(2);
+	XiKhighpPhiTheta17MCTruth->RebinY(4);
+	XiKhighpPhiTheta17MCTruth->Draw("colz");
+	sprintf(XiKhighpPhiTheta17MCTruthname, "Xi_Khighp_phitheta_kinfit_CMframe_%s_MCTruth.png",version201701);
+	ccXiKhighpPhiTheta17MCTruth->Print(XiKhighpPhiTheta17MCTruthname);
 
 	char XiKptheta17name[100];
 	TCanvas *ccXiKptheta17 = new TCanvas("ccXiKptheta17", "ccXiKptheta17", 800, 600);
@@ -19,11 +269,11 @@ void plots_kinematics() {
 	TH2I * XiKptheta17_wacc = (TH2I*)data201701->Get("K_pTheta_Measured_wacc");
 	TH2I *XiKptheta17_waccsub = (TH2I *) XiKptheta17->Clone("XiKptheta17_waccsub");
 	XiKptheta17_waccsub->Add(XiKptheta17_wacc,-0.5);
-	XiKptheta17_waccsub->SetTitle("K+ p vs theta Measured");
-	XiKptheta17_waccsub->GetXaxis()->SetTitle("theta (deg)");
+	XiKptheta17_waccsub->SetTitle("Measured K+");
+	XiKptheta17_waccsub->GetXaxis()->SetTitle("#theta (deg)");
 	XiKptheta17_waccsub->GetYaxis()->SetTitle("p (GeV)");
-        XiKptheta17_waccsub->Draw("colz");
-	sprintf(XiKptheta17name, "XiKptheta_%s.png",version201701);
+      XiKptheta17_waccsub->Draw("colz");
+	sprintf(XiKptheta17name, "Xi_K_ptheta_measured_labframe_%s_data.png",version201701);
 	ccXiKptheta17->Print(XiKptheta17name);
 
 	char Xipiptheta17name[100];
@@ -32,11 +282,11 @@ void plots_kinematics() {
 	TH2I * Xipiptheta17_wacc = (TH2I*)data201701->Get("pi_pTheta_Measured_wacc");
 	TH2I *Xipiptheta17_waccsub = (TH2I *) Xipiptheta17->Clone("Xipiptheta17_waccsub");
 	Xipiptheta17_waccsub->Add(Xipiptheta17_wacc,-0.5);
-	Xipiptheta17_waccsub->SetTitle("pi- p vs theta Measured");
-	Xipiptheta17_waccsub->GetXaxis()->SetTitle("theta (deg)");
+	Xipiptheta17_waccsub->SetTitle("Measured #pi-");
+	Xipiptheta17_waccsub->GetXaxis()->SetTitle("#theta (deg)");
 	Xipiptheta17_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipiptheta17_waccsub->Draw("colz");
-	sprintf(Xipiptheta17name, "Xipiptheta_%s.png",version201701);
+	sprintf(Xipiptheta17name, "Xi_pi_ptheta_measured_labframe_%s_data.png",version201701);
 	ccXipiptheta17->Print(Xipiptheta17name);
 
 	char Xipptheta17name[100];
@@ -45,11 +295,11 @@ void plots_kinematics() {
 	TH2I * Xipptheta17_wacc = (TH2I*)data201701->Get("p_pTheta_Measured_wacc");
 	TH2I *Xipptheta17_waccsub = (TH2I *) Xipptheta17->Clone("Xipptheta17_waccsub");
 	Xipptheta17_waccsub->Add(Xipptheta17_wacc,-0.5);
-	Xipptheta17_waccsub->SetTitle("Proton p vs theta Measured");
-	Xipptheta17_waccsub->GetXaxis()->SetTitle("theta (deg)");
+	Xipptheta17_waccsub->SetTitle("Measured Proton");
+	Xipptheta17_waccsub->GetXaxis()->SetTitle("#theta (deg)");
 	Xipptheta17_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipptheta17_waccsub->Draw("colz");
-	sprintf(Xipptheta17name, "Xipptheta_%s.png",version201701);
+	sprintf(Xipptheta17name, "Xi_p_ptheta_measured_labframe_%s_data.png",version201701);
 	ccXipptheta17->Print(Xipptheta17name);
 
 	char XiKptheta17KinFitname[100];
@@ -62,7 +312,7 @@ void plots_kinematics() {
 	XiKptheta17KinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	XiKptheta17KinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         XiKptheta17KinFit_waccsub->Draw("colz");
-	sprintf(XiKptheta17KinFitname, "XiKpthetaKinFit_%s.png",version201701);
+	sprintf(XiKptheta17KinFitname, "Xi_K_ptheta_KinFit_labframe_%s_data.png",version201701);
 	ccXiKptheta17KinFit->Print(XiKptheta17KinFitname);
 
 	char Xipiptheta17KinFitname[100];
@@ -75,7 +325,7 @@ void plots_kinematics() {
 	Xipiptheta17KinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipiptheta17KinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipiptheta17KinFit_waccsub->Draw("colz");
-	sprintf(Xipiptheta17KinFitname, "XipipthetaKinFit_%s.png",version201701);
+	sprintf(Xipiptheta17KinFitname, "Xi_pi_ptheta_KinFit_labframe_%s_data.png",version201701);
 	ccXipiptheta17KinFit->Print(Xipiptheta17KinFitname);
 
 	char Xipptheta17KinFitname[100];
@@ -88,7 +338,7 @@ void plots_kinematics() {
 	Xipptheta17KinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipptheta17KinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipptheta17KinFit_waccsub->Draw("colz");
-	sprintf(Xipptheta17KinFitname, "XippthetaKinFit_%s.png",version201701);
+	sprintf(Xipptheta17KinFitname, "Xi_p_ptheta_KinFit_labframe_%s_data.png",version201701);
 	ccXipptheta17KinFit->Print(Xipptheta17KinFitname);
 
 	char XiKptheta181name[100];
@@ -101,7 +351,7 @@ void plots_kinematics() {
 	XiKptheta181_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	XiKptheta181_waccsub->GetYaxis()->SetTitle("p (GeV)");
         XiKptheta181_waccsub->Draw("colz");
-	sprintf(XiKptheta181name, "XiKptheta_%s.png",version201801);
+	sprintf(XiKptheta181name, "Xi_K_ptheta_measured_labframe_%s_data.png",version201801);
 	ccXiKptheta181->Print(XiKptheta181name);
 
 	char Xipiptheta181name[100];
@@ -114,7 +364,7 @@ void plots_kinematics() {
 	Xipiptheta181_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipiptheta181_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipiptheta181_waccsub->Draw("colz");
-	sprintf(Xipiptheta181name, "Xipiptheta_%s.png",version201801);
+	sprintf(Xipiptheta181name, "Xi_pi_ptheta_measured_labframe_%s_data.png",version201801);
 	ccXipiptheta181->Print(Xipiptheta181name);
 
 	char Xipptheta181name[100];
@@ -127,7 +377,7 @@ void plots_kinematics() {
 	Xipptheta181_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipptheta181_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipptheta181_waccsub->Draw("colz");
-	sprintf(Xipptheta181name, "Xipptheta_%s.png",version201801);
+	sprintf(Xipptheta181name, "Xi_p_ptheta_measured_labframe_%s_data.png",version201801);
 	ccXipptheta181->Print(Xipptheta181name);
 
 	char XiKptheta181KinFitname[100];
@@ -140,7 +390,7 @@ void plots_kinematics() {
 	XiKptheta181KinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	XiKptheta181KinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         XiKptheta181KinFit_waccsub->Draw("colz");
-	sprintf(XiKptheta181KinFitname, "XiKpthetaKinFit_%s.png",version201801);
+	sprintf(XiKptheta181KinFitname, "Xi_K_ptheta_KinFit_labframe_%s_data.png",version201801);
 	ccXiKptheta181KinFit->Print(XiKptheta181KinFitname);
 
 	char Xipiptheta181KinFitname[100];
@@ -153,7 +403,7 @@ void plots_kinematics() {
 	Xipiptheta181KinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipiptheta181KinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipiptheta181KinFit_waccsub->Draw("colz");
-	sprintf(Xipiptheta181KinFitname, "XipipthetaKinFit_%s.png",version201801);
+	sprintf(Xipiptheta181KinFitname, "Xi_pi_ptheta_KinFit_labframe_%s_data.png",version201801);
 	ccXipiptheta181KinFit->Print(Xipiptheta181KinFitname);
 
 	char Xipptheta181KinFitname[100];
@@ -166,7 +416,7 @@ void plots_kinematics() {
 	Xipptheta181KinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipptheta181KinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipptheta181KinFit_waccsub->Draw("colz");
-	sprintf(Xipptheta181KinFitname, "XippthetaKinFit_%s.png",version201801);
+	sprintf(Xipptheta181KinFitname, "Xi_p_ptheta_KinFit_labframe_%s_data.png",version201801);
 	ccXipptheta181KinFit->Print(Xipptheta181KinFitname);
 
 	char XiKptheta188name[100];
@@ -179,7 +429,7 @@ void plots_kinematics() {
 	XiKptheta188_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	XiKptheta188_waccsub->GetYaxis()->SetTitle("p (GeV)");
         XiKptheta188_waccsub->Draw("colz");
-	sprintf(XiKptheta188name, "XiKptheta_%s.png",version201808);
+	sprintf(XiKptheta188name, "Xi_K_ptheta_measured_labframe_%s_data.png",version201808);
 	ccXiKptheta188->Print(XiKptheta188name);
 
 	char Xipiptheta188name[100];
@@ -192,7 +442,7 @@ void plots_kinematics() {
 	Xipiptheta188_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipiptheta188_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipiptheta188_waccsub->Draw("colz");
-	sprintf(Xipiptheta188name, "Xipiptheta_%s.png",version201808);
+	sprintf(Xipiptheta188name, "Xi_pi_ptheta_measured_labframe_%s_data.png",version201808);
 	ccXipiptheta188->Print(Xipiptheta188name);
 
 	char Xipptheta188name[100];
@@ -205,7 +455,7 @@ void plots_kinematics() {
 	Xipptheta188_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipptheta188_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipptheta188_waccsub->Draw("colz");
-	sprintf(Xipptheta188name, "Xipptheta_%s.png",version201808);
+	sprintf(Xipptheta188name, "Xi_p_ptheta_measured_labframe_%s_data.png",version201808);
 	ccXipptheta188->Print(Xipptheta188name);
 
 	char XiKptheta188KinFitname[100];
@@ -218,7 +468,7 @@ void plots_kinematics() {
 	XiKptheta188KinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	XiKptheta188KinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         XiKptheta188KinFit_waccsub->Draw("colz");
-	sprintf(XiKptheta188KinFitname, "XiKpthetaKinFit_%s.png",version201808);
+	sprintf(XiKptheta188KinFitname, "Xi_K_ptheta_kinfit_labframe_%s_data.png",version201808);
 	ccXiKptheta188KinFit->Print(XiKptheta188KinFitname);
 
 	char Xipiptheta188KinFitname[100];
@@ -231,7 +481,7 @@ void plots_kinematics() {
 	Xipiptheta188KinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipiptheta188KinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipiptheta188KinFit_waccsub->Draw("colz");
-	sprintf(Xipiptheta188KinFitname, "XipipthetaKinFit_%s.png",version201808);
+	sprintf(Xipiptheta188KinFitname, "Xi_pi_ptheta_kinfit_labframe_%s_data.png",version201808);
 	ccXipiptheta188KinFit->Print(Xipiptheta188KinFitname);
 
 	char Xipptheta188KinFitname[100];
@@ -244,7 +494,7 @@ void plots_kinematics() {
 	Xipptheta188KinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipptheta188KinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipptheta188KinFit_waccsub->Draw("colz");
-	sprintf(Xipptheta188KinFitname, "XippthetaKinFit_%s.png",version201808);
+	sprintf(Xipptheta188KinFitname, "Xi_p_ptheta_kinfit_labframe_%s_data.png",version201808);
 	ccXipptheta188KinFit->Print(Xipptheta188KinFitname);
 
 
@@ -258,7 +508,7 @@ void plots_kinematics() {
 	XiKptheta171MC_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	XiKptheta171MC_waccsub->GetYaxis()->SetTitle("p (GeV)");
         XiKptheta171MC_waccsub->Draw("colz");
-	sprintf(XiKptheta171MCname, "XiKptheta_MC_%s.png",version201701);
+	sprintf(XiKptheta171MCname, "Xi_K_ptheta_measured_labframe_%s_MC.png",version201701);
 	ccXiKptheta171MC->Print(XiKptheta171MCname);
 
 	char Xipiptheta171MCname[100];
@@ -271,7 +521,7 @@ void plots_kinematics() {
 	Xipiptheta171MC_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipiptheta171MC_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipiptheta171MC_waccsub->Draw("colz");
-	sprintf(Xipiptheta171MCname, "Xipiptheta_MC_%s.png",version201701);
+	sprintf(Xipiptheta171MCname, "Xi_pi_ptheta_measured_labframe_%s_MC.png",version201701);
 	ccXipiptheta171MC->Print(Xipiptheta171MCname);
 
 	char Xipptheta171MCname[100];
@@ -284,7 +534,7 @@ void plots_kinematics() {
 	Xipptheta171MC_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipptheta171MC_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipptheta171MC_waccsub->Draw("colz");
-	sprintf(Xipptheta171MCname, "Xipptheta_MC_%s.png",version201701);
+	sprintf(Xipptheta171MCname, "Xi_p_ptheta_measured_labframe_%s_MC.png",version201701);
 	ccXipptheta171MC->Print(Xipptheta171MCname);
 
 	char XiKptheta171MCKinFitname[100];
@@ -297,7 +547,7 @@ void plots_kinematics() {
 	XiKptheta171MCKinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	XiKptheta171MCKinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         XiKptheta171MCKinFit_waccsub->Draw("colz");
-	sprintf(XiKptheta171MCKinFitname, "XiKpthetaKinFit_MC_%s.png",version201701);
+	sprintf(XiKptheta171MCKinFitname, "Xi_K_ptheta_kinfit_labframe_%s_MC.png",version201701);
 	ccXiKptheta171MCKinFit->Print(XiKptheta171MCKinFitname);
 
 	char Xipiptheta171MCKinFitname[100];
@@ -310,7 +560,7 @@ void plots_kinematics() {
 	Xipiptheta171MCKinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipiptheta171MCKinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipiptheta171MCKinFit_waccsub->Draw("colz");
-	sprintf(Xipiptheta171MCKinFitname, "XipipthetaKinFit_MC_%s.png",version201701);
+	sprintf(Xipiptheta171MCKinFitname, "Xi_pi_ptheta_kinfit_labframe_%s_MC.png",version201701);
 	ccXipiptheta171MCKinFit->Print(Xipiptheta171MCKinFitname);
 
 	char Xipptheta171MCKinFitname[100];
@@ -323,7 +573,7 @@ void plots_kinematics() {
 	Xipptheta171MCKinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipptheta171MCKinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipptheta171MCKinFit_waccsub->Draw("colz");
-	sprintf(Xipptheta171MCKinFitname, "XippthetaKinFit_MC_%s.png",version201701);
+	sprintf(Xipptheta171MCKinFitname, "Xi_p_ptheta_kinfit_labframe_%s_MC.png",version201701);
 	ccXipptheta171MCKinFit->Print(Xipptheta171MCKinFitname);
 
 	char XiKptheta181MCname[100];
@@ -336,7 +586,7 @@ void plots_kinematics() {
 	XiKptheta181MC_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	XiKptheta181MC_waccsub->GetYaxis()->SetTitle("p (GeV)");
         XiKptheta181MC_waccsub->Draw("colz");
-	sprintf(XiKptheta181MCname, "XiKptheta_MC_%s.png",version201801);
+	sprintf(XiKptheta181MCname, "Xi_K_ptheta_measured_labframe_%s_MC.png",version201801);
 	ccXiKptheta181MC->Print(XiKptheta181MCname);
 
 	char Xipiptheta181MCname[100];
@@ -349,7 +599,7 @@ void plots_kinematics() {
 	Xipiptheta181MC_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipiptheta181MC_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipiptheta181MC_waccsub->Draw("colz");
-	sprintf(Xipiptheta181MCname, "Xipiptheta_MC_%s.png",version201801);
+	sprintf(Xipiptheta181MCname, "Xi_pi_ptheta_measured_labframe_%s_MC.png",version201801);
 	ccXipiptheta181MC->Print(Xipiptheta181MCname);
 
 	char Xipptheta181MCname[100];
@@ -362,7 +612,7 @@ void plots_kinematics() {
 	Xipptheta181MC_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipptheta181MC_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipptheta181MC_waccsub->Draw("colz");
-	sprintf(Xipptheta181MCname, "Xipptheta_MC_%s.png",version201801);
+	sprintf(Xipptheta181MCname, "Xi_p_ptheta_measured_labframe_%s_MC.png",version201801);
 	ccXipptheta181MC->Print(Xipptheta181MCname);
 
 	char XiKptheta181MCKinFitname[100];
@@ -375,7 +625,7 @@ void plots_kinematics() {
 	XiKptheta181MCKinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	XiKptheta181MCKinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         XiKptheta181MCKinFit_waccsub->Draw("colz");
-	sprintf(XiKptheta181MCKinFitname, "XiKpthetaKinFit_MC_%s.png",version201801);
+	sprintf(XiKptheta181MCKinFitname, "Xi_K_ptheta_kinfit_labframe_%s_MC.png",version201801);
 	ccXiKptheta181MCKinFit->Print(XiKptheta181MCKinFitname);
 
 	char Xipiptheta181MCKinFitname[100];
@@ -388,7 +638,7 @@ void plots_kinematics() {
 	Xipiptheta181MCKinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipiptheta181MCKinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipiptheta181MCKinFit_waccsub->Draw("colz");
-	sprintf(Xipiptheta181MCKinFitname, "XipipthetaKinFit_MC_%s.png",version201801);
+	sprintf(Xipiptheta181MCKinFitname, "Xi_pi_ptheta_kinfit_labframe_%s_MC.png",version201801);
 	ccXipiptheta181MCKinFit->Print(Xipiptheta181MCKinFitname);
 
 	char Xipptheta181MCKinFitname[100];
@@ -401,7 +651,7 @@ void plots_kinematics() {
 	Xipptheta181MCKinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipptheta181MCKinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipptheta181MCKinFit_waccsub->Draw("colz");
-	sprintf(Xipptheta181MCKinFitname, "XippthetaKinFit_MC_%s.png",version201801);
+	sprintf(Xipptheta181MCKinFitname, "Xi_p_ptheta_kinfit_labframe_%s_MC.png",version201801);
 	ccXipptheta181MCKinFit->Print(Xipptheta181MCKinFitname);
 
 	char XiKptheta188MCname[100];
@@ -414,7 +664,7 @@ void plots_kinematics() {
 	XiKptheta188MC_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	XiKptheta188MC_waccsub->GetYaxis()->SetTitle("p (GeV)");
         XiKptheta188MC_waccsub->Draw("colz");
-	sprintf(XiKptheta188MCname, "XiKptheta_MC_%s.png",version201808);
+	sprintf(XiKptheta188MCname, "Xi_K_ptheta_measured_labframe_%s_MC.png",version201808);
 	ccXiKptheta188MC->Print(XiKptheta188MCname);
 
 	char Xipiptheta188MCname[100];
@@ -427,7 +677,7 @@ void plots_kinematics() {
 	Xipiptheta188MC_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipiptheta188MC_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipiptheta188MC_waccsub->Draw("colz");
-	sprintf(Xipiptheta188MCname, "Xipiptheta_MC_%s.png",version201808);
+	sprintf(Xipiptheta188MCname, "Xi_pi_ptheta_measured_labframe_%s_MC.png",version201808);
 	ccXipiptheta188MC->Print(Xipiptheta188MCname);
 
 	char Xipptheta188MCname[100];
@@ -440,7 +690,7 @@ void plots_kinematics() {
 	Xipptheta188MC_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipptheta188MC_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipptheta188MC_waccsub->Draw("colz");
-	sprintf(Xipptheta188MCname, "Xipptheta_MC_%s.png",version201808);
+	sprintf(Xipptheta188MCname, "Xi_p_ptheta_measured_labframe_%s_MC.png",version201808);
 	ccXipptheta188MC->Print(Xipptheta188MCname);
 
 	char XiKptheta188MCKinFitname[100];
@@ -453,7 +703,7 @@ void plots_kinematics() {
 	XiKptheta188MCKinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	XiKptheta188MCKinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         XiKptheta188MCKinFit_waccsub->Draw("colz");
-	sprintf(XiKptheta188MCKinFitname, "XiKpthetaKinFit_MC_%s.png",version201808);
+	sprintf(XiKptheta188MCKinFitname, "Xi_K_ptheta_kinfit_labframe_%s_MC.png",version201808);
 	ccXiKptheta188MCKinFit->Print(XiKptheta188MCKinFitname);
 
 	char Xipiptheta188MCKinFitname[100];
@@ -466,7 +716,7 @@ void plots_kinematics() {
 	Xipiptheta188MCKinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipiptheta188MCKinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipiptheta188MCKinFit_waccsub->Draw("colz");
-	sprintf(Xipiptheta188MCKinFitname, "XipipthetaKinFit_MC_%s.png",version201808);
+	sprintf(Xipiptheta188MCKinFitname, "Xi_pi_ptheta_kinfit_labframe_%s_MC.png",version201808);
 	ccXipiptheta188MCKinFit->Print(Xipiptheta188MCKinFitname);
 
 	char Xipptheta188MCKinFitname[100];
@@ -479,7 +729,7 @@ void plots_kinematics() {
 	Xipptheta188MCKinFit_waccsub->GetXaxis()->SetTitle("theta (deg)");
 	Xipptheta188MCKinFit_waccsub->GetYaxis()->SetTitle("p (GeV)");
         Xipptheta188MCKinFit_waccsub->Draw("colz");
-	sprintf(Xipptheta188MCKinFitname, "XippthetaKinFit_MC_%s.png",version201808);
+	sprintf(Xipptheta188MCKinFitname, "Xi_p_ptheta_kinfit_labframe_%s_MC.png",version201808);
 	ccXipptheta188MCKinFit->Print(Xipptheta188MCKinFitname);
 
 
@@ -523,86 +773,223 @@ void plots_kinematics() {
 	TH1F * pitheta188MC = (TH1F *)Xipiptheta188MC_waccsub->ProjectionX("pitheta188MC",1,Xipiptheta188MC_waccsub->GetYaxis()->FindBin(10));
 
 	TCanvas *ccXiKpMeasured = new TCanvas("ccXiKpMeasured", "ccXiKpMeasured", 800, 600);
-	Kp188->SetLineColor(kBlue); Kp188->Draw();
-	Kp171->SetLineColor(kGreen); Kp171->Draw("same"); 
-	Kp181->SetLineColor(kRed); Kp181->Draw("same");
+	setformatTH1F(Kp171,color171,data);
+	setformatTH1F(Kp181,color181,data);
+	setformatTH1F(Kp188,color188,data);
+	Kp188->Draw("pe");
+	Kp171->Draw("pe,same"); 
+	Kp181->Draw("pe,same");
 	auto legend_sets = new TLegend(0.70,0.8,0.98,0.93);
-	legend_sets->AddEntry(Kp171,"2017-01 ANAver20","l");
-	legend_sets->AddEntry(Kp181,"2018-01 ANAver03","l");
-	legend_sets->AddEntry(Kp188,"2018-08 ANAver02","l");
+	legend_sets->AddEntry(Kp171,"Spring 2017","lep");
+	legend_sets->AddEntry(Kp181,"Spring 2018","lep");
+	legend_sets->AddEntry(Kp188,"Fall 2018","lep");
 	legend_sets->Draw();	
-	ccXiKpMeasured->Print("kp.png");
+	ccXiKpMeasured->Print("Xi_K_p_measured_labframe_all_data.png");
 	TCanvas *ccXiKpMeasuredMC = new TCanvas("ccXiKpMeasuredMC", "ccXiKpMeasuredMC", 800, 600);
-	Kp171MC->SetLineColor(kGreen); Kp171MC->Draw();
-	Kp188MC->SetLineColor(kBlue); Kp188MC->Draw("same");
-	Kp181MC->SetLineColor(kRed); Kp181MC->Draw("same");
-	legend_sets->Draw();
-	ccXiKpMeasuredMC->Print("kpMC.png");
+	setformatTH1F(Kp171MC,color171,mc);
+	setformatTH1F(Kp181MC,color181,mc);
+	setformatTH1F(Kp188MC,color188,mc);
+	Kp171MC->Draw("pe");
+	Kp188MC->Draw("pe,same");
+	Kp181MC->Draw("pe,same");
+	auto legend_setsmc = new TLegend(0.70,0.8,0.98,0.93);
+	legend_setsmc->AddEntry(Kp171MC,"Spring 2017 MC","lep");
+	legend_setsmc->AddEntry(Kp181MC,"Spring 2018 MC","lep");
+	legend_setsmc->AddEntry(Kp188MC,"Fall 2018 MC","lep");
+	legend_setsmc->Draw();
+	ccXiKpMeasuredMC->Print("Xi_K_p_measured_labframe_all_MC.png");
+
+	TCanvas *ccXiKpMeasured_all = new TCanvas("ccXiKpMeasured_all", "ccXiKpMeasured_all", 800, 600);
+	normalizeMC(Kp171, Kp171MC);
+	normalizeMC(Kp181, Kp181MC);
+	normalizeMC(Kp188, Kp188MC);
+	Kp188->SetTitle("K^{+} Momentum");
+	Kp188->Draw("pe");
+	Kp171->Draw("pe,same"); 
+	Kp181->Draw("pe,same");
+	Kp171MC->Draw("pe,same");
+	Kp188MC->Draw("pe,same");
+	Kp181MC->Draw("pe,same");
+	auto legend_all = new TLegend(0.70,0.7,0.98,0.93);
+	legend_all->AddEntry(Kp171,"Spring 2017 Data","lep");
+	legend_all->AddEntry(Kp181,"Spring 2018 Data","lep");
+	legend_all->AddEntry(Kp188,"Fall 2018 Data","lep");
+	legend_all->AddEntry(Kp171MC,"Spring 2017 MC","lep");
+	legend_all->AddEntry(Kp181MC,"Spring 2018 MC","lep");
+	legend_all->AddEntry(Kp188MC,"Fall 2018 MC","lep");
+	legend_all->Draw();
+	ccXiKpMeasured_all->Print("Xi_K_p_measured_labframe_allsets_june2020.png");
+
 
 	TCanvas *ccXiKthetaMeasured = new TCanvas("ccXiKthetaMeasured", "ccXiKthetaMeasured", 800, 600);
 	Ktheta188->SetLineColor(kBlue); Ktheta188->Draw();
 	Ktheta171->SetLineColor(kGreen); Ktheta171->Draw("same"); 
 	Ktheta181->SetLineColor(kRed); Ktheta181->Draw("same");
 	legend_sets->Draw();
-	ccXiKthetaMeasured->Print("ktheta.png");
+	ccXiKthetaMeasured->Print("Xi_K_theta_measured_labframe_all_data.png");
 	TCanvas *ccXiKthetaMeasuredMC = new TCanvas("ccXiKthetaMeasuredMC", "ccXiKthetaMeasuredMC", 800, 600);
 	Ktheta171MC->SetLineColor(kGreen); Ktheta171MC->Draw();
 	Ktheta188MC->SetLineColor(kBlue); Ktheta188MC->Draw("same");
 	Ktheta181MC->SetLineColor(kRed); Ktheta181MC->Draw("same");
 	legend_sets->Draw();
-	ccXiKthetaMeasuredMC->Print("kthetaMC.png");
+	ccXiKthetaMeasuredMC->Print("Xi_K_theta_measured_labframe_all_MC.png");
+
+	TCanvas *ccXiKthetaMeasured_all = new TCanvas("ccXiKthetaMeasured_all", "ccXiKthetaMeasured_all", 800, 600);
+	setformatTH1F(Ktheta171,color171,data);
+	setformatTH1F(Ktheta181,color181,data);
+	setformatTH1F(Ktheta188,color188,data);
+	setformatTH1F(Ktheta171MC,color171,mc);
+	setformatTH1F(Ktheta181MC,color181,mc);
+	setformatTH1F(Ktheta188MC,color188,mc);
+	normalizeMC(Ktheta171,Ktheta171MC);
+	normalizeMC(Ktheta181,Ktheta181MC);
+	normalizeMC(Ktheta188,Ktheta188MC);
+	Ktheta188MC->SetTitle("K^{+} Polar Angle");
+	Ktheta188MC->GetXaxis()->SetTitle("#theta (deg)");
+	Ktheta188MC->Draw("pe");
+	Ktheta171->Draw("pe,same");
+	Ktheta171MC->Draw("pe,same");
+	Ktheta181->Draw("pe,same");
+	Ktheta181MC->Draw("pe,same");
+	Ktheta188->Draw("pe,same");
+	legend_all->Draw();
+	ccXiKthetaMeasured_all->Print("Xi_K_theta_measured_labframe_allsets_june2020.png");
+
+	TCanvas *ccXiPpMeasured_all = new TCanvas("ccXiPpMeasured_all", "ccXiPpMeasured_all", 800, 600);
+	setformatTH1F(Pp171,color171,data);
+	setformatTH1F(Pp181,color181,data);
+	setformatTH1F(Pp188,color188,data);
+	setformatTH1F(Pp171MC,color171,mc);
+	setformatTH1F(Pp181MC,color181,mc);
+	setformatTH1F(Pp188MC,color188,mc);
+	normalizeMC(Pp171,Pp171MC);
+	normalizeMC(Pp181,Pp181MC);
+	normalizeMC(Pp188,Pp188MC);
+	Pp188->SetTitle("p Momentum");
+	Pp188->GetXaxis()->SetTitle("p (GeV)");
+	Pp188->Draw("pe");
+	Pp171->Draw("pe,same");
+	Pp171MC->Draw("pe,same");
+	Pp181->Draw("pe,same");
+	Pp181MC->Draw("pe,same");
+	Pp188MC->Draw("pe,same");
+	legend_all->Draw();
+	ccXiPpMeasured_all->Print("Xi_p_p_measured_labframe_allsets_june2020.png");
+
+	TCanvas *ccXiPthetaMeasured_all = new TCanvas("ccXiPthetaMeasured_all", "ccXiPthetaMeasured_all", 800, 600);
+	setformatTH1F(Ptheta171,color171,data);
+	setformatTH1F(Ptheta181,color181,data);
+	setformatTH1F(Ptheta188,color188,data);
+	setformatTH1F(Ptheta171MC,color171,mc);
+	setformatTH1F(Ptheta181MC,color181,mc);
+	setformatTH1F(Ptheta188MC,color188,mc);
+	normalizeMC(Ptheta171,Ptheta171MC);
+	normalizeMC(Ptheta181,Ptheta181MC);
+	normalizeMC(Ptheta188,Ptheta188MC);
+	Ptheta188MC->SetTitle("p Polar Angle");
+	Ptheta188MC->GetXaxis()->SetTitle("#theta (deg)");
+	Ptheta188MC->Draw("pe");
+	Ptheta171->Draw("pe,same");
+	Ptheta171MC->Draw("pe,same");
+	Ptheta181->Draw("pe,same");
+	Ptheta181MC->Draw("pe,same");
+	Ptheta188->Draw("pe,same");
+	legend_all->Draw();
+	ccXiPthetaMeasured_all->Print("Xi_p_theta_measured_labframe_allsets_june2020.png");
+
+	TCanvas *ccXipipMeasured_all = new TCanvas("ccXipipMeasured_all", "ccXipipMeasured_all", 800, 600);
+	setformatTH1F(pip171,color171,data);
+	setformatTH1F(pip181,color181,data);
+	setformatTH1F(pip188,color188,data);
+	setformatTH1F(pip171MC,color171,mc);
+	setformatTH1F(pip181MC,color181,mc);
+	setformatTH1F(pip188MC,color188,mc);
+	normalizeMC(pip171,pip171MC);
+	normalizeMC(pip181,pip181MC);
+	normalizeMC(pip188,pip188MC);
+	pip188MC->SetTitle("#pi^{-} Momentum");
+	pip188MC->GetXaxis()->SetTitle("p (GeV)");
+	pip188MC->Draw("pe");
+	pip171->Draw("pe,same");
+	pip171MC->Draw("pe,same");
+	pip181->Draw("pe,same");
+	pip181MC->Draw("pe,same");
+	pip188->Draw("pe,same");
+	legend_all->Draw();
+	ccXipipMeasured_all->Print("Xi_pi_p_measured_labframe_allsets_june2020.png");
+
+	TCanvas *ccXipithetaMeasured_all = new TCanvas("ccXipithetaMeasured_all", "ccXipithetaMeasured_all", 800, 600);
+	setformatTH1F(pitheta171,color171,data);
+	setformatTH1F(pitheta181,color181,data);
+	setformatTH1F(pitheta188,color188,data);
+	setformatTH1F(pitheta171MC,color171,mc);
+	setformatTH1F(pitheta181MC,color181,mc);
+	setformatTH1F(pitheta188MC,color188,mc);
+	normalizeMC(pitheta171,pitheta171MC);
+	normalizeMC(pitheta181,pitheta181MC);
+	normalizeMC(pitheta188,pitheta188MC);
+	pitheta188MC->SetTitle("#pi^{-} Polar Angle");
+	pitheta188MC->GetXaxis()->SetTitle("#theta (deg)");
+	pitheta188MC->Draw("pe");
+	pitheta171->Draw("pe,same");
+	pitheta171MC->Draw("pe,same");
+	pitheta181->Draw("pe,same");
+	pitheta181MC->Draw("pe,same");
+	pitheta188->Draw("pe,same");
+	legend_all->Draw();
+	ccXipithetaMeasured_all->Print("Xi_pi_theta_measured_labframe_allsets_june2020.png");
 
 	TCanvas *ccXiPpMeasured = new TCanvas("ccXiPpMeasured", "ccXiPpMeasured", 800, 600);
 	Pp188->SetLineColor(kBlue); Pp188->Draw();
 	Pp171->SetLineColor(kGreen); Pp171->Draw("same"); 
 	Pp181->SetLineColor(kRed); Pp181->Draw("same");
 	legend_sets->Draw();	
-	ccXiPpMeasured->Print("Pp.png");
+	ccXiPpMeasured->Print("Xi_p_p_measured_labframe_all_data.png");
 	TCanvas *ccXiPpMeasuredMC = new TCanvas("ccXiPpMeasuredMC", "ccXiPpMeasuredMC", 800, 600);
 	Pp171MC->SetLineColor(kGreen); Pp171MC->Draw();
 	Pp188MC->SetLineColor(kBlue); Pp188MC->Draw("same");
 	Pp181MC->SetLineColor(kRed); Pp181MC->Draw("same");
 	legend_sets->Draw();
-	ccXiPpMeasuredMC->Print("PpMC.png");
+	ccXiPpMeasuredMC->Print("Xi_p_p_measured_labframe_all_MC.png");
 
 	TCanvas *ccXiPthetaMeasured = new TCanvas("ccXiPthetaMeasured", "ccXiPthetaMeasured", 800, 600);
 	Ptheta188->SetLineColor(kBlue); Ptheta188->Draw();
 	Ptheta171->SetLineColor(kGreen); Ptheta171->Draw("same"); 
 	Ptheta181->SetLineColor(kRed); Ptheta181->Draw("same");
 	legend_sets->Draw();
-	ccXiPthetaMeasured->Print("Ptheta.png");
+	ccXiPthetaMeasured->Print("Xi_p_theta_measured_labframe_all_data.png");
 	TCanvas *ccXiPthetaMeasuredMC = new TCanvas("ccXiPthetaMeasuredMC", "ccXiPthetaMeasuredMC", 800, 600);
 	Ptheta171MC->SetLineColor(kGreen); Ptheta171MC->Draw();
 	Ptheta188MC->SetLineColor(kBlue); Ptheta188MC->Draw("same");
 	Ptheta181MC->SetLineColor(kRed); Ptheta181MC->Draw("same");
 	legend_sets->Draw();
-	ccXiPthetaMeasuredMC->Print("PthetaMC.png");
+	ccXiPthetaMeasuredMC->Print("Xi_p_theta_measured_labframe_all_MC.png");
 
 	TCanvas *ccXipipMeasured = new TCanvas("ccXipipMeasured", "ccXipipMeasured", 800, 600);
 	pip188->SetLineColor(kBlue); pip188->Draw();
 	pip171->SetLineColor(kGreen); pip171->Draw("same"); 
 	pip181->SetLineColor(kRed); pip181->Draw("same");
 	legend_sets->Draw();	
-	ccXipipMeasured->Print("pip.png");
+	ccXipipMeasured->Print("Xi_pi_p_measured_labframe_all_data.png");
 	TCanvas *ccXipipMeasuredMC = new TCanvas("ccXipipMeasuredMC", "ccXipipMeasuredMC", 800, 600);
 	pip171MC->SetLineColor(kGreen); pip171MC->Draw();
 	pip188MC->SetLineColor(kBlue); pip188MC->Draw("same");
 	pip181MC->SetLineColor(kRed); pip181MC->Draw("same");
 	legend_sets->Draw();
-	ccXipipMeasuredMC->Print("pipMC.png");
+	ccXipipMeasuredMC->Print("Xi_pi_p_measured_labframe_all_MC.png");
 
 	TCanvas *ccXipithetaMeasured = new TCanvas("ccXipithetaMeasured", "ccXipithetaMeasured", 800, 600);
 	pitheta188->SetLineColor(kBlue); pitheta188->Draw();
 	pitheta171->SetLineColor(kGreen); pitheta171->Draw("same"); 
 	pitheta181->SetLineColor(kRed); pitheta181->Draw("same");
 	legend_sets->Draw();
-	ccXipithetaMeasured->Print("pitheta.png");
+	ccXipithetaMeasured->Print("Xi_pi_theta_measured_labframe_all_data.png");
 	TCanvas *ccXipithetaMeasuredMC = new TCanvas("ccXipithetaMeasuredMC", "ccXipithetaMeasuredMC", 800, 600);
 	pitheta171MC->SetLineColor(kGreen); pitheta171MC->Draw();
 	pitheta188MC->SetLineColor(kBlue); pitheta188MC->Draw("same");
 	pitheta181MC->SetLineColor(kRed); pitheta181MC->Draw("same");
 	legend_sets->Draw();
-	ccXipithetaMeasuredMC->Print("pithetaMC.png");
+	ccXipithetaMeasuredMC->Print("Xi_pi_theta_measured_labframe_all_MC.png");
 
 
 	char XiMassMeasured17name[100];
@@ -617,24 +1004,19 @@ void plots_kinematics() {
 	TH1I *XiMass17KinFit_waccsub = (TH1I *) XiMass17KinFit->Clone("XiMass17KinFit_waccsub");
 	XiMass17KinFit_waccsub->Add(XiMass17KinFit_wacc,-0.5);
 	XiMass17KinFit_waccsub->RebinX(5);
-	XiMassMeasured17_waccsub->SetLineColor(kRed);
-	XiMassMeasured17_waccsub->SetMarkerStyle(21);
-	XiMassMeasured17_waccsub->SetMarkerColor(kRed);
-	XiMassMeasured17_waccsub->SetMarkerSize(0.8);
-	XiMass17KinFit_waccsub->SetMarkerStyle(21);
-	XiMass17KinFit_waccsub->SetMarkerColor(kBlue);
-	XiMass17KinFit_waccsub->SetMarkerSize(0.8);
+	setformatTH1I(XiMassMeasured17_waccsub,kRed,data);
+	setformatTH1I(XiMass17KinFit_waccsub,kBlue,data);
 	XiMassMeasured17_waccsub->GetYaxis()->SetRangeUser(0,2000);
 	XiMassMeasured17_waccsub->SetTitle(" ");
 	XiMassMeasured17_waccsub->GetXaxis()->SetTitle("#Lambda#pi^{-} Invariant Mass (GeV)");
 	XiMassMeasured17_waccsub->GetYaxis()->SetTitle("Combos");
-        XiMassMeasured17_waccsub->Draw("");
-        XiMass17KinFit_waccsub->Draw("same");
+    XiMassMeasured17_waccsub->Draw("");
+    XiMass17KinFit_waccsub->Draw("same");
 	auto legend = new TLegend(0.70,0.8,0.98,0.93);
 	legend->AddEntry(XiMassMeasured17_waccsub,"Measured P4","lep");
 	legend->AddEntry(XiMass17KinFit_waccsub,"KinFit P4","lep");
 	legend->Draw();
-	sprintf(XiMassMeasured17name, "XiMass_%s.png",version201701);
+	sprintf(XiMassMeasured17name, "XiMass_measuredvskinfit_%s_data.png",version201701);
 	ccXiMassMeasured17->Print(XiMassMeasured17name);
 
 	char XiMassMeasured181name[100];
@@ -649,21 +1031,16 @@ void plots_kinematics() {
 	TH1I *XiMass181KinFit_waccsub = (TH1I *) XiMass181KinFit->Clone("XiMass181KinFit_waccsub");
 	XiMass181KinFit_waccsub->Add(XiMass181KinFit_wacc,-0.5);
 	XiMass181KinFit_waccsub->RebinX(5);
-	XiMassMeasured181_waccsub->SetLineColor(kRed);
-	XiMassMeasured181_waccsub->SetMarkerStyle(21);
-	XiMassMeasured181_waccsub->SetMarkerColor(kRed);
-	XiMassMeasured181_waccsub->SetMarkerSize(0.8);
-	XiMass181KinFit_waccsub->SetMarkerStyle(21);
-	XiMass181KinFit_waccsub->SetMarkerColor(kBlue);
-	XiMass181KinFit_waccsub->SetMarkerSize(0.8);
+	setformatTH1I(XiMassMeasured181_waccsub,kRed,data);
+	setformatTH1I(XiMass181KinFit_waccsub,kBlue,data);
 	XiMassMeasured181_waccsub->GetYaxis()->SetRangeUser(0,2500);
 	XiMassMeasured181_waccsub->SetTitle(" ");
 	XiMassMeasured181_waccsub->GetXaxis()->SetTitle("#Lambda#pi^{-} Invariant Mass (GeV)");
 	XiMassMeasured181_waccsub->GetYaxis()->SetTitle("Combos");
-        XiMassMeasured181_waccsub->Draw("");
-        XiMass181KinFit_waccsub->Draw("same");
+    XiMassMeasured181_waccsub->Draw("");
+    XiMass181KinFit_waccsub->Draw("same");
 	legend->Draw();
-	sprintf(XiMassMeasured181name, "XiMass_%s.png",version201801);
+	sprintf(XiMassMeasured181name, "XiMass_measuredvskinfit_%s_data.png",version201801);
 	ccXiMassMeasured181->Print(XiMassMeasured181name);
 
 	char XiMassMeasured188name[100];
@@ -683,39 +1060,43 @@ void plots_kinematics() {
 	TH1I *XiMass188KinFit_waccsub = (TH1I *) XiMass188KinFit->Clone("XiMass188KinFit_waccsub");
 	XiMass188KinFit_waccsub->Add(XiMass188KinFit_wacc,-0.5);
 	XiMass188KinFit_waccsub->RebinX(5);
-	XiMassMeasured188_waccsub->SetLineColor(kRed);
+	setformatTH1I(XiMass188KinFit_waccsub,kBlue,data);
+	setformatTH1I(XiMassMeasured188_waccsub,kRed,data);
 	//XiMass188Measured_nan_waccsub->SetLineColor(kGreen);
 	XiMassMeasured188_waccsub->GetYaxis()->SetRangeUser(0,3750);
 	XiMassMeasured188_waccsub->SetTitle(" ");
 	XiMassMeasured188_waccsub->GetXaxis()->SetTitle("#Lambda#pi^{-} Invariant Mass (GeV)");
 	XiMassMeasured188_waccsub->GetYaxis()->SetTitle("Combos");
-        XiMassMeasured188_waccsub->Draw("");
-        XiMass188KinFit_waccsub->Draw("same");
+    XiMassMeasured188_waccsub->Draw("");
+    XiMass188KinFit_waccsub->Draw("same");
 	//XiMass188Measured_nan_waccsub->Draw("same");
 	auto legend_nonan = new TLegend(0.70,0.8,0.98,0.93);
 	//legend_nonan->AddEntry(XiMass188Measured_nan_waccsub,"Measured P4 - NaN","l");
-	legend_nonan->AddEntry(XiMassMeasured17_waccsub,"Measured P4 - no NaN","l");
-	legend_nonan->AddEntry(XiMass17KinFit_waccsub,"KinFit P4","l");
+	legend_nonan->AddEntry(XiMassMeasured17_waccsub,"Measured P4","lep");
+	legend_nonan->AddEntry(XiMass17KinFit_waccsub,"KinFit P4","lep");
 	legend_nonan->Draw();
-	sprintf(XiMassMeasured188name, "XiMass_%s.png",version201808);
+	sprintf(XiMassMeasured188name, "XiMass_measuredvskinfit_%s_data.png",version201808);
 	ccXiMassMeasured188->Print(XiMassMeasured188name);
 
 	char LambPathname[100];
 	TCanvas *ccLambPath = new TCanvas("ccLambPath", "ccLambPath", 800, 600);
-	TH1I * LambPath = (TH1I*)data201701->Get("LambPathLength");	
-        LambPath->Draw("e");
-	LambPath->SetLineColor(kRed);
-	LambPath->SetMarkerStyle(21);
-	LambPath->SetMarkerColor(kRed);
-	LambPath->SetMarkerSize(0.8);
-	sprintf(LambPathname, "LambPathLength.png");
+	TH1I * LambPath17 = (TH1I*)data201701->Get("LambPathLength_postCL");	
+	TH1I * LambPath17_wacc = (TH1I*)data201701->Get("LambPathLength_postCL_wacc");
+	TH1I * LambPath17_waccsub = (TH1I *) LambPath17->Clone("LambPath17_waccsub");
+	LambPath17_waccsub->Add(LambPath17_wacc,-0.5);
+	LambPath17_waccsub->Draw("e");
+	LambPath17_waccsub->SetLineColor(kGreen);
+	LambPath17_waccsub->SetMarkerStyle(21);
+	LambPath17_waccsub->SetMarkerColor(kGreen);
+	LambPath17_waccsub->SetMarkerSize(0.8);
+	sprintf(LambPathname, "Xi_Lamb_PathLength_kinfit_labframe_%s_data.png",version201701);
 	ccLambPath->Print(LambPathname);
 
 	char VertZname171[100];
 	TCanvas *ccVertZ171 = new TCanvas("ccVertZ171", "ccVertZ171", 800, 600);
-	TH1I * ProdVertZ171 = (TH1I*)data201701->Get("ProdVert");	
-	TH1I * XiVertZ171 = (TH1I*)data201701->Get("XiVert");	
-	TH1I * LambVertZ171 = (TH1I*)data201701->Get("LambVert");
+	TH1I * ProdVertZ171 = (TH1I*)data201701->Get("ProdVert_postCL");	
+	TH1I * XiVertZ171 = (TH1I*)data201701->Get("XiVert_postCL");	
+	TH1I * LambVertZ171 = (TH1I*)data201701->Get("LambVert_postCL");
 	ProdVertZ171->SetLineColor(kBlue);
 	XiVertZ171->SetLineColor(kRed);
 	LambVertZ171->SetLineColor(kGreen);
@@ -731,6 +1112,7 @@ void plots_kinematics() {
 	ProdVertZ171->SetTitle(" ");
 	ProdVertZ171->GetXaxis()->SetTitle("Vertex Z (cm)");
 	ProdVertZ171->GetYaxis()->SetTitle("Combos");
+	ProdVertZ171->GetXaxis()->SetRangeUser(25,200);
 	ProdVertZ171->Draw("e");
 	XiVertZ171->Draw("e,same");
 	LambVertZ171->Draw("e,same");
@@ -744,9 +1126,9 @@ void plots_kinematics() {
 
 	char VertZname181[100];
 	TCanvas *ccVertZ181 = new TCanvas("ccVertZ181", "ccVertZ181", 800, 600);
-	TH1I * ProdVertZ181 = (TH1I*)data201801->Get("ProdVert");	
-	TH1I * XiVertZ181 = (TH1I*)data201801->Get("XiVert");	
-	TH1I * LambVertZ181 = (TH1I*)data201801->Get("LambVert");
+	TH1I * ProdVertZ181 = (TH1I*)data201801->Get("ProdVert_postCL");	
+	TH1I * XiVertZ181 = (TH1I*)data201801->Get("XiVert_postCL");	
+	TH1I * LambVertZ181 = (TH1I*)data201801->Get("LambVert_postCL");
 	ProdVertZ181->SetLineColor(kBlue);
 	XiVertZ181->SetLineColor(kRed);
 	LambVertZ181->SetLineColor(kGreen);
@@ -762,6 +1144,7 @@ void plots_kinematics() {
 	ProdVertZ181->SetTitle(" ");
 	ProdVertZ181->GetXaxis()->SetTitle("Vertex Z (cm)");
 	ProdVertZ181->GetYaxis()->SetTitle("Combos");
+	ProdVertZ181->GetXaxis()->SetRangeUser(25,200);
 	ProdVertZ181->Draw("e");
 	XiVertZ181->Draw("e,same");
 	LambVertZ181->Draw("e,same");
@@ -771,9 +1154,9 @@ void plots_kinematics() {
 
 	char VertZname188[100];
 	TCanvas *ccVertZ188 = new TCanvas("ccVertZ188", "ccVertZ188", 800, 600);
-	TH1I * ProdVertZ188 = (TH1I*)data201808->Get("ProdVert");	
-	TH1I * XiVertZ188 = (TH1I*)data201808->Get("XiVert");	
-	TH1I * LambVertZ188 = (TH1I*)data201808->Get("LambVert");
+	TH1I * ProdVertZ188 = (TH1I*)data201808->Get("ProdVert_postCL");	
+	TH1I * XiVertZ188 = (TH1I*)data201808->Get("XiVert_postCL");	
+	TH1I * LambVertZ188 = (TH1I*)data201808->Get("LambVert_postCL");
 	ProdVertZ188->SetLineColor(kBlue);
 	XiVertZ188->SetLineColor(kRed);
 	LambVertZ188->SetLineColor(kGreen);
@@ -789,6 +1172,7 @@ void plots_kinematics() {
 	ProdVertZ188->SetTitle(" ");
 	ProdVertZ188->GetXaxis()->SetTitle("Vertex Z (cm)");
 	ProdVertZ188->GetYaxis()->SetTitle("Combos");
+	ProdVertZ188->GetXaxis()->SetRangeUser(25,200);
 	ProdVertZ188->Draw("e");
 	XiVertZ188->Draw("e,same");
 	LambVertZ188->Draw("e,same");
@@ -882,9 +1266,9 @@ void plots_kinematics() {
 	TH1I * CL171 = (TH1I*)data201701->Get("Hist_KinFitResults/ConfidenceLevel");	
 	TH1I * CL181 = (TH1I*)data201801->Get("Hist_KinFitResults/ConfidenceLevel");	
 	TH1I * CL188 = (TH1I*)data201808->Get("Hist_KinFitResults/ConfidenceLevel");	
-	CL171->SetLineColor(kBlue);
+	CL171->SetLineColor(kGreen);
 	CL181->SetLineColor(kRed);
-	CL188->SetLineColor(kGreen);	
+	CL188->SetLineColor(kBlue);	
 	CL171->Draw();
 	CL181->Draw("same");
 	CL188->Draw("same");
@@ -898,9 +1282,9 @@ void plots_kinematics() {
 	TH1I * ChiSq171 = (TH1I*)data201701->Get("Hist_KinFitResults/ChiSqPerDF");	
 	TH1I * ChiSq181 = (TH1I*)data201801->Get("Hist_KinFitResults/ChiSqPerDF");	
 	TH1I * ChiSq188 = (TH1I*)data201808->Get("Hist_KinFitResults/ChiSqPerDF");
-	ChiSq171->SetLineColor(kBlue);
+	ChiSq171->SetLineColor(kGreen);
 	ChiSq181->SetLineColor(kRed);
-	ChiSq188->SetLineColor(kGreen);	
+	ChiSq188->SetLineColor(kBlue);	
 	ChiSq171->GetYaxis()->SetRangeUser(0,50000);
 	ChiSq171->Draw();
 	ChiSq181->Draw("same");
@@ -920,22 +1304,55 @@ void plots_kinematics() {
 	TH2I * ChiSqXi171_waccsub = (TH2I *) ChiSqXi171->Clone("ChiSqXi171_waccsub");
 	TH2I * ChiSqXi181_waccsub = (TH2I *) ChiSqXi181->Clone("ChiSqXi181_waccsub");
 	TH2I * ChiSqXi188_waccsub = (TH2I *) ChiSqXi188->Clone("ChiSqXi188_waccsub");
-	TH1I * Xi_ChiSqXi171_waccsub = (TH1I *)ChiSqXi171_waccsub->ProjectionX("Xi_ChiSqXi171_waccsub",ChiSqXi171_waccsub->GetYaxis()->FindBin(1.31),ChiSqXi171_waccsub->GetYaxis()->FindBin(1.33));
-	TH1I * Xi_ChiSqXi181_waccsub = (TH1I *)ChiSqXi181_waccsub->ProjectionX("Xi_ChiSqXi181_waccsub",ChiSqXi181_waccsub->GetYaxis()->FindBin(1.31),ChiSqXi181_waccsub->GetYaxis()->FindBin(1.33));
-	TH1I * Xi_ChiSqXi188_waccsub = (TH1I *)ChiSqXi188_waccsub->ProjectionX("Xi_ChiSqXi188_waccsub",ChiSqXi188_waccsub->GetYaxis()->FindBin(1.31),ChiSqXi188_waccsub->GetYaxis()->FindBin(1.33));
-	Xi_ChiSqXi171_waccsub->GetXaxis()->SetRangeUser(0,3.5);
-	Xi_ChiSqXi181_waccsub->GetXaxis()->SetRangeUser(0,3.5);
-	Xi_ChiSqXi188_waccsub->GetXaxis()->SetRangeUser(0,3.5);
-	Xi_ChiSqXi171_waccsub->SetLineColor(kBlue);
+	ChiSqXi171_waccsub->Add(ChiSqXi171_wacc,-0.5);
+	ChiSqXi181_waccsub->Add(ChiSqXi181_wacc,-0.5);
+	ChiSqXi188_waccsub->Add(ChiSqXi188_wacc,-0.5);
+	TH1I * Xi_ChiSqXi171_waccsub = (TH1I *)ChiSqXi171_waccsub->ProjectionX("Xi_ChiSqXi171_waccsub",ChiSqXi171_waccsub->GetYaxis()->FindBin(1.31),ChiSqXi171_waccsub->GetYaxis()->FindBin(1.34));
+	TH1I * Xi_ChiSqXi181_waccsub = (TH1I *)ChiSqXi181_waccsub->ProjectionX("Xi_ChiSqXi181_waccsub",ChiSqXi181_waccsub->GetYaxis()->FindBin(1.31),ChiSqXi181_waccsub->GetYaxis()->FindBin(1.34));
+	TH1I * Xi_ChiSqXi188_waccsub = (TH1I *)ChiSqXi188_waccsub->ProjectionX("Xi_ChiSqXi188_waccsub",ChiSqXi188_waccsub->GetYaxis()->FindBin(1.31),ChiSqXi188_waccsub->GetYaxis()->FindBin(1.34));
+	Xi_ChiSqXi171_waccsub->GetXaxis()->SetRangeUser(0,15);
+	Xi_ChiSqXi181_waccsub->GetXaxis()->SetRangeUser(0,15);
+	Xi_ChiSqXi188_waccsub->GetXaxis()->SetRangeUser(0,15);
+	Xi_ChiSqXi171_waccsub->SetLineColor(kGreen);
 	Xi_ChiSqXi181_waccsub->SetLineColor(kRed);
-	Xi_ChiSqXi188_waccsub->SetLineColor(kGreen);	
-	Xi_ChiSqXi171_waccsub->GetYaxis()->SetRangeUser(0,400);
+	Xi_ChiSqXi188_waccsub->SetLineColor(kBlue);	
+	Xi_ChiSqXi171_waccsub->GetYaxis()->SetRangeUser(0,2000);
 	Xi_ChiSqXi171_waccsub->Draw();
 	Xi_ChiSqXi181_waccsub->Draw("same");
 	Xi_ChiSqXi188_waccsub->Draw("same");
 	legend_sets->Draw();
 	sprintf(ChiSqXiname, "ChiSqXi.png");
 	ccChiSqXi->Print(ChiSqXiname);
+
+	char ChiSqVsXiname[100];
+	TCanvas *ccChiSqVsXi171 = new TCanvas("ccChiSqVsXi171", "ccChiSqVsXi171", 800, 600);
+	ChiSqXi171_waccsub->GetXaxis()->SetRangeUser(0,15);
+	TLine *lineChi = new TLine(3.5,1.1,3.5,1.5);
+	lineChi->SetLineColor(kRed);
+	TArrow *arrowChi = new TArrow(3.5,1.47,2.5,1.47,0.01,"|>");
+	arrowChi->SetLineColor(kRed);
+	arrowChi->SetFillColor(kRed);
+	arrowChi->SetLineWidth(2);
+	lineChi->SetLineWidth(2);
+	ChiSqXi171_waccsub->Draw("colz");
+	lineChi->Draw("Same");
+	arrowChi->DrawArrow(3.5,1.47,2.5,1.47,0.01,"|>");
+	sprintf(ChiSqVsXiname, "ChiSqVsXi_%s.png",version201701);
+	ccChiSqVsXi171->Print(ChiSqVsXiname);
+	TCanvas *ccChiSqVsXi181 = new TCanvas("ccChiSqVsXi181", "ccChiSqVsXi181", 800, 600);
+	ChiSqXi181_waccsub->GetXaxis()->SetRangeUser(0,15);
+	ChiSqXi181_waccsub->Draw("colz");
+	lineChi->Draw("Same");
+	arrowChi->DrawArrow(3.5,1.47,2.5,1.47,0.01,"|>");
+	sprintf(ChiSqVsXiname, "ChiSqVsXi_%s.png",version201801);
+	ccChiSqVsXi181->Print(ChiSqVsXiname);
+	TCanvas *ccChiSqVsXi188 = new TCanvas("ccChiSqVsXi188", "ccChiSqVsXi188", 800, 600);
+	ChiSqXi188_waccsub->GetXaxis()->SetRangeUser(0,15);
+	ChiSqXi188_waccsub->Draw("colz");
+	lineChi->Draw("Same");
+	arrowChi->DrawArrow(3.5,1.47,2.5,1.47,0.01,"|>");
+	sprintf(ChiSqVsXiname, "ChiSqVsXi_%s.png",version201808);
+	ccChiSqVsXi188->Print(ChiSqVsXiname);
 
 	char ChiSqXiMCname[100];
 	TCanvas *ccChiSqXiMC = new TCanvas("ccChiSqXiMC", "ccChiSqXiMC", 800, 600);
@@ -948,15 +1365,18 @@ void plots_kinematics() {
 	TH2I * ChiSqXiMC171_waccsub = (TH2I *) ChiSqXiMC171->Clone("ChiSqXiMC171_waccsub");
 	TH2I * ChiSqXiMC181_waccsub = (TH2I *) ChiSqXiMC181->Clone("ChiSqXiMC181_waccsub");
 	TH2I * ChiSqXiMC188_waccsub = (TH2I *) ChiSqXiMC188->Clone("ChiSqXiMC188_waccsub");
-	TH1I * Xi_ChiSqXiMC171_waccsub = (TH1I *)ChiSqXiMC171_waccsub->ProjectionX("Xi_ChiSqXiMC171_waccsub",ChiSqXiMC171_waccsub->GetYaxis()->FindBin(1.31),ChiSqXiMC171_waccsub->GetYaxis()->FindBin(1.33));
-	TH1I * Xi_ChiSqXiMC181_waccsub = (TH1I *)ChiSqXiMC181_waccsub->ProjectionX("Xi_ChiSqXiMC181_waccsub",ChiSqXiMC181_waccsub->GetYaxis()->FindBin(1.31),ChiSqXiMC181_waccsub->GetYaxis()->FindBin(1.33));
-	TH1I * Xi_ChiSqXiMC188_waccsub = (TH1I *)ChiSqXiMC188_waccsub->ProjectionX("Xi_ChiSqXiMC188_waccsub",ChiSqXiMC188_waccsub->GetYaxis()->FindBin(1.31),ChiSqXiMC188_waccsub->GetYaxis()->FindBin(1.33));
-	Xi_ChiSqXiMC171_waccsub->GetXaxis()->SetRangeUser(0,3.5);
-	Xi_ChiSqXiMC181_waccsub->GetXaxis()->SetRangeUser(0,3.5);
-	Xi_ChiSqXiMC188_waccsub->GetXaxis()->SetRangeUser(0,3.5);
-	Xi_ChiSqXiMC171_waccsub->SetLineColor(kBlue);
+	ChiSqXiMC171_waccsub->Add(ChiSqXiMC171_wacc,-0.5);
+	ChiSqXiMC181_waccsub->Add(ChiSqXiMC181_wacc,-0.5);
+	ChiSqXiMC188_waccsub->Add(ChiSqXiMC188_wacc,-0.5);
+	TH1I * Xi_ChiSqXiMC171_waccsub = (TH1I *)ChiSqXiMC171_waccsub->ProjectionX("Xi_ChiSqXiMC171_waccsub",ChiSqXiMC171_waccsub->GetYaxis()->FindBin(1.31),ChiSqXiMC171_waccsub->GetYaxis()->FindBin(1.34));
+	TH1I * Xi_ChiSqXiMC181_waccsub = (TH1I *)ChiSqXiMC181_waccsub->ProjectionX("Xi_ChiSqXiMC181_waccsub",ChiSqXiMC181_waccsub->GetYaxis()->FindBin(1.31),ChiSqXiMC181_waccsub->GetYaxis()->FindBin(1.34));
+	TH1I * Xi_ChiSqXiMC188_waccsub = (TH1I *)ChiSqXiMC188_waccsub->ProjectionX("Xi_ChiSqXiMC188_waccsub",ChiSqXiMC188_waccsub->GetYaxis()->FindBin(1.31),ChiSqXiMC188_waccsub->GetYaxis()->FindBin(1.34));
+	Xi_ChiSqXiMC171_waccsub->GetXaxis()->SetRangeUser(0,15);
+	Xi_ChiSqXiMC181_waccsub->GetXaxis()->SetRangeUser(0,15);
+	Xi_ChiSqXiMC188_waccsub->GetXaxis()->SetRangeUser(0,15);
+	Xi_ChiSqXiMC171_waccsub->SetLineColor(kGreen);
 	Xi_ChiSqXiMC181_waccsub->SetLineColor(kRed);
-	Xi_ChiSqXiMC188_waccsub->SetLineColor(kGreen);	
+	Xi_ChiSqXiMC188_waccsub->SetLineColor(kBlue);	
 	Xi_ChiSqXiMC171_waccsub->GetYaxis()->SetRangeUser(0,4000);
 	Xi_ChiSqXiMC171_waccsub->Draw();
 	Xi_ChiSqXiMC181_waccsub->Draw("same");
@@ -965,6 +1385,41 @@ void plots_kinematics() {
 	sprintf(ChiSqXiMCname, "ChiSqXiMC.png");
 	ccChiSqXiMC->Print(ChiSqXiMCname);
 
+	TCanvas *ccChiSqAll = new TCanvas("ccChiSqAll", "ccChiSqAll",800,600);
+	Xi_ChiSqXi171_waccsub->SetMarkerStyle(20);
+	Xi_ChiSqXi181_waccsub->SetMarkerStyle(20);
+	Xi_ChiSqXi188_waccsub->SetMarkerStyle(20);
+	Xi_ChiSqXiMC171_waccsub->SetMarkerStyle(25);
+	Xi_ChiSqXiMC181_waccsub->SetMarkerStyle(25);
+	Xi_ChiSqXiMC188_waccsub->SetMarkerStyle(25);
+	Xi_ChiSqXi171_waccsub->SetMarkerSize(0.8);
+	Xi_ChiSqXi181_waccsub->SetMarkerSize(0.8);
+	Xi_ChiSqXi188_waccsub->SetMarkerSize(0.8);
+	Xi_ChiSqXiMC171_waccsub->SetMarkerSize(0.8);
+	Xi_ChiSqXiMC181_waccsub->SetMarkerSize(0.8);
+	Xi_ChiSqXiMC188_waccsub->SetMarkerSize(0.8);
+	Xi_ChiSqXi171_waccsub->SetMarkerColor(kGreen);
+	Xi_ChiSqXi181_waccsub->SetMarkerColor(kRed);
+	Xi_ChiSqXi188_waccsub->SetMarkerColor(kBlue);
+	Xi_ChiSqXiMC171_waccsub->SetMarkerColor(kGreen);
+	Xi_ChiSqXiMC181_waccsub->SetMarkerColor(kRed);
+	Xi_ChiSqXiMC188_waccsub->SetMarkerColor(kBlue);
+	Xi_ChiSqXi171_waccsub->Draw("pe");
+	Xi_ChiSqXi181_waccsub->Draw("pe,same");
+	Xi_ChiSqXi188_waccsub->Draw("pe,same");
+	Xi_ChiSqXiMC171_waccsub->Draw("pe,same");
+	Xi_ChiSqXiMC181_waccsub->Draw("pe,same");
+	Xi_ChiSqXiMC188_waccsub->Draw("pe,same");
+	Xi_ChiSqXi171_waccsub->GetYaxis()->SetRangeUser(0,4000);
+	auto legend_chisqall = new TLegend(0.70,0.7,0.98,0.93);
+	legend_chisqall->AddEntry(Xi_ChiSqXi171_waccsub,"Spring 2017 Data","lep");
+	legend_chisqall->AddEntry(Xi_ChiSqXi181_waccsub,"Spring 2018 Data","lep");
+	legend_chisqall->AddEntry(Xi_ChiSqXi188_waccsub,"Fall 2018 Data","lep");
+	legend_chisqall->AddEntry(Xi_ChiSqXiMC171_waccsub,"Spring 2017 MC","lep");
+	legend_chisqall->AddEntry(Xi_ChiSqXiMC181_waccsub,"Spring 2018 MC","lep");
+	legend_chisqall->AddEntry(Xi_ChiSqXiMC188_waccsub,"Fall 2018 MC","lep");
+	legend_chisqall->Draw();
+	ccChiSqAll->Print("ChiSq_Xi_allsets.png");	
 
 	char CLMCname[100];
 	TCanvas *ccCLMC = new TCanvas("ccCLMC", "ccCLMC", 800, 600);
@@ -974,9 +1429,9 @@ void plots_kinematics() {
 	double norm201701 = CLMC171->GetEntries();
 	double norm201801 = CLMC181->GetEntries();
 	double norm201808 = CLMC188->GetEntries();
-	CLMC171->SetLineColor(kBlue);
+	CLMC171->SetLineColor(kGreen);
 	CLMC181->SetLineColor(kRed);
-	CLMC188->SetLineColor(kGreen);
+	CLMC188->SetLineColor(kBlue);
 	CLMC171->Scale(norm201808/norm201701);  
 	CLMC181->Scale(norm201801/norm201801);  
 	CLMC188->Scale(norm201808/norm201808);  	
@@ -993,9 +1448,9 @@ void plots_kinematics() {
 	TH1I * ChiSqMC171 = (TH1I*)mc201701->Get("Hist_KinFitResults/ChiSqPerDF");	
 	TH1I * ChiSqMC181 = (TH1I*)mc201801->Get("Hist_KinFitResults/ChiSqPerDF");	
 	TH1I * ChiSqMC188 = (TH1I*)mc201808->Get("Hist_KinFitResults/ChiSqPerDF");	
-	ChiSqMC171->SetLineColor(kBlue);
+	ChiSqMC171->SetLineColor(kGreen);
 	ChiSqMC181->SetLineColor(kRed);
-	ChiSqMC188->SetLineColor(kGreen);	
+	ChiSqMC188->SetLineColor(kBlue);	
 	ChiSqMC171->Scale(norm201808/norm201701);
 	ChiSqMC181->Scale(norm201801/norm201801); 
 	ChiSqMC188->Scale(norm201808/norm201808); 
@@ -1006,6 +1461,36 @@ void plots_kinematics() {
 	legend_sets->Draw();
 	sprintf(ChiSqMCname, "ChiSqMC.png");
 	ccChiSqMC->Print(ChiSqMCname);
+
+	char Ystarname[100];
+	TCanvas *ccYstar = new TCanvas("ccYstar", "ccYstar", 800, 600);
+ 	TH1I * Ystar171 = (TH1I*)data201701->Get("KlowpXim");
+	TH1I * Ystar171_wacc = (TH1I*)data201701->Get("KlowpXim_wacc");
+	TH1I * Ystar171_waccsub = (TH1I *) Ystar171->Clone("Ystar171_waccsub");
+	Ystar171_waccsub->Add(Ystar171_wacc,-0.5);
+ 	TH1I * Ystar181 = (TH1I*)data201801->Get("KlowpXim");
+	TH1I * Ystar181_wacc = (TH1I*)data201801->Get("KlowpXim_wacc");
+	TH1I * Ystar181_waccsub = (TH1I *) Ystar181->Clone("Ystar181_waccsub");
+	Ystar181_waccsub->Add(Ystar181_wacc,-0.5);
+ 	TH1I * Ystar188 = (TH1I*)data201808->Get("KlowpXim");
+	TH1I * Ystar188_wacc = (TH1I*)data201808->Get("KlowpXim_wacc");
+	TH1I * Ystar188_waccsub = (TH1I *) Ystar188->Clone("Ystar188_waccsub");
+	Ystar188_waccsub->Add(Ystar188_wacc,-0.5);
+	Ystar171->RebinX(3);
+	Ystar181->RebinX(3);
+	Ystar188->RebinX(3);
+	setformatTH1I(Ystar171,color171,data); 
+	setformatTH1I(Ystar181,color181,data);
+	setformatTH1I(Ystar188,color188,data);
+	Ystar188->SetTitle("");
+	Ystar188->GetYaxis()->SetTitle("Combos");
+	Ystar188->GetYaxis()->SetTitleOffset(1.5);
+	Ystar188->Draw("pe");
+	Ystar181->Draw("pe,same");
+	Ystar171->Draw("pe,same");
+	legend_sets->Draw();
+	sprintf(Ystarname,"Ystar.png");
+	ccYstar->Print(Ystarname);
 
 	char tdistname[100];
 	TCanvas *cctdist = new TCanvas("cctdist", "cctdist", 800, 600);
@@ -1027,11 +1512,12 @@ void plots_kinematics() {
 	t171->RebinX(5);
 	t181->RebinX(5);
 	t188->RebinX(5);
-	t171->SetLineColor(kBlue);
-	t181->SetLineColor(kRed);
-	t188->SetLineColor(kGreen);
+	setformatTH1F(t171,color171,data); 
+	setformatTH1F(t181,color181,data);
+	setformatTH1F(t188,color188,data);
 	t188->SetTitle("");
 	t188->GetYaxis()->SetTitle("Combos");
+	t188->GetYaxis()->SetTitleOffset(1.5);
 	t188->Draw();
 	t181->Draw("same");
 	t171->Draw("same");
@@ -1062,9 +1548,9 @@ void plots_kinematics() {
 	t171MC->Scale(norm201808/norm201701); 
 	t181MC->Scale(norm201801/norm201801); 
 	t188MC->Scale(norm201808/norm201808); 
-	t171MC->SetLineColor(kBlue);
+	t171MC->SetLineColor(kGreen);
 	t181MC->SetLineColor(kRed);
-	t188MC->SetLineColor(kGreen);	
+	t188MC->SetLineColor(kBlue);	
 	t171MC->SetTitle("");
 	t171MC->GetYaxis()->SetTitle("Combos");
 	t171MC->Draw();
@@ -1074,14 +1560,36 @@ void plots_kinematics() {
 	sprintf(tdistMCname,"tdistMC.png");
 	cctdistMC->Print(tdistMCname);
 
+
+	TCanvas *ccXitdist_all = new TCanvas("ccXitdist_all", "ccXitdist_all", 800, 600);
+	setformatTH1F(t171,color171,data);
+	setformatTH1F(t181,color181,data);
+	setformatTH1F(t188,color188,data);
+	setformatTH1F(t171MC,color171,mc);
+	setformatTH1F(t181MC,color181,mc);
+	setformatTH1F(t188MC,color188,mc);
+	normalizeMC(t171,t171MC);
+	normalizeMC(t181,t181MC);
+	normalizeMC(t188,t188MC);
+	t188->SetTitle("");
+	t188->GetXaxis()->SetTitle("-t (GeV^{2})");
+	t188->Draw("pe");
+	t171->Draw("pe,same");
+	t171MC->Draw("pe,same");
+	t181->Draw("pe,same");
+	t181MC->Draw("pe,same");
+	t188MC->Draw("pe,same");
+	legend_all->Draw();
+	ccXitdist_all->Print("t_allsets_june2020.png");
+
 	char tdistname188[100];
 	TCanvas *cct188dist = new TCanvas("cct188dist", "cct188dist", 800, 600);
  	TH2F * XiMassKinFit_Egamma_t188MC_Truth = (TH2F*)mc201808->Get("Xi_t_Truth");
 	TH1F * t188MC_Truth = (TH1F *)XiMassKinFit_Egamma_t188MC_Truth->ProjectionY("t188MC_Truth",XiMassKinFit_Egamma_t188MC_Truth->GetXaxis()->FindBin(1.31),XiMassKinFit_Egamma_t188MC_Truth->GetXaxis()->FindBin(1.34));
 	t188MC_Truth->RebinX(5);
-	t188->SetLineColor(kBlue);
+	t188->SetLineColor(kGreen);
 	t188MC->SetLineColor(kRed);
-	t188MC_Truth->SetLineColor(kGreen);
+	t188MC_Truth->SetLineColor(kBlue);
 	t188->SetTitle("");
 	t188->GetYaxis()->SetTitle("Combos");
 	double norm188data = t188->GetEntries();
@@ -1094,9 +1602,9 @@ void plots_kinematics() {
 	t188MC->Draw("same");
 	t188MC_Truth->Draw("same");
 	auto legend_datamc = new TLegend(0.70,0.8,0.98,0.93);
-	legend_datamc->AddEntry(t188,"2018-08_ANAver02 data","lep");
-	legend_datamc->AddEntry(t188MC,"2018-08_ANAver02 mc","lep");
-	legend_datamc->AddEntry(t188MC_Truth,"2018-08_ANAver02 Truth","lep");
+	legend_datamc->AddEntry(t188,"Fall 2018 data","lep");
+	legend_datamc->AddEntry(t188MC,"Fall 2018 mc","lep");
+	legend_datamc->AddEntry(t188MC_Truth,"Fall 2018 Truth","lep");
 	legend_datamc->Draw();
 	sprintf(tdistname188,"tdist_%s.png",version201808);
 	cct188dist->Print(tdistname188);

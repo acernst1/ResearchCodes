@@ -9,6 +9,7 @@
 
 #include "TH1I.h"
 #include "TH2I.h"
+#include "TH3F.h"
 
 class DSelector_kpkpkmlamb : public DSelector
 {
@@ -52,6 +53,8 @@ class DSelector_kpkpkmlamb : public DSelector
 		TH1I* dHist_BeamBunch;
 		TH1I* dHist_ChiSq;
 		TH2I* dHist_ChiSqXi;
+		TH1I* dHist_ChiSq_wacc;
+		TH2I* dHist_ChiSqXi_wacc;
 		TH1I* dHist_XiMass_Measured;	
 		TH1I* dHist_XiMass_KinFit;
 		TH1I* dHist_XiMass_Measured_acc;	
@@ -62,6 +65,20 @@ class DSelector_kpkpkmlamb : public DSelector
 		TH1I* dHist_KKMassmore_KinFit;
 		TH2I* dHist_K_pTheta_Measured;
 		TH2I* dHist_K_pTheta_Measured_acc;
+		TH1I* dHist_LambdaSigma;
+		TH1I* dHist_LambdaSigma_wacc;
+		TH3F* dHist_XiMass_ChiSq_LambdaSigma;
+		TH3F* dHist_XiMass_ChiSq_LambdaSigma_wacc;
+		TH1F* dHist_KKMass_Measured;
+		TH1F* dHist_KKMass_Measured_wacc;
+		TH1F* dHist_KKMass_KinFit;
+		TH1F* dHist_KKMass_KinFit_wacc;
+		TH2F* dHist_KKLambdaMass_KinFit;
+		TH2F* dHist_KKLambdaMass_KinFit_wacc;
+		TH2F* dHist_KKLambdaMass_Measured;
+		TH2F* dHist_KKLambdaMass_Measured_wacc;
+
+	/****EXAMPLE USER INITIALIZATION: CUSTOM OUTPUT BRANCHES - MAIN TREE ****/
 
 	ClassDef(DSelector_kpkpkmlamb, 0);
 };
