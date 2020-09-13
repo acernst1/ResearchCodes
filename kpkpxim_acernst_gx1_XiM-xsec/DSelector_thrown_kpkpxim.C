@@ -1,5 +1,13 @@
 #include "DSelector_thrown_kpkpxim.h"
 
+double getphi(TLorentzVector P4){
+		// Returns a phi angle between -180deg and 180deg
+		double phi = P4.Phi()*180/TMath::Pi();
+		if(phi < -180.) phi += 360.;
+		if(phi >  180.) phi -= 360.;
+		return phi;
+}
+
 void DSelector_thrown_kpkpxim::Init(TTree *locTree)
 {
 	// USERS: IN THIS FUNCTION, ONLY MODIFY SECTIONS WITH A "USER" OR "EXAMPLE" LABEL. LEAVE THE REST ALONE.
@@ -175,27 +183,13 @@ Bool_t DSelector_thrown_kpkpxim::Process(Long64_t locEntry)
 	TLorentzVector locKPlusP4_lowp = locKPlus2P4;
 	TLorentzVector locKPlusP4_highp = locKPlus1P4;		
 	double t= (locBeamP4 - locKPlusP4_highp).M2();
-	double phiKhighp_CM = locKPlus1P4_CM.Phi()*180/TMath::Pi();
-	if(phiKhighp_CM < -180.) phiKhighp_CM += 360.;
-	if(phiKhighp_CM >  180.) phiKhighp_CM -= 360.;
-	double phiKlowp_CM = locKPlus2P4_CM.Phi()*180/TMath::Pi();
-	if(phiKlowp_CM < -180.) phiKlowp_CM += 360.;
-	if(phiKlowp_CM >  180.) phiKlowp_CM -= 360.;
-	double phiYstar_CM = locIntermediate_CM.Phi()*180/TMath::Pi();
-	if(phiYstar_CM < -180.) phiYstar_CM += 360.;
-	if(phiYstar_CM >  180.) phiYstar_CM -= 360.;
-	double phiKhighp_Ystar = locKPlusP4_highp_Ystar.Phi()*180/TMath::Pi();
-	if(phiKhighp_Ystar < -180.) phiKhighp_Ystar += 360.;
-	if(phiKhighp_Ystar >  180.) phiKhighp_Ystar -= 360.;
-	double phiKlowp_Ystar = locKPlusP4_lowp_Ystar.Phi()*180/TMath::Pi();
-	if(phiKlowp_Ystar < -180.) phiKlowp_Ystar += 360.;
-	if(phiKlowp_Ystar >  180.) phiKlowp_Ystar -= 360.;
-	double phiKlowp_YstarGJ = locKPlusP3_lowp_YstarGJ.Phi()*180/TMath::Pi();
-	if(phiKlowp_YstarGJ < -180.) phiKlowp_YstarGJ += 360.;
-	if(phiKlowp_YstarGJ >  180.) phiKlowp_YstarGJ -= 360.;
-	double phiXi_YstarGJ = locXiP3_YstarGJ.Phi()*180/TMath::Pi();
-	if(phiXi_YstarGJ < -180.) phiXi_YstarGJ += 360.;
-	if(phiXi_YstarGJ >  180.) phiXi_YstarGJ -= 360.;
+	double phiKhighp_CM = getphi(locKPlus1P4_CM);
+	double phiKlowp_CM = getphi(locKPlus2P4_CM);
+	double phiYstar_CM = getphi(locIntermediate_CM);
+	double phiKhighp_Ystar = getphi(locKPlusP4_highp_Ystar);
+	double phiKlowp_Ystar = getphi(locKPlusP4_lowp_Ystar);
+	double phiKlowp_YstarGJ = getphi(locKPlusP3_lowp_YstarGJ);
+	double phiXi_YstarGJ = getphi(locXiP3_YstarGJ);
 
 	map<Particle_t, set<Int_t> > locUsedThisCombo_thrown;
 		if(locUsedSoFar_thrown.find(locUsedThisCombo_thrown) == locUsedSoFar_thrown.end()){
