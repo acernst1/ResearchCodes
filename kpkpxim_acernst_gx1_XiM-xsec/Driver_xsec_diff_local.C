@@ -1,13 +1,8 @@
 {
-//xsec_diff(TString dataFilePath, TString fluxFilePath, TString mcFilePath, TString thrownFilePath,const char version[17])
+//xsec_diff(TString dataFilePath, const char fluxFilePathtemp[100], TString mcFilePath, TString thrownFilePath,const char version[50], double minEval, const int numEBins)
 
 cout << "2017-01_ANAver20: Egamma bin start 6.4; 10 bins" << endl;
-gROOT->ProcessLine(".x $ACECODE/xsec_diff.C(\"~/2020xsec_workfest/kpkpxim__B4_M23_allbatches_2017-01_june13.root\",	
-	\"~/2020xsec_workfest/flux_2017_01_30274_31057_347runs_jan03\",		
-	\"~/2020xsec_workfest/kpkpxim__B4_M23_genr8_2017_01_ANAver20_june13.root\",		
-	\"~/2020xsec_workfest/thrown_2017-01_ANAver20_june13.root\",	
-	\"2017_01_ANAver20_waccnoMC_july20\"
-	,6.4,10)");
+gROOT->ProcessLine(".x $ACECODE/xsec_diff.C(\"~/2020xsec_workfest/kpkpxim__B4_M23_allbatches_2017-01_june13.root\",	\"~/2020xsec_workfest/flux_2017_01_30274_31057_347runs_jan03\",	\"~/2020xsec_workfest/kpkpxim__B4_M23_genr8_2017_01_ANAver20_june13.root\",	\"~/2020xsec_workfest/thrown_2017-01_ANAver20_june13.root\", \"2017_01_ANAver20_waccnoMC_july20\", 6.4, 10)");
 
 /*
 cout << "2017-01_ANAver20: Egamma bin start 6.4; 10 bins" << endl;
