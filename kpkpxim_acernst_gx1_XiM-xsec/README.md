@@ -17,7 +17,7 @@ Summary of the selection criteria:
 
 ## Codes in this repository:
 ### DSelector_kpkpxim.\* 
-Runs over the data from the analysis launch and produces all the plots required for further analysis. 
+Runs over the data from the analysis launch (or Monte Carlo files) and produces all the plots required for further analysis. 
 
 ### Driver_\*.C
 Driver script with options for the files needs to produce the cross sections and with some limited options such as for the binning of the cross section. 
