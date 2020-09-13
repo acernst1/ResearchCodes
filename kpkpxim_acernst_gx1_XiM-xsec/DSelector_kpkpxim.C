@@ -1,5 +1,7 @@
 #include "DSelector_kpkpxim.h"
+
 double getphi(TLorentzVector P4){
+		// Returns a phi angle between -180deg and 180deg
 		double phi = P4.Phi()*180/TMath::Pi();
 		if(phi < -180.) phi += 360.;
 		if(phi >  180.) phi -= 360.;
