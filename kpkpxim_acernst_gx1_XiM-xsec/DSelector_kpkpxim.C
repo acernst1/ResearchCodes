@@ -735,68 +735,30 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 		//Phi angles and -t Mandelstam variable
 		double t = (locBeamP4 - locKPlusP4_highp_KinFit).M2();
 		double phiKhighp_KinFit = getphi(locKPlusP4_highp_KinFit);
-		double phiK1_Measured = locKPlus1P4_Measured.Phi()*180/TMath::Pi();
-		if(phiK1_Measured < -180.) phiK1_Measured += 360.;
-		if(phiK1_Measured >  180.) phiK1_Measured -= 360.;
-		double phiK2_Measured = locKPlus2P4_Measured.Phi()*180/TMath::Pi();
-		if(phiK2_Measured < -180.) phiK2_Measured += 360.;
-		if(phiK2_Measured >  180.) phiK2_Measured -= 360.;
-		double phiP_Measured = locProtonP4_Measured.Phi()*180/TMath::Pi();
-		if(phiP_Measured < -180.) phiP_Measured += 360.;
-		if(phiP_Measured >  180.) phiP_Measured -= 360.;
-		double phiPi1_Measured = locPiMinus1P4_Measured.Phi()*180/TMath::Pi();
-		if(phiPi1_Measured < -180.) phiPi1_Measured += 360.;
-		if(phiPi1_Measured >  180.) phiPi1_Measured -= 360.;
-		double phiPi2_Measured = locPiMinus2P4_Measured.Phi()*180/TMath::Pi();
-		if(phiPi2_Measured < -180.) phiPi2_Measured += 360.;
-		if(phiPi2_Measured >  180.) phiPi2_Measured -= 360.;
-		double phiKhighp_KinFit_CM = locKPlusP4_highp_KinFit_CM.Phi()*180/TMath::Pi();
-		if(phiKhighp_KinFit_CM < -180.) phiKhighp_KinFit_CM += 360.;
-		if(phiKhighp_KinFit_CM > 180.)  phiKhighp_KinFit_CM -= 360.;
-		double phiKlowp_KinFit_CM = locKPlusP4_lowp_KinFit_CM.Phi()*180/TMath::Pi();
-		if(phiKlowp_KinFit_CM < -180.) phiKlowp_KinFit_CM += 360.;
-		if(phiKlowp_KinFit_CM >  180.) phiKlowp_KinFit_CM -= 360.;
-		double phiKlowp_KinFit_Ystar = locKPlusP4_lowp_KinFit_Ystar.Phi()*180/TMath::Pi();
-		if(phiKlowp_KinFit_Ystar < -180.) phiKlowp_KinFit_Ystar += 360.;
-		if(phiKlowp_KinFit_Ystar >  180.) phiKlowp_KinFit_Ystar -= 360.;
-		double phiKlowp_Measured_Ystar = locKPlusP4_lowp_Measured_Ystar.Phi()*180/TMath::Pi();
-		if(phiKlowp_Measured_Ystar < -180.) phiKlowp_Measured_Ystar += 360.;
-		if(phiKlowp_Measured_Ystar >  180.) phiKlowp_Measured_Ystar -= 360.;
-		double phiKhighp_KinFit_Ystar = locKPlusP4_highp_KinFit_Ystar.Phi()*180/TMath::Pi();
-		if(phiKhighp_KinFit_Ystar < -180.) phiKhighp_KinFit_Ystar += 360.;
-		if(phiKhighp_KinFit_Ystar >  180.) phiKhighp_KinFit_Ystar -= 360.;
-		double phiKhighp_Measured_Ystar = locKPlusP4_highp_Measured_Ystar.Phi()*180/TMath::Pi();
-		if(phiKhighp_Measured_Ystar < -180.) phiKhighp_Measured_Ystar += 360.;
-		if(phiKhighp_Measured_Ystar >  180.) phiKhighp_Measured_Ystar -= 360.;
-		double phiYstar_KinFit_CM = locIntermediate_KinFit_CM.Phi()*180/TMath::Pi();
-		if(phiYstar_KinFit_CM < -180.) phiYstar_KinFit_CM += 360.;
-		if(phiYstar_KinFit_CM >  180.) phiYstar_KinFit_CM -= 360.;
-		double phiXi_KinFit_Ystar = locXiP4_KinFit_Ystar.Phi()*180/TMath::Pi();
-		if(phiXi_KinFit_Ystar < -180.) phiXi_KinFit_Ystar += 360.;
-		if(phiXi_KinFit_Ystar >  180.) phiXi_KinFit_Ystar -= 360.;
-		double phiKlowp_KinFit_YstarGJ = locKPlusP3_lowp_KinFit_Ystar_GJ.Phi()*180/TMath::Pi();
-		if(phiKlowp_KinFit_YstarGJ < -180.) phiKlowp_KinFit_YstarGJ += 360.;
-		if(phiKlowp_KinFit_YstarGJ >  180.) phiKlowp_KinFit_YstarGJ -= 360.;	
-		double phiXi_KinFit_YstarGJ = locXiP3_KinFit_Ystar_GJ.Phi()*180/TMath::Pi();
-		if(phiXi_KinFit_YstarGJ < -180.) phiXi_KinFit_YstarGJ += 360.;
-		if(phiXi_KinFit_YstarGJ >  180.) phiXi_KinFit_YstarGJ -= 360.;
-
-
+		double phiK1_Measured = getphi(locKPlus1P4_Measured);
+		double phiK2_Measured = getphi(locKPlus2P4_Measured);
+		double phiP_Measured = getphi(locProtonP4_Measured);
+		double phiPi1_Measured = getphi(locPiMinus1P4_Measured);
+		double phiPi2_Measured = getphi(locPiMinus2P4_Measured);
+		double phiKhighp_KinFit_CM = getphi(locKPlusP4_highp_KinFit_CM);
+		double phiKlowp_KinFit_CM = getphi(locKPlusP4_lowp_KinFit_CM);
+		double phiKlowp_KinFit_Ystar = getphi(locKPlusP4_lowp_KinFit_Ystar);
+		double phiKlowp_Measured_Ystar = getphi(locKPlusP4_lowp_Measured_Ystar);
+		double phiKhighp_KinFit_Ystar = getphi(locKPlusP4_highp_KinFit_Ystar);
+		double phiKhighp_Measured_Ystar = getphi(locKPlusP4_highp_Measured_Ystar);
+		double phiYstar_KinFit_CM = getphi(locIntermediate_KinFit_CM);
+		double phiXi_KinFit_Ystar = getphi(locXiP4_KinFit_Ystar);
+		double phiKlowp_KinFit_YstarGJ = getphi(locKPlusP3_lowp_KinFit_Ystar_GJ);
+		double phiXi_KinFit_YstarGJ = getphi(locXiP3_KinFit_Ystar_GJ);
 
 		//Truth phi angles
 		double phiKhighp_CM_Truth = 0.0;
 		double phiKlowp_CM_Truth = 0.0;
 		double phiKlowp_Ystar_Truth = 0.0;
 		if(dThrownBeam != NULL){
-			phiKhighp_CM_Truth = locKPlusP4_t_CM_Truth.Phi()*180/TMath::Pi();
-			if(phiKhighp_CM_Truth < -180.) phiKhighp_CM_Truth = phiKhighp_CM_Truth + 360.;
-			if (phiKhighp_CM_Truth > 180.) phiKhighp_CM_Truth = phiKhighp_CM_Truth - 360.;
-			phiKlowp_CM_Truth = locKPlusP4_decay_CM_Truth.Phi()*180/TMath::Pi();
-			if(phiKlowp_CM_Truth < -180.) phiKlowp_CM_Truth = phiKlowp_CM_Truth + 360.;
-			if (phiKlowp_CM_Truth > 180.) phiKlowp_CM_Truth = phiKlowp_CM_Truth - 360.;
-			phiKlowp_Ystar_Truth = locKPlusP4_decay_Ystar_Truth.Phi()*180/TMath::Pi();
-			if(phiKlowp_Ystar_Truth < -180.) phiKlowp_Ystar_Truth = phiKlowp_Ystar_Truth + 360.;
-			if (phiKlowp_Ystar_Truth > 180.) phiKlowp_Ystar_Truth = phiKlowp_Ystar_Truth - 360.;
+			phiKhighp_CM_Truth = getphi(locKPlusP4_t_CM_Truth);
+			phiKlowp_CM_Truth = getphi(locKPlusP4_decay_CM_Truth);
+			phiKlowp_Ystar_Truth = getphi(locKPlusP4_decay_Ystar_Truth);
 		}
 
 		//Scaling factor for accidental subtraction
