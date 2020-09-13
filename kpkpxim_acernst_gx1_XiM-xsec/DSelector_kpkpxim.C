@@ -131,7 +131,7 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	dHist_wacc_phi_t_3 = new TH2I("wacc_phi_t_3", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 1000, 0.0, 5.0,180, -180., 180.);
 	dHist_wacc_phi_t_4 = new TH2I("wacc_phi_t_4", ";-t (GeV/c)^{2}; #phi_{K^{+}}", 1000, 0.0, 5.0,180, -180., 180.);
 
-	//plots for spin measurement of Xi-
+	//plots for spin measurement of Xi- in the Gottfried-Jackson frame associated with the restframe of the Xi-
 	dHist_Xi_cosGJ = new TH2I("Xi_cosGJ", " ;#Lambda#pi^{-} mass (GeV); cos #theta_{GJ}", 400, 1.1, 1.5,180, -1., 1.);
 	dHist_Xi_cosGJ_wacc = new TH2I("Xi_cosGJ_wacc", " ;#Lambda#pi^{-} mass (GeV); cos #theta_{GJ}", 400, 1.1, 1.5,180, -1., 1.);
 	
@@ -230,11 +230,12 @@ void DSelector_kpkpxim::Init(TTree *locTree)
 	dHist_KYstar_dMass_Ystar_KinFit_wacc = new TH1I("KYstar_dMass_Ystar_KinFit_wacc", "M_{Y*} - M_{Kdecay} in Y^{*} rest frame; M_{Y*} - M_{Kdecay} (GeV)",80,1.1,1.5);
 	dHist_Khighp_choicevstruth_KinFit = new TH2I("Khighp_choicevstruth_KinFit", "K_{decay} p;chosen K p (GeV); truth K p (GeV)",40,0,10,40,0,10);
 	dHist_Klowp_choicevstruth_KinFit = new TH2I("Klowp_choicevstruth_KinFit", "K_{t} p;chosen K p (GeV); truth K p (GeV)",40,0,10,40,0,10);
+	
+	// Histograms for the kinematics in the Gottfried-Jackson frame associated with the rest frame of the intermediate hyperon. 
 	dHist_Klowp_phiTheta_YstarGJ = new TH2I("Klowp_phiTheta_YstarGJ_KinFit", "K^{+}_{decay};KinFit #theta_{GJ} (deg); KinFit #phi_{GJ} (deg)",30,0.0,180,180,-180,180.0);
 	dHist_Xi_phiTheta_YstarGJ = new TH2I("Xi_phiTheta_YstarGJ_KinFit", "#Xi^{-};KinFit #theta_{GJ} (deg); KinFit #phi_{GJ} (deg)",30,0.0,180,180,-180,180.0);
 	dHist_Klowp_phiTheta_YstarGJ_wacc = new TH2I("Klowp_phiTheta_YstarGJ_KinFit_wacc", "K^{+}_{decay};KinFit #theta_{GJ} (deg); KinFit #phi_{GJ} (deg)",30,0.0,180,180,-180,180.0);
 	dHist_Xi_phiTheta_YstarGJ_wacc = new TH2I("Xi_phiTheta_YstarGJ_KinFit_wacc", "#Xi^{-};KinFit #theta_{GJ} (deg); KinFit #phi_{GJ} (deg)",30,0.0,180,180,-180,180.0);
-	
 	dHist_Klowp_phiTheta_YstarGJ_reconthrown = new TH2I("Klowp_phiTheta_YstarGJ_reconthrown", "K^{+}_{decay};#theta_{GJ} (deg);  #phi_{GJ} (deg)",30,0.0,180,180,-180,180.0);
 	dHist_Klowp_dtheta_reconthrown = new TH1I("Klowp_dtheta_reconthrown", "#theta^{K^+}_{thrown} - #theta^{K^+}_{recon}; #theta_{thrown} - #theta_{recon} (deg)",90,-45,45);
 	dHist_Klowp_phiTheta_YstarGJ_thrown150to180 = new TH2I("Klowp_phiTheta_YstarGJ_thrown150to180", "K^{+}_{decay};KinFit #theta_{GJ} (deg); KinFit #phi_{GJ} (deg)",30,0.0,180,180,-180,180.0);
@@ -469,6 +470,7 @@ Bool_t DSelector_kpkpxim::Process(Long64_t locEntry)
 	/********************************************* COMBINE FOUR-MOMENTUM ********************************************/
 
 		// Combine 4-vectors
+		//Reference frame notation: X_CM denotes center of mass frame, X_GJ denotes Gottfried-Jackson frame with the Xi- at rest, X_YstarGJ denotes Gottfried-Jackson frame with the Y* at rest
 		TLorentzVector locMissingP4_Measured = locBeamP4_Measured + dTargetP4;
 		locMissingP4_Measured -= locKPlus1P4_Measured + locKPlus2P4_Measured + locPiMinus1P4_Measured + locPiMinus2P4_Measured + locProtonP4_Measured;
 		TLorentzVector locXiP4_Measured =  locPiMinus1P4_Measured + locPiMinus2P4_Measured + locProtonP4_Measured;
