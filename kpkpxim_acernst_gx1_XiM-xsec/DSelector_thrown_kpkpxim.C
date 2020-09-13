@@ -124,14 +124,16 @@ Bool_t DSelector_thrown_kpkpxim::Process(Long64_t locEntry)
 	TLorentzVector locXiP4;
 	TLorentzVector locPiMinusP4;
 	TLorentzVector locLambdaP4;
-	//Loop over throwns
+
+	//Loop over thrown events
 	*myfile << "New Event: " << endl;
 	for(UInt_t loc_i = 0; loc_i < Get_NumThrown(); ++loc_i)
 	{
 		//Set branch array indices corresponding to this particle
 		dThrownWrapper->Set_ArrayIndex(loc_i);
 
-		//Do stuff with the wrapper here ...
+		// Particle IDs (PIDs) of interest include K+ (11), Xi- (23), Lambda (18), pi- (9)
+		// Labeling the 4Vectors according to their PID
 		Particle_t locPID = dThrownWrapper->Get_PID();
 		TLorentzVector locThrownP4 = dThrownWrapper->Get_P4();
 		*myfile << "Thrown Paricle No " << loc_i << " PID:" << locPID << " Mass:  " << locThrownP4.M() << endl; 
@@ -182,7 +184,7 @@ Bool_t DSelector_thrown_kpkpxim::Process(Long64_t locEntry)
 
 	TLorentzVector locKPlusP4_lowp = locKPlus2P4;
 	TLorentzVector locKPlusP4_highp = locKPlus1P4;		
-	double t= (locBeamP4 - locKPlusP4_highp).M2();
+	double t = (locBeamP4 - locKPlusP4_highp).M2();
 	double phiKhighp_CM = getphi(locKPlus1P4_CM);
 	double phiKlowp_CM = getphi(locKPlus2P4_CM);
 	double phiYstar_CM = getphi(locIntermediate_CM);
