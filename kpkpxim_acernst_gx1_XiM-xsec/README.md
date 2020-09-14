@@ -36,4 +36,4 @@ Additional codes with the same approach include: (A very short driver script is 
 Code that plots the various kinematic distributions from the DSelector output. Focuses on plotting data vs Monte Carlo distributions. 
 
 ### fit.C
-Example of the total fit for the Xi- invariant mass distribution 
+Example of the total fit for the Lambda pi- invariant mass distribution including a signal for Xi-.
