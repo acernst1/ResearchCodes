@@ -305,166 +305,165 @@ void xsec_chisq(TString dataFilePath, const char fluxFilePathtemp[100], TString 
 
 //Main beam energy loop
 	for(int it=0; it<numchiBins; it++){
-	double chimin = deltachi * it + (minchisq);
-	double chimax = deltachi * (it+1) + (minchisq);
-	int chibuffer = chimin*10;
-
+		double chimin = deltachi * it + (minchisq);
+		double chimax = deltachi * (it+1) + (minchisq);
+		int chibuffer = chimin*10;
 
 	//Get thrown values for total cross section
-	ethrownyields_canvas->cd(it+1);
-	double thrown_chibin = ThrownH_chibin->GetBinContent(0+1);
-	double thrown_chibin_err = ThrownH_chibin->GetBinError(0+1);
-	xsec_thrown_val[it+1] = thrown_chibin;
-	xsec_thrown_err[it+1] = thrown_chibin_err;
-	ThrownYields_chibin->SetBinContent(it+1,thrown_chibin);
-	ThrownYields_chibin->SetBinError(it+1,thrown_chibin_err);
-	cout << "~~~~~~~Thrownxsec~ " << it << "~ " << thrown_chibin << " " << thrown_chibin_err << endl;
+		ethrownyields_canvas->cd(it+1);
+		double thrown_chibin = ThrownH_chibin->GetBinContent(0+1);
+		double thrown_chibin_err = ThrownH_chibin->GetBinError(0+1);
+		xsec_thrown_val[it+1] = thrown_chibin;
+		xsec_thrown_err[it+1] = thrown_chibin_err;
+		ThrownYields_chibin->SetBinContent(it+1,thrown_chibin);
+		ThrownYields_chibin->SetBinError(it+1,thrown_chibin_err);
+		cout << "~~~~~~~Thrownxsec~ " << it << "~ " << thrown_chibin << " " << thrown_chibin_err << endl;
 
 	//Create a histogram of signal for this particular energy bin
-	int Ebinmin = XiMassKinFit_Egamma_ChiSq_accsub->GetYaxis()->FindBin(minEval);
-	int Ebinmax = XiMassKinFit_Egamma_ChiSq_accsub->GetYaxis()->FindBin(maxEval) -1.;
-	int MC_Ebinmin = MC_XiMassKinFit_Egamma_ChiSq_accsub->GetYaxis()->FindBin(minEval);
-	int MC_Ebinmax = MC_XiMassKinFit_Egamma_ChiSq_accsub->GetYaxis()->FindBin(maxEval) -1.;
-	XiMassKinFit_Egamma_ChiSq_accsub->GetZaxis()->SetRange(XiMassKinFit_Egamma_ChiSq_accsub->GetZaxis()->FindBin(0.0),XiMassKinFit_Egamma_ChiSq_accsub->GetZaxis()->FindBin(chimax)-1);	
-	XiMassKinFit_Egamma_ChiSq_accsub->GetYaxis()->SetRange(Ebinmin,Ebinmax);
-	TH1F * XiMassKinFit_chibin_accsub = (TH1F *) XiMassKinFit_Egamma_ChiSq_accsub->Project3D("x");
-	XiMassKinFit_chibin_accsub->Rebin(XiMassKinFit_chibin_accsub->GetNbinsX()/nummassBins);
+		int Ebinmin = XiMassKinFit_Egamma_ChiSq_accsub->GetYaxis()->FindBin(minEval);
+		int Ebinmax = XiMassKinFit_Egamma_ChiSq_accsub->GetYaxis()->FindBin(maxEval) -1.;
+		int MC_Ebinmin = MC_XiMassKinFit_Egamma_ChiSq_accsub->GetYaxis()->FindBin(minEval);
+		int MC_Ebinmax = MC_XiMassKinFit_Egamma_ChiSq_accsub->GetYaxis()->FindBin(maxEval) -1.;
+		XiMassKinFit_Egamma_ChiSq_accsub->GetZaxis()->SetRange(XiMassKinFit_Egamma_ChiSq_accsub->GetZaxis()->FindBin(0.0),XiMassKinFit_Egamma_ChiSq_accsub->GetZaxis()->FindBin(chimax)-1);	
+		XiMassKinFit_Egamma_ChiSq_accsub->GetYaxis()->SetRange(Ebinmin,Ebinmax);
+		TH1F * XiMassKinFit_chibin_accsub = (TH1F *) XiMassKinFit_Egamma_ChiSq_accsub->Project3D("x");
+		XiMassKinFit_chibin_accsub->Rebin(XiMassKinFit_chibin_accsub->GetNbinsX()/nummassBins);
 
 	//Create a histogram of mc for this particular energy bin	
-	MC_XiMassKinFit_Egamma_ChiSq_accsub->GetZaxis()->SetRange(MC_XiMassKinFit_Egamma_ChiSq_accsub->GetZaxis()->FindBin(0.0),MC_XiMassKinFit_Egamma_ChiSq_accsub->GetZaxis()->FindBin(chimax)-1);	
-	MC_XiMassKinFit_Egamma_ChiSq_accsub->GetYaxis()->SetRange(Ebinmin,Ebinmax);
-	TH1F * MC_XiMassKinFit_chibin_accsub = (TH1F *) MC_XiMassKinFit_Egamma_ChiSq_accsub->Project3D("x");
+		MC_XiMassKinFit_Egamma_ChiSq_accsub->GetZaxis()->SetRange(MC_XiMassKinFit_Egamma_ChiSq_accsub->GetZaxis()->FindBin(0.0),MC_XiMassKinFit_Egamma_ChiSq_accsub->GetZaxis()->FindBin(chimax)-1);	
+		MC_XiMassKinFit_Egamma_ChiSq_accsub->GetYaxis()->SetRange(Ebinmin,Ebinmax);
+		TH1F * MC_XiMassKinFit_chibin_accsub = (TH1F *) MC_XiMassKinFit_Egamma_ChiSq_accsub->Project3D("x");
 
 	//Only perform signal fit for total cross section if there are at least 20 entries in the whole histogram
-	if(XiMassKinFit_chibin_accsub->GetEntries() < 20){
-		xsec_sig_events = 0.0;
-		xsec_sig_events_err = 0.0;
-		xsec_sig_mass = 0.0;
-		xsec_sig_mass_err = 0.0;
-		xsec_sig_width =  0.0;
-		xsec_sig_width_err =  0.0;
-	} //end not enough signal loop for total cross section
-	else{	//Set up and perform signal fit for total cross section
-		sprintf(xsec_xiplot,"Xsec_fits/Xsec_sigfit_%s_%03d_%02dchibins_%03d.png",version, binning,numchiBins,chibuffer);
-		sprintf(xsec_workspace,"w%03d",chibuffer);
-		sprintf(xsec_xicanvas,"Xi_canvas_%03d",chibuffer);
-		TCanvas * Xsec_Xi_canvas = new TCanvas(xsec_xicanvas, xsec_xicanvas,800,600);
-		RooWorkspace* xsecw = new RooWorkspace(xsec_workspace);
-		RooRealVar xsecmass("xsecmass", "xsecmass", minmass, maxmass);
-		RooDataHist *xsecdata = new RooDataHist("xsecdata", "Dataset of mass", xsecmass, XiMassKinFit_chibin_accsub);
-		XiMassKinFit_chibin_accsub->Print();
-		xsecw->import(RooArgSet(xsecmass));
-		xsecw->factory("Chebychev::xsecbkgd(xsecmass,{c1t[2.20,-1.e4,1.e4],c2t[-1.557,-1.e4,1.e4]})");
-		xsecw->factory("Gaussian::xsecgaus(xsecmass,mean[1.32,1.31,1.33],sigma[0.005,0.001,0.01])");
-		xsecw->factory("SUM::xsecmodel(nbkgd[150,0,1e5]*xsecbkgd, nsig[20,0,1e4]*xsecgaus)");
-		xsecw->pdf("xsecmodel")->fitTo(*xsecdata,RooFit::Range(minfitmass,maxmass),RooFit::Minos(1));
-		RooPlot* xsecmassframe = xsecmass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
-		xsecmassframe->SetXTitle("#Lambda#pi^{-} mass");
-		xsecdata->plotOn(xsecmassframe) ;
-		xsecw->pdf("xsecmodel")->paramOn(xsecmassframe);
-		xsecw->pdf("xsecmodel")->plotOn(xsecmassframe);
-		xsecw->pdf("xsecgaus")->plotOn(xsecmassframe, RooFit::LineStyle(kDotted),
-		RooFit::Normalization(xsecw->var("nsig")->getVal(), RooAbsReal::NumEvent));
-		xsecw->pdf("xsecbkgd")->plotOn(xsecmassframe, RooFit::LineStyle(kDotted),
-		RooFit::Normalization(xsecw->var("nbkgd")->getVal(), RooAbsReal::NumEvent));
-		xsec_sig_events = xsecw->var("nsig")->getVal();
-		xsec_sig_events_err = xsecw->var("nsig")->getError();
-		xsec_sig_mass = xsecw->var("mean")->getVal();
-		xsec_sig_mass_err = xsecw->var("mean")->getError();
-		xsec_sig_width = xsecw->var("sigma")->getVal();
-		xsec_sig_width_err = xsecw->var("sigma")->getError();
-		double max_xsec_y = sig_events*0.3;
-		xsecmassframe->SetMaximum(max_xsec_y);
-		xsecmassframe->Draw();
-		Xsec_Xi_canvas->Print(xsec_xiplot);
-		esigfit_canvas->cd(it+1);
-		xsecmassframe->Draw();
-	} //end enough signal loop for total cross section
+		if(XiMassKinFit_chibin_accsub->GetEntries() < 20){
+			xsec_sig_events = 0.0;
+			xsec_sig_events_err = 0.0;
+			xsec_sig_mass = 0.0;
+			xsec_sig_mass_err = 0.0;
+			xsec_sig_width =  0.0;
+			xsec_sig_width_err =  0.0;
+		} //end not enough signal loop for total cross section
+		else{	//Set up and perform signal fit for total cross section
+			sprintf(xsec_xiplot,"Xsec_fits/Xsec_sigfit_%s_%03d_%02dchibins_%03d.png",version, binning,numchiBins,chibuffer);
+			sprintf(xsec_workspace,"w%03d",chibuffer);
+			sprintf(xsec_xicanvas,"Xi_canvas_%03d",chibuffer);
+			TCanvas * Xsec_Xi_canvas = new TCanvas(xsec_xicanvas, xsec_xicanvas,800,600);
+			RooWorkspace* xsecw = new RooWorkspace(xsec_workspace);
+			RooRealVar xsecmass("xsecmass", "xsecmass", minmass, maxmass);
+			RooDataHist *xsecdata = new RooDataHist("xsecdata", "Dataset of mass", xsecmass, XiMassKinFit_chibin_accsub);
+			XiMassKinFit_chibin_accsub->Print();
+			xsecw->import(RooArgSet(xsecmass));
+			xsecw->factory("Chebychev::xsecbkgd(xsecmass,{c1t[2.20,-1.e4,1.e4],c2t[-1.557,-1.e4,1.e4]})");
+			xsecw->factory("Gaussian::xsecgaus(xsecmass,mean[1.32,1.31,1.33],sigma[0.005,0.001,0.01])");
+			xsecw->factory("SUM::xsecmodel(nbkgd[150,0,1e5]*xsecbkgd, nsig[20,0,1e4]*xsecgaus)");
+			xsecw->pdf("xsecmodel")->fitTo(*xsecdata,RooFit::Range(minfitmass,maxmass),RooFit::Minos(1));
+			RooPlot* xsecmassframe = xsecmass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
+			xsecmassframe->SetXTitle("#Lambda#pi^{-} mass");
+			xsecdata->plotOn(xsecmassframe) ;
+			xsecw->pdf("xsecmodel")->paramOn(xsecmassframe);
+			xsecw->pdf("xsecmodel")->plotOn(xsecmassframe);
+			xsecw->pdf("xsecgaus")->plotOn(xsecmassframe, RooFit::LineStyle(kDotted),
+			RooFit::Normalization(xsecw->var("nsig")->getVal(), RooAbsReal::NumEvent));
+			xsecw->pdf("xsecbkgd")->plotOn(xsecmassframe, RooFit::LineStyle(kDotted),
+			RooFit::Normalization(xsecw->var("nbkgd")->getVal(), RooAbsReal::NumEvent));
+			xsec_sig_events = xsecw->var("nsig")->getVal();
+			xsec_sig_events_err = xsecw->var("nsig")->getError();
+			xsec_sig_mass = xsecw->var("mean")->getVal();
+			xsec_sig_mass_err = xsecw->var("mean")->getError();
+			xsec_sig_width = xsecw->var("sigma")->getVal();
+			xsec_sig_width_err = xsecw->var("sigma")->getError();
+			double max_xsec_y = sig_events*0.3;
+			xsecmassframe->SetMaximum(max_xsec_y);
+			xsecmassframe->Draw();
+			Xsec_Xi_canvas->Print(xsec_xiplot);
+			esigfit_canvas->cd(it+1);
+			xsecmassframe->Draw();
+		} //end enough signal loop for total cross section
 
 	//Save signal fit yields and error for total cross section
-	xsec_sig_val[it+1] = xsec_sig_events;
-	xsec_sig_err[it+1] = xsec_sig_events_err;
-	cout << "~~~~~~~sigxsec~" << it << "~ " << xsec_sig_events << " " << xsec_sig_events_err << endl; 
-	esigyields_canvas->cd();	
-	SignalYields_chibin->SetBinContent(it+1,xsec_sig_events);
-	SignalYields_chibin->SetBinError(it+1,xsec_sig_events_err);
-	esigmass_canvas->cd();
-	SignalMass_chibin->SetBinContent(it+1,xsec_sig_mass); 
-	SignalMass_chibin->SetBinError(it+1,xsec_sig_mass_err);
-	esigwidth_canvas->cd();
-	SignalWidth_chibin->SetBinContent(it+1,xsec_sig_width);
-	SignalWidth_chibin->SetBinError(it+1,xsec_sig_width_err);
+		xsec_sig_val[it+1] = xsec_sig_events;
+		xsec_sig_err[it+1] = xsec_sig_events_err;
+		cout << "~~~~~~~sigxsec~" << it << "~ " << xsec_sig_events << " " << xsec_sig_events_err << endl; 
+		esigyields_canvas->cd();	
+		SignalYields_chibin->SetBinContent(it+1,xsec_sig_events);
+		SignalYields_chibin->SetBinError(it+1,xsec_sig_events_err);
+		esigmass_canvas->cd();
+		SignalMass_chibin->SetBinContent(it+1,xsec_sig_mass); 
+		SignalMass_chibin->SetBinError(it+1,xsec_sig_mass_err);
+		esigwidth_canvas->cd();
+		SignalWidth_chibin->SetBinContent(it+1,xsec_sig_width);
+		SignalWidth_chibin->SetBinError(it+1,xsec_sig_width_err);
 
 	//MC fit for total cross section 
-	sprintf(xsec_mcplot,"Xsec_fits/Xsec_mcfit_%s_%03d_%02dchibins_%03d.png",version, binning,numchiBins,chibuffer);	
-	sprintf(mc_xsec_workspace,"wmc%03d",chibuffer);
-	sprintf(xsec_mccanvas,"Xi_canvas_mc_%03d",chibuffer);
-	TCanvas * Xsec_Xi_mc_canvas = new TCanvas(xsec_mccanvas, xsec_mccanvas,800,600);
-	RooWorkspace* xsecwmc = new RooWorkspace(mc_xsec_workspace);
-	RooRealVar xsecmcmass("xsecmcmass", "xsecmcmass", minmass, maxmass);
-	RooDataHist *xsecmc = new RooDataHist("xsecmc", "MC of mass", xsecmcmass, MC_XiMassKinFit_chibin_accsub );
-	MC_XiMassKinFit_chibin_accsub->Print();
-	xsecwmc->import(RooArgSet(xsecmcmass));
-	xsecwmc->factory("Gaussian::xsecgausmc(xsecmcmass,meanmc[1.32,1.31,1.33],sigmamc[0.005,0.001,0.01])");
-	xsecwmc->factory("SUM::xsecmcmodel(nsigmc[50,0,1e6]*xsecgausmc)");
-	xsecwmc->pdf("xsecmcmodel")->fitTo(*xsecmc,RooFit::Range(1.305,1.35),RooFit::Minos(1));
-	RooPlot* xsecmcmassframe = xsecmcmass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
-	xsecmcmassframe->SetXTitle("#Lambda#pi^{-} mass");
-	xsecmc->plotOn(xsecmcmassframe) ;
-	xsecwmc->pdf("xsecmcmodel")->paramOn(xsecmcmassframe);
-	xsecwmc->pdf("xsecmcmodel")->plotOn(xsecmcmassframe);
-	xsecwmc->pdf("xsecgausmc")->plotOn(xsecmcmassframe, RooFit::LineStyle(kDotted),
-	RooFit::Normalization(xsecwmc->var("nsigmc")->getVal(), RooAbsReal::NumEvent));
-	double_t xsec_mc_sig_events = xsecwmc->var("nsigmc")->getVal();
-	double_t xsec_mc_sig_events_err = xsecwmc->var("nsigmc")->getError();
-	double_t xsec_mc_mass = xsecwmc->var("meanmc")->getVal();
-	double_t xsec_mc_mass_err = xsecwmc->var("meanmc")->getError();
-	double_t xsec_mc_width = xsecwmc->var("sigmamc")->getVal();
-	double_t xsec_mc_width_err = xsecwmc->var("sigmamc")->getError();
-	xsec_mc_val[it+1] = xsec_mc_sig_events;
-	xsec_mc_err[it+1] = xsec_mc_sig_events_err;
-	cout << "~~~~~~~MCxsec~" << it << "~ " << xsec_mc_sig_events << " " << xsec_mc_sig_events_err << endl; 
-	double xsec_mc_max_y = xsec_mc_sig_events *0.5;
-	xsecmcmassframe->SetMaximum(xsec_mc_max_y);
-	xsecmcmassframe->Draw();
-	Xsec_Xi_mc_canvas->Print(xsec_mcplot);
+		sprintf(xsec_mcplot,"Xsec_fits/Xsec_mcfit_%s_%03d_%02dchibins_%03d.png",version, binning,numchiBins,chibuffer);	
+		sprintf(mc_xsec_workspace,"wmc%03d",chibuffer);
+		sprintf(xsec_mccanvas,"Xi_canvas_mc_%03d",chibuffer);
+		TCanvas * Xsec_Xi_mc_canvas = new TCanvas(xsec_mccanvas, xsec_mccanvas,800,600);
+		RooWorkspace* xsecwmc = new RooWorkspace(mc_xsec_workspace);
+		RooRealVar xsecmcmass("xsecmcmass", "xsecmcmass", minmass, maxmass);
+		RooDataHist *xsecmc = new RooDataHist("xsecmc", "MC of mass", xsecmcmass, MC_XiMassKinFit_chibin_accsub );
+		MC_XiMassKinFit_chibin_accsub->Print();
+		xsecwmc->import(RooArgSet(xsecmcmass));
+		xsecwmc->factory("Gaussian::xsecgausmc(xsecmcmass,meanmc[1.32,1.31,1.33],sigmamc[0.005,0.001,0.01])");
+		xsecwmc->factory("SUM::xsecmcmodel(nsigmc[50,0,1e6]*xsecgausmc)");
+		xsecwmc->pdf("xsecmcmodel")->fitTo(*xsecmc,RooFit::Range(1.305,1.35),RooFit::Minos(1));
+		RooPlot* xsecmcmassframe = xsecmcmass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
+		xsecmcmassframe->SetXTitle("#Lambda#pi^{-} mass");
+		xsecmc->plotOn(xsecmcmassframe) ;
+		xsecwmc->pdf("xsecmcmodel")->paramOn(xsecmcmassframe);
+		xsecwmc->pdf("xsecmcmodel")->plotOn(xsecmcmassframe);
+		xsecwmc->pdf("xsecgausmc")->plotOn(xsecmcmassframe, RooFit::LineStyle(kDotted),
+		RooFit::Normalization(xsecwmc->var("nsigmc")->getVal(), RooAbsReal::NumEvent));
+		double_t xsec_mc_sig_events = xsecwmc->var("nsigmc")->getVal();
+		double_t xsec_mc_sig_events_err = xsecwmc->var("nsigmc")->getError();
+		double_t xsec_mc_mass = xsecwmc->var("meanmc")->getVal();
+		double_t xsec_mc_mass_err = xsecwmc->var("meanmc")->getError();
+		double_t xsec_mc_width = xsecwmc->var("sigmamc")->getVal();
+		double_t xsec_mc_width_err = xsecwmc->var("sigmamc")->getError();
+		xsec_mc_val[it+1] = xsec_mc_sig_events;
+		xsec_mc_err[it+1] = xsec_mc_sig_events_err;
+		cout << "~~~~~~~MCxsec~" << it << "~ " << xsec_mc_sig_events << " " << xsec_mc_sig_events_err << endl; 
+		double xsec_mc_max_y = xsec_mc_sig_events *0.5;
+		xsecmcmassframe->SetMaximum(xsec_mc_max_y);
+		xsecmcmassframe->Draw();
+		Xsec_Xi_mc_canvas->Print(xsec_mcplot);
 
 	// Save MC information to histograms binned in beam energy
-	emcyields_canvas->cd();	
-	MCYields_chibin->SetBinContent(it+1,xsec_mc_sig_events);
-	MCYields_chibin->SetBinError(it+1,xsec_mc_sig_events_err);
-	emcmass_canvas->cd();
-	MCMass_chibin->SetBinContent(it+1,xsec_mc_mass); 
-	MCMass_chibin->SetBinError(it+1,xsec_mc_mass_err);
-	emcwidth_canvas->cd();
-	MCWidth_chibin->SetBinContent(it+1,xsec_mc_width);
-	MCWidth_chibin->SetBinError(it+1,xsec_mc_width_err);
+		emcyields_canvas->cd();	
+		MCYields_chibin->SetBinContent(it+1,xsec_mc_sig_events);
+		MCYields_chibin->SetBinError(it+1,xsec_mc_sig_events_err);
+		emcmass_canvas->cd();
+		MCMass_chibin->SetBinContent(it+1,xsec_mc_mass); 
+		MCMass_chibin->SetBinError(it+1,xsec_mc_mass_err);
+		emcwidth_canvas->cd();
+		MCWidth_chibin->SetBinContent(it+1,xsec_mc_width);
+		MCWidth_chibin->SetBinError(it+1,xsec_mc_width_err);
 
 	//Get flux values
-	flux_val=FluxH->IntegralAndError(FluxH->FindBin(minEval),FluxH->FindBin(maxEval)-1,flux_err,"");
-	cout << "~~~~~~~flux~" << it << "~" << flux_val << " " << flux_err << endl;
+		flux_val=FluxH->IntegralAndError(FluxH->FindBin(minEval),FluxH->FindBin(maxEval)-1,flux_err,"");
+		cout << "~~~~~~~flux~" << it << "~" << flux_val << " " << flux_err << endl;
 
-	xsec_eff_val[it+1] = xsec_mc_val[it+1]/xsec_thrown_val[it+1];
-	xsec_eff_err[it+1] = xsec_eff_val[it+1] * sqrt(pow(xsec_mc_err[it+1]/xsec_mc_val[it+1],2)+pow(xsec_thrown_err[it+1]/xsec_thrown_val[it+1],2));
-	cout << "~~~~~~~Effxsec~" << it << "~" << xsec_eff_val[it+1] << " " << xsec_eff_err[it+1] << endl;
-	Eff_chibin->SetBinContent(it+1,xsec_eff_val[it+1]);
-	Eff_chibin->SetBinError(it+1,xsec_eff_err[it+1]);
-	xsec_val[it+1] = (xsec_sig_val[it+1])/(deltachi * constant * flux_val * (xsec_mc_val[it+1]/xsec_thrown_val[it+1]));
 	//Calculate efficiencies and total cross section in terms of only energy binning
-	if(xsec_sig_val[it+1] != 0){ //Calculate normally
-	    xsec_err[it+1] = xsec_val[it+1]*sqrt(pow(xsec_sig_err[it+1]/xsec_sig_val[it+1],2)+pow(flux_err/flux_val,2)+pow(xsec_mc_err[it+1]/xsec_mc_val[it+1],2)+pow(xsec_thrown_err[it+1]/xsec_thrown_val[it+1],2));
-	}
-	else{ 
-		xsec_err[it+1] = 0.0; // Set to zero if fit wasn't performed to prevent NaNs.
-	}	
-	cout << "~~~~~~~Xsec~" << it << "~" << xsec_val[it+1] << " " << xsec_err[it+1] << endl;
-	XSec_chibin->SetBinContent(it+1,xsec_val[it+1]);
-	XSec_chibin->SetBinError(it+1,xsec_err[it+1]);
+		xsec_eff_val[it+1] = xsec_mc_val[it+1]/xsec_thrown_val[it+1];
+		xsec_eff_err[it+1] = xsec_eff_val[it+1] * sqrt(pow(xsec_mc_err[it+1]/xsec_mc_val[it+1],2)+pow(xsec_thrown_err[it+1]/xsec_thrown_val[it+1],2));
+		cout << "~~~~~~~Effxsec~" << it << "~" << xsec_eff_val[it+1] << " " << xsec_eff_err[it+1] << endl;
+		Eff_chibin->SetBinContent(it+1,xsec_eff_val[it+1]);
+		Eff_chibin->SetBinError(it+1,xsec_eff_err[it+1]);
+		xsec_val[it+1] = (xsec_sig_val[it+1])/(deltachi * constant * flux_val * (xsec_mc_val[it+1]/xsec_thrown_val[it+1]));
+		if(xsec_sig_val[it+1] != 0){ //Calculate normally
+		    xsec_err[it+1] = xsec_val[it+1]*sqrt(pow(xsec_sig_err[it+1]/xsec_sig_val[it+1],2)+pow(flux_err/flux_val,2)+pow(xsec_mc_err[it+1]/xsec_mc_val[it+1],2)+pow(xsec_thrown_err[it+1]/xsec_thrown_val[it+1],2));
+		}
+		else{ 
+			xsec_err[it+1] = 0.0; // Set to zero if fit wasn't performed to prevent NaNs.
+		}	
+		cout << "~~~~~~~Xsec~" << it << "~" << xsec_val[it+1] << " " << xsec_err[it+1] << endl;
+		XSec_chibin->SetBinContent(it+1,xsec_val[it+1]);
+		XSec_chibin->SetBinError(it+1,xsec_err[it+1]);
 
 	//Draw and save histograms that depend on energy bin
-	esigfit_canvas->cd(it+1);
-	esigfit_canvas->Print(esignalfithist);
-	esigfit_canvas->SaveAs(esignalfitmacro);
+		esigfit_canvas->cd(it+1);
+		esigfit_canvas->Print(esignalfithist);
+		esigfit_canvas->SaveAs(esignalfitmacro);
 
 } //end E loop
 
