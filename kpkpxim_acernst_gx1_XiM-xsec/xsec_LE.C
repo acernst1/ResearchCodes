@@ -5,8 +5,6 @@
 #include "RooPlot.h"
 
 //initialize all the things
-double getbincontent(TH1F * AccH, int bin);
-double getbinerror(TH1F * AccH, int bin);
 char plotname[100];
 char accplotname[100];
 char accsubplotname[100];
@@ -293,305 +291,304 @@ void xsec_LE(TString dataFilePath, const char fluxFilePathtemp[100], TString mcF
 
 //Main beam energy loop
 	for(int iE=0; iE<numEBins; iE++){
-	double Emin = deltaE * iE + (minEval);
-	double Emax = deltaE * (iE+1) + (minEval);
-	int Ebuffer = Emin*10;
+		double Emin = deltaE * iE + (minEval);
+		double Emax = deltaE * (iE+1) + (minEval);
+		int Ebuffer = Emin*10;
 
 	//Initialize histograms on the divided canvases
-	esigfit_canvas->cd(iE+1);	
-	sprintf(esigfit_EBin_name,"sigfit_%03d",Ebuffer);
-	sprintf(EBin_Title,"%3.1f <= E_{#gamma} < %3.1f",Emin,Emax);
-	//SignalFits[iE+1]->SetTitle(EBin_Title);
+		esigfit_canvas->cd(iE+1);	
+		sprintf(esigfit_EBin_name,"sigfit_%03d",Ebuffer);
+		sprintf(EBin_Title,"%3.1f <= E_{#gamma} < %3.1f",Emin,Emax);
 
-	thrownyields_canvas->cd(iE+1);
-	sprintf(thrownyields_EBin_name,"thrownyields_%03d",Ebuffer);
-	ThrownYields[iE+1] = new TH1F(thrownyields_EBin_name, "; -t (GeV^2); Thrown Yields",numtBins,mintval,maxtval); 
-	ThrownYields[iE+1]->SetTitle(EBin_Title);
-	ThrownYields[iE+1]->SetMarkerColor(kRed);
-	ThrownYields[iE+1]->SetMarkerStyle(21);
-	ThrownYields[iE+1]->SetLabelSize(0.035,"xy");
-	ThrownYields[iE+1]->SetLabelOffset(0.001,"xy");
+		thrownyields_canvas->cd(iE+1);
+		sprintf(thrownyields_EBin_name,"thrownyields_%03d",Ebuffer);
+		ThrownYields[iE+1] = new TH1F(thrownyields_EBin_name, "; -t (GeV^2); Thrown Yields",numtBins,mintval,maxtval); 
+		ThrownYields[iE+1]->SetTitle(EBin_Title);
+		ThrownYields[iE+1]->SetMarkerColor(kRed);
+		ThrownYields[iE+1]->SetMarkerStyle(21);
+		ThrownYields[iE+1]->SetLabelSize(0.035,"xy");
+		ThrownYields[iE+1]->SetLabelOffset(0.001,"xy");
 
-	sigyields_canvas->cd(iE+1);	
-	sprintf(sigyields_EBin_name,"sigyields_%03d",Ebuffer);
-	SignalYields[iE+1] = new TH1F(sigyields_EBin_name, "; -t (GeV^2); Yields",numtBins,mintval,maxtval); 
-	SignalYields[iE+1]->SetTitle(EBin_Title);
-	SignalYields[iE+1]->SetMarkerColor(kRed);
-	SignalYields[iE+1]->SetMarkerStyle(21);
-	SignalYields[iE+1]->SetLabelSize(0.035,"xy");
-	SignalYields[iE+1]->SetLabelOffset(0.001,"xy");
+		sigyields_canvas->cd(iE+1);	
+		sprintf(sigyields_EBin_name,"sigyields_%03d",Ebuffer);
+		SignalYields[iE+1] = new TH1F(sigyields_EBin_name, "; -t (GeV^2); Yields",numtBins,mintval,maxtval); 
+		SignalYields[iE+1]->SetTitle(EBin_Title);
+		SignalYields[iE+1]->SetMarkerColor(kRed);
+		SignalYields[iE+1]->SetMarkerStyle(21);
+		SignalYields[iE+1]->SetLabelSize(0.035,"xy");
+		SignalYields[iE+1]->SetLabelOffset(0.001,"xy");
 
-	sigmass_canvas->cd(iE+1);
-	sprintf(sigmass_EBin_name,"sigmass_%03d",Ebuffer);
-	SignalMass[iE+1] = new TH1F(sigmass_EBin_name, "; -t (GeV^2); Mass",numtBins,mintval,maxtval); 
-	SignalMass[iE+1]->SetTitle(EBin_Title);
-	SignalMass[iE+1]->SetMarkerColor(kRed);
-	SignalMass[iE+1]->SetMarkerStyle(21);
-	SignalMass[iE+1]->SetLabelSize(0.035,"xy");
-	SignalMass[iE+1]->SetLabelOffset(0.001,"xy");
+		sigmass_canvas->cd(iE+1);
+		sprintf(sigmass_EBin_name,"sigmass_%03d",Ebuffer);
+		SignalMass[iE+1] = new TH1F(sigmass_EBin_name, "; -t (GeV^2); Mass",numtBins,mintval,maxtval); 
+		SignalMass[iE+1]->SetTitle(EBin_Title);
+		SignalMass[iE+1]->SetMarkerColor(kRed);
+		SignalMass[iE+1]->SetMarkerStyle(21);
+		SignalMass[iE+1]->SetLabelSize(0.035,"xy");
+		SignalMass[iE+1]->SetLabelOffset(0.001,"xy");
 
-	sigwidth_canvas->cd(iE+1);
-	sprintf(sigwidth_EBin_name,"sigwidth_%03d",Ebuffer);
-	SignalWidth[iE+1] = new TH1F(sigwidth_EBin_name, "; -t (GeV^2); Width",numtBins,mintval,maxtval); 
-	SignalWidth[iE+1]->SetTitle(EBin_Title);
-	SignalWidth[iE+1]->SetMarkerColor(kRed);
-	SignalWidth[iE+1]->SetMarkerStyle(21);
-	SignalWidth[iE+1]->SetLabelSize(0.035,"xy");
-	SignalWidth[iE+1]->SetLabelOffset(0.001,"xy");
+		sigwidth_canvas->cd(iE+1);
+		sprintf(sigwidth_EBin_name,"sigwidth_%03d",Ebuffer);
+		SignalWidth[iE+1] = new TH1F(sigwidth_EBin_name, "; -t (GeV^2); Width",numtBins,mintval,maxtval); 
+		SignalWidth[iE+1]->SetTitle(EBin_Title);
+		SignalWidth[iE+1]->SetMarkerColor(kRed);
+		SignalWidth[iE+1]->SetMarkerStyle(21);
+		SignalWidth[iE+1]->SetLabelSize(0.035,"xy");
+		SignalWidth[iE+1]->SetLabelOffset(0.001,"xy");
 
-	mcyields_canvas->cd(iE+1);
-	sprintf(mcyields_EBin_name,"mcyields_%03d",Ebuffer);
-	MCYields[iE+1] = new TH1F(mcyields_EBin_name, "; -t (GeV^2); Yields",numtBins,mintval,maxtval); 
-	MCYields[iE+1]->SetTitle(EBin_Title);
-	MCYields[iE+1]->SetMarkerColor(kRed);
-	MCYields[iE+1]->SetMarkerStyle(21);
-	MCYields[iE+1]->SetLabelSize(0.035,"xy");
-	MCYields[iE+1]->SetLabelOffset(0.001,"xy");
+		mcyields_canvas->cd(iE+1);
+		sprintf(mcyields_EBin_name,"mcyields_%03d",Ebuffer);
+		MCYields[iE+1] = new TH1F(mcyields_EBin_name, "; -t (GeV^2); Yields",numtBins,mintval,maxtval); 
+		MCYields[iE+1]->SetTitle(EBin_Title);
+		MCYields[iE+1]->SetMarkerColor(kRed);
+		MCYields[iE+1]->SetMarkerStyle(21);
+		MCYields[iE+1]->SetLabelSize(0.035,"xy");
+		MCYields[iE+1]->SetLabelOffset(0.001,"xy");
 
-	mcmass_canvas->cd(iE+1);
-	sprintf(mcmass_EBin_name,"mcmass_%03d",Ebuffer);
-	MCMass[iE+1] = new TH1F(mcmass_EBin_name, "; -t (GeV^2); Mass",numtBins,mintval,maxtval); 
-	MCMass[iE+1]->SetTitle(EBin_Title);
-	MCMass[iE+1]->SetMarkerColor(kRed);
-	MCMass[iE+1]->SetMarkerStyle(21);
-	MCMass[iE+1]->SetLabelSize(0.035,"xy");
-	MCMass[iE+1]->SetLabelOffset(0.001,"xy");
+		mcmass_canvas->cd(iE+1);
+		sprintf(mcmass_EBin_name,"mcmass_%03d",Ebuffer);
+		MCMass[iE+1] = new TH1F(mcmass_EBin_name, "; -t (GeV^2); Mass",numtBins,mintval,maxtval); 
+		MCMass[iE+1]->SetTitle(EBin_Title);
+		MCMass[iE+1]->SetMarkerColor(kRed);
+		MCMass[iE+1]->SetMarkerStyle(21);
+		MCMass[iE+1]->SetLabelSize(0.035,"xy");
+		MCMass[iE+1]->SetLabelOffset(0.001,"xy");
 
-	mcwidth_canvas->cd(iE+1);
-	sprintf(mcwidth_EBin_name,"mcwidth_%03d",Ebuffer);
-	MCWidth[iE+1] = new TH1F(mcwidth_EBin_name, "; -t (GeV^2); Width",numtBins,mintval,maxtval); 
-	MCWidth[iE+1]->SetTitle(EBin_Title);
-	MCWidth[iE+1]->SetMarkerColor(kRed);
-	MCWidth[iE+1]->SetMarkerStyle(21);
-	MCWidth[iE+1]->SetLabelSize(0.035,"xy");
-	MCWidth[iE+1]->SetLabelOffset(0.001,"xy");
+		mcwidth_canvas->cd(iE+1);
+		sprintf(mcwidth_EBin_name,"mcwidth_%03d",Ebuffer);
+		MCWidth[iE+1] = new TH1F(mcwidth_EBin_name, "; -t (GeV^2); Width",numtBins,mintval,maxtval); 
+		MCWidth[iE+1]->SetTitle(EBin_Title);
+		MCWidth[iE+1]->SetMarkerColor(kRed);
+		MCWidth[iE+1]->SetMarkerStyle(21);
+		MCWidth[iE+1]->SetLabelSize(0.035,"xy");
+		MCWidth[iE+1]->SetLabelOffset(0.001,"xy");
 
-	eff_canvas->cd(iE+1);
-	sprintf(eff_EBin_name,"eff_%03d",Ebuffer);
-	Eff[iE+1] = new TH1F(eff_EBin_name, "; -t (GeV^2); Efficiency (%)",numtBins,mintval,maxtval); 
-	Eff[iE+1]->SetTitle(EBin_Title);
-	Eff[iE+1]->SetMarkerColor(kRed);
-	Eff[iE+1]->SetMarkerStyle(21);
-	Eff[iE+1]->SetLabelSize(0.035,"xy");
-	Eff[iE+1]->SetLabelOffset(0.001,"xy");
+		eff_canvas->cd(iE+1);
+		sprintf(eff_EBin_name,"eff_%03d",Ebuffer);
+		Eff[iE+1] = new TH1F(eff_EBin_name, "; -t (GeV^2); Efficiency (%)",numtBins,mintval,maxtval); 
+		Eff[iE+1]->SetTitle(EBin_Title);
+		Eff[iE+1]->SetMarkerColor(kRed);
+		Eff[iE+1]->SetMarkerStyle(21);
+		Eff[iE+1]->SetLabelSize(0.035,"xy");
+		Eff[iE+1]->SetLabelOffset(0.001,"xy");
 
-	diffxsec_canvas->cd(iE+1);
-	sprintf(diffxsec_EBin_name,"diffxsec_%03d",Ebuffer);
-	DiffXSec[iE+1] = new TH1F(diffxsec_EBin_name, "; -t (GeV^2); d#sigma/dt (nb)",numtBins,mintval,maxtval); 
-	DiffXSec[iE+1]->SetTitle(EBin_Title);
-	DiffXSec[iE+1]->SetMarkerColor(kRed);
-	DiffXSec[iE+1]->SetMarkerStyle(21);
-	DiffXSec[iE+1]->SetLabelSize(0.035,"xy");
-	DiffXSec[iE+1]->SetLabelOffset(0.001,"xy");
+		diffxsec_canvas->cd(iE+1);
+		sprintf(diffxsec_EBin_name,"diffxsec_%03d",Ebuffer);
+		DiffXSec[iE+1] = new TH1F(diffxsec_EBin_name, "; -t (GeV^2); d#sigma/dt (nb)",numtBins,mintval,maxtval); 
+		DiffXSec[iE+1]->SetTitle(EBin_Title);
+		DiffXSec[iE+1]->SetMarkerColor(kRed);
+		DiffXSec[iE+1]->SetMarkerStyle(21);
+		DiffXSec[iE+1]->SetLabelSize(0.035,"xy");
+		DiffXSec[iE+1]->SetLabelOffset(0.001,"xy");
 
 	//Get thrown values for total cross section
-	ethrownyields_canvas->cd(iE+1);
-	double thrown_Ebin = ThrownH_Ebin->GetBinContent(iE+1);
-	double thrown_Ebin_err = ThrownH_Ebin->GetBinError(iE+1);
-	xsec_thrown_val[iE+1] = thrown_Ebin;
-	xsec_thrown_err[iE+1] = thrown_Ebin_err;
-	ThrownYields_Ebin->SetBinContent(iE+1,thrown_Ebin);
-	ThrownYields_Ebin->SetBinError(iE+1,thrown_Ebin_err);
-	cout << "~~~~~~~Thrownxsec~ " << iE << "~ " << thrown_Ebin << " " << thrown_Ebin_err << endl;
+		ethrownyields_canvas->cd(iE+1);
+		double thrown_Ebin = ThrownH_Ebin->GetBinContent(iE+1);
+		double thrown_Ebin_err = ThrownH_Ebin->GetBinError(iE+1);
+		xsec_thrown_val[iE+1] = thrown_Ebin;
+		xsec_thrown_err[iE+1] = thrown_Ebin_err;
+		ThrownYields_Ebin->SetBinContent(iE+1,thrown_Ebin);
+		ThrownYields_Ebin->SetBinError(iE+1,thrown_Ebin_err);
+		cout << "~~~~~~~Thrownxsec~ " << iE << "~ " << thrown_Ebin << " " << thrown_Ebin_err << endl;
 
 	//Create a histogram of signal for this particular energy bin
-	int Ebinmin = XiMassKinFit_Egamma_t_accsub->GetYaxis()->FindBin(Emin);
-	int Ebinmax = XiMassKinFit_Egamma_t_accsub->GetYaxis()->FindBin(Emax) -1.;
-	int MC_Ebinmin = MC_XiMassKinFit_Egamma_t_accsub->GetYaxis()->FindBin(Emin);
-	int MC_Ebinmax = MC_XiMassKinFit_Egamma_t_accsub->GetYaxis()->FindBin(Emax) -1.;
-	XiMassKinFit_Egamma_t_accsub->GetZaxis()->SetRange(1,XiMassKinFit_Egamma_t_accsub->GetZaxis()->FindBin(maxtval)-1);	
-	XiMassKinFit_Egamma_t_accsub->GetYaxis()->SetRange(Ebinmin,Ebinmax);
-	TH1F * XiMassKinFit_Ebin_accsub = (TH1F *) XiMassKinFit_Egamma_t_accsub->Project3D("x");
-	XiMassKinFit_Ebin_accsub->Rebin(XiMassKinFit_Ebin_accsub->GetNbinsX()/nummassBins);
+		int Ebinmin = XiMassKinFit_Egamma_t_accsub->GetYaxis()->FindBin(Emin);
+		int Ebinmax = XiMassKinFit_Egamma_t_accsub->GetYaxis()->FindBin(Emax) -1.;
+		int MC_Ebinmin = MC_XiMassKinFit_Egamma_t_accsub->GetYaxis()->FindBin(Emin);
+		int MC_Ebinmax = MC_XiMassKinFit_Egamma_t_accsub->GetYaxis()->FindBin(Emax) -1.;
+		XiMassKinFit_Egamma_t_accsub->GetZaxis()->SetRange(1,XiMassKinFit_Egamma_t_accsub->GetZaxis()->FindBin(maxtval)-1);	
+		XiMassKinFit_Egamma_t_accsub->GetYaxis()->SetRange(Ebinmin,Ebinmax);
+		TH1F * XiMassKinFit_Ebin_accsub = (TH1F *) XiMassKinFit_Egamma_t_accsub->Project3D("x");
+		XiMassKinFit_Ebin_accsub->Rebin(XiMassKinFit_Ebin_accsub->GetNbinsX()/nummassBins);
 
 	//Create a histogram of mc for this particular energy bin	
-	MC_XiMassKinFit_Egamma_t_accsub->GetZaxis()->SetRange(1,MC_XiMassKinFit_Egamma_t_accsub->GetZaxis()->FindBin(maxtval)-1);	
-	MC_XiMassKinFit_Egamma_t_accsub->GetYaxis()->SetRange(Ebinmin,Ebinmax);
-	TH1F * MC_XiMassKinFit_Ebin_accsub = (TH1F *) MC_XiMassKinFit_Egamma_t_accsub->Project3D("x");
+		MC_XiMassKinFit_Egamma_t_accsub->GetZaxis()->SetRange(1,MC_XiMassKinFit_Egamma_t_accsub->GetZaxis()->FindBin(maxtval)-1);	
+		MC_XiMassKinFit_Egamma_t_accsub->GetYaxis()->SetRange(Ebinmin,Ebinmax);
+		TH1F * MC_XiMassKinFit_Ebin_accsub = (TH1F *) MC_XiMassKinFit_Egamma_t_accsub->Project3D("x");
 
 	//Only perform signal fit for total cross section if there are at least 20 entries in the whole histogram
-	if(XiMassKinFit_Ebin_accsub->GetEntries() < 20){
-		xsec_sig_events = 0.0;
-		xsec_sig_events_err = 0.0;
-		xsec_sig_mass = 0.0;
-		xsec_sig_mass_err = 0.0;
-		xsec_sig_width =  0.0;
-		xsec_sig_width_err =  0.0;
-	} //end not enough signal loop for total cross section
-	else{	//Set up and perform signal fit for total cross section
-		sprintf(xsec_xiplot,"Xsec_fits/Xsec_sigfit_%s_%03d_%02dbins_%03d.png",version, binning,numEBins,Ebuffer);
-		sprintf(xsec_workspace,"w%03d",Ebuffer);
-		sprintf(xsec_xicanvas,"Xi_canvas_%03d",Ebuffer);
-		TCanvas * Xsec_Xi_canvas = new TCanvas(xsec_xicanvas, xsec_xicanvas,800,600);
-		RooWorkspace* xsecw = new RooWorkspace(xsec_workspace);
-		RooRealVar xsecmass("xsecmass", "xsecmass", minmass, maxmass);
-		RooDataHist *xsecdata = new RooDataHist("xsecdata", "Dataset of mass", xsecmass, XiMassKinFit_Ebin_accsub);
-		XiMassKinFit_Ebin_accsub->Print();
-		xsecw->import(RooArgSet(xsecmass));
-		xsecw->factory("Chebychev::xsecbkgd(xsecmass,{c1t[2.20,-1.e4,1.e4],c2t[-1.557,-1.e4,1.e4]})");
-		xsecw->factory("Gaussian::xsecgaus(xsecmass,mean[1.32,1.31,1.33],sigma[0.005,0.001,0.01])");
-		xsecw->factory("SUM::xsecmodel(nbkgd[150,0,1e5]*xsecbkgd, nsig[20,0,1e4]*xsecgaus)");
-		xsecw->pdf("xsecmodel")->fitTo(*xsecdata,RooFit::Range(minfitmass,maxmass),RooFit::Minos(1));
-		RooPlot* xsecmassframe = xsecmass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
-		xsecmassframe->SetXTitle("#Lambda#pi^{-} mass");
-		xsecdata->plotOn(xsecmassframe) ;
-		xsecw->pdf("xsecmodel")->paramOn(xsecmassframe);
-		xsecw->pdf("xsecmodel")->plotOn(xsecmassframe);
-		xsecw->pdf("xsecgaus")->plotOn(xsecmassframe, RooFit::LineStyle(kDotted),
-		RooFit::Normalization(xsecw->var("nsig")->getVal(), RooAbsReal::NumEvent));
-		xsecw->pdf("xsecbkgd")->plotOn(xsecmassframe, RooFit::LineStyle(kDotted),
-		RooFit::Normalization(xsecw->var("nbkgd")->getVal(), RooAbsReal::NumEvent));
-		xsec_sig_events = xsecw->var("nsig")->getVal();
-		xsec_sig_events_err = xsecw->var("nsig")->getError();
-		xsec_sig_mass = xsecw->var("mean")->getVal();
-		xsec_sig_mass_err = xsecw->var("mean")->getError();
-		xsec_sig_width = xsecw->var("sigma")->getVal();
-		xsec_sig_width_err = xsecw->var("sigma")->getError();
-		double max_xsec_y = sig_events*0.3;
-		xsecmassframe->SetMaximum(max_xsec_y);
-		xsecmassframe->Draw();
-		Xsec_Xi_canvas->Print(xsec_xiplot);
-		esigfit_canvas->cd(iE+1);
-		xsecmassframe->Draw();
-	} //end enough signal loop for total cross section
+		if(XiMassKinFit_Ebin_accsub->GetEntries() < 20){
+			xsec_sig_events = 0.0;
+			xsec_sig_events_err = 0.0;
+			xsec_sig_mass = 0.0;
+			xsec_sig_mass_err = 0.0;
+			xsec_sig_width =  0.0;
+			xsec_sig_width_err =  0.0;
+		} //end not enough signal loop for total cross section
+		else{	//Set up and perform signal fit for total cross section
+			sprintf(xsec_xiplot,"Xsec_fits/Xsec_sigfit_%s_%03d_%02dbins_%03d.png",version, binning,numEBins,Ebuffer);
+			sprintf(xsec_workspace,"w%03d",Ebuffer);
+			sprintf(xsec_xicanvas,"Xi_canvas_%03d",Ebuffer);
+			TCanvas * Xsec_Xi_canvas = new TCanvas(xsec_xicanvas, xsec_xicanvas,800,600);
+			RooWorkspace* xsecw = new RooWorkspace(xsec_workspace);
+			RooRealVar xsecmass("xsecmass", "xsecmass", minmass, maxmass);
+			RooDataHist *xsecdata = new RooDataHist("xsecdata", "Dataset of mass", xsecmass, XiMassKinFit_Ebin_accsub);
+			XiMassKinFit_Ebin_accsub->Print();
+			xsecw->import(RooArgSet(xsecmass));
+			xsecw->factory("Chebychev::xsecbkgd(xsecmass,{c1t[2.20,-1.e4,1.e4],c2t[-1.557,-1.e4,1.e4]})");
+			xsecw->factory("Gaussian::xsecgaus(xsecmass,mean[1.32,1.31,1.33],sigma[0.005,0.001,0.01])");
+			xsecw->factory("SUM::xsecmodel(nbkgd[150,0,1e5]*xsecbkgd, nsig[20,0,1e4]*xsecgaus)");
+			xsecw->pdf("xsecmodel")->fitTo(*xsecdata,RooFit::Range(minfitmass,maxmass),RooFit::Minos(1));
+			RooPlot* xsecmassframe = xsecmass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
+			xsecmassframe->SetXTitle("#Lambda#pi^{-} mass");
+			xsecdata->plotOn(xsecmassframe) ;
+			xsecw->pdf("xsecmodel")->paramOn(xsecmassframe);
+			xsecw->pdf("xsecmodel")->plotOn(xsecmassframe);
+			xsecw->pdf("xsecgaus")->plotOn(xsecmassframe, RooFit::LineStyle(kDotted),
+			RooFit::Normalization(xsecw->var("nsig")->getVal(), RooAbsReal::NumEvent));
+			xsecw->pdf("xsecbkgd")->plotOn(xsecmassframe, RooFit::LineStyle(kDotted),
+			RooFit::Normalization(xsecw->var("nbkgd")->getVal(), RooAbsReal::NumEvent));
+			xsec_sig_events = xsecw->var("nsig")->getVal();
+			xsec_sig_events_err = xsecw->var("nsig")->getError();
+			xsec_sig_mass = xsecw->var("mean")->getVal();
+			xsec_sig_mass_err = xsecw->var("mean")->getError();
+			xsec_sig_width = xsecw->var("sigma")->getVal();
+			xsec_sig_width_err = xsecw->var("sigma")->getError();
+			double max_xsec_y = sig_events*0.3;
+			xsecmassframe->SetMaximum(max_xsec_y);
+			xsecmassframe->Draw();
+			Xsec_Xi_canvas->Print(xsec_xiplot);
+			esigfit_canvas->cd(iE+1);
+			xsecmassframe->Draw();
+		} //end enough signal loop for total cross section
 	//Save signal fit yields and error for total cross section
-	xsec_sig_val[iE+1] = xsec_sig_events;
-	xsec_sig_err[iE+1] = xsec_sig_events_err;
-	cout << "~~~~~~~sigxsec~" << iE << "~ " << xsec_sig_events << " " << xsec_sig_events_err << endl; 
-	esigyields_canvas->cd();	
-	SignalYields_Ebin->SetBinContent(iE+1,xsec_sig_events);
-	SignalYields_Ebin->SetBinError(iE+1,xsec_sig_events_err);
-	esigmass_canvas->cd();
-	SignalMass_Ebin->SetBinContent(iE+1,xsec_sig_mass); 
-	SignalMass_Ebin->SetBinError(iE+1,xsec_sig_mass_err);
-	esigwidth_canvas->cd();
-	SignalWidth_Ebin->SetBinContent(iE+1,xsec_sig_width);
-	SignalWidth_Ebin->SetBinError(iE+1,xsec_sig_width_err);
+		xsec_sig_val[iE+1] = xsec_sig_events;
+		xsec_sig_err[iE+1] = xsec_sig_events_err;
+		cout << "~~~~~~~sigxsec~" << iE << "~ " << xsec_sig_events << " " << xsec_sig_events_err << endl; 
+		esigyields_canvas->cd();	
+		SignalYields_Ebin->SetBinContent(iE+1,xsec_sig_events);
+		SignalYields_Ebin->SetBinError(iE+1,xsec_sig_events_err);
+		esigmass_canvas->cd();
+		SignalMass_Ebin->SetBinContent(iE+1,xsec_sig_mass); 
+		SignalMass_Ebin->SetBinError(iE+1,xsec_sig_mass_err);
+		esigwidth_canvas->cd();
+		SignalWidth_Ebin->SetBinContent(iE+1,xsec_sig_width);
+		SignalWidth_Ebin->SetBinError(iE+1,xsec_sig_width_err);
 
 	//MC fit for total cross section 
-	sprintf(xsec_mcplot,"Xsec_fits/Xsec_mcfit_%s_%03d_%02dbins_%03d.png",version, binning,numEBins,Ebuffer);	
-	sprintf(mc_xsec_workspace,"wmc%03d",Ebuffer);
-	sprintf(xsec_mccanvas,"Xi_canvas_mc_%03d",Ebuffer);
-	TCanvas * Xsec_Xi_mc_canvas = new TCanvas(xsec_mccanvas, xsec_mccanvas,800,600);
-	RooWorkspace* xsecwmc = new RooWorkspace(mc_xsec_workspace);
-	RooRealVar xsecmcmass("xsecmcmass", "xsecmcmass", minmass, maxmass);
-	RooDataHist *xsecmc = new RooDataHist("xsecmc", "MC of mass", xsecmcmass, MC_XiMassKinFit_Ebin_accsub );
-	MC_XiMassKinFit_Ebin_accsub->Print();
-	xsecwmc->import(RooArgSet(xsecmcmass));
-	xsecwmc->factory("Gaussian::xsecgausmc(xsecmcmass,meanmc[1.32,1.31,1.33],sigmamc[0.005,0.001,0.01])");
-	xsecwmc->factory("SUM::xsecmcmodel(nsigmc[50,0,1e6]*xsecgausmc)");
-	xsecwmc->pdf("xsecmcmodel")->fitTo(*xsecmc,RooFit::Range(1.305,1.35),RooFit::Minos(1));
-	RooPlot* xsecmcmassframe = xsecmcmass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
-	xsecmcmassframe->SetXTitle("#Lambda#pi^{-} mass");
-	xsecmc->plotOn(xsecmcmassframe) ;
-	xsecwmc->pdf("xsecmcmodel")->paramOn(xsecmcmassframe);
-	xsecwmc->pdf("xsecmcmodel")->plotOn(xsecmcmassframe);
-	xsecwmc->pdf("xsecgausmc")->plotOn(xsecmcmassframe, RooFit::LineStyle(kDotted),
-	RooFit::Normalization(xsecwmc->var("nsigmc")->getVal(), RooAbsReal::NumEvent));
-	double_t xsec_mc_sig_events = xsecwmc->var("nsigmc")->getVal();
-	double_t xsec_mc_sig_events_err = xsecwmc->var("nsigmc")->getError();
-	double_t xsec_mc_mass = xsecwmc->var("meanmc")->getVal();
-	double_t xsec_mc_mass_err = xsecwmc->var("meanmc")->getError();
-	double_t xsec_mc_width = xsecwmc->var("sigmamc")->getVal();
-	double_t xsec_mc_width_err = xsecwmc->var("sigmamc")->getError();
-	xsec_mc_val[iE+1] = xsec_mc_sig_events;
-	xsec_mc_err[iE+1] = xsec_mc_sig_events_err;
-	cout << "~~~~~~~MCxsec~" << iE << "~ " << xsec_mc_sig_events << " " << xsec_mc_sig_events_err << endl; 
-	double xsec_mc_max_y = xsec_mc_sig_events *0.5;
-	xsecmcmassframe->SetMaximum(xsec_mc_max_y);
-	xsecmcmassframe->Draw();
-	Xsec_Xi_mc_canvas->Print(xsec_mcplot);
+		sprintf(xsec_mcplot,"Xsec_fits/Xsec_mcfit_%s_%03d_%02dbins_%03d.png",version, binning,numEBins,Ebuffer);	
+		sprintf(mc_xsec_workspace,"wmc%03d",Ebuffer);
+		sprintf(xsec_mccanvas,"Xi_canvas_mc_%03d",Ebuffer);
+		TCanvas * Xsec_Xi_mc_canvas = new TCanvas(xsec_mccanvas, xsec_mccanvas,800,600);
+		RooWorkspace* xsecwmc = new RooWorkspace(mc_xsec_workspace);
+		RooRealVar xsecmcmass("xsecmcmass", "xsecmcmass", minmass, maxmass);
+		RooDataHist *xsecmc = new RooDataHist("xsecmc", "MC of mass", xsecmcmass, MC_XiMassKinFit_Ebin_accsub );
+		MC_XiMassKinFit_Ebin_accsub->Print();
+		xsecwmc->import(RooArgSet(xsecmcmass));
+		xsecwmc->factory("Gaussian::xsecgausmc(xsecmcmass,meanmc[1.32,1.31,1.33],sigmamc[0.005,0.001,0.01])");
+		xsecwmc->factory("SUM::xsecmcmodel(nsigmc[50,0,1e6]*xsecgausmc)");
+		xsecwmc->pdf("xsecmcmodel")->fitTo(*xsecmc,RooFit::Range(1.305,1.35),RooFit::Minos(1));
+		RooPlot* xsecmcmassframe = xsecmcmass.frame(RooFit::Title("Lambda pi^{-} Invariant Mass KinFit"));
+		xsecmcmassframe->SetXTitle("#Lambda#pi^{-} mass");
+		xsecmc->plotOn(xsecmcmassframe) ;
+		xsecwmc->pdf("xsecmcmodel")->paramOn(xsecmcmassframe);
+		xsecwmc->pdf("xsecmcmodel")->plotOn(xsecmcmassframe);
+		xsecwmc->pdf("xsecgausmc")->plotOn(xsecmcmassframe, RooFit::LineStyle(kDotted),
+		RooFit::Normalization(xsecwmc->var("nsigmc")->getVal(), RooAbsReal::NumEvent));
+		double_t xsec_mc_sig_events = xsecwmc->var("nsigmc")->getVal();
+		double_t xsec_mc_sig_events_err = xsecwmc->var("nsigmc")->getError();
+		double_t xsec_mc_mass = xsecwmc->var("meanmc")->getVal();
+		double_t xsec_mc_mass_err = xsecwmc->var("meanmc")->getError();
+		double_t xsec_mc_width = xsecwmc->var("sigmamc")->getVal();
+		double_t xsec_mc_width_err = xsecwmc->var("sigmamc")->getError();
+		xsec_mc_val[iE+1] = xsec_mc_sig_events;
+		xsec_mc_err[iE+1] = xsec_mc_sig_events_err;
+		cout << "~~~~~~~MCxsec~" << iE << "~ " << xsec_mc_sig_events << " " << xsec_mc_sig_events_err << endl; 
+		double xsec_mc_max_y = xsec_mc_sig_events *0.5;
+		xsecmcmassframe->SetMaximum(xsec_mc_max_y);
+		xsecmcmassframe->Draw();
+		Xsec_Xi_mc_canvas->Print(xsec_mcplot);
 
 	// Save MC information to histograms binned in beam energy
-	emcyields_canvas->cd();	
-	MCYields_Ebin->SetBinContent(iE+1,xsec_mc_sig_events);
-	MCYields_Ebin->SetBinError(iE+1,xsec_mc_sig_events_err);
-	emcmass_canvas->cd();
-	MCMass_Ebin->SetBinContent(iE+1,xsec_mc_mass); 
-	MCMass_Ebin->SetBinError(iE+1,xsec_mc_mass_err);
-	emcwidth_canvas->cd();
-	MCWidth_Ebin->SetBinContent(iE+1,xsec_mc_width);
-	MCWidth_Ebin->SetBinError(iE+1,xsec_mc_width_err);
+		emcyields_canvas->cd();	
+		MCYields_Ebin->SetBinContent(iE+1,xsec_mc_sig_events);
+		MCYields_Ebin->SetBinError(iE+1,xsec_mc_sig_events_err);
+		emcmass_canvas->cd();
+		MCMass_Ebin->SetBinContent(iE+1,xsec_mc_mass); 
+		MCMass_Ebin->SetBinError(iE+1,xsec_mc_mass_err);
+		emcwidth_canvas->cd();
+		MCWidth_Ebin->SetBinContent(iE+1,xsec_mc_width);
+		MCWidth_Ebin->SetBinError(iE+1,xsec_mc_width_err);
 
 	//Get flux values
-	flux_val[iE+1]=getbincontent(FluxH,iE+1);
-	flux_err[iE+1]=getbinerror(FluxH,iE+1); //+1 because 0 is the underflow
-	cout << "~~~~~~~flux~" << iE << "~" << flux_val[iE+1] << " " << flux_err[iE+1] << endl;
+		flux_val[iE+1]=getbincontent(FluxH,iE+1);
+		flux_err[iE+1]=getbinerror(FluxH,iE+1); //+1 because 0 is the underflow
+		cout << "~~~~~~~flux~" << iE << "~" << flux_val[iE+1] << " " << flux_err[iE+1] << endl;
 
-	xsec_eff_val[iE+1] = xsec_mc_val[iE+1]/xsec_thrown_val[iE+1];
-	xsec_eff_err[iE+1] = xsec_eff_val[iE+1] * sqrt(pow(xsec_mc_err[iE+1]/xsec_mc_val[iE+1],2)+pow(xsec_thrown_err[iE+1]/xsec_thrown_val[iE+1],2));
-	cout << "~~~~~~~Effxsec~" << iE << "~" << xsec_eff_val[iE+1] << " " << xsec_eff_err[iE+1] << endl;
-	Eff_Ebin->SetBinContent(iE+1,xsec_eff_val[iE+1]);
-	Eff_Ebin->SetBinError(iE+1,xsec_eff_err[iE+1]);
-	xsec_val[iE+1] = (xsec_sig_val[iE+1])/(constant * flux_val[iE+1] * xsec_mc_val[iE+1]/xsec_thrown_val[iE+1]);
 	//Calculate efficiencies and total cross section in terms of only energy binning
-	if(xsec_sig_val[iE+1] != 0){ //Calculate normally
-	    xsec_err[iE+1] = xsec_val[iE+1]*sqrt(pow(xsec_sig_err[iE+1]/xsec_sig_val[iE+1],2)+pow(flux_err[iE+1]/flux_val[iE+1],2)+pow(xsec_mc_err[iE+1]/xsec_mc_val[iE+1],2)+pow(xsec_thrown_err[iE+1]/xsec_thrown_val[iE+1],2));
-	}
-	else{ 
-		xsec_err[iE+1] = 0.0; // Set to zero if fit wasn't performed to prevent NaNs.
-	}	
-	cout << "~~~~~~~Xsec~" << iE << "~" << xsec_val[iE+1] << " " << xsec_err[iE+1] << endl;
-	XSec_Ebin->SetBinContent(iE+1,xsec_val[iE+1]);
-	XSec_Ebin->SetBinError(iE+1,xsec_err[iE+1]);
+		xsec_eff_val[iE+1] = xsec_mc_val[iE+1]/xsec_thrown_val[iE+1];
+		xsec_eff_err[iE+1] = xsec_eff_val[iE+1] * sqrt(pow(xsec_mc_err[iE+1]/xsec_mc_val[iE+1],2)+pow(xsec_thrown_err[iE+1]/xsec_thrown_val[iE+1],2));
+		cout << "~~~~~~~Effxsec~" << iE << "~" << xsec_eff_val[iE+1] << " " << xsec_eff_err[iE+1] << endl;
+		Eff_Ebin->SetBinContent(iE+1,xsec_eff_val[iE+1]);
+		Eff_Ebin->SetBinError(iE+1,xsec_eff_err[iE+1]);
+		xsec_val[iE+1] = (xsec_sig_val[iE+1])/(constant * flux_val[iE+1] * xsec_mc_val[iE+1]/xsec_thrown_val[iE+1]);
+		if(xsec_sig_val[iE+1] != 0){ //Calculate normally
+		    xsec_err[iE+1] = xsec_val[iE+1]*sqrt(pow(xsec_sig_err[iE+1]/xsec_sig_val[iE+1],2)+pow(flux_err[iE+1]/flux_val[iE+1],2)+pow(xsec_mc_err[iE+1]/xsec_mc_val[iE+1],2)+pow(xsec_thrown_err[iE+1]/xsec_thrown_val[iE+1],2));
+		}
+		else{ 
+			xsec_err[iE+1] = 0.0; // Set to zero if fit wasn't performed to prevent NaNs.
+		}	
+		cout << "~~~~~~~Xsec~" << iE << "~" << xsec_val[iE+1] << " " << xsec_err[iE+1] << endl;
+		XSec_Ebin->SetBinContent(iE+1,xsec_val[iE+1]);
+		XSec_Ebin->SetBinError(iE+1,xsec_err[iE+1]);
 
 	//Draw and save histograms that depend on energy bin
-	esigfit_canvas->cd(iE+1);
-	esigfit_canvas->Print(esignalfithist);
-	esigfit_canvas->SaveAs(esignalfitmacro);
+		esigfit_canvas->cd(iE+1);
+		esigfit_canvas->Print(esignalfithist);
+		esigfit_canvas->SaveAs(esignalfitmacro);
 
-	thrownyields_canvas->cd(iE+1);
-	ThrownYields[iE+1]->Draw("pe1");
-	thrownyields_canvas->Print(thrownyieldshist);
-	thrownyields_canvas->SaveAs(thrownyieldsmacro);
+		thrownyields_canvas->cd(iE+1);
+		ThrownYields[iE+1]->Draw("pe1");
+		thrownyields_canvas->Print(thrownyieldshist);
+		thrownyields_canvas->SaveAs(thrownyieldsmacro);
 
-	sigyields_canvas->cd(iE+1);
-	SignalYields[iE+1]->GetYaxis()->SetRangeUser(0,300);
-	SignalYields[iE+1]->Draw("pe1");
-	sigyields_canvas->Print(signalyieldshist);
-	sigyields_canvas->SaveAs(signalyieldsmacro);
+		sigyields_canvas->cd(iE+1);
+		SignalYields[iE+1]->GetYaxis()->SetRangeUser(0,300);
+		SignalYields[iE+1]->Draw("pe1");
+		sigyields_canvas->Print(signalyieldshist);
+		sigyields_canvas->SaveAs(signalyieldsmacro);
 
-	sigmass_canvas->cd(iE+1);
-	SignalMass[iE+1]->GetYaxis()->SetRangeUser(1.30,1.35);
-	SignalMass[iE+1]->Draw("pe1");
-	sigmass_canvas->Print(signalmasshist);
-	sigmass_canvas->SaveAs(signalmassmacro);
+		sigmass_canvas->cd(iE+1);
+		SignalMass[iE+1]->GetYaxis()->SetRangeUser(1.30,1.35);
+		SignalMass[iE+1]->Draw("pe1");
+		sigmass_canvas->Print(signalmasshist);
+		sigmass_canvas->SaveAs(signalmassmacro);
 
-	sigwidth_canvas->cd(iE+1);
-	SignalWidth[iE+1]->GetYaxis()->SetRangeUser(0.001,0.01);
-	SignalWidth[iE+1]->Draw("pe1");
-	sigwidth_canvas->Print(signalwidthhist);
-	sigwidth_canvas->SaveAs(signalwidthmacro);
+		sigwidth_canvas->cd(iE+1);
+		SignalWidth[iE+1]->GetYaxis()->SetRangeUser(0.001,0.01);
+		SignalWidth[iE+1]->Draw("pe1");
+		sigwidth_canvas->Print(signalwidthhist);
+		sigwidth_canvas->SaveAs(signalwidthmacro);
 
-	mcyields_canvas->cd(iE+1);
-	MCYields[iE+1]->GetYaxis()->SetRangeUser(0,1750);
-	MCYields[iE+1]->Draw("pe1");
-	mcyields_canvas->Print(mcyieldshist);
-	mcyields_canvas->SaveAs(mcyieldsmacro);
+		mcyields_canvas->cd(iE+1);
+		MCYields[iE+1]->GetYaxis()->SetRangeUser(0,1750);
+		MCYields[iE+1]->Draw("pe1");
+		mcyields_canvas->Print(mcyieldshist);
+		mcyields_canvas->SaveAs(mcyieldsmacro);
 
-	mcmass_canvas->cd(iE+1);
-	MCMass[iE+1]->GetYaxis()->SetRangeUser(1.30,1.35);
-	MCMass[iE+1]->Draw("pe1");
-	mcmass_canvas->Print(mcmasshist);
-	mcmass_canvas->SaveAs(mcmassmacro);
+		mcmass_canvas->cd(iE+1);
+		MCMass[iE+1]->GetYaxis()->SetRangeUser(1.30,1.35);
+		MCMass[iE+1]->Draw("pe1");
+		mcmass_canvas->Print(mcmasshist);
+		mcmass_canvas->SaveAs(mcmassmacro);
 
-	mcwidth_canvas->cd(iE+1);
-	MCWidth[iE+1]->GetYaxis()->SetRangeUser(0.001,0.01);
-	MCWidth[iE+1]->Draw("pe1");
-	mcwidth_canvas->Print(mcwidthhist);
-	mcwidth_canvas->SaveAs(mcwidthmacro);
+		mcwidth_canvas->cd(iE+1);
+		MCWidth[iE+1]->GetYaxis()->SetRangeUser(0.001,0.01);
+		MCWidth[iE+1]->Draw("pe1");
+		mcwidth_canvas->Print(mcwidthhist);
+		mcwidth_canvas->SaveAs(mcwidthmacro);
 
-	eff_canvas->cd(iE+1);
-	Eff[iE+1]->GetYaxis()->SetRangeUser(0,0.25);
-	Eff[iE+1]->Draw("pe1");
-	eff_canvas->Print(effhist);
-	eff_canvas->SaveAs(effmacro);
+		eff_canvas->cd(iE+1);
+		Eff[iE+1]->GetYaxis()->SetRangeUser(0,0.25);
+		Eff[iE+1]->Draw("pe1");
+		eff_canvas->Print(effhist);
+		eff_canvas->SaveAs(effmacro);
 
-	diffxsec_canvas->cd(iE+1);
-	DiffXSec[iE+1]->GetYaxis()->SetRangeUser(0.0001,10);
-	DiffXSec[iE+1]->Draw("pe1");
-	diffxsec_canvas->Print(diffxsechist);
-	diffxsec_canvas->SaveAs(diffxsecmacro);
+		diffxsec_canvas->cd(iE+1);
+		DiffXSec[iE+1]->GetYaxis()->SetRangeUser(0.0001,10);
+		DiffXSec[iE+1]->Draw("pe1");
+		diffxsec_canvas->Print(diffxsechist);
+		diffxsec_canvas->SaveAs(diffxsecmacro);
 	} //end E loop
 
 //Save all the total cross section histograms
@@ -666,70 +663,3 @@ for(int iTable=0; iTable<numEBins; iTable++){
 return;	
 
 } //end macro
-
-/*
-//clas results, Goetz thesis Table D.1
-
-TCanvas * adiffxsec_canvas = new TCanvas("adiffxsec_canvas", "adiffxsec_canvas",800,600);
-adiffxsec_canvas->cd();
-TPad *c1 = new TPad("pad1","pad1", 0.05, .05, .95, .95);
-c1->Draw();
-const Int_t nBins=10;
-TH1F * xsec_gluex_count = new TH1F("xsec_gluex_count", "xsec_gluex_count",24,0.4,12.4);
-TH1F * xsec_gluex = new TH1F("xsec_gluex", "xsec_gluex",24,0.4,12.4); 
-xsec_gluex->SetMarkerColor(kRed);
-xsec_gluex_count->SetMarkerColor(kBlue);
-xsec_gluex->SetMarkerStyle(21);
-xsec_gluex_count->SetMarkerStyle(21);
-xsec_gluex->GetYaxis()->SetRangeUser(0,15);
-xsec_gluex->GetYaxis()->SetTitle("#sigma_{total} (#gamma p -> K^{+}K^{+}#Xi^{-}) (nb)");
-xsec_gluex->GetXaxis()->SetTitle("E_{#gamma} (GeV)");
-xsec_gluex->SetTitle("#Xi^{-} Cross Section");
-for(int ith=13; ith<23; ith++)
-{
-	xsec_gluex_count->SetBinContent(ith,xsec_count_val[ith-13]);
-	xsec_gluex_count->SetBinError(ith,xsec_count_err[ith-13]);
-	xsec_gluex->SetBinContent(ith,diffxsec_val[ith-13]);
-	xsec_gluex->SetBinError(ith,diffxsec_err[ith-13]);
-}
-//xsec_gluex->SetBinContent(14,4.48811);
-//xsec_gluex->SetBinError(14,0.43384);
-xsec_gluex->Draw("PE1");
-//xsec_gluex_count->Draw("same");
-adiffxsec_canvas->Update();
-const Int_t NumBins=24;
-Double_t g12xsec[NumBins] =  {0.256, 1.145, 2.981, 4.927, 5.63, 7.296, 8.47, 8.872, 10.796, 11.017, 10.583, 10.132, 9.729, 11.614, 11.553, 10.133, 10.413, 11.179, 11.478, 8.48, 8.14, 10.004,9.855, 10.513};
-Double_t g12diffxsec_err[NumBins] = {0.300, 0.300, 0.521, 0.408, 0.630, 0.881, 0.708, 0.616, 0.621, 0.677, 0.752, 0.797, 0.925, 0.918, 1.103, 1.091, 1.164, 1.068, 1.269, 1.299, 1.020, 1.761, 1.273, 4.630};
-TH1F * xsec_clas = new TH1F("xsec_clas", "xsec_clas",NumBins,2.625,5.4); 
-xsec_clas->SetMarkerColor(kOrange);
-xsec_clas->SetMarkerStyle(21);
-for(int jth=0; jth<NumBins; jth++)
-{
-	xsec_clas->SetBinContent(jth+1,g12xsec[jth]);
-	xsec_clas->SetBinError(jth+1,g12diffxsec_err[jth]);
-}
-Double_t g12energy[NumBins] =  { };
-Double_t deltaE[NumBins] = { };
-xsec_clas->Draw("same,PE1");
-auto legend = new TLegend(0.7,0.7,0.9,0.9);
-legend->AddEntry(xsec_gluex,"GlueX");
-//legend->AddEntry(xsec_gluex_count,"GlueX MC Counting");
-legend->AddEntry(xsec_clas, "CLAS g12");
-legend->Draw();
-adiffxsec_canvas->Update();
-char xsec_wclas_macro_name[100];
-sprintf(xsec_wclas_macro_name,"xsec_wclas_%s.C",version);
-adiffxsec_canvas->SaveAs(xsec_wclas_macro_name);
-char xsec_wclas_plot_name[100];
-sprintf(xsec_wclas_plot_name,"xsec_wclas_%s.png",version);
-adiffxsec_canvas->Print(xsec_wclas_plot_name);
-
-*/
-
-//xsec_gluex->SetName("Xi- Cross Section");
-//axsec->SetTitle("#Xi^{-} Cross Section; E_{#gamma} (GeV); #sigma (nb)");
-//adiffxsec_canvas->Print("test_axsec.png");
-//TCanvas * gdiffxsec_canvas = new TCanvas("gdiffxsec_canvas", "gdiffxsec_canvas",800,600);
-//TGraphErrors * axsec = new TGraphErrors(nBins, energy, diffxsec_val, denergy, diffxsec_err);
-//Double_t energy[nBins]= {6.65,7.15, 7.65, 8.15, 8.65, 9.15, 9.65, 10.15, 10.65, 11.15};
-//Double_t denergy[nBins]= {0.25, 0.25, 0.25,0.25,0.25,0.25,0.25,0.25,0.25,0.25};
