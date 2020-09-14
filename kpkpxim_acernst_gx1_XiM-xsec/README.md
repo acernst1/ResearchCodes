@@ -22,11 +22,18 @@ Runs over the data from the analysis launch (or reconstructed Monte Carlo files)
 ### DSelector_thrown_kpkpxim.\* 
 Runs over the generated Monte Carlo files (thrown MC) and produces all the plots required for further analysis. 
 
-### Driver_\*.C
+### Driver_xsec_diff.C
 Driver script with options for the files needs to produce the cross sections and with some limited options such as for the binning of the cross section. 
 
 ### xsec_diff.C
 Code, which is run using the Driver_xsec_diff_\*.C, that takes the histograms from the DSelector outputs and computes/plots the corresponding differential production cross section, total production cross section, and a variety of other plots. 
+Additional codes with the same approach include: (A very short driver script is needed like Driver_xsec_diff.C for these codes.)
+- xsec_t.C: cross section versus -t
+- xsec_chisq.C: cross section versus choice in chi square cut
+- xsec_LE.C: cross section for the low energy data
 
 ### plot_kinematics.C
 Code that plots the various kinematic distributions from the DSelector output. Focuses on plotting data vs Monte Carlo distributions. 
+
+### fit.C
+Example of the total fit for the Xi- invariant mass distribution 
