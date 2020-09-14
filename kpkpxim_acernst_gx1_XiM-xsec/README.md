@@ -37,3 +37,5 @@ Code that plots the various kinematic distributions from the DSelector output. F
 
 ### fit.C
 Example of the total fit for the Lambda pi- invariant mass distribution including a signal for Xi-.
+
+*Repository submitted to JeffersonLab/gluex_physics_analysis repository on September 13th, 2020*
